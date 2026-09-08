@@ -1,0 +1,145 @@
+[gd_scene load_steps=3 format=3]
+[ext_resource type="Script" path="res://presentation/training_hud.gd" id="1"]
+[sub_resource type="RectangleShape2D" id="touch"]
+size = Vector2(76, 58)
+[node name="HUD" type="CanvasLayer"]
+script = ExtResource("1")
+[node name="Top" type="ColorRect" parent="."]
+offset_right = 960.0
+offset_bottom = 92.0
+mouse_filter = 2
+color = Color(0.035, 0.06, 0.10, 0.94)
+[node name="Title" type="Label" parent="Top"]
+offset_left = 24.0
+offset_top = 10.0
+text = "CYBER KINGDOM  /  THE FOUNDRY"
+theme_override_colors/font_color = Color(0.84, 0.74, 0.55, 1)
+theme_override_font_sizes/font_size = 20
+[node name="Status" type="Label" parent="Top"]
+offset_left = 24.0
+offset_top = 38.0
+text = "HP 100 / 100"
+theme_override_font_sizes/font_size = 16
+[node name="Message" type="Label" parent="Top"]
+offset_left = 24.0
+offset_top = 60.0
+text = "Approach the sentinel."
+theme_override_font_sizes/font_size = 14
+[node name="Keys" type="Label" parent="."]
+offset_left = 235.0
+offset_top = 516.0
+text = "A/D MOVE   SPACE JUMP   J HIT   L DASH   R RESTART"
+theme_override_colors/font_color = Color(0.55, 0.67, 0.72, 1)
+theme_override_font_sizes/font_size = 12
+[node name="move_left" type="TouchScreenButton" parent="."]
+position = Vector2(62, 480)
+shape = SubResource("touch")
+action = "move_left"
+[node name="Fill" type="Polygon2D" parent="move_left"]
+polygon = PackedVector2Array(-38, -29, 38, -29, 38, 29, -38, 29)
+color = Color(0.13, 0.23, 0.29, 0.9)
+[node name="Label" type="Label" parent="move_left"]
+offset_left = -38.0
+offset_top = -13.0
+offset_right = 38.0
+offset_bottom = 14.0
+mouse_filter = 2
+text = "LEFT"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 14
+[node name="move_right" type="TouchScreenButton" parent="."]
+position = Vector2(150, 480)
+shape = SubResource("touch")
+action = "move_right"
+[node name="Fill" type="Polygon2D" parent="move_right"]
+polygon = PackedVector2Array(-38, -29, 38, -29, 38, 29, -38, 29)
+color = Color(0.13, 0.23, 0.29, 0.9)
+[node name="Label" type="Label" parent="move_right"]
+offset_left = -38.0
+offset_top = -13.0
+offset_right = 38.0
+offset_bottom = 14.0
+mouse_filter = 2
+text = "RIGHT"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 14
+[node name="dash" type="TouchScreenButton" parent="."]
+position = Vector2(695, 480)
+shape = SubResource("touch")
+action = "dash"
+[node name="Fill" type="Polygon2D" parent="dash"]
+polygon = PackedVector2Array(-38, -29, 38, -29, 38, 29, -38, 29)
+color = Color(0.13, 0.23, 0.29, 0.9)
+[node name="Label" type="Label" parent="dash"]
+offset_left = -38.0
+offset_top = -13.0
+offset_right = 38.0
+offset_bottom = 14.0
+mouse_filter = 2
+text = "DASH"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 14
+[node name="jump" type="TouchScreenButton" parent="."]
+position = Vector2(783, 480)
+shape = SubResource("touch")
+action = "jump"
+[node name="Fill" type="Polygon2D" parent="jump"]
+polygon = PackedVector2Array(-38, -29, 38, -29, 38, 29, -38, 29)
+color = Color(0.13, 0.23, 0.29, 0.9)
+[node name="Label" type="Label" parent="jump"]
+offset_left = -38.0
+offset_top = -13.0
+offset_right = 38.0
+offset_bottom = 14.0
+mouse_filter = 2
+text = "JUMP"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 14
+[node name="attack" type="TouchScreenButton" parent="."]
+position = Vector2(871, 480)
+shape = SubResource("touch")
+action = "attack"
+[node name="Fill" type="Polygon2D" parent="attack"]
+polygon = PackedVector2Array(-38, -29, 38, -29, 38, 29, -38, 29)
+color = Color(0.13, 0.23, 0.29, 0.9)
+[node name="Label" type="Label" parent="attack"]
+offset_left = -38.0
+offset_top = -13.0
+offset_right = 38.0
+offset_bottom = 14.0
+mouse_filter = 2
+text = "HIT"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 14
+[node name="pause" type="TouchScreenButton" parent="."]
+position = Vector2(871, 40)
+shape = SubResource("touch")
+action = "pause"
+[node name="Fill" type="Polygon2D" parent="pause"]
+polygon = PackedVector2Array(-38, -29, 38, -29, 38, 29, -38, 29)
+color = Color(0.13, 0.23, 0.29, 0.9)
+[node name="Label" type="Label" parent="pause"]
+offset_left = -38.0
+offset_top = -13.0
+offset_right = 38.0
+offset_bottom = 14.0
+mouse_filter = 2
+text = "PAUSE"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 14
+[node name="restart" type="TouchScreenButton" parent="."]
+position = Vector2(783, 40)
+shape = SubResource("touch")
+action = "restart"
+[node name="Fill" type="Polygon2D" parent="restart"]
+polygon = PackedVector2Array(-38, -29, 38, -29, 38, 29, -38, 29)
+color = Color(0.13, 0.23, 0.29, 0.9)
+[node name="Label" type="Label" parent="restart"]
+offset_left = -38.0
+offset_top = -13.0
+offset_right = 38.0
+offset_bottom = 14.0
+mouse_filter = 2
+text = "RESTART"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 14
