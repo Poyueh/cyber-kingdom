@@ -19,6 +19,7 @@ flowchart TD
 | 敵人攻擊預警、擊敗獎勵 | application/training_session.gd | 協調一次訓練流程 |
 | 如何保存廢料 | application/ports/progress_store.gd | 內層要求的存取介面 |
 | JSON、錯誤與格式版本 | infrastructure/json_progress_store.gd | 真正檔案操作 |
+| 騎士待機外觀與播放 | presentation/knight_visual.gd、data/knight_idle_frames.tres | 素材與呈現時間，不控制傷害 |
 | 跳躍、碰撞與角色畫法 | presentation/actor_body.gd | Godot 物理與畫面 |
 | 鍵盤／觸控對應 | project.godot、presentation/input_adapter.gd | 將玩家輸入轉成指令 |
 | 關卡位置、平台與攝影機 | scenes/training.tscn | 編輯器中的場景 |
