@@ -9,6 +9,7 @@ func test_defeat_rewards_once_and_persists(t) -> void:
 	hero_stats.damage = 200
 	var run = Session.new(hero_stats, Stats.new(), store, 20)
 	run.hero.start_attack()
+	run.advance(0.06)
 	run.resolve_sword(25.0, 0.0)
 	run.resolve_sword(25.0, 0.0)
 	t.equal(run.scrap, 20, "one defeat grants one reward")
@@ -18,6 +19,7 @@ func test_defeat_rewards_once_and_persists(t) -> void:
 func test_vertical_miss_and_restart(t) -> void:
 	var run = Session.new(Stats.new(), Stats.new(), MemoryStore.new(), 20)
 	run.hero.start_attack()
+	run.advance(0.06)
 	run.resolve_sword(25.0, 100.0)
 	t.equal(run.enemy.hp, 100, "target on another floor missed")
 	run.hero.take_damage(999)
@@ -32,6 +34,7 @@ func test_failed_save_reports_pending_and_can_retry(t) -> void:
 	stats.damage = 200
 	var run = Session.new(stats, Stats.new(), store, 20)
 	run.hero.start_attack()
+	run.advance(0.06)
 	run.resolve_sword(25.0, 0.0)
 	t.truth(run.save_pending, "failed write is visible")
 	t.equal(run.scrap, 20, "in-memory reward preserved")
@@ -46,5 +49,6 @@ func test_enemy_telegraphs_before_attack(t) -> void:
 	t.equal(run.enemy.attack_remaining, 0.0, "enemy warns before damage")
 	t.truth(run.enemy_windup_remaining > 0.0, "warning is visible to presentation")
 	run.update_enemy_decision(0.7, -25.0, 0.0)
+	run.advance(0.06)
 	run.resolve_enemy_sword(-25.0, 0.0)
 	t.equal(run.hero.hp, 75, "announced attack resolves toward hero")

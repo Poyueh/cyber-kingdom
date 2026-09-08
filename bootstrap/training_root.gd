@@ -67,3 +67,5 @@ func _tick_encounter(seconds: float, command: Dictionary) -> void:
 	distance = sentinel.position - knight.position
 	session.resolve_sword(distance.x, distance.y)
 	session.resolve_enemy_sword(-distance.x, -distance.y)
+	knight.refresh_visual(seconds)
+	sentinel.refresh_visual(seconds)

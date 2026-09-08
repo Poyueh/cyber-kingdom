@@ -12,6 +12,6 @@
 
 本專案另由呈現腳本以遊戲時間推動畫格，使 Esc 與切出視窗的暫停保持一致；因此沒有開啟節點自動播放。Godot 編輯器的面板預覽仍可用來看素材。
 
-每格圖片透過 AtlasTexture 引用原圖的一部分，原始 PNG 保持不變。這份圖的實際尺寸不是整數 1024，所以我已測量並指定取樣位置，而不是直接套固定格子：[官方 AtlasTexture 說明](https://docs.godotengine.org/en/stable/classes/class_atlastexture.html)。
+每格圖片透過 AtlasTexture 引用圖集的一部分。目前新版已把原圖校正為每格 128 × 96 的遊戲用圖，原始生成 PNG 另行保留：[官方 AtlasTexture 說明](https://docs.godotengine.org/en/stable/classes/class_atlastexture.html)。
 
 完成後可以用自己的話說說：如果想讓待機更快，是改傷害、角色移動速度，還是 SpriteFrames 的 FPS？任何步驟不清楚，直接告訴我卡在哪裡；提供這份教學不代表我會把你記錄為已學會。

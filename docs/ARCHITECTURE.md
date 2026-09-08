@@ -19,13 +19,21 @@ flowchart TD
 | 敵人攻擊預警、擊敗獎勵 | application/training_session.gd | 協調一次訓練流程 |
 | 如何保存廢料 | application/ports/progress_store.gd | 內層要求的存取介面 |
 | JSON、錯誤與格式版本 | infrastructure/json_progress_store.gd | 真正檔案操作 |
-| 騎士待機外觀與播放 | presentation/knight_visual.gd、data/knight_idle_frames.tres | 素材與呈現時間，不控制傷害 |
+| 騎士待機、跑步與揮劍 | presentation/knight_visual.gd、data/knight_animation_frames.tres | 素材、循環時間及依戰鬥進度選格，不控制傷害 |
 | 跳躍、碰撞與角色畫法 | presentation/actor_body.gd | Godot 物理與畫面 |
 | 鍵盤／觸控對應 | project.godot、presentation/input_adapter.gd | 將玩家輸入轉成指令 |
 | 關卡位置、平台與攝影機 | scenes/training.tscn | 編輯器中的場景 |
 | 組裝所有物件 | bootstrap/training_root.gd | 決定使用哪些數值與存檔實作 |
 
 `ActorTuning` 是給編輯器用的 Resource；`tuning_mapper.gd` 將數值複製成內層資料，避免戰鬥規則直接載入 `.tres`。呈現層可以讀取戰鬥狀態，但傷害與獎勵判定集中在內層。
+
+## 戰鬥與動畫時間
+
+Combatant 持有整刀進度：前 25% 起手、中間 50% 可命中、最後 25% 收招。傷害窗口、揮劍畫格與刀光均讀取這份進度；呈現層不另設傷害計時器。起手時保存出劍朝向，途中反向移動不會把這一刀翻到背後；衝刺取消當前揮劍。即使冷卻比整刀短，也必須收招完畢才能再開始。
+
+Bootstrap 先更新時間與物理位置，再結算雙方傷害，最後刷新角色畫面，讓死亡和受傷色調當幀反映。待機與跑步使用傳入的遊戲時間，揮劍依進度選四格；暫停時整個流程停止。跳躍、衝刺專用圖尚未製作，暫時固定中立姿勢。
+
+離線圖片處理留在 tools，原圖與配方留在 art；遊戲執行只讀已處理的 PNG 與 Godot 資源，不依賴 Python。
 
 ## 存檔邊界
 
