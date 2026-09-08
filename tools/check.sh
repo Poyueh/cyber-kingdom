@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+set -eu
+ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+GODOT_BIN="${GODOT_BIN:-/Applications/Godot.app/Contents/MacOS/Godot}"
+if [ ! -x "$GODOT_BIN" ]; then
+  echo 'Set GODOT_BIN to your Godot 4 executable.' >&2
+  exit 1
+fi
+mkdir -p "$ROOT/test-results"
+run_check() {
+  local name="$1"
+  shift
+  local result=0
+  "$GODOT_BIN" --headless --path "$ROOT" "$@" > "$ROOT/test-results/$name.log" 2>&1 || result=$?
+  cat "$ROOT/test-results/$name.log"
+  if [ "$result" -ne 0 ]; then return "$result"; fi
+  # Godot can emit a script error without a nonzero process exit.
+  if grep -Eq 'SCRIPT ERROR:|(^|[[:space:]])ERROR:' "$ROOT/test-results/$name.log"; then
+    echo "$name failed: Godot reported an error." >&2
+    return 1
+  fi
+}
+python3 "$ROOT/tools/check_architecture.py"
+run_check import --editor --import
+run_check behavior --script res://tests/run_tests.gd
+run_check integration --script res://tests/test_scene.gd
+run_check scene --quit-after 120
+echo 'PASS: architecture, import, behavior, and main scene smoke checks.'
