@@ -29,3 +29,10 @@
 - 發行使用 `release/<version>`；正式修補使用 `hotfix/<name>`，都須回合 develop。
 - 不強制推送、不重寫既有歷史；不要提交憑證、引擎快取或測試存檔。
 - 提交要小且說明目的；更新 docs/STATUS.md，記錄測試和下一步。
+
+## 專案知識入口
+
+- 開始功能設計、實作、除錯或審查時，先讀 `CONTEXT.md`、`docs/agents/mattpocock-adoption.md` 與相關 ADR；同一工作單元已讀且未變更時不必重讀。
+- 本地 Matt Pocock 技能包作為按需參考；適配與來源版本以 adoption 文件為準。保留現有 Godot、Clean Architecture、TDD、Gitflow 及使用者授權。
+- 遊戲術語集中在 `CONTEXT.md`，進度集中在 `docs/STATUS.md`。
+- 教學前讀 `docs/lessons/learning-records/`，以使用者實際回饋更新掌握程度。
