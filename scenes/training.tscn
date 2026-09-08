@@ -1,9 +1,10 @@
-[gd_scene load_steps=9 format=3]
+[gd_scene load_steps=10 format=3]
 [ext_resource type="Script" path="res://bootstrap/training_root.gd" id="1"]
 [ext_resource type="PackedScene" path="res://scenes/actor.tscn" id="2"]
 [ext_resource type="Script" path="res://presentation/arena_view.gd" id="3"]
 [ext_resource type="Script" path="res://presentation/input_adapter.gd" id="4"]
 [ext_resource type="PackedScene" path="res://scenes/training_hud.tscn" id="5"]
+[ext_resource type="PackedScene" path="res://scenes/knight_visual.tscn" id="knight_visual"]
 [sub_resource type="RectangleShape2D" id="floor"]
 size = Vector2(1800, 110)
 [sub_resource type="RectangleShape2D" id="platform"]
@@ -39,6 +40,8 @@ position = Vector2(1810, 270)
 shape = SubResource("wall")
 [node name="Knight" parent="." instance=ExtResource("2")]
 position = Vector2(150, 420)
+[node name="KnightVisual" parent="Knight" instance=ExtResource("knight_visual")]
+
 [node name="Camera2D" type="Camera2D" parent="Knight"]
 position = Vector2(200, -160)
 limit_left = 0

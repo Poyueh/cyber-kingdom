@@ -2,7 +2,7 @@
 
 Godot 製作中的橫向捲軸像素動作遊戲。世界觀結合中古世紀、龍、魔法與機械義肢。目標平台是 iPhone / iPad；先在 Mac 驗證戰鬥與營地經營，再決定完整內容量。
 
-目前版本是**戰鬥訓練場**，尚未包含完整 Roguelite、營地經營或正式美術。
+目前版本是**戰鬥訓練場**，已有第一版騎士待機素材，尚未包含完整 Roguelite、營地經營或完整動作美術。
 
 ## 開啟遊玩
 
@@ -29,6 +29,7 @@ Godot 製作中的橫向捲軸像素動作遊戲。世界觀結合中古世紀�
 ## 從這裡開始學
 
 - [第一課：打開專案、看懂場景、改一個數值](docs/lessons/01-first-godot.md)
+- [第二課：看懂騎士待機動畫](docs/lessons/02-knight-animation.md)
 - [程式分層與修改位置](docs/ARCHITECTURE.md)
 - [Gitflow 開發流程](docs/GITFLOW.md)
 - [半年計畫與目前進度](docs/STATUS.md)

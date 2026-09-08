@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3]
+[ext_resource type="Script" path="res://presentation/knight_visual.gd" id="1"]
+[ext_resource type="SpriteFrames" path="res://data/knight_idle_frames.tres" id="2"]
+[node name="KnightVisual" type="AnimatedSprite2D"]
+position = Vector2(0, -25.2)
+scale = Vector2(0.09, 0.09)
+texture_filter = 1
+sprite_frames = ExtResource("2")
+animation = &"idle"
+script = ExtResource("1")
