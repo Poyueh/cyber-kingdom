@@ -39,3 +39,12 @@ func test_failed_save_reports_pending_and_can_retry(t) -> void:
 	t.truth(run.retry_save(), "retry succeeds")
 	t.equal(run.save_pending, false, "pending cleared")
 	t.equal(store.load_scrap(), 20, "retry does not duplicate reward")
+
+func test_enemy_telegraphs_before_attack(t) -> void:
+	var run = Session.new(Stats.new(), Stats.new(), MemoryStore.new(), 20)
+	run.update_enemy_decision(0.1, -25.0, 0.0)
+	t.equal(run.enemy.attack_remaining, 0.0, "enemy warns before damage")
+	t.truth(run.enemy_windup_remaining > 0.0, "warning is visible to presentation")
+	run.update_enemy_decision(0.7, -25.0, 0.0)
+	run.resolve_enemy_sword(-25.0, 0.0)
+	t.equal(run.hero.hp, 75, "announced attack resolves toward hero")

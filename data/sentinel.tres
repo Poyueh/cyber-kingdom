@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="ActorTuning" load_steps=2 format=3]
+[ext_resource type="Script" path="res://data/actor_tuning.gd" id="1"]
+[resource]
+script = ExtResource("1")
+max_hp = 100
+damage = 15
+attack_range = 60.0
+attack_cooldown = 1.1
+move_speed = 42.0
