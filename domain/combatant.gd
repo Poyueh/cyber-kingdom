@@ -5,6 +5,7 @@ var stats: Stats
 var hp: int
 var stamina: float
 var facing: int = 1
+var attack_facing: int = 1
 var attack_remaining: float = 0.0
 var cooldown_remaining: float = 0.0
 var dash_remaining: float = 0.0
@@ -20,8 +21,9 @@ func is_alive() -> bool:
 	return hp > 0
 
 func start_attack() -> bool:
-	if not is_alive() or cooldown_remaining > 0.0 or dash_remaining > 0.0:
+	if not is_alive() or attack_remaining > 0.0 or cooldown_remaining > 0.0 or dash_remaining > 0.0:
 		return false
+	attack_facing = facing
 	attack_remaining = stats.attack_duration
 	cooldown_remaining = stats.attack_cooldown
 	_hit_targets.clear()
@@ -38,9 +40,9 @@ func start_dash() -> bool:
 	return true
 
 func strike(target: RefCounted, signed_distance: float) -> bool:
-	if not is_alive() or attack_remaining <= 0.0:
+	if not is_alive() or not is_attack_active():
 		return false
-	if signed_distance * facing < 0.0 or absf(signed_distance) > stats.attack_range:
+	if signed_distance * attack_facing < 0.0 or absf(signed_distance) > stats.attack_range:
 		return false
 	var target_id: int = target.get_instance_id()
 	if _hit_targets.has(target_id):
@@ -66,3 +68,12 @@ func advance(seconds: float) -> void:
 	invulnerability_remaining = maxf(0.0, invulnerability_remaining - seconds)
 	if is_alive():
 		stamina = minf(stats.max_stamina, stamina + stats.stamina_regen * seconds)
+
+func attack_progress() -> float:
+	if attack_remaining <= 0.0 or stats.attack_duration <= 0.0:
+		return 1.0
+	return clampf(1.0 - attack_remaining / stats.attack_duration, 0.0, 1.0)
+
+func is_attack_active() -> bool:
+	var progress := attack_progress()
+	return progress >= 0.25 and progress < 0.75
