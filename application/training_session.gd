@@ -8,7 +8,7 @@ var enemy: Fighter
 var scrap: int = 0
 var save_pending: bool = false
 var enemy_windup_remaining: float = 0.0
-var hit_stop_seconds: float = 0.05
+var hit_stop_seconds: float = 0.025
 var _hit_stop_remaining: float = 0.0
 var _hero_stats: Stats
 var _enemy_stats: Stats

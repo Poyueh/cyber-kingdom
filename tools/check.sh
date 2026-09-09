@@ -24,5 +24,6 @@ python3 "$ROOT/tools/check_architecture.py"
 run_check import --editor --import
 run_check behavior --script res://tests/run_tests.gd
 run_check integration --script res://tests/test_scene.gd
+run_check traversal --script res://tests/test_traversal.gd
 run_check scene --quit-after 120
 echo 'PASS: architecture, import, behavior, and main scene smoke checks.'
