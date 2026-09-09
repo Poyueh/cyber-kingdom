@@ -19,6 +19,12 @@
 
 ## Godot 小教學
 
-一張概念圖可以描述整體氣氛；真正遊戲裡，角色動畫通常交給 AnimatedSprite2D / SpriteFrames，地形可以使用 TileMapLayer，背景可分層。分開製作才能讓角色獨立移動、動畫與碰撞配合，並控制遮擋關係。騎士已換成第一版透明待機素材，守衛和場景仍使用臨時美術。
+一張概念圖可以描述整體氣氛；真正遊戲裡，角色動畫通常交給 AnimatedSprite2D / SpriteFrames，地形可以使用 TileMapLayer，背景可分層。分開製作才能讓角色獨立移動、動畫與碰撞配合，並控制遮擋關係。騎士已有待機、跑步與新版六格下劈；守衛與鑄造場已接入第一輪素材，跳躍、衝刺與地形圖塊仍待製作。
 
-實際素材與限制：[機械騎士待機 v001](characters/knight/README.md)。
+## 遊戲素材與完整提示詞
+
+以下各頁均連結原始生成圖、遊戲用圖及完整提示詞，所有原圖保留；本輪使用內建 image_gen，並沿用使用者已授權的本機圖片處理。
+
+- [機械騎士：待機、跑步與下劈 v002](characters/knight/README.md)
+- [鐵甲守衛 v001](characters/sentinel/README.md)
+- [古城鑄造場 v001](environments/foundry/README.md)

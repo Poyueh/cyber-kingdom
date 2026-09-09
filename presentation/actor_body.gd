@@ -13,7 +13,7 @@ const PALETTE := {"s": Color("101523"), "H": Color("829eab"), "h": Color("d5e3dd
 var model: Fighter
 var tuning: Resource
 var telegraph: bool = false
-@onready var visual: AnimatedSprite2D = get_node_or_null("KnightVisual")
+@onready var visual: AnimatedSprite2D = get_node_or_null("SentinelVisual" if is_enemy else "KnightVisual")
 
 func configure(fighter: Fighter, parameters: Resource) -> void:
 	model = fighter
@@ -35,13 +35,19 @@ func advance_motion(direction: float, jump_requested: bool, seconds: float) -> v
 	else:
 		velocity.x = 0.0
 	velocity.y += tuning.gravity * seconds
-	move_and_slide()
+	# move_and_slide uses the engine's full physics delta. Scale its velocity
+	# for any partial tick left after hit stop, then restore world units.
+	var fraction := clampf(seconds / get_physics_process_delta_time(), 0.0, 1.0)
+	if fraction > 0.0:
+		velocity *= fraction
+		move_and_slide()
+		velocity /= fraction
 
 func refresh_visual(seconds: float) -> void:
 	if visual != null:
 		visual.present({"alive": model.is_alive(), "facing": action_facing(),
 			"moving": absf(velocity.x) > 0.1, "grounded": is_on_floor(),
-			"dashing": model.dash_remaining > 0.0, "attack_progress": model.attack_progress(),
+			"telegraph": telegraph, "dashing": model.dash_remaining > 0.0, "attack_progress": model.attack_progress(),
 			"invulnerable": model.invulnerability_remaining > 0.0}, seconds)
 	queue_redraw()
 
@@ -68,11 +74,28 @@ func _draw() -> void:
 				draw_rect(Rect2(x * 2 - 16, row * 2 - 38, 2, 2), shade)
 		draw_line(Vector2(facing * 12, -20), Vector2(facing * reach, -26), Color("d8d6b1"), 3.0)
 	if model.is_attack_active():
-		var center_angle := 0.0 if facing > 0 else PI
-		draw_arc(Vector2(0, -24), reach, center_angle - 0.6, center_angle + 0.6, 12, Color("89d4d0"), 3.0)
+		_draw_slash(reach, facing)
 	if telegraph:
 		draw_rect(Rect2(-3, -62, 6, 13), Color("f4b26b"))
 		draw_rect(Rect2(-3, -46, 6, 3), Color("f4b26b"))
 	if is_enemy:
 		draw_rect(Rect2(-24, -72, 48, 4), Color("342332"))
 		draw_rect(Rect2(-24, -72, 48.0 * model.hp / model.stats.max_hp, 4), Color("d97884"))
+
+func _draw_slash(reach: float, facing: int) -> void:
+	var progress := clampf((model.attack_progress() - 0.4) / 0.35, 0.0, 1.0)
+	var leading_angle := lerpf(0.1, 0.8, progress)
+	var origin := Vector2(0, -27)
+	var points := PackedVector2Array()
+	# A tapered crescent travels downward; mirroring preserves sword direction.
+	for index in range(9):
+		var angle := leading_angle - 1.5 + index * 1.5 / 8.0
+		points.append((origin + Vector2(cos(angle) * facing, sin(angle) * 0.55) * reach).round())
+	for index in range(8, -1, -1):
+		var angle := leading_angle - 1.5 + index * 1.5 / 8.0
+		var radius := reach - 1.0 - sin(index * PI / 8.0) * 5.0
+		points.append((origin + Vector2(cos(angle) * facing, sin(angle) * 0.55) * radius).round())
+	var tint := Color("ffbd68") if is_enemy else Color("8ce9e1")
+	draw_colored_polygon(points, Color(tint, 0.65))
+	var tip := origin + Vector2(cos(leading_angle) * facing, sin(leading_angle) * 0.55) * reach
+	draw_line((tip - Vector2(3 * facing, 5)).round(), tip.round(), Color("fff2cd"), 2.0)

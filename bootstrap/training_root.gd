@@ -6,8 +6,14 @@ const Mapper = preload("res://bootstrap/tuning_mapper.gd")
 @export var knight_tuning: Resource = preload("res://data/knight.tres")
 @export var sentinel_tuning: Resource = preload("res://data/sentinel.tres")
 @export_range(0, 1000) var defeat_reward: int = 20
+@export_group("Hit Feedback")
+@export_range(0.0, 0.15, 0.01) var hit_stop_seconds: float = 0.05
+@export_range(0.0, 4.0, 0.5) var impact_shake_pixels: float = 1.0
+var _buffered_actions: Dictionary = {}
 @onready var knight = $Knight
 @onready var sentinel = $Sentinel
+@onready var impacts = $Impacts
+@onready var camera: Camera2D = $Knight/Camera2D
 @onready var controls = $InputAdapter
 @onready var hud = $HUD
 var session: Session
@@ -18,9 +24,13 @@ var paused: bool = false
 func _ready() -> void:
 	store = FileStore.new(progress_path)
 	session = Session.new(Mapper.combat_stats(knight_tuning), Mapper.combat_stats(sentinel_tuning), store, defeat_reward)
+	session.hit_stop_seconds = hit_stop_seconds
 	_reset_bodies()
 
 func _reset_bodies() -> void:
+	_buffered_actions.clear()
+	impacts.clear()
+	camera.offset = Vector2.ZERO
 	knight.position = Vector2(150, 420)
 	sentinel.position = Vector2(680, 420)
 	knight.configure(session.hero, knight_tuning)
@@ -30,6 +40,7 @@ func _reset_bodies() -> void:
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_APPLICATION_FOCUS_OUT or what == NOTIFICATION_APPLICATION_PAUSED:
 		paused = true
+		_buffered_actions.clear()
 		if is_instance_valid(controls):
 			controls.release_all()
 
@@ -37,6 +48,7 @@ func _physics_process(seconds: float) -> void:
 	var command: Dictionary = controls.read_frame()
 	if command.pause:
 		paused = not paused
+		_buffered_actions.clear()
 		controls.release_all()
 	if command.retry_save:
 		session.retry_save()
@@ -52,7 +64,16 @@ func _physics_process(seconds: float) -> void:
 		"paused": paused, "warning": store.last_error if not store.last_error.is_empty() else ("SAVE PENDING — press P to retry" if session.save_pending else "")})
 
 func _tick_encounter(seconds: float, command: Dictionary) -> void:
-	session.advance(seconds)
+	for action in ["jump", "attack", "dash"]:
+		if command[action]:
+			_buffered_actions[action] = true
+	seconds = session.advance(seconds)
+	if seconds <= 0.000001:
+		return
+	for action in ["jump", "attack", "dash"]:
+		command[action] = _buffered_actions.get(action, false)
+	_buffered_actions.clear()
+	impacts.advance(seconds)
 	if command.direction != 0.0 and session.hero.dash_remaining <= 0.0:
 		session.hero.facing = int(signf(command.direction))
 	if command.attack:
@@ -65,7 +86,10 @@ func _tick_encounter(seconds: float, command: Dictionary) -> void:
 	sentinel.advance_motion(enemy_direction, false, seconds)
 	sentinel.telegraph = session.enemy_windup_remaining > 0.0
 	distance = sentinel.position - knight.position
-	session.resolve_sword(distance.x, distance.y)
-	session.resolve_enemy_sword(-distance.x, -distance.y)
+	if session.resolve_sword(distance.x, distance.y):
+		impacts.trigger(sentinel.position + Vector2(0, -26), session.hero.attack_facing, Color("8ce9e1"))
+	if session.resolve_enemy_sword(-distance.x, -distance.y):
+		impacts.trigger(knight.position + Vector2(0, -26), session.enemy.attack_facing, Color("ffbd68"))
+	camera.offset = impacts.camera_offset(impact_shake_pixels)
 	knight.refresh_visual(seconds)
 	sentinel.refresh_visual(seconds)

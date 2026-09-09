@@ -8,6 +8,8 @@ var enemy: Fighter
 var scrap: int = 0
 var save_pending: bool = false
 var enemy_windup_remaining: float = 0.0
+var hit_stop_seconds: float = 0.05
+var _hit_stop_remaining: float = 0.0
 var _hero_stats: Stats
 var _enemy_stats: Stats
 var _store: ProgressStore
@@ -27,26 +29,45 @@ func restart_encounter() -> void:
 	enemy = Fighter.new(_enemy_stats)
 	_reward_claimed = false
 	enemy_windup_remaining = 0.0
+	_hit_stop_remaining = 0.0
 	# Unsaved progress belongs to the session, not to an individual encounter.
 	if save_pending:
 		retry_save()
 
-func advance(seconds: float) -> void:
-	hero.advance(seconds)
-	enemy.advance(seconds)
+## Returns time available to gameplay; callers must use it for physics and visuals.
+func advance(seconds: float) -> float:
+	if seconds <= 0.0 or not is_finite(seconds):
+		return 0.0
+	var held := minf(seconds, _hit_stop_remaining)
+	_hit_stop_remaining = maxf(0.0, _hit_stop_remaining - held)
+	var gameplay_seconds := seconds - held
+	hero.advance(gameplay_seconds)
+	enemy.advance(gameplay_seconds)
+	return gameplay_seconds
 
-func resolve_sword(horizontal_distance: float, vertical_distance: float) -> void:
+func resolve_sword(horizontal_distance: float, vertical_distance: float) -> bool:
 	if absf(vertical_distance) > hero.stats.vertical_range:
-		return
-	hero.strike(enemy, horizontal_distance)
+		return false
+	var landed := hero.strike(enemy, horizontal_distance)
+	if landed:
+		_begin_impact()
 	if not enemy.is_alive() and not _reward_claimed:
 		_reward_claimed = true
 		scrap += _reward
 		retry_save()
+	return landed
 
-func resolve_enemy_sword(horizontal_distance: float, vertical_distance: float) -> void:
-	if absf(vertical_distance) <= enemy.stats.vertical_range:
-		enemy.strike(hero, horizontal_distance)
+func resolve_enemy_sword(horizontal_distance: float, vertical_distance: float) -> bool:
+	if absf(vertical_distance) > enemy.stats.vertical_range:
+		return false
+	var landed := enemy.strike(hero, horizontal_distance)
+	if landed:
+		_begin_impact()
+	return landed
+
+func _begin_impact() -> void:
+	if is_finite(hit_stop_seconds):
+		_hit_stop_remaining = maxf(_hit_stop_remaining, clampf(hit_stop_seconds, 0.0, 0.15))
 
 func retry_save() -> bool:
 	save_pending = not _store.save_scrap(scrap)

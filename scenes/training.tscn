@@ -1,10 +1,12 @@
-[gd_scene load_steps=10 format=3]
+[gd_scene load_steps=12 format=3]
 [ext_resource type="Script" path="res://bootstrap/training_root.gd" id="1"]
 [ext_resource type="PackedScene" path="res://scenes/actor.tscn" id="2"]
 [ext_resource type="Script" path="res://presentation/arena_view.gd" id="3"]
 [ext_resource type="Script" path="res://presentation/input_adapter.gd" id="4"]
 [ext_resource type="PackedScene" path="res://scenes/training_hud.tscn" id="5"]
 [ext_resource type="PackedScene" path="res://scenes/knight_visual.tscn" id="knight_visual"]
+[ext_resource type="PackedScene" path="res://scenes/sentinel_visual.tscn" id="sentinel_visual"]
+[ext_resource type="Script" path="res://presentation/impact_view.gd" id="impacts"]
 [sub_resource type="RectangleShape2D" id="floor"]
 size = Vector2(1800, 110)
 [sub_resource type="RectangleShape2D" id="platform"]
@@ -51,6 +53,10 @@ limit_bottom = 540
 [node name="Sentinel" parent="." instance=ExtResource("2")]
 position = Vector2(680, 420)
 is_enemy = true
+[node name="SentinelVisual" parent="Sentinel" instance=ExtResource("sentinel_visual")]
+[node name="Impacts" type="Node2D" parent="."]
+z_index = 5
+script = ExtResource("impacts")
 [node name="InputAdapter" type="Node" parent="."]
 script = ExtResource("4")
 [node name="HUD" parent="." instance=ExtResource("5")]
