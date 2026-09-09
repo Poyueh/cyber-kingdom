@@ -111,3 +111,18 @@ func test_dash_progress_tracks_motion_until_it_finishes(t) -> void:
 	t.truth(is_equal_approx(hero.dash_progress(), 0.5), "dash animation can follow midpoint of actual motion")
 	hero.advance(0.2)
 	t.equal(hero.dash_progress(), 1.0, "finished dash releases its pose")
+
+func test_shield_absorbs_damage_before_health_and_cannot_regenerate(t) -> void:
+	var hero = Fighter.new(Stats.new())
+	hero.shield = 20
+	t.truth(hero.take_damage(15), "shield contact counts as a confirmed hit")
+	t.equal(hero.hp, 100, "shield protects health")
+	t.equal(hero.shield, 5, "shield consumes only incoming damage")
+	t.equal(hero.shield_absorbed, 15, "report tracks prevented health loss")
+	t.equal(hero.take_damage(15), false, "hurt invulnerability prevents shield double drain")
+	hero.advance(1.0)
+	t.truth(hero.take_damage(15), "next hit consumes remaining shield")
+	t.equal(hero.hp, 90, "overflow reaches health")
+	t.equal(hero.shield, 0, "shield never goes negative")
+	hero.advance(10.0)
+	t.equal(hero.shield, 0, "crystal shield does not recharge with stamina")

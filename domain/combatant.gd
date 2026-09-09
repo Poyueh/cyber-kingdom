@@ -2,6 +2,8 @@ extends RefCounted
 const Stats = preload("res://domain/combat_stats.gd")
 
 var stats: Stats
+var shield: int = 0
+var shield_absorbed: int = 0
 var hp: int
 var stamina: float
 var facing: int = 1
@@ -55,7 +57,10 @@ func strike(target: RefCounted, signed_distance: float) -> bool:
 func take_damage(amount: int) -> bool:
 	if amount <= 0 or not is_alive() or invulnerability_remaining > 0.0:
 		return false
-	hp = maxi(0, hp - amount)
+	var absorbed := mini(maxi(0, shield), amount)
+	shield = maxi(0, shield - absorbed)
+	shield_absorbed += absorbed
+	hp = maxi(0, hp - (amount - absorbed))
 	invulnerability_remaining = stats.hurt_invulnerability
 	return true
 

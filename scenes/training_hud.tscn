@@ -143,3 +143,12 @@ mouse_filter = 2
 text = "RESTART"
 horizontal_alignment = 1
 theme_override_font_sizes/font_size = 14
+
+[node name="Refuge" type="Button" parent="."]
+offset_left = 376.0
+offset_top = 462.0
+offset_right = 578.0
+offset_bottom = 510.0
+text = "REFUGE / 龍晶分配"
+focus_mode = 0
+theme_override_font_sizes/font_size = 17
