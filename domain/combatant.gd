@@ -77,3 +77,8 @@ func attack_progress() -> float:
 func is_attack_active() -> bool:
 	var progress := attack_progress()
 	return progress >= 0.4 and progress < 0.75
+
+func dash_progress() -> float:
+	if dash_remaining <= 0.0 or stats.dash_duration <= 0.0:
+		return 1.0
+	return clampf(1.0 - dash_remaining / stats.dash_duration, 0.0, 1.0)

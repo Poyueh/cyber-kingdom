@@ -18,15 +18,16 @@ func present(pose: Dictionary, seconds: float) -> void:
 		return
 	flip_h = pose.facing < 0
 	modulate = Color(1.35, 1.35, 1.5) if pose.invulnerable else Color.WHITE
+	if pose.get("dashing", false) and sprite_frames.has_animation(&"dash"):
+		animation = &"dash"
+		_elapsed = 0.0
+		frame = _action_frame(&"dash", float(pose.get("dash_progress", 0.0)))
+		return
 	var progress: float = float(pose.get("attack_progress", 1.0))
 	if progress < 1.0:
 		animation = &"attack"
 		_elapsed = 0.0
-		frame = _attack_frame(progress)
-		if progress < 0.4:
-			offset = Vector2(-pose.facing, 0)
-		elif progress < 0.75:
-			offset = Vector2(pose.facing * 2, 1)
+		frame = _action_frame(&"attack", progress)
 		return
 	if pose.get("telegraph", false) and sprite_frames.has_animation(&"windup"):
 		animation = &"windup"
@@ -50,14 +51,14 @@ func present(pose: Dictionary, seconds: float) -> void:
 			_elapsed = fmod(_elapsed + seconds, float(count) / speed)
 			frame = int(_elapsed * speed) % count
 
-func _attack_frame(progress: float) -> int:
-	var count := sprite_frames.get_frame_count(&"attack")
+func _action_frame(clip: StringName, progress: float) -> int:
+	var count := sprite_frames.get_frame_count(clip)
 	var total := 0.0
 	for index in range(count):
-		total += sprite_frames.get_frame_duration(&"attack", index)
+		total += sprite_frames.get_frame_duration(clip, index)
 	var remaining := clampf(progress, 0.0, 1.0) * total
 	for index in range(count):
-		remaining -= sprite_frames.get_frame_duration(&"attack", index)
+		remaining -= sprite_frames.get_frame_duration(clip, index)
 		if remaining < 0.0:
 			return index
 	return maxi(0, count - 1)

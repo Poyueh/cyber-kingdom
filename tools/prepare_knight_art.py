@@ -58,6 +58,9 @@ def build(recipe_path=ART / 'animation-recipes.json'):
         for index, frame in enumerate(recipe['frames']):
             x,y,w,h = frame['rect']
             rect = source.crop((x,y,x+w,y+h))
+            # Measured masks remove neighboring-frame spill without touching the original.
+            for ex, ey, ew, eh in frame.get("erase_rects", []):
+                rect.paste((0, 0, 0, 0), (ex, ey, ex+ew, ey+eh))
             scale = recipe['scale']
             resized = rect.resize((round(w*scale),round(h*scale)), Image.Resampling.NEAREST)
             # Binary pixel edges: the runtime uses nearest-neighbor filtering.

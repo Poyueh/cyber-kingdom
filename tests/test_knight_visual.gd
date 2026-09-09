@@ -41,31 +41,26 @@ func test_attack_frames_follow_combat_progress_instead_of_render_time(t) -> void
 	view.present(pose, 0.8)
 	t.equal(view.animation, &"attack", "attack overrides running")
 	t.equal(view.frame, 0, "windup stays tied to combat even after long render delta")
-	pose.attack_progress = 0.2
+	pose.attack_progress = 0.15
 	view.present(pose, 0.0)
 	t.equal(view.frame, 1, "coiled anticipation precedes the cut")
 	pose.attack_progress = 0.45
 	view.present(pose, 0.0)
-	t.equal(view.frame, 3, "downward drawing matches the damage window")
+	t.equal(view.frame, 4, "horizontal blade makes first contact before the downward follow-through")
 	pose.attack_progress = 0.95
 	view.present(pose, 0.0)
-	t.equal(view.frame, 5, "recovery uses the final drawing")
+	t.equal(view.frame, 7, "recovery uses the final drawing")
 	pose.attack_progress = 1.0
 	view.present(pose, 0.0)
 	t.equal(view.animation, &"run", "completed swing releases movement animation")
 	view.free()
 
-func test_airborne_and_dash_do_not_play_ground_run_cycle(t) -> void:
+func test_airborne_does_not_play_ground_run_cycle(t) -> void:
 	var view = KnightVisual.new()
 	var pose := {"alive": true, "facing": 1, "moving": true, "invulnerable": false, "grounded": false}
 	view.present(pose, 0.3)
 	t.equal(view.animation, &"idle", "airborne movement holds a neutral pose until jump art exists")
 	t.equal(view.frame, 0, "airborne pose does not breathe or run")
-	pose.grounded = true
-	pose.dashing = true
-	view.present(pose, 0.3)
-	t.equal(view.animation, &"idle", "dash holds a neutral pose until dash art exists")
-	t.equal(view.frame, 0, "dash cannot run in place")
 	view.free()
 
 func test_attack_respects_authored_anticipation_and_recovery_durations(t) -> void:
@@ -94,4 +89,37 @@ func test_enemy_telegraph_displays_raised_weapon_without_starting_swing(t) -> vo
 	pose.telegraph = false
 	view.present(pose, 0.0)
 	t.equal(view.animation, &"idle", "cancelled warning returns to guard stance")
+	view.free()
+
+func test_dash_has_launch_burst_braking_and_freezes_with_progress(t) -> void:
+	var view = KnightVisual.new()
+	var pose := {"alive": true, "facing": -1, "moving": true, "invulnerable": true, "dashing": true, "dash_progress": 0.0}
+	view.present(pose, 0.5)
+	t.equal(view.animation, &"dash", "dash uses a distinct silhouette rather than standing")
+	t.equal(view.frame, 0, "dash begins with launch pose")
+	pose.dash_progress = 0.4
+	view.present(pose, 0.0)
+	t.equal(view.frame, 1, "burst follows actual dash progress")
+	view.present(pose, 0.0)
+	t.equal(view.frame, 1, "paused dash holds its burst pose")
+	pose.dash_progress = 0.95
+	view.present(pose, 0.0)
+	t.equal(view.frame, 3, "dash ends with braking pose")
+	pose.dashing = false
+	view.present(pose, 0.0)
+	t.equal(view.animation, &"run", "movement regains run animation after dash")
+	view.free()
+
+func test_default_cleave_shows_all_eight_poses_at_thirty_fps(t) -> void:
+	var stats = preload("res://domain/combat_stats.gd").new()
+	var view = KnightVisual.new()
+	var seen := {}
+	var pose := {"alive": true, "facing": 1, "moving": false, "invulnerable": false}
+	var elapsed := 0.0
+	while elapsed < stats.attack_duration:
+		pose.attack_progress = elapsed / stats.attack_duration
+		view.present(pose, 1.0 / 30.0)
+		seen[view.frame] = true
+		elapsed += 1.0 / 30.0
+	t.equal(seen.size(), 8, "mobile cadence must show every transition drawing")
 	view.free()

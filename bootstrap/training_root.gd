@@ -7,7 +7,7 @@ const Mapper = preload("res://bootstrap/tuning_mapper.gd")
 @export var sentinel_tuning: Resource = preload("res://data/sentinel.tres")
 @export_range(0, 1000) var defeat_reward: int = 20
 @export_group("Hit Feedback")
-@export_range(0.0, 0.15, 0.01) var hit_stop_seconds: float = 0.05
+@export_range(0.0, 0.15, 0.005) var hit_stop_seconds: float = 0.025
 @export_range(0.0, 4.0, 0.5) var impact_shake_pixels: float = 1.0
 var _buffered_actions: Dictionary = {}
 @onready var knight = $Knight

@@ -13,12 +13,19 @@ const PALETTE := {"s": Color("101523"), "H": Color("829eab"), "h": Color("d5e3dd
 var model: Fighter
 var tuning: Resource
 var telegraph: bool = false
+var _dash_trail: Array[Dictionary] = []
+var _trail_interval: float = 0.0
 @onready var visual: AnimatedSprite2D = get_node_or_null("SentinelVisual" if is_enemy else "KnightVisual")
+
+func _ready() -> void:
+	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 
 func configure(fighter: Fighter, parameters: Resource) -> void:
 	model = fighter
 	tuning = parameters
 	velocity = Vector2.ZERO
+	_dash_trail.clear()
+	_trail_interval = 0.0
 	if visual != null:
 		visual.reset_pose()
 	queue_redraw()
@@ -44,11 +51,23 @@ func advance_motion(direction: float, jump_requested: bool, seconds: float) -> v
 		velocity /= fraction
 
 func refresh_visual(seconds: float) -> void:
+	for sample in _dash_trail:
+		sample.age += seconds
+	_dash_trail = _dash_trail.filter(func(sample): return sample.age < 0.12)
+	_trail_interval -= seconds
 	if visual != null:
 		visual.present({"alive": model.is_alive(), "facing": action_facing(),
 			"moving": absf(velocity.x) > 0.1, "grounded": is_on_floor(),
-			"telegraph": telegraph, "dashing": model.dash_remaining > 0.0, "attack_progress": model.attack_progress(),
+			"telegraph": telegraph, "dashing": model.dash_remaining > 0.0, "dash_progress": model.dash_progress(), "attack_progress": model.attack_progress(),
 			"invulnerable": model.invulnerability_remaining > 0.0}, seconds)
+		if model.dash_remaining > 0.0 and model.is_alive():
+			if _trail_interval <= 0.0:
+				_dash_trail.append({"origin": visual.global_position + visual.offset,
+					"texture": visual.sprite_frames.get_frame_texture(visual.animation, visual.frame),
+					"facing": action_facing(), "age": 0.0})
+				_trail_interval = 0.04
+		else:
+			_trail_interval = 0.0
 	queue_redraw()
 
 func action_facing() -> int:
@@ -57,6 +76,7 @@ func action_facing() -> int:
 func _draw() -> void:
 	if model == null or not model.is_alive():
 		return
+	_draw_dash_trail()
 	var reach: float = model.stats.attack_range if model.is_attack_active() else 22.0
 	var facing := action_facing()
 	if visual == null:
@@ -99,3 +119,11 @@ func _draw_slash(reach: float, facing: int) -> void:
 	draw_colored_polygon(points, Color(tint, 0.65))
 	var tip := origin + Vector2(cos(leading_angle) * facing, sin(leading_angle) * 0.55) * reach
 	draw_line((tip - Vector2(3 * facing, 5)).round(), tip.round(), Color("fff2cd"), 2.0)
+
+func _draw_dash_trail() -> void:
+	for sample in _dash_trail:
+		var texture: Texture2D = sample.texture
+		var alpha := 0.35 * (1.0 - float(sample.age) / 0.12)
+		draw_set_transform(sample.origin - global_position, 0.0, Vector2(sample.facing, 1))
+		draw_texture(texture, -texture.get_size() * 0.5, Color(0.4, 1.0, 0.95, alpha))
+	draw_set_transform(Vector2.ZERO)

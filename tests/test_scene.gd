@@ -26,10 +26,18 @@ func frames(count: int) -> void:
 	for unused in range(count):
 		await physics_frame
 
+func wait_for_damage(fighter) -> void:
+	var before: int = fighter.hp
+	for tick in range(30):
+		await physics_frame
+		if fighter.hp < before:
+			return
+
 func run_scene() -> void:
 	var scene = load("res://scenes/training.tscn").instantiate()
 	var location := "user://test_scene_%d.json" % Time.get_ticks_usec()
 	scene.progress_path = location
+	scene.hit_stop_seconds = 0.05 # Exercise buffering with a deliberately longer stop.
 	root.add_child(scene)
 	await frames(12)
 	check(scene.knight.is_on_floor(), "knight lands on actual collision floor")
@@ -48,6 +56,7 @@ func run_scene() -> void:
 	await frames(2)
 	key(KEY_L, false)
 	check(scene.session.hero.stamina < 100.0, "L dash consumes model stamina")
+	check(scene.knight.visual.animation == &"dash", "airborne dash displays its own pose")
 	key(KEY_ESCAPE, true)
 	await frames(2)
 	key(KEY_ESCAPE, false)
@@ -61,16 +70,16 @@ func run_scene() -> void:
 	check(not scene.paused and scene.session.hero.hp == 100, "R restarts and resumes")
 	await frames(12)
 	scene.knight.position = Vector2(620, 430)
-	scene.sentinel.position = Vector2(660, 430)
+	scene.sentinel.position = Vector2(655, 430)
 	scene.session.hero.stats.damage = 200
 	key(KEY_J, true)
 	await frames(2)
 	key(KEY_J, false)
 	check(scene.session.enemy.is_alive(), "windup does not hit immediately")
 	check(scene.knight.visual.animation == &"attack" and scene.knight.visual.frame == 0, "visible windup matches zero damage")
-	await frames(6)
+	await wait_for_damage(scene.session.enemy)
 	check(not scene.session.enemy.is_alive(), "J attack hits nearby sentinel")
-	check(scene.knight.visual.frame == 3, "hit occurs while visible blade is active")
+	check(scene.knight.visual.frame == 4, "hit occurs while visible blade is active")
 	check(scene.impacts.has_impacts(), "killing strike still emits impact sparks")
 	check(scene.session.scrap == 20, "scene grants one defeat reward")
 	check(scene.store.load_scrap() == 20, "scene writes isolated progress save")
@@ -79,7 +88,7 @@ func run_scene() -> void:
 	key(KEY_R, false)
 	await frames(12)
 	scene.knight.position = Vector2(620, 430)
-	scene.sentinel.position = Vector2(660, 430)
+	scene.sentinel.position = Vector2(655, 430)
 	key(KEY_J, true)
 	await frames(2)
 	key(KEY_J, false)
@@ -87,14 +96,14 @@ func run_scene() -> void:
 	await frames(2)
 	key(KEY_L, false)
 	check(scene.session.enemy.hp == 100, "dash cancels windup before damage")
-	check(scene.knight.visual.animation == &"idle", "dash removes cancelled sword artwork")
+	check(scene.knight.visual.animation == &"dash", "dash replaces cancelled sword with its burst artwork")
 
 	key(KEY_R, true)
 	await frames(2)
 	key(KEY_R, false)
 	await frames(12)
 	scene.knight.position = Vector2(620, 430)
-	scene.sentinel.position = Vector2(660, 430)
+	scene.sentinel.position = Vector2(655, 430)
 	key(KEY_J, true)
 	await frames(2)
 	key(KEY_J, false)
@@ -111,8 +120,8 @@ func run_scene() -> void:
 	key(KEY_A, true)
 	await frames(2)
 	check(not scene.knight.visual.flip_h, "reversing movement keeps sword facing its original target")
-	await frames(5)
 	key(KEY_A, false)
+	await wait_for_damage(scene.session.enemy)
 	check(not scene.session.enemy.is_alive(), "resumed sword hits its original forward target")
 
 	key(KEY_R, true)
@@ -121,11 +130,11 @@ func run_scene() -> void:
 	await frames(12)
 	scene.session.hero.stats.damage = 25
 	scene.knight.position = Vector2(620, 430)
-	scene.sentinel.position = Vector2(660, 430)
+	scene.sentinel.position = Vector2(655, 430)
 	key(KEY_J, true)
 	await frames(2)
 	key(KEY_J, false)
-	await frames(6)
+	await wait_for_damage(scene.session.enemy)
 	check(scene.sentinel.visual != null, "sentinel uses generated artwork")
 	var impact_position: Vector2 = scene.knight.position
 	var impact_progress: float = scene.session.hero.attack_progress()
@@ -146,7 +155,7 @@ func run_scene() -> void:
 	check(not scene.impacts.has_impacts() and scene.camera.offset == Vector2.ZERO, "restart clears sparks and camera displacement")
 	await frames(12)
 	scene.knight.position = Vector2(620, 430)
-	scene.sentinel.position = Vector2(660, 430)
+	scene.sentinel.position = Vector2(655, 430)
 	await frames(3)
 	check(scene.sentinel.visual.animation == &"windup" and scene.session.hero.hp == 100, "sentinel raises cleaver before causing damage")
 

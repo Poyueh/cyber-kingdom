@@ -23,9 +23,3 @@ func _draw() -> void:
 		var x := index * 60.0
 		draw_rect(Rect2(x, 432, 2, 7), Color("232b34"))
 		draw_rect(Rect2(x + 12, 436, 2, 2), Color("c99e62"))
-	for platform in [Rect2(370, 348, 130, 14), Rect2(990, 332, 180, 14)]:
-		draw_rect(platform.grow(2), Color("101a26"))
-		draw_rect(platform, Color("3e4b56"))
-		draw_rect(Rect2(platform.position, Vector2(platform.size.x, 3)), Color("91b9b4"))
-		for x in range(8, int(platform.size.x) - 4, 24):
-			draw_rect(Rect2(platform.position + Vector2(x, 8), Vector2(10, 2)), Color("897450"))

@@ -7,10 +7,9 @@
 [ext_resource type="PackedScene" path="res://scenes/knight_visual.tscn" id="knight_visual"]
 [ext_resource type="PackedScene" path="res://scenes/sentinel_visual.tscn" id="sentinel_visual"]
 [ext_resource type="Script" path="res://presentation/impact_view.gd" id="impacts"]
+[ext_resource type="PackedScene" path="res://scenes/platform.tscn" id="ledge"]
 [sub_resource type="RectangleShape2D" id="floor"]
 size = Vector2(1800, 110)
-[sub_resource type="RectangleShape2D" id="platform"]
-size = Vector2(130, 14)
 [sub_resource type="RectangleShape2D" id="wall"]
 size = Vector2(20, 540)
 [node name="Training" type="Node2D"]
@@ -21,17 +20,17 @@ script = ExtResource("3")
 position = Vector2(900, 485)
 [node name="Shape" type="CollisionShape2D" parent="Floor"]
 shape = SubResource("floor")
-[node name="Platform" type="StaticBody2D" parent="."]
+[node name="Platform" parent="." instance=ExtResource("ledge")]
 position = Vector2(435, 355)
-[node name="Shape" type="CollisionShape2D" parent="Platform"]
-shape = SubResource("platform")
-one_way_collision = true
-[node name="Platform2" type="StaticBody2D" parent="."]
+[node name="PlatformStep1" parent="." instance=ExtResource("ledge")]
+position = Vector2(640, 307)
+width = 150.0
+[node name="PlatformStep2" parent="." instance=ExtResource("ledge")]
+position = Vector2(845, 355)
+width = 150.0
+[node name="Platform2" parent="." instance=ExtResource("ledge")]
 position = Vector2(1080, 339)
-scale = Vector2(1.384615, 1)
-[node name="Shape" type="CollisionShape2D" parent="Platform2"]
-shape = SubResource("platform")
-one_way_collision = true
+width = 180.0
 [node name="LeftWall" type="StaticBody2D" parent="."]
 position = Vector2(-10, 270)
 [node name="Shape" type="CollisionShape2D" parent="LeftWall"]
