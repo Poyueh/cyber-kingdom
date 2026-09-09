@@ -76,4 +76,4 @@ func attack_progress() -> float:
 
 func is_attack_active() -> bool:
 	var progress := attack_progress()
-	return progress >= 0.25 and progress < 0.75
+	return progress >= 0.4 and progress < 0.75

@@ -7,7 +7,7 @@ func _initialize() -> void:
 	call_deferred("_run")
 
 func _run() -> void:
-	var suites := ["res://tests/test_combat.gd", "res://tests/test_session.gd", "res://tests/test_file_store.gd", "res://tests/test_knight_visual.gd"]
+	var suites := ["res://tests/test_combat.gd", "res://tests/test_session.gd", "res://tests/test_file_store.gd", "res://tests/test_knight_visual.gd", "res://tests/test_impact_view.gd"]
 	for suite_path in suites:
 		var script = load(suite_path)
 		if script == null or not script.can_instantiate():

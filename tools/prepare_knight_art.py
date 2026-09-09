@@ -42,12 +42,14 @@ def remove_checker_background(image):
     return Image.fromarray(rgba)
 
 
-def build():
-    recipes = json.loads((ART / 'animation-recipes.json').read_text())
-    output = ART / 'processed'
+def build(recipe_path=ART / 'animation-recipes.json'):
+    recipe_path = Path(recipe_path).resolve()
+    art = recipe_path.parent
+    recipes = json.loads(recipe_path.read_text())
+    output = art / 'processed'
     output.mkdir(exist_ok=True)
     for name, recipe in recipes.items():
-        source = Image.open(ART / recipe['source']).convert('RGBA')
+        source = Image.open(art / recipe['source']).convert('RGBA')
         if recipe['remove_background']:
             source = remove_checker_background(source)
         columns = recipe['columns']
@@ -64,9 +66,12 @@ def build():
             cell = Image.new('RGBA', CELL)
             cell.paste(resized, offset)
             sheet.paste(cell, ((index%columns)*CELL[0], (index//columns)*CELL[1]))
-        destination = output / f'{name}-v001.png'
+        destination = output / recipe.get('output', f'{name}-v001.png')
         sheet.save(destination)
         print(f'{name}: {sheet.size}, {len(recipe["frames"])} frames -> {destination.relative_to(ROOT)}')
 
 if __name__ == '__main__':
-    build()
+    import argparse
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--recipes', type=Path, default=ART / 'animation-recipes.json')
+    build(parser.parse_args().recipes)
