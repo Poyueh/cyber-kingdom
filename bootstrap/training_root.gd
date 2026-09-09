@@ -9,6 +9,9 @@ const Mapper = preload("res://bootstrap/tuning_mapper.gd")
 @export_group("Hit Feedback")
 @export_range(0.0, 0.15, 0.005) var hit_stop_seconds: float = 0.025
 @export_range(0.0, 4.0, 0.5) var impact_shake_pixels: float = 1.0
+signal retreat_requested
+var expedition_mode: bool = false
+var _initial_scrap: int = 0
 var _buffered_actions: Dictionary = {}
 @onready var knight = $Knight
 @onready var sentinel = $Sentinel
@@ -22,8 +25,12 @@ var store: FileStore
 var paused: bool = false
 
 func _ready() -> void:
-	store = FileStore.new(progress_path)
-	session = Session.new(Mapper.combat_stats(knight_tuning), Mapper.combat_stats(sentinel_tuning), store, defeat_reward)
+	if session == null:
+		store = FileStore.new(progress_path)
+		session = Session.new(Mapper.combat_stats(knight_tuning), Mapper.combat_stats(sentinel_tuning), store, defeat_reward)
+	_initial_scrap = session.scrap
+	hud.refuge_requested.connect(_visit_refuge)
+	hud.configure_expedition(expedition_mode)
 	session.hit_stop_seconds = hit_stop_seconds
 	_reset_bodies()
 
@@ -52,16 +59,19 @@ func _physics_process(seconds: float) -> void:
 		controls.release_all()
 	if command.retry_save:
 		session.retry_save()
+	if command.restart and expedition_mode:
+		retreat_requested.emit()
+		return
 	if command.restart:
 		session.restart_encounter()
 		paused = false
 		_reset_bodies()
 	if not paused:
 		_tick_encounter(seconds, command)
-	hud.present({"hp": session.hero.hp, "max_hp": session.hero.stats.max_hp,
-		"stamina": int(session.hero.stamina), "scrap": session.scrap,
+	hud.present({"hp": session.hero.hp, "shield": session.hero.shield, "max_hp": session.hero.stats.max_hp,
+		"stamina": int(session.hero.stamina), "scrap": session.scrap - _initial_scrap if expedition_mode else session.scrap,
 		"dead": not session.hero.is_alive(), "victory": not session.enemy.is_alive(),
-		"paused": paused, "warning": store.last_error if not store.last_error.is_empty() else ("SAVE PENDING — press P to retry" if session.save_pending else "")})
+		"paused": paused, "warning": store.last_error if store != null and not store.last_error.is_empty() else ("SAVE PENDING — press P to retry" if session.save_pending else "")})
 
 func _tick_encounter(seconds: float, command: Dictionary) -> void:
 	for action in ["jump", "attack", "dash"]:
@@ -93,3 +103,10 @@ func _tick_encounter(seconds: float, command: Dictionary) -> void:
 	camera.offset = impacts.camera_offset(impact_shake_pixels)
 	knight.refresh_visual(seconds)
 	sentinel.refresh_visual(seconds)
+
+func _visit_refuge() -> void:
+	controls.release_all()
+	if expedition_mode:
+		retreat_requested.emit()
+	else:
+		get_tree().change_scene_to_file("res://scenes/refuge.tscn")

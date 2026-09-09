@@ -76,6 +76,8 @@ func action_facing() -> int:
 func _draw() -> void:
 	if model == null or not model.is_alive():
 		return
+	if model.shield > 0:
+		draw_arc(Vector2(0, -25), 31, 0, TAU, 24, Color(0.35, 0.92, 0.91, 0.6), 1.5)
 	_draw_dash_trail()
 	var reach: float = model.stats.attack_range if model.is_attack_active() else 22.0
 	var facing := action_facing()

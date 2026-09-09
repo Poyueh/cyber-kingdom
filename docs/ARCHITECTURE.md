@@ -49,6 +49,16 @@ Godot move_and_slide 本身使用整個物理更新時間。ActorBody 在停頓�
 
 平台共用 scenes/platform.tscn，platform_body.gd 的 width 同時更新圖形與碰撞寬度；位置只在 training.tscn 配置，避免畫面和實際落點不一致。預設 jump_speed 520、gravity 1100，實際物理最高約 119 像素；四段平台路線另用引擎輸入測試每一次落地，不只檢查理論拋物線。
 
+## 龍晶分配原型
+
+- `domain/crystal_allocation.gd` 管理固定總量的分配與居民防護預估。`combatant.gd` 的護盾先承受傷害，完全擋住也算命中，維持原有無敵及一刀一次規則。
+- `application/refuge_session.gd` 管理分配 → 出征 → 結果，配置只在分配階段可改。結果根據真實戰鬥快照結算一次並回傳副本；出征期間不能用重開補滿護盾。
+- `bootstrap/refuge_root.gd` 注入數值與 MemoryProgressStore，再將同一個 TrainingSession 注入既有戰鬥場景。訓練場仍使用原 FileStore；被注入的出征不開正式存檔。
+- `presentation/refuge_panel.gd` 呈現中文預估和結算、發出選擇意圖；`refuge_residents.gd` 只將快照畫成防護罩與受傷標記。沒有把居民規則放在 UI。
+- `data/refuge.tres` 調整龍晶、每顆護盾、居民數；`data/expedition_knight.tres` 只調本原型的騎士生命。固定傷害魔潮是一輪結算模型，不是即時攻城或持續經濟。
+
+原型重新分配會清除本輪戰鬥與報告，還原龍晶；歷次暫存廢料只用來計算本次取得差額，關閉原型即丟棄。UI 使用系統中文字型候選，Mac 已驗證，其他平台字型顯示仍須驗證。按鈕支援指標操作，整合測試將邏輯座標轉換成視窗輸入座標；這不替代手機多點觸控測試。
+
 ## 存檔邊界
 
 Application 依賴 ProgressStore，正式場景注入 JsonProgressStore，流程測試注入 MemoryProgressStore。這讓獎勵與存檔失敗可以獨立測試，不必啟動整個遊戲。
