@@ -1,10 +1,10 @@
 [gd_scene load_steps=7 format=3]
 [ext_resource type="PackedScene" path="res://scenes/settlement.tscn" id="base"]
 [ext_resource type="Script" path="res://bootstrap/frontier_root.gd" id="root"]
-[ext_resource type="Resource" path="res://data/frontier.tres" id="tuning"]
-[ext_resource type="Script" path="res://presentation/frontier_view.gd" id="view"]
+[ext_resource type="Resource" path="res://data/campaign.tres" id="tuning"]
+[ext_resource type="Script" path="res://presentation/campaign_view.gd" id="view"]
 [ext_resource type="Script" path="res://presentation/frontier_controls.gd" id="controls"]
-[ext_resource type="Script" path="res://presentation/frontier_hud.gd" id="hud"]
+[ext_resource type="Script" path="res://presentation/campaign_hud.gd" id="hud"]
 [node name="Frontier" instance=ExtResource("base")]
 script = ExtResource("root")
 tuning = ExtResource("tuning")

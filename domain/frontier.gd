@@ -8,6 +8,8 @@ var left_boundary := -700.0
 var right_boundary := 1800.0
 var wood: int = 0
 var food: int = 0
+var stone: int = 0
+var herbs: int = 0
 var city_level: int = 1
 var farm_active := false
 var farm_progress := 0.0
@@ -107,6 +109,8 @@ func deposit(node: RefCounted) -> Dictionary:
 	node.worker = -1
 	wood += node.wood
 	food += node.food
+	stone += node.stone
+	herbs += node.herbs
 	var region := regions[node.region]
 	if not region.outpost_ready:
 		region.outpost_ready = true

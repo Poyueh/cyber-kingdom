@@ -108,3 +108,14 @@ SettlementSession 提供 `_engineer_target` 小型擴充點；原場景只建牆
 `data/frontier_art.tres` 管理新景觀、道具與居民圖集，WorldView 的結構、活動、人物呈現可分別替換。動畫讀模擬時間與工作狀態，所以暫停時凍結；腳底由離線切格統一對齊。神情／像素品質與手機可讀性仍需後續試玩。
 
 生成原圖、提示詞與整理配方保存在 `art/frontier/v002/`，來源資料夾以 .gdignore 排除遊戲匯入。`tools/prepare_resident_art.py` 從專案中的原圖重建 PNG，不依賴產圖服務、API key 或原電腦生成目錄。遊戲只讀整理好的 PNG；Python／NumPy／Pillow 僅用於離線素材工作。
+
+
+## 營火戰役
+
+`domain/crystal_pouch.gd` 集中容量、消費、溢出與地面撿拾守恆；`domain/campaign_clock.gd` 只處理白天、夜晚與敵軍清空後的黎明。兩者沒有節點、輸入或檔案操作。
+
+`application/campaign_session.gd` 組合背包、日曆與原有 FrontierSession／Workforce，提供各目標獨立的龍晶投資、開箱、招攬、材料用途及逐夜敵軍。沿用既有居民移動與攻擊，透過小型 invasion/spawn/loot/delivery 擴充點改變戰役規則；舊獨立原型仍保留原本三波驗證。工匠送貨事件帶實際晶數與座標，戰役將晶數從共享世界轉成地面堆，避免同時入庫又掉落。
+
+`bootstrap/frontier_root.gd` 現在注入 `data/campaign.tres` 的背包、日夜、成長與龍晶價格；`scenes/frontier.tscn` 使用 campaign_view/hud，復用原有地形、人物圖集與觸控路徑。UI 只讀 paid/cost 畫格子，不掌管扣款。未探索地景由淡霧呈現，未揭露人物不繪製。
+
+戰役進度只在記憶體內；N／R 重新建立模擬並清除投資、掉落、居民和日曆。沒有把此狀態寫入舊訓練場存檔。

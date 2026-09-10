@@ -55,13 +55,20 @@ func run_test() -> void:
 	await frames(2)
 	key(KEY_N,false)
 	check(scene.sim.map_seed != seed_before,"N is another route to a new map")
-	scene.sim.time_to_raid = 10000
+	scene.sim.clock.remaining = 10000
+	check(scene.sim.frontier.city_level==0,"playable campaign starts at the campfire")
+	await click(scene.hud.interact_button)
+	check(scene.sim.context(30).paid==1,"touch interaction fills one crystal slot")
+	await click(scene.hud.interact_button)
+	scene.knight.position = Vector2(180,430)
+	await frames(4)
 	key(KEY_E,true)
 	await frames(2)
 	key(KEY_E,false)
 	await frames(6)
 	scene.knight.position = Vector2(scene.sim.world.sites.workshop,430)
 	await frames(4)
+	await click(scene.hud.interact_button)
 	await click(scene.hud.interact_button)
 	for tick in range(100): scene.sim.advance(0.1,520)
 	check(scene.sim.world.people[0].role=="engineer","actual recruitment and workshop button equip a working resident")
@@ -88,13 +95,14 @@ func run_test() -> void:
 		if resource.delivered: break
 	await frames(3)
 	check(resource.delivered and scene.sim.frontier.wood>=3,"resident harvest and physical delivery bank the resource")
-	await click(scene.hud.interact_button)
+	for slot in range(3): await click(scene.hud.interact_button)
 	for tick in range(2000):
 		scene.sim.advance(0.1,resource.x)
 		if scene.sim.frontier.regions[resource.region].outpost_built: break
 	await frames(3)
 	check(scene.sim.frontier.regions[resource.region].outpost_built,"cleared-site button orders a resident-built frontier depot")
 	check(scene.sim.frontier.discovered_count()>0,"walking outside reveals a region")
+	check(scene.hud.calendar_label.text.contains("已熬過 0 晚"),"HUD displays survival calendar")
 	check(scene.hud.status.text.contains("木材") and scene.hud.status.text.contains("食物"),"HUD displays both new resources")
 	var cache
 	for node in scene.sim.frontier.nodes:
@@ -109,6 +117,8 @@ func run_test() -> void:
 	key(KEY_SPACE,false)
 	await frames(60)
 	check(absf(scene.knight.position.y-366)<2 and scene.knight.is_on_floor(),"basic jump reaches generated ruin resource ledge")
+	await click(scene.hud.interact_button)
+	check(cache.delivered,"knight directly opens elevated treasure using the actual button")
 	scene.knight.position = Vector2(scene.sim.frontier.left_boundary+30,430)
 	await frames(6)
 	check(scene.knight.is_on_floor(),"far left generated route has actual collision")

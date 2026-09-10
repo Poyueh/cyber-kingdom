@@ -133,18 +133,7 @@ func advance(seconds: float, hero_x: float, hero_y: float = 430.0) -> void:
 	for supply in world.supplies:
 		supply.age += seconds
 	_advance_people(seconds)
-	if _spawn_remaining > 0:
-		_spawn_timer -= seconds
-		if _spawn_timer <= 0:
-			var stats := Stats.new()
-			stats.max_hp = 60
-			raiders.append({"x":1580.0,"fighter":Fighter.new(stats),"windup":0.0,"cooldown":0.0,"target":{}})
-			_spawn_remaining -= 1
-			_spawn_timer = 2.5
-	elif raiders.is_empty() and not finished():
-		time_to_raid -= seconds
-		if time_to_raid <= 0:
-			begin_raid()
+	_advance_invasion(seconds)
 	for raider in raiders:
 		_advance_raider(raider,seconds,hero_x,hero_y)
 	for raider in raiders:
@@ -154,7 +143,7 @@ func advance(seconds: float, hero_x: float, hero_y: float = 430.0) -> void:
 	for drop in loot:
 		if not drop.taken and absf(drop.x-hero_x)<28 and absf(hero_y-430)<45:
 			drop.taken = true
-			world.scrap += 2
+			_collect_loot(drop)
 
 func _advance_people(seconds: float) -> void:
 	for index in range(world.people.size()):
@@ -226,8 +215,8 @@ func _advance_raider(raider: Dictionary, seconds: float, hero_x: float, hero_y: 
 			if absf(at-raider.x)<38:
 				match target.kind:
 					"hero":
-						if absf(hero_y-430)<42: hero.take_damage(15)
-					"wall": world.hit_wall(20)
+						if absf(hero_y-430)<42: hero.take_damage(raider.fighter.stats.damage)
+					"wall": world.hit_wall(raider.get("wall_damage",20))
 					"person":
 						if absf(world.people[target.index].get("y",430)-430)<42: world.hit_person(target.index)
 				effects.append({"kind":"hit","x":at,"to":at,"life":0.25})
@@ -253,3 +242,24 @@ func strike_from(x: float, y: float) -> void:
 	for raider in raiders:
 		if hero.strike(raider.fighter,raider.x-x):
 			effects.append({"kind":"hit","x":raider.x,"to":raider.x,"life":0.2})
+
+func _advance_invasion(seconds: float) -> void:
+	if _spawn_remaining > 0:
+		_spawn_timer -= seconds
+		if _spawn_timer <= 0:
+			raiders.append(_spawn_raider())
+			_spawn_remaining -= 1
+			_spawn_timer = 2.5
+	elif raiders.is_empty() and not finished():
+		time_to_raid -= seconds
+		if time_to_raid <= 0:
+			begin_raid()
+
+func _spawn_raider() -> Dictionary:
+	var stats := Stats.new()
+	stats.max_hp = 60
+	stats.damage = 15
+	return {"x":1580.0,"fighter":Fighter.new(stats),"windup":0.0,"cooldown":0.0,"target":{}}
+
+func _collect_loot(_drop: Dictionary) -> void:
+	world.scrap += 2
