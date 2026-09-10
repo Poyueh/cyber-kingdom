@@ -5,6 +5,7 @@ const Calendar = preload("res://domain/campaign_clock.gd")
 const Harvest = preload("res://domain/harvest_node.gd")
 var pouch: Pouch
 var clock: Calendar
+var opened_chests: Dictionary = {}
 var investments: Dictionary = {}
 var built: Dictionary = {}
 var prices: Dictionary
@@ -16,6 +17,13 @@ const NAMES := {"hall":"營火","workshop":"工匠器具","armory":"守備器具
 func _init(config: Dictionary = {}, hero_stats: Stats = null) -> void:
 	super(config,hero_stats)
 	pouch = Pouch.new(config.get("capacity",12),config.get("starting_crystals",12))
+	pouch.magnet_radius = maxf(32,config.get("magnet_radius",112.0))
+	pouch.magnet_speed = maxf(32,config.get("magnet_speed",300.0))
+	pouch.throw_grace = maxf(0.5,config.get("throw_grace",2.0))
+	pouch.left_boundary=frontier.left_boundary
+	pouch.right_boundary=frontier.right_boundary
+	for node in frontier.nodes:
+		if node.y<430: pouch.platforms.append({"left":node.x-70,"right":node.x+70,"y":node.y})
 	clock = Calendar.new(config.get("day_seconds",180.0),config.get("night_seconds",60.0))
 	prices = {"camp":2,"hall":5,"workshop":2,"armory":3,"farm_tools":2,"hunt_tools":3,"forge":2,"beacon":1,"wall":3,"wall_upgrade":4,"repair":2,"farm":3,"drill":2,"outpost":3,"mark":1,"recruit":1}
 	prices.merge(config.get("prices",{}),true)
@@ -172,7 +180,9 @@ func _execute(choice: Dictionary) -> void:
 			node.collected=true
 			node.delivered=true
 			world.scrap+=node.scrap
-			pouch.receive(node.crystals,node.x,node.y)
+			pouch.burst(node.crystals,node.x,node.y)
+			opened_chests[choice.node_index]=workforce.elapsed
+			effects.append({"kind":"chest_burst","x":node.x,"y":node.y,"life":0.7})
 		"mark": frontier.mark(frontier.nodes[choice.node_index])
 		"hall":
 			if frontier.city_level>0:
@@ -202,7 +212,22 @@ func _execute(choice: Dictionary) -> void:
 func advance(seconds: float, hero_x: float, hero_y: float = 430.0) -> void:
 	super.advance(seconds,hero_x,hero_y)
 	if seconds<=0 or not is_finite(seconds) or not hero.is_alive(): return
-	pouch.pick_up(hero_x,hero_y)
+	# Offered currency can recruit; ordinary treasure and delivered pay cannot.
+	for person in world.people:
+		if person.role=="wanderer" and person.hurt<=0 and person_visible(person) and pouch.consume_offering(person.x,person.get("y",430)):
+			var key := "recruit:%d" % world.people.find(person)
+			investments[key]=int(investments.get(key,0))+1
+			if investments[key]<prices.recruit: continue
+			investments.erase(key)
+			person.role="citizen"
+			effects.append({"kind":"recruited","x":person.x,"y":person.get("y",430),"life":0.7})
+	pouch.advance(seconds,hero_x,hero_y)
+	for pickup in pouch.pickups:
+		effects.append({"kind":"crystal_pickup","x":pickup.x,"y":pickup.y,"life":0.25})
+	pouch.pickups.clear()
+
+func throw_crystal(x: float, y: float, facing: int) -> bool:
+	return hero.is_alive() and pouch.toss(x,y,facing)
 
 func _receive_delivery(delivery: Dictionary) -> void:
 	super._receive_delivery(delivery)

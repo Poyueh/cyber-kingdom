@@ -1,15 +1,15 @@
 extends "res://presentation/frontier_view.gd"
+const Ambient=preload("res://presentation/ambient_motion.gd")
+@export var wanderer_idle: Texture2D=preload("res://art/ambient/v001/wanderer-idle.png")
+@export var chest_open: Texture2D=preload("res://art/ambient/v001/chest-open.png")
+var crystal_radius: float = 9.0
 const Icons=preload("res://presentation/ui_icons.gd")
 const SITE_ICONS={"hall":"camp","workshop":"hammer","armory":"sword","farm_tools":"hoe","hunt_tools":"bow","forge":"gear","beacon":"shield","wall":"wall","farm":"food","drill":"sword","trade":"trade","heal":"heal","outpost":"outpost","recruit":"person","chest":"chest","mark":"hammer"}
 const EXTRA_ART := {"campfire":preload("res://art/campaign/v001/campfire.png"),"stone":preload("res://art/campaign/v001/stone.png"),"herbs":preload("res://art/campaign/v001/herbs.png"),"plot":preload("res://art/campaign/v001/plot.png")}
 
 func _prop(name: String, at: Vector2, scale: float = 1.0, tint := Color.WHITE) -> void:
-	if not EXTRA_ART.has(name):
-		super._prop(name,at,scale,tint)
-		return
-	var texture: Texture2D = EXTRA_ART[name]
-	var size := texture.get_size()*scale
-	draw_texture_rect(texture,Rect2(at-Vector2(size.x*0.5,size.y),size),false,tint)
+	var texture: Texture2D=EXTRA_ART.get(name,art.props.get(name))
+	Ambient.prop(self,texture,name,at,scale,tint,_sim.workforce.elapsed)
 
 func _draw_atmosphere(left: float) -> void:
 	if _sim.clock.is_night:
@@ -56,17 +56,36 @@ func _draw_structures() -> void:
 
 func _person(person: Dictionary, protected: bool) -> void:
 	if not _sim.person_visible(person): return
-	super._person(person,protected)
+	if person.role=="wanderer" and not person.get("moving",false):
+		var time: float=_sim.workforce.elapsed+_sim.world.people.find(person)*0.31
+		var frame: int=[0,1,2,3,4,5,4,3,2,1][int(time*4)%10]
+		var at:=Vector2(person.x,person.get("y",430))
+		draw_set_transform(at,0,Vector2(person.get("direction",1.0),1))
+		draw_texture_rect_region(wanderer_idle,Rect2(-32,-61,64,64),Rect2(frame*64,0,64,64),Color(1,0.65,0.65) if person.hurt>0 else Color.WHITE)
+		draw_set_transform(Vector2.ZERO)
+	else: super._person(person,protected)
 	var key: String={"wanderer":"person","citizen":"person","engineer":"hammer","farmer":"hoe","hunter":"bow","guard":"sword"}[person.role]
 	_icon(key,Vector2(person.x,person.get("y",430)-66),17,Color("b4e7df") if person.role!="wanderer" else Color("d4c3a7"))
 
 func _draw_activity() -> void:
-	for pile in _sim.pouch.drops:
-		for index in range(mini(5,pile.amount)):
-			_crystal(Vector2(pile.x+(index-2)*8,pile.y-8-(index%2)*4),true,4)
-		_icon("crystal",Vector2(pile.x-9,pile.y-65),17)
-		_number(str(pile.amount),Vector2(pile.x+3,pile.y-60))
+	# Render rewards after actors so the collection journey stays legible.
 	super._draw_activity()
+	for pile in _sim.pouch.drops:
+		for index in range(mini(3,pile.amount)):
+			var visible: Dictionary=pile.duplicate()
+			visible.x+=index*11-(mini(3,pile.amount)-1)*5.5
+			visible.id+=index
+			Ambient.crystal(self,visible,crystal_radius,_sim.workforce.elapsed)
+		if pile.amount>1: _number(str(pile.amount),Vector2(pile.x+12,pile.y-29))
+	for effect in _sim.effects:
+		if effect.kind not in ["crystal_pickup","chest_burst","recruited"]: continue
+		var duration: float=0.25 if effect.kind=="crystal_pickup" else 0.7
+		var progress:=1.0-float(effect.life)/duration
+		var at:=Vector2(effect.x,effect.y-24)
+		for index in range(8):
+			var angle:=index*TAU/8
+			var point:=at+Vector2(cos(angle),sin(angle))*(8+progress*28)
+			draw_rect(Rect2(point.round(),Vector2.ONE*2),Color(0.65,1,0.83,1-progress))
 
 func _crystal(at: Vector2, filled: bool, radius: float = 6.0) -> void:
 	var points := PackedVector2Array([at+Vector2(0,-radius),at+Vector2(radius*0.7,0),at+Vector2(0,radius),at+Vector2(-radius*0.7,0)])
@@ -123,7 +142,10 @@ func _text(value: String, x: float, y: float, _color:=Color.WHITE, _size: int=15
 
 func _resource(resource) -> void:
 	if resource.kind=="cache" and resource.delivered:
-		_prop("cache",Vector2(resource.x,resource.y),1.0,Color(0.5,0.6,0.6,0.55))
-		_icon("check",Vector2(resource.x,resource.y-47),18)
+		var index: int=_sim.frontier.nodes.find(resource)
+		var elapsed: float=_sim.workforce.elapsed-_sim.opened_chests.get(index,0.0)
+		var size:=chest_open.get_size()
+		size.y*=lerpf(0.72,1.0,clampf(elapsed/0.18,0,1))
+		draw_texture_rect(chest_open,Rect2(Vector2(resource.x-size.x*0.5,resource.y-size.y),size),false,Color(0.8,0.9,0.9))
 		return
 	super._resource(resource)

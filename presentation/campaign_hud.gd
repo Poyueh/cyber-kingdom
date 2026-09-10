@@ -1,6 +1,8 @@
 extends "res://presentation/frontier_hud.gd"
 const Icons=preload("res://presentation/ui_icons.gd")
 const Dashboard=preload("res://presentation/icon_dashboard.gd")
+signal throw_requested
+var drop_button: Button
 var dashboard: Node2D
 var fullscreen_button: Button
 
@@ -30,6 +32,11 @@ func _ready() -> void:
 	add_child(fullscreen_button)
 	_skin(fullscreen_button,"fullscreen")
 	fullscreen_button.pressed.connect(_toggle_fullscreen)
+	drop_button=Button.new()
+	drop_button.name="DropCrystal"
+	add_child(drop_button)
+	_skin(drop_button,"drop")
+	drop_button.pressed.connect(func(): throw_requested.emit())
 	get_viewport().size_changed.connect(_layout)
 	_layout()
 
@@ -65,6 +72,8 @@ func _layout() -> void:
 	var width:=size.x
 	for pair in [["move_left",24.0],["move_right",92.0],["dash",width-216],["jump",width-148],["attack",width-80]]:
 		get_node(pair[0]).position=Vector2(pair[1],height-82)
+	drop_button.position=Vector2(178,height-82)
+	drop_button.size=Vector2(58,58)
 	$pause.position=Vector2(width-80,14)
 	$restart.position=Vector2(width-148,82)
 	interact_button.position=Vector2(width-292,height-82)
@@ -84,6 +93,7 @@ func present_world(sim, is_paused: bool, at: float, grounded: bool) -> void:
 	$restart.visible=is_paused or not sim.hero.is_alive()
 	new_map_button.visible=is_paused or not sim.hero.is_alive()
 	$Refuge.visible=is_paused
+	drop_button.disabled=is_paused or not sim.hero.is_alive() or sim.pouch.amount<=0
 	var map=sim.frontier
 	dashboard.values={"hp":sim.hero.hp,"shield":sim.hero.shield,"crystal":"%d/%d" % [sim.pouch.amount,sim.pouch.capacity],"wood":map.wood,"food":map.food,"stone":map.stone,"herbs":map.herbs,"scrap":sim.world.scrap,"day":sim.clock.day,"survived":sim.clock.survived,"full":sim.pouch.amount>=sim.pouch.capacity}
 	dashboard.health_ratio=clampf(float(sim.hero.hp)/sim.hero.stats.max_hp,0,1)

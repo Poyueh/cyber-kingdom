@@ -1,6 +1,7 @@
 extends RefCounted
 ## Original SVG symbols shared by HUD, world affordances and controls.
 const TEXTURES := {
+	"drop":preload("res://art/ui/v001/drop.svg"),
 	"heart":preload("res://art/ui/v001/heart.svg"),
 	"shield":preload("res://art/ui/v001/shield.svg"),
 	"crystal":preload("res://art/ui/v001/crystal.svg"),
