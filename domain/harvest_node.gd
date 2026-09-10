@@ -7,6 +7,8 @@ var wood: int = 0
 var food: int = 0
 var crystals: int = 0
 var scrap: int = 0
+var stone: int = 0
+var herbs: int = 0
 var collected := false
 var region: int
 var marked := false

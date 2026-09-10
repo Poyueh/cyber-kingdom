@@ -53,7 +53,7 @@ func advance_engineer(index: int, seconds: float) -> float:
 			if not reward.is_empty():
 				world.scrap += reward.scrap
 				world.crystals += reward.crystals
-				deliveries.append({"x":person.x})
+				deliveries.append({"x":person.x,"crystals":reward.crystals})
 			person.work_state = "idle"
 		return destination
 	# Paid defences and expansion sites take priority over starting another harvest.

@@ -1,5 +1,5 @@
 extends "res://bootstrap/settlement_root.gd"
-const FrontierSession = preload("res://application/frontier_session.gd")
+const FrontierSession = preload("res://application/campaign_session.gd")
 const Platform = preload("res://scenes/platform.tscn")
 var _map_seed: int
 var _seed_initialized := false
@@ -15,11 +15,13 @@ func restart() -> void:
 	if not _seed_initialized:
 		_map_seed = tuning.map_seed
 		_seed_initialized = true
-	sim = FrontierSession.new({"seed":_map_seed,"economy":tuning.economy_rules(),"scrap":tuning.starting_scrap,"crystals":tuning.starting_crystals,
+	var config := {"seed":_map_seed,"economy":tuning.economy_rules(),"scrap":tuning.starting_scrap,"crystals":tuning.starting_crystals,
 		"first_raid":tuning.first_raid_seconds,"raid_gap":tuning.raid_gap_seconds,
-		"person_speed":tuning.resident_speed,"shield_value":tuning.shield_per_crystal},Mapper.combat_stats(knight_tuning))
+		"person_speed":tuning.resident_speed,"shield_value":tuning.shield_per_crystal}
+	config.merge(tuning.campaign_rules(),true)
+	sim = FrontierSession.new(config,Mapper.combat_stats(knight_tuning))
 	knight.configure(sim.hero,knight_tuning)
-	knight.position = Vector2(150,430)
+	knight.position = Vector2(30,430)
 	paused = false
 	_requested_interaction = false
 	controls.release_all()

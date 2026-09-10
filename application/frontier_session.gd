@@ -122,7 +122,7 @@ func advance(seconds: float, hero_x: float, hero_y: float = 430.0) -> void:
 func _advance_people(seconds: float) -> void:
 	workforce.before_people(seconds)
 	super._advance_people(seconds)
-	for delivery in workforce.deliveries: effects.append({"kind":"pay","x":delivery.x,"to":delivery.x,"life":0.45})
+	for delivery in workforce.deliveries: _receive_delivery(delivery)
 	workforce.deliveries.clear()
 	var farmers := 0
 	for person in world.people:
@@ -159,3 +159,6 @@ func kingdom_established() -> bool:
 	for person in world.people:
 		if person.role != "wanderer": citizens += 1
 	return hero.is_alive() and super.finished() and frontier.city_level>=3 and world.wall.level>=2 and world.wall.hp>0 and citizens>=3
+
+func _receive_delivery(delivery: Dictionary) -> void:
+	effects.append({"kind":"pay","x":delivery.x,"to":delivery.x,"life":0.45})

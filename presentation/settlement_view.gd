@@ -87,7 +87,7 @@ func _draw_activity() -> void:
 		draw_texture(texture,-texture.get_size()*0.5)
 		draw_set_transform(Vector2.ZERO)
 		draw_rect(Rect2(raider.x-22,360,44,4),Color("482a3a"))
-		draw_rect(Rect2(raider.x-22,360,44.0*raider.fighter.hp/60,4),Color("df8491"))
+		draw_rect(Rect2(raider.x-22,360,44.0*raider.fighter.hp/raider.fighter.stats.max_hp,4),Color("df8491"))
 		if raider.windup>0: _text("!",raider.x,348,Color("ffd087"),22)
 	for effect in _sim.effects:
 		match effect.kind:
@@ -96,6 +96,9 @@ func _draw_activity() -> void:
 			"hit":
 				draw_line(Vector2(effect.x-8,382),Vector2(effect.x+8,406),Color("ffb28b"),2)
 				draw_line(Vector2(effect.x+8,382),Vector2(effect.x-8,406),Color("ffb28b"),2)
+	_draw_interaction()
+
+func _draw_interaction() -> void:
 	if not _context.id.is_empty():
 		var x: float = _context.x
 		draw_rect(Rect2(x-171,198,342,69),Color(0.04,0.10,0.15,0.97))
