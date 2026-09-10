@@ -55,7 +55,16 @@ func run_test() -> void:
 	await frames(2)
 	key(KEY_N,false)
 	check(scene.sim.map_seed != seed_before,"N is another route to a new map")
-	scene.sim.time_to_raid = 1000
+	scene.sim.time_to_raid = 10000
+	key(KEY_E,true)
+	await frames(2)
+	key(KEY_E,false)
+	await frames(6)
+	scene.knight.position = Vector2(scene.sim.world.sites.workshop,430)
+	await frames(4)
+	await click(scene.hud.interact_button)
+	for tick in range(100): scene.sim.advance(0.1,520)
+	check(scene.sim.world.people[0].role=="engineer","actual recruitment and workshop button equip a working resident")
 	var resource
 	for node in scene.sim.frontier.nodes:
 		if node.kind == "tree":
@@ -64,12 +73,27 @@ func run_test() -> void:
 	scene.knight.position = Vector2(resource.x-20,430)
 	scene.sim.hero.facing = 1
 	await frames(4)
-	for swing in range(3):
-		key(KEY_E,true)
-		await frames(2)
-		key(KEY_E,false)
-		await frames(38)
-	check(resource.collected and scene.sim.frontier.wood >= 3,"world E triggers real swings and finite tree rewards")
+	key(KEY_E,true)
+	await frames(2)
+	key(KEY_E,false)
+	await frames(4)
+	check(resource.marked and scene.sim.hero.attack_remaining<=0,"E marks work without a knight chopping animation")
+	key(KEY_J,true)
+	await frames(2)
+	key(KEY_J,false)
+	await frames(24)
+	check(resource.remaining_work==75,"knight sword leaves resource intact")
+	for tick in range(2000):
+		scene.sim.advance(0.1,resource.x)
+		if resource.delivered: break
+	await frames(3)
+	check(resource.delivered and scene.sim.frontier.wood>=3,"resident harvest and physical delivery bank the resource")
+	await click(scene.hud.interact_button)
+	for tick in range(2000):
+		scene.sim.advance(0.1,resource.x)
+		if scene.sim.frontier.regions[resource.region].outpost_built: break
+	await frames(3)
+	check(scene.sim.frontier.regions[resource.region].outpost_built,"cleared-site button orders a resident-built frontier depot")
 	check(scene.sim.frontier.discovered_count()>0,"walking outside reveals a region")
 	check(scene.hud.status.text.contains("木材") and scene.hud.status.text.contains("食物"),"HUD displays both new resources")
 	var cache

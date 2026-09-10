@@ -2,5 +2,5 @@
 [ext_resource type="Script" path="res://data/frontier_tuning.gd" id="1"]
 [resource]
 script = ExtResource("1")
-first_raid_seconds = 120.0
+first_raid_seconds = 180.0
 map_seed = 742601
