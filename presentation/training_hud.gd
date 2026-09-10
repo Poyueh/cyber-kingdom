@@ -24,7 +24,7 @@ func _ready() -> void:
 
 func configure_expedition(enabled: bool) -> void:
 	_expedition = enabled
-	$Refuge.text = "RETREAT / RETURN" if enabled else "REFUGE / 龍晶分配"
+	$Refuge.text = "RETREAT / RETURN" if enabled else "REFUGE / 避難所"
 	$restart.visible = not enabled
 	if enabled:
 		$Top/Title.text = "CYBER KINGDOM / EXPEDITION"
