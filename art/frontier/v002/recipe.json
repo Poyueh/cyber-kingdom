@@ -1,0 +1,292 @@
+{
+  "tree": {
+    "source_box": [
+      0,
+      0,
+      477,
+      553
+    ],
+    "bounds": [
+      11,
+      14,
+      471,
+      545
+    ],
+    "output_size": [
+      159,
+      184
+    ]
+  },
+  "crystal": {
+    "source_box": [
+      425,
+      213,
+      766,
+      554
+    ],
+    "bounds": [
+      3,
+      12,
+      324,
+      332
+    ],
+    "output_size": [
+      60,
+      60
+    ]
+  },
+  "berries": {
+    "source_box": [
+      773,
+      283,
+      1150,
+      553
+    ],
+    "bounds": [
+      9,
+      15,
+      374,
+      261
+    ],
+    "output_size": [
+      62,
+      42
+    ]
+  },
+  "cache": {
+    "source_box": [
+      1178,
+      313,
+      1536,
+      553
+    ],
+    "bounds": [
+      15,
+      21,
+      326,
+      232
+    ],
+    "output_size": [
+      52,
+      35
+    ]
+  },
+  "outpost": {
+    "source_box": [
+      0,
+      557,
+      426,
+      982
+    ],
+    "bounds": [
+      17,
+      10,
+      422,
+      401
+    ],
+    "output_size": [
+      136,
+      131
+    ]
+  },
+  "crops": {
+    "source_box": [
+      441,
+      705,
+      808,
+      975
+    ],
+    "bounds": [
+      12,
+      38,
+      351,
+      251
+    ],
+    "output_size": [
+      103,
+      65
+    ]
+  },
+  "stump": {
+    "source_box": [
+      812,
+      754,
+      1190,
+      987
+    ],
+    "bounds": [
+      11,
+      29,
+      373,
+      215
+    ],
+    "output_size": [
+      55,
+      28
+    ]
+  },
+  "deer": {
+    "source_box": [
+      1195,
+      554,
+      1536,
+      990
+    ],
+    "bounds": [
+      24,
+      14,
+      314,
+      411
+    ],
+    "output_size": [
+      58,
+      80
+    ]
+  },
+  "engineer_frames": [
+    {
+      "row": 0,
+      "column": 0,
+      "source_bottom": 242,
+      "source_anchor_x": 124.0
+    },
+    {
+      "row": 0,
+      "column": 1,
+      "source_bottom": 241,
+      "source_anchor_x": 116.5
+    },
+    {
+      "row": 0,
+      "column": 2,
+      "source_bottom": 243,
+      "source_anchor_x": 124.5
+    },
+    {
+      "row": 0,
+      "column": 3,
+      "source_bottom": 243,
+      "source_anchor_x": 132.5
+    },
+    {
+      "row": 0,
+      "column": 4,
+      "source_bottom": 242,
+      "source_anchor_x": 115.5
+    },
+    {
+      "row": 0,
+      "column": 5,
+      "source_bottom": 242,
+      "source_anchor_x": 124.0
+    },
+    {
+      "row": 1,
+      "column": 0,
+      "source_bottom": 253,
+      "source_anchor_x": 127.0
+    },
+    {
+      "row": 1,
+      "column": 1,
+      "source_bottom": 255,
+      "source_anchor_x": 131.5
+    },
+    {
+      "row": 1,
+      "column": 2,
+      "source_bottom": 254,
+      "source_anchor_x": 131.5
+    },
+    {
+      "row": 1,
+      "column": 3,
+      "source_bottom": 251,
+      "source_anchor_x": 144.5
+    },
+    {
+      "row": 1,
+      "column": 4,
+      "source_bottom": 254,
+      "source_anchor_x": 105.5
+    },
+    {
+      "row": 1,
+      "column": 5,
+      "source_bottom": 253,
+      "source_anchor_x": 130.0
+    },
+    {
+      "row": 2,
+      "column": 0,
+      "source_bottom": 238,
+      "source_anchor_x": 124.0
+    },
+    {
+      "row": 2,
+      "column": 1,
+      "source_bottom": 238,
+      "source_anchor_x": 119.5
+    },
+    {
+      "row": 2,
+      "column": 2,
+      "source_bottom": 239,
+      "source_anchor_x": 126.5
+    },
+    {
+      "row": 2,
+      "column": 3,
+      "source_bottom": 239,
+      "source_anchor_x": 128.0
+    },
+    {
+      "row": 2,
+      "column": 4,
+      "source_bottom": 238,
+      "source_anchor_x": 117.5
+    },
+    {
+      "row": 2,
+      "column": 5,
+      "source_bottom": 238,
+      "source_anchor_x": 124.0
+    },
+    {
+      "row": 3,
+      "column": 0,
+      "source_bottom": 239,
+      "source_anchor_x": 131.5
+    },
+    {
+      "row": 3,
+      "column": 1,
+      "source_bottom": 239,
+      "source_anchor_x": 131.0
+    },
+    {
+      "row": 3,
+      "column": 2,
+      "source_bottom": 239,
+      "source_anchor_x": 131.0
+    },
+    {
+      "row": 3,
+      "column": 3,
+      "source_bottom": 239,
+      "source_anchor_x": 131.5
+    },
+    {
+      "row": 3,
+      "column": 4,
+      "source_bottom": 239,
+      "source_anchor_x": 131.5
+    },
+    {
+      "row": 3,
+      "column": 5,
+      "source_bottom": 239,
+      "source_anchor_x": 132.0
+    }
+  ]
+}

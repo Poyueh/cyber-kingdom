@@ -90,10 +90,21 @@ Application 依賴 ProgressStore，正式場景注入 JsonProgressStore，流程
 
 ## 邊境探索與經濟
 
-`domain/frontier.gd` 管理種子區塊、有限採集結果、農作及城鎮成本；`harvest_node.gd` 提供與 Combatant 相容的受擊物件，使資源跟敵人一樣遵守有效揮擊及同刀不重複命中。種子使用 Godot 基礎 RNG，不載入場景、輸入或存檔。
+`domain/frontier.gd` 管理種子區塊、有限採集結果、農作及城鎮成本；`harvest_node.gd` 保存工作標記、工時、唯一承辦者及貨物狀態；資源已移除受傷介面，騎士戰鬥不再處理資源。種子使用 Godot 基礎 RNG，不載入場景、輸入或存檔。
 
 `application/frontier_session.gd` 延伸已驗證的居民、夜襲與現場投入，新增採集、農夫／獵人、騎士訓練及王國判定。Settlement 的器具位置／職業以資料映射擴充，原場景仍可運作。`finished()` 仍僅代表三波結束，獨立的 `kingdom_established()` 檢查建城與居民，避免未建王城時錯誤生成第四波。
 
 `scenes/frontier.tscn` 繼承 settlement 場景；`bootstrap/frontier_root.gd` 注入 frontier.tres 的種子與生產／訓練數值，依生成邊界建立實際地面、牆界、相機及平台。規則只傳普通數值；Resource 留在外層。場景與經濟共用同一組資源座標，平台使用原本的一致圖形／碰撞元件。
 
 `presentation/frontier_*` 負責新圖意圖、HUD、森林晶礦／農田／城鎮示意。換圖與重試建立新的整輪模擬，不保存王國或改動訓練場存檔。城鎮成本與資源保底目前集中於 domain/frontier.gd，生產週期、產量與訓練數值則已開放 Inspector；增加調參需求時再擴充 Resource，避免每個生成細節都先做通用編輯器。
+
+
+## 居民主導開拓與美術 v002
+
+`application/frontier_workforce.gd` 排程工匠到場、爬梯、工作、搬運與送貨；受到攻擊失去職業時釋放工作、放下貨物，接手者不能重複領取同一批。先完成手上的運送，再優先已付款施工，其餘選最近標記點。`domain/harvest_node.gd` 計算純工作進度，`domain/frontier.gd` 管理一次性入庫、拓荒站成本與完成。工作進度不等同戰鬥血量。
+
+SettlementSession 提供 `_engineer_target` 小型擴充點；原場景只建牆，FrontierSession 接入工作排程。所有居民仍由同一段移動更新推進，避免基底和子類各走一次。高台使用普通 y 數值與可見梯子，未建立自由導航／複雜尋路框架；敵人實際命中也檢查居民高度。
+
+`data/frontier_art.tres` 管理新景觀、道具與居民圖集，WorldView 的結構、活動、人物呈現可分別替換。動畫讀模擬時間與工作狀態，所以暫停時凍結；腳底由離線切格統一對齊。神情／像素品質與手機可讀性仍需後續試玩。
+
+生成原圖、提示詞與整理配方保存在 `art/frontier/v002/`，來源資料夾以 .gdignore 排除遊戲匯入。`tools/prepare_resident_art.py` 從專案中的原圖重建 PNG，不依賴產圖服務、API key 或原電腦生成目錄。遊戲只讀整理好的 PNG；Python／NumPy／Pillow 僅用於離線素材工作。

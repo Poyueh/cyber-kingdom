@@ -1,5 +1,7 @@
 extends "res://application/settlement_session.gd"
 const Frontier = preload("res://domain/frontier.gd")
+const Workforce = preload("res://application/frontier_workforce.gd")
+var workforce: Workforce
 var frontier: Frontier
 var map_seed: int
 var _player_y := 430.0
@@ -10,6 +12,7 @@ func _init(config: Dictionary = {}, hero_stats: Stats = null) -> void:
 	map_seed = int(config.get("seed",742601))
 	frontier = Frontier.new(map_seed,config.get("economy",{}))
 	world.sites.merge(EXTRA_SITES)
+	workforce = Workforce.new(world,frontier)
 	world.tools.merge({"hoe":0,"bow":0})
 	world.tool_sites.merge({"hoe":"farm_tools","bow":"hunt_tools"})
 	world.tool_roles.merge({"hoe":"farmer","bow":"hunter"})
@@ -18,6 +21,7 @@ func _init(config: Dictionary = {}, hero_stats: Stats = null) -> void:
 
 func context(x: float) -> Dictionary:
 	var choice := super.context(x)
+	if choice.id == "workshop": choice.text = "工坊：工程器具（庫存 %d）" % world.tools.hammer
 	var nearest: float = absf(choice.x-x) if not choice.id.is_empty() else 73.0
 	for site in EXTRA_SITES:
 		var distance := absf(x-world.sites[site])
@@ -27,11 +31,28 @@ func context(x: float) -> Dictionary:
 	for index in range(frontier.nodes.size()):
 		var node = frontier.nodes[index]
 		var distance := absf(node.x-x)
-		if node.collected or distance>=nearest or absf(node.y-_player_y)>42: continue
+		if node.collected or distance>=nearest or absf(node.y-_player_y)>42 or not frontier.regions[node.region].discovered: continue
 		nearest = distance
-		var name: String = {"tree":"砍伐龍晶樹","crystal":"開採龍晶礦","cache":"打開遺跡箱","berries":"採集野果"}[node.kind]
-		choice = {"id":"harvest","x":node.x,"text":name+" / J 劈砍或 E 採集", "cost":0,"currency":"",
-			"enabled":distance<=hero.stats.attack_range and hero.attack_remaining<=0 and hero.cooldown_remaining<=0,"reason":"再靠近一些" if distance>hero.stats.attack_range else "採集中，等待收招"}
+		var name: String = {"tree":"標記伐木","crystal":"標記採礦","cache":"標記回收","berries":"標記採果"}[node.kind]
+		var yield_text: Array[String] = []
+		if node.wood>0: yield_text.append("%d 木材" % node.wood)
+		if node.food>0: yield_text.append("%d 食物" % node.food)
+		if node.crystals>0: yield_text.append("%d 龍晶" % node.crystals)
+		if node.scrap>0: yield_text.append("%d 廢料" % node.scrap)
+		choice = {"id":"mark","node_index":index,"x":node.x,"text":name+" / "+" · ".join(yield_text), "cost":0,"currency":"",
+			"enabled":not node.marked,"reason":"已下令，等待工匠領取工作" if node.worker<0 else "工匠正在前往／作業"}
+	for index in range(frontier.regions.size()):
+		var region: Dictionary = frontier.regions[index]
+		if not region.outpost_ready or absf(region.outpost_x-x)>=nearest: continue
+		nearest = absf(region.outpost_x-x)
+		choice = {"id":"outpost","region_index":index,"x":region.outpost_x,"text":"建立拓荒站 / 縮短工匠搬運路程","cost":3,"currency":"廢料",
+			"enabled":not region.outpost_pending and not region.outpost_built and world.scrap>=3,"reason":"廢料不足"}
+		if region.outpost_pending: choice.reason="工匠施工中，不需重複付款"
+		if region.outpost_built:
+			choice.text="拓荒站已啟用 / 鄰近物資送抵即可入庫"
+			choice.reason="向外標記下一處資源"
+			choice.cost=0
+
 	return choice
 
 func _site_context(site: String) -> Dictionary:
@@ -71,9 +92,11 @@ func interact(x: float) -> bool:
 	if not choice.enabled: return false
 	var success := false
 	match choice.id:
-		"harvest":
-			if choice.x != x: hero.facing = int(signf(choice.x-x))
-			return hero.start_attack()
+		"mark": return frontier.mark(frontier.nodes[choice.node_index])
+		"outpost":
+			var paid := frontier.order_outpost(choice.region_index,world.scrap)
+			world.scrap -= paid
+			success = paid>0
 		"farm_tools": success = world.buy_tool("hoe")
 		"hunt_tools": success = world.buy_tool("bow")
 		"farm": success = frontier.plant()
@@ -97,9 +120,13 @@ func advance(seconds: float, hero_x: float, hero_y: float = 430.0) -> void:
 	super.advance(seconds,hero_x,hero_y)
 
 func _advance_people(seconds: float) -> void:
+	workforce.before_people(seconds)
 	super._advance_people(seconds)
+	for delivery in workforce.deliveries: effects.append({"kind":"pay","x":delivery.x,"to":delivery.x,"life":0.45})
+	workforce.deliveries.clear()
 	var farmers := 0
 	for person in world.people:
+		var before: float = person.x
 		if person.role == "farmer":
 			person.x = move_toward(person.x,world.sites.farm,_person_speed*seconds)
 			if absf(person.x-world.sites.farm)<20: farmers += 1
@@ -119,21 +146,13 @@ func _advance_people(seconds: float) -> void:
 					person.cooldown = 3.0
 					frontier.food += 2
 					effects.append({"kind":"bolt","x":person.x,"to":prey.x,"life":0.18})
+		if person.role in ["farmer","hunter"]:
+			person["moving"] = absf(person.x-before)>0.01
+			if person.moving: person["direction"] = signf(person.x-before)
 	frontier.advance_farm(seconds,farmers)
 
-func strike_from(x: float, y: float) -> void:
-	super.strike_from(x,y)
-	for node in frontier.nodes:
-		if absf(node.y-y)<=hero.stats.vertical_range and hero.strike(node,node.x-x):
-			effects.append({"kind":"hit","x":node.x,"to":node.x,"life":0.2})
-			var reward := frontier.collect(node)
-			if not reward.is_empty():
-				world.scrap += reward.scrap
-				world.crystals += reward.crystals
-	for animal in frontier.animals:
-		if animal.alive and hero.is_attack_active() and absf(y-430)<42 and (animal.x-x)*hero.attack_facing>=0 and absf(animal.x-x)<=hero.stats.attack_range:
-			animal.alive = false
-			frontier.food += 2
+func _engineer_target(index: int, seconds: float) -> float:
+	return workforce.advance_engineer(index,seconds)
 
 func kingdom_established() -> bool:
 	var citizens := 0

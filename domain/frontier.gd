@@ -18,8 +18,12 @@ var farm_yield := 2
 var training_food := 2
 var training_damage := 5
 var training_limit := 3
+var work_seconds := 6.0
+var outpost_seconds := 5.0
 
 func _init(map_seed: int, rules: Dictionary = {}) -> void:
+	work_seconds = maxf(0.1,float(rules.get("work_seconds",6.0)))
+	outpost_seconds = maxf(0.1,float(rules.get("outpost_seconds",5.0)))
 	farm_cycle = maxf(0.1,float(rules.get("farm_cycle",12.0)))
 	farm_yield = maxi(1,int(rules.get("farm_yield",2)))
 	training_food = maxi(1,int(rules.get("training_food",2)))
@@ -41,7 +45,7 @@ func _init(map_seed: int, rules: Dictionary = {}) -> void:
 			x = left_boundary
 		else:
 			right_boundary += width
-		regions.append({"kind":types[index],"x":x,"width":width,"discovered":false})
+		regions.append({"kind":types[index],"x":x,"width":width,"discovered":false,"outpost_x":0.0,"outpost_ready":false,"outpost_pending":false,"outpost_built":false,"outpost_progress":0.0})
 		match types[index]:
 			"forest":
 				for tree in range(4):
@@ -62,11 +66,12 @@ func _add(region_index: int, kind: String, x: float, y: float, timber: int, rati
 	node.kind = kind
 	node.x = x
 	node.y = y
+	node.pickup_x = x
+	node.pickup_y = y
 	node.wood = timber
 	node.food = rations
 	node.crystals = crystal
 	node.scrap = salvage
-	if kind == "berries": node.hp = 25
 	nodes.append(node)
 
 func layout_signature() -> String:
@@ -85,12 +90,51 @@ func discovered_count() -> int:
 	return count
 
 func collect(node: RefCounted) -> Dictionary:
-	if not nodes.has(node) or node.hp > 0 or node.collected:
+	if not nodes.has(node) or node.remaining_work > 0 or node.collected:
 		return {}
 	node.collected = true
+	return {"wood":node.wood,"food":node.food,"crystals":node.crystals,"scrap":node.scrap}
+
+func mark(node: RefCounted) -> bool:
+	if not nodes.has(node) or node.marked or node.collected or not regions[node.region].discovered: return false
+	node.marked = true
+	return true
+
+func deposit(node: RefCounted) -> Dictionary:
+	if not nodes.has(node) or not node.collected or node.delivered: return {}
+	node.delivered = true
+	node.carried = false
+	node.worker = -1
 	wood += node.wood
 	food += node.food
+	var region := regions[node.region]
+	if not region.outpost_ready:
+		region.outpost_ready = true
+		region.outpost_x = node.x
 	return {"crystals":node.crystals,"scrap":node.scrap}
+
+func order_outpost(index: int, available_scrap: int) -> int:
+	if index<0 or index>=regions.size(): return 0
+	var region := regions[index]
+	if not region.outpost_ready or region.outpost_pending or region.outpost_built or available_scrap<3: return 0
+	region.outpost_pending = true
+	return 3
+
+func work_outpost(index: int, seconds: float) -> bool:
+	if seconds<=0 or not is_finite(seconds) or index<0 or index>=regions.size(): return false
+	var region := regions[index]
+	if not region.outpost_pending: return false
+	region.outpost_progress += seconds
+	if region.outpost_progress>=outpost_seconds:
+		region.outpost_built = true
+		region.outpost_pending = false
+	return true
+
+func outpost_count() -> int:
+	var count := 0
+	for region in regions:
+		if region.outpost_built: count += 1
+	return count
 
 func plant() -> bool:
 	if farm_active or wood < 2 or food < 1: return false

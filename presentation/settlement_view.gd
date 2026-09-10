@@ -23,6 +23,10 @@ func _text(text: String, x: float, y: float, color := Color("dbdac5"), size: int
 func _draw() -> void:
 	if _sim == null or _font == null:
 		return
+	_draw_structures()
+	_draw_activity()
+
+func _draw_structures() -> void:
 	var world = _sim.world
 	for site in ["workshop","armory"]:
 		var x: float = world.sites[site]
@@ -63,6 +67,9 @@ func _draw() -> void:
 	draw_line(Vector2(horn,350),Vector2(horn,430),Color("918475"),5)
 	draw_rect(Rect2(horn-16,356,32,26),Color("c9a260"))
 	_text("警鐘",horn,330)
+
+func _draw_activity() -> void:
+	var world = _sim.world
 	for supply in world.supplies:
 		if not supply.taken:
 			var y := 423.0 - maxf(0,1.0-supply.age/0.4)*24

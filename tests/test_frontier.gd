@@ -23,12 +23,14 @@ func test_seed_reproduces_exploration_and_guarantees_reachable_resources(t) -> v
 func test_harvest_is_finite_and_rewards_only_once(t) -> void:
 	var map = Frontier.new(10)
 	var node = map.nodes[0]
-	t.truth(node.take_damage(25),"first chop damages resource")
+	map.reveal(node.x)
+	map.mark(node)
+	t.equal(node.advance_work(2,6),false,"partial resident work does not finish resource")
 	t.equal(map.collect(node),{},"unfinished resource yields nothing")
-	node.take_damage(50)
+	node.advance_work(4,6)
 	t.truth(not map.collect(node).is_empty(),"completed harvest yields authored resources")
 	t.equal(map.collect(node),{},"harvest cannot grant resources twice")
-	t.equal(node.take_damage(25),false,"depleted resource cannot take further damage")
+	t.equal(node.advance_work(2,6),false,"completed resource cannot be worked again")
 
 func test_crop_requires_worker_and_hunter_collects_discovered_animals(t) -> void:
 	var Sim = load("res://application/frontier_session.gd")
@@ -73,35 +75,6 @@ func test_tools_assign_new_jobs_and_city_requires_real_progress(t) -> void:
 	for index in range(3): sim.world.people[index].role = "citizen"
 	t.truth(sim.kingdom_established(),"royal city, defended walls and residents complete the loop")
 
-func test_knight_cutting_collects_resources_and_meals_strengthen_real_damage(t) -> void:
-	var Sim = load("res://application/frontier_session.gd")
-	var sim = Sim.new({"first_raid":1000.0,"seed":123})
-	var node = sim.frontier.nodes[0]
-	for swing in range(3):
-		sim.hero.start_attack()
-		sim.hero.advance(0.18)
-		sim.strike_from(node.x-20,node.y)
-		sim.strike_from(node.x-20,node.y)
-		sim.hero.advance(0.5)
-	t.truth(node.collected,"real sword hits harvest a finite resource")
-	t.equal(sim.world.crystals,3+node.crystals,"crystals enter shared knight/refuge reserve")
-	sim.frontier.food = 2
-	t.truth(sim.interact(sim.world.sites.drill),"food funds knight training")
-	t.equal(sim.hero.stats.damage,30,"training strengthens actual combat damage")
-	t.equal(sim.frontier.food,0,"training spends produced food")
-
-func test_harvest_interaction_faces_the_resource_and_rejects_unreachable_cut(t) -> void:
-	var Sim = load("res://application/frontier_session.gd")
-	var sim = Sim.new({"first_raid":1000.0,"seed":123})
-	var node = sim.frontier.nodes[0]
-	sim.hero.facing = -1
-	t.truth(sim.interact(node.x-20),"context harvest starts from either facing")
-	sim.hero.advance(0.18)
-	sim.strike_from(node.x-20,node.y)
-	t.equal(node.hp,50,"E automatically faces nearby resource so interaction actually hits")
-	sim.hero.advance(0.5)
-	t.equal(sim.context(node.x-70).enabled,false,"out of sword reach gives approach hint instead of ineffective E")
-
 func test_economy_tuning_changes_crop_output_and_training(t) -> void:
 	var Sim = load("res://application/frontier_session.gd")
 	var sim = Sim.new({"first_raid":1000.0,"economy":{"farm_cycle":6.0,"farm_yield":4,"training_food":3,"training_damage":7}})
@@ -118,37 +91,33 @@ func test_economy_tuning_changes_crop_output_and_training(t) -> void:
 
 func test_generated_resources_can_fund_the_complete_kingdom_loop(t) -> void:
 	var Sim = load("res://application/frontier_session.gd")
-	var sim = Sim.new({"first_raid":1000.0,"seed":742601})
-	# No invented inventory: sword-harvest this run's actual generated resources.
-	for node in sim.frontier.nodes:
-		sim.advance(0.01,node.x,node.y)
-		for swing in range(3):
-			sim.hero.facing = 1
-			sim.hero.start_attack()
-			sim.hero.advance(0.18)
-			sim.strike_from(node.x-20,node.y)
-			sim.hero.advance(0.5)
+	var sim = Sim.new({"first_raid":100000.0,"seed":742601})
 	for person in sim.world.people:
 		sim.interact(person.x)
 		sim.advance(0.1,person.x)
-	var citizens := 0
-	for person in sim.world.people:
-		if person.role=="citizen": citizens += 1
-	t.equal(citizens,5,"starting people can all be recruited with real collected supplies")
-	for site in ["farm_tools","hunt_tools","workshop","armory"]: sim.interact(sim.world.sites[site])
-	t.truth(sim.interact(sim.world.sites.farm),"generated wood and berries pay for planting")
+	for tool in range(2): sim.interact(sim.world.sites.workshop)
+	for node in sim.frontier.nodes:
+		sim.advance(0.01,node.x,node.y)
+		sim.interact(node.x)
+	for tick in range(12000):
+		sim.advance(0.25,150)
+		var done := true
+		for node in sim.frontier.nodes:
+			if not node.get("delivered"): done = false
+		if done: break
+	t.truth(sim.frontier.wood>=22 and sim.world.scrap>=20,"real workers deliver map resources without invented inventory")
+	for site in ["farm_tools","hunt_tools","armory"]: sim.interact(sim.world.sites[site])
+	t.truth(sim.interact(sim.world.sites.farm),"delivered timber and berries pay for planting")
 	for tick in range(350): sim.advance(0.1,150)
 	var roles: Array = []
 	for person in sim.world.people: roles.append(person.role)
-	t.truth(roles.has("farmer") and roles.has("hunter") and roles.has("engineer") and roles.has("guard"),"citizens claim all four stocked jobs themselves")
+	t.truth(roles.has("farmer") and roles.has("hunter") and roles.has("engineer") and roles.has("guard"),"citizens autonomously fill production and defence jobs")
 	for level in range(2):
-		t.truth(sim.interact(sim.world.sites.wall),"collected salvage funds wall construction")
+		t.truth(sim.interact(sim.world.sites.wall),"delivered salvage funds wall construction")
 		for tick in range(150): sim.advance(0.1,150)
-	t.truth(sim.interact(sim.world.sites.hall),"harvests and production fund town")
-	t.equal(sim.interact(sim.world.sites.hall),false,"royal city still needs salvage from defending the settlement")
-	t.truth(sim.interact(sim.world.sites.drill),"food left for strengthening knight")
+	t.truth(sim.interact(sim.world.sites.hall),"resident production funds town")
+	t.truth(sim.interact(sim.world.sites.drill),"produced food strengthens knight")
 	for charge in range(4): sim.interact(sim.world.sites.forge)
-	# Guards and sword defeat real spawned enemies; never set wave completion or wall hp.
 	for wave in range(3):
 		sim.begin_raid()
 		for tick in range(260):
@@ -159,5 +128,5 @@ func test_generated_resources_can_fund_the_complete_kingdom_loop(t) -> void:
 			sim.advance(0.1,x)
 			sim.strike_from(x,430)
 			if sim.raiders.is_empty() and tick>110: break
-	t.truth(sim.interact(sim.world.sites.hall),"harvests, crops and recovered raid salvage fund royal city")
-	t.truth(sim.kingdom_established(),"actual economy, workers, buildings and defended waves establish kingdom")
+	t.truth(sim.interact(sim.world.sites.hall),"resident economy and defended raids fund royal city")
+	t.truth(sim.kingdom_established(),"worker-led expansion still completes the kingdom loop")

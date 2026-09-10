@@ -179,10 +179,7 @@ func _advance_people(seconds: float) -> void:
 						nearest = absf(rack-person.x)
 						target = rack
 						world.claim_tool(index,kind)
-			"engineer":
-				if world.wall.pending:
-					target = world.sites.wall-12
-					world.work_wall(index,seconds)
+			"engineer": target = _engineer_target(index,seconds)
 			"guard":
 				target = world.sites.wall-65-index*18
 				for raider in raiders:
@@ -190,7 +187,15 @@ func _advance_people(seconds: float) -> void:
 						raider.fighter.take_damage(20)
 						person.cooldown = 0.85
 						effects.append({"kind":"bolt","x":person.x,"to":raider.x,"life":0.18})
+		person["moving"] = absf(target-person.x)>1
+		if person.moving: person["direction"] = signf(target-person.x)
 		person.x = move_toward(person.x,target,_person_speed*seconds)
+
+func _engineer_target(index: int, seconds: float) -> float:
+	if world.wall.pending:
+		world.work_wall(index,seconds)
+		return world.sites.wall-12
+	return world.people[index].x
 
 func _target(raider: Dictionary, hero_x: float, hero_y: float) -> Dictionary:
 	if absf(hero_x-raider.x)<65 and absf(hero_y-430)<42:
@@ -201,7 +206,7 @@ func _target(raider: Dictionary, hero_x: float, hero_y: float) -> Dictionary:
 	var nearest := INF
 	for index in range(world.people.size()):
 		var person: Dictionary = world.people[index]
-		if person.role != "wanderer" and absf(person.x-raider.x)<nearest:
+		if person.role != "wanderer" and absf(person.get("y",430)-430)<42 and absf(person.x-raider.x)<nearest:
 			nearest = absf(person.x-raider.x)
 			result = {"kind":"person","x":person.x,"index":index}
 	return result
@@ -223,7 +228,8 @@ func _advance_raider(raider: Dictionary, seconds: float, hero_x: float, hero_y: 
 					"hero":
 						if absf(hero_y-430)<42: hero.take_damage(15)
 					"wall": world.hit_wall(20)
-					"person": world.hit_person(target.index)
+					"person":
+						if absf(world.people[target.index].get("y",430)-430)<42: world.hit_person(target.index)
 				effects.append({"kind":"hit","x":at,"to":at,"life":0.25})
 		return
 	var target := _target(raider,hero_x,hero_y)

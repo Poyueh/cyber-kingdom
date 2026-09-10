@@ -1,116 +1,133 @@
 extends "res://presentation/settlement_view.gd"
-## Prototype biome silhouettes and resource feedback; all amounts come from the simulation.
+@export var art: Resource = preload("res://data/frontier_art.tres")
+
+func _prop(name: String, at: Vector2, scale: float = 1.0, tint := Color.WHITE) -> void:
+	var texture: Texture2D = art.props[name]
+	var size := texture.get_size()*scale
+	draw_texture_rect(texture,Rect2(at-Vector2(size.x*0.5,size.y),size),false,tint)
+
 func _draw() -> void:
 	if _sim == null or _font == null: return
 	var map = _sim.frontier
-	_land(-700,700,"refuge",true)
+	var left: float = (get_viewport().get_canvas_transform().affine_inverse()*Vector2.ZERO).x
+	# Scenic backdrop stays behind the moving foreground; terrain tops match collision y=430.
+	draw_texture_rect(art.woodland,Rect2(left,0,get_viewport_rect().size.x,430),false)
+	var tile_x: float = map.left_boundary
+	while tile_x<map.right_boundary:
+		var width := minf(768,map.right_boundary-tile_x)
+		draw_texture_rect_region(art.ground,Rect2(tile_x,430,width,111),Rect2(0,0,width,111))
+		tile_x += width
 	for region in map.regions:
-		_land(region.x,region.width,region.kind,region.discovered)
+		if not region.discovered:
+			draw_rect(Rect2(region.x,92,region.width,338),Color(0.025,0.065,0.09,0.95))
+			_text("未探索的邊境",region.x+region.width*0.5,145,Color("729299"),16)
+		else:
+			var name: String = {"forest":"龍晶林 · 標記居民伐木","quarry":"晶脈 · 標記居民採礦","ruins":"舊王朝遺跡 · 回收廢料"}[region.kind]
+			_text(name,region.x+region.width*0.5,143,Color("d6d6b5"),16)
 	for resource in map.nodes:
-		if not map.regions[resource.region].discovered: continue
-		_resource(resource)
+		if map.regions[resource.region].discovered: _resource(resource)
 	for animal in map.animals:
-		if not animal.alive or not map.regions[animal.region].discovered: continue
-		var x: float = animal.x
-		draw_rect(Rect2(x-13,409,27,12),Color("b6a68c"))
-		draw_rect(Rect2(x+10,403,10,12),Color("c9b995"))
-		for offset in [-9,8]: draw_rect(Rect2(x+offset,421,3,9),Color("796e6e"))
-		draw_line(Vector2(x+13,406),Vector2(x+8,394),Color("c4b78b"),2)
-		draw_line(Vector2(x+12,400),Vector2(x+20,394),Color("c4b78b"),2)
-		_text("晶角鹿 · 食物",x,388,Color("c9be9d"),12)
-	for kind in ["hoe","bow"]:
-		var x: float = _sim.world.tool_location(kind)
-		draw_rect(Rect2(x-48,378,96,52),Color("3b4548"))
-		draw_rect(Rect2(x-56,364,112,12),Color("788371"))
-		draw_rect(Rect2(x-40,383,80,35),Color("182d32"))
-		for index in range(_sim.world.tools[kind]): _tool(Vector2(x-26+index*26,403),kind)
-		_text("農具架" if kind=="hoe" else "獵具架",x,346)
-	var farm: float = _sim.world.sites.farm
-	draw_rect(Rect2(farm-68,422,136,8),Color("725848"))
-	for i in range(8):
-		var x := farm-56+i*16
-		draw_line(Vector2(x,425),Vector2(x+10,425),Color("ad8e60"),2)
-		if map.farm_active:
-			var height: float = 7+map.farm_progress/map.farm_cycle*10
-			draw_line(Vector2(x,422),Vector2(x,422-height),Color("9bae6e"),3)
-			draw_rect(Rect2(x-4,420-height,8,4),Color("d9c883"))
-	_text("農田 / 留種再收成" if map.farm_active else "可開墾農地",farm,358)
-	if map.farm_active:
-		draw_rect(Rect2(farm-44,370,88,4),Color("263b3f"))
-		draw_rect(Rect2(farm-44,370,88*map.farm_progress/map.farm_cycle,4),Color("b7d68c"))
-	var hall: float = _sim.world.sites.hall
-	var height: float = 55+map.city_level*20
-	draw_rect(Rect2(hall-65,430-height,130,height),Color("384955"))
-	draw_rect(Rect2(hall-73,424-height,146,9),Color("92a6a2"))
-	for i in [-1,1]:
-		draw_rect(Rect2(hall+i*52-12,411-height,24,height+19),Color("536575"))
-		draw_rect(Rect2(hall+i*52-16,405-height,32,8),Color("9ba992"))
-		draw_rect(Rect2(hall+i*28-5,438-height,10,21),Color("80d9ce"))
-	draw_rect(Rect2(hall-16,394,32,36),Color("132a33"))
-	_text("王城" if map.city_level==3 else "聚落 / Lv.%d" % map.city_level,hall,350-height)
-	if map.city_level>=2:
-		draw_line(Vector2(hall,414-height),Vector2(hall,372-height),Color("c5ba94"),3)
-		draw_rect(Rect2(hall,374-height,28,19),Color("5dacab"))
-	var drill: float = _sim.world.sites.drill
-	draw_line(Vector2(drill,430),Vector2(drill,368),Color("a88c6b"),6)
-	draw_line(Vector2(drill-20,390),Vector2(drill+20,390),Color("9d886f"),6)
-	draw_circle(Vector2(drill,372),9,Color("baac8b"))
-	_text("騎士訓練 %d/%d" % [map.drill_level,map.training_limit],drill,343,Color("cebda0"),13)
+		if animal.alive and map.regions[animal.region].discovered:
+			_prop("deer",Vector2(animal.x,430),0.75)
+	for region in map.regions:
+		if not region.outpost_ready: continue
+		var at := Vector2(region.outpost_x,430)
+		_prop("outpost",at,0.8,Color(1,1,1,1.0 if region.outpost_built else 0.35))
+		if region.outpost_pending:
+			draw_line(at+Vector2(-47,0),at+Vector2(-47,-94),Color("c3a171"),3)
+			draw_line(at+Vector2(47,0),at+Vector2(47,-94),Color("c3a171"),3)
+			_text("施工 %d%%" % int(100*region.outpost_progress/map.outpost_seconds),at.x,315,Color("edd19d"),13)
+		else: _text("拓荒站" if region.outpost_built else "已清理 · 可拓建",at.x,312,Color("b6dfd0"),13)
 	super._draw()
 
-func _land(x: float, width: float, kind: String, discovered: bool) -> void:
-	draw_rect(Rect2(x,0,width,430),Color("11232c"))
-	draw_rect(Rect2(x,430,width,110),Color("18252e"))
-	draw_rect(Rect2(x,430,width,4),Color("718980"))
-	for i in range(int(width/36)):
-		draw_rect(Rect2(x+i*36+4,448+(i%3)*18,16,3),Color("293a40"))
-	if not discovered:
-		draw_rect(Rect2(x,90,width,340),Color("12202b"))
-		_text("未探索的邊境",x+width*0.5,170,Color("718a94"),17)
-		return
-	if kind == "forest":
-		for i in range(int(width/65)):
-			var at := x+25+i*65
-			draw_rect(Rect2(at-5,244,10,186),Color("273b40"))
-			draw_colored_polygon(PackedVector2Array([Vector2(at,147+(i%3)*22),Vector2(at+58,322),Vector2(at-58,322)]),Color("28484b"))
-	elif kind == "ruins":
-		for i in range(int(width/110)):
-			var at := x+30+i*110
-			draw_rect(Rect2(at-15,220+(i%2)*35,30,210),Color("2f414e"))
-			draw_rect(Rect2(at-23,210+(i%2)*35,46,14),Color("52616a"))
-			draw_rect(Rect2(at-2,247+(i%2)*35,4,32),Color("467c85"))
-	elif kind == "quarry":
-		for i in range(int(width/95)):
-			var at := x+30+i*95
-			draw_colored_polygon(PackedVector2Array([Vector2(at-70,430),Vector2(at-25,245+(i%2)*55),Vector2(at+12,220+(i%2)*55),Vector2(at+78,430)]),Color("30404e"))
-	var title: String = {"forest":"龍晶林 / 木材・野果・獵物","quarry":"晶脈 / 有限龍晶","ruins":"舊王朝遺跡 / 廢料","refuge":"避難所西境 / 生產區"}[kind]
-	_text(title,x+width*0.5,143,Color("a7c0b9"),17)
+func _draw_structures() -> void:
+	var world = _sim.world
+	var map = _sim.frontier
+	_prop("hall-%d" % map.city_level,Vector2(world.sites.hall,430))
+	_text("王城" if map.city_level==3 else "聚落 %d/3" % map.city_level,world.sites.hall,230 if map.city_level==3 else 279,Color("ead5aa"),16)
+	for site in ["workshop","armory"]:
+		var x: float = world.sites[site]
+		_prop(site,Vector2(x,430))
+		_text("工坊 / 工程器具" if site=="workshop" else "武器坊 / 守備器具",x,284)
+		var kind := "hammer" if site=="workshop" else "blade"
+		for index in range(world.tools[kind]): _tool(Vector2(x-26+index*25,402),kind)
+	_prop("forge",Vector2(world.sites.forge,430))
+	_text("義肢爐",world.sites.forge,293)
+	_prop("beacon",Vector2(world.sites.beacon,430),1.0,Color.WHITE if world.barrier>0 else Color(0.7,0.8,0.85))
+	_text("護民塔 ×%d" % world.barrier,world.sites.beacon,268)
+	var wall_x: float = world.sites.wall
+	if world.wall.level>0:
+		var height: float = 76+world.wall.level*19
+		draw_texture_rect(art.props.wall,Rect2(wall_x-27,430-height,54,height),false,Color.WHITE if world.wall.hp>0 else Color(0.4,0.35,0.38))
+		draw_rect(Rect2(wall_x-30,418-height,60,4),Color("23313a"))
+		draw_rect(Rect2(wall_x-30,418-height,60.0*world.wall.hp/(world.wall.level*40),4),Color("8cd5c6"))
+	else: _prop("wall",Vector2(wall_x,430),1.0,Color(1,1,1,0.35))
+	_text("防線 %d/2" % world.wall.level,wall_x,282)
+	if world.wall.pending: _text("工匠施工中",wall_x,306,Color("ead5aa"),13)
+	var horn: float = world.sites.horn
+	draw_line(Vector2(horn,350),Vector2(horn,430),Color("958771"),4)
+	draw_circle(Vector2(horn,363),12,Color("c7a46a"))
+	_text("警鐘",horn,332)
+	for kind in ["hoe","bow"]:
+		var x: float = world.tool_location(kind)
+		_prop("workshop" if kind=="hoe" else "armory",Vector2(x,430),0.7)
+		_text("農具架" if kind=="hoe" else "獵具架",x,324)
+		for index in range(world.tools[kind]): _tool(Vector2(x-22+index*22,405),kind)
+	var farm: float = world.sites.farm
+	_prop("crops",Vector2(farm,430),1.0,Color.WHITE if map.farm_active else Color(0.55,0.65,0.55,0.5))
+	_text("農田 / 自動留種" if map.farm_active else "可開墾農地",farm,345)
+	if map.farm_active:
+		draw_rect(Rect2(farm-44,351,88,3),Color("34443e"))
+		draw_rect(Rect2(farm-44,351,88*map.farm_progress/map.farm_cycle,3),Color("d6dba2"))
+	var drill: float = world.sites.drill
+	draw_line(Vector2(drill,430),Vector2(drill,370),Color("ad9472"),5)
+	draw_line(Vector2(drill-18,389),Vector2(drill+18,389),Color("a68f72"),5)
+	draw_circle(Vector2(drill,373),9,Color("ccb78b"))
+	_text("訓練 %d/%d" % [map.drill_level,map.training_limit],drill,343)
 
 func _resource(resource) -> void:
 	var at := Vector2(resource.x,resource.y)
+	if resource.y<430:
+		var ladder_x: float = resource.x-22
+		for side in [-5,5]: draw_line(Vector2(ladder_x+side,430),Vector2(ladder_x+side,resource.y),Color("a99770"),2)
+		for y in range(int(resource.y),430,9): draw_line(Vector2(ladder_x-5,y),Vector2(ladder_x+5,y),Color("b8a580"),2)
 	if resource.collected:
-		draw_rect(Rect2(at+Vector2(-12,-6),Vector2(24,6)),Color("5c665b"))
+		if resource.kind=="tree": _prop("stump",at)
+		if not resource.carried and not resource.delivered:
+			_prop("cache",Vector2(resource.pickup_x,resource.pickup_y),0.4)
 		return
-	match resource.kind:
-		"tree":
-			draw_rect(Rect2(at+Vector2(-8,-90),Vector2(16,90)),Color("72634e"))
-			for crown in range(3):
-				var h := -112+crown*26
-				var w := 25+crown*9
-				draw_colored_polygon(PackedVector2Array([at+Vector2(0,h-25),at+Vector2(w,h+24),at+Vector2(-w,h+24)]),Color("4a7261") if crown%2==0 else Color("547b68"))
-			if resource.crystals>0:
-				draw_colored_polygon(PackedVector2Array([at+Vector2(-7,-37),at+Vector2(0,-51),at+Vector2(7,-37),at+Vector2(0,-20)]),Color("8de9d7"))
-		"crystal":
-			for offset in [-15,0,15]:
-				var point := at+Vector2(offset,0)
-				draw_colored_polygon(PackedVector2Array([point+Vector2(-10,0),point+Vector2(-8,-30),point+Vector2(2,-48+abs(offset)),point+Vector2(11,-9)]),Color("85cfc8") if offset==0 else Color("508f9b"))
-		"berries":
-			draw_rect(Rect2(at+Vector2(-21,-22),Vector2(42,22)),Color("51705b"))
-			for i in range(4): draw_rect(Rect2(at+Vector2(-15+i*9,-17+(i%2)*7),Vector2(5,5)),Color("d39490"))
-		"cache":
-			draw_rect(Rect2(at+Vector2(-19,-27),Vector2(38,27)),Color("8a7359"))
-			draw_rect(Rect2(at+Vector2(-21,-29),Vector2(42,6)),Color("b2a481"))
-			draw_rect(Rect2(at+Vector2(-3,-24),Vector2(6,17)),Color("8ccbc3"))
-	if resource.hp<75 and resource.kind!="berries":
-		draw_rect(Rect2(at+Vector2(-18,5),Vector2(36,3)),Color("364e54"))
-		draw_rect(Rect2(at+Vector2(-18,5),Vector2(36*resource.hp/75.0,3)),Color("c7d59f"))
+	_prop("tree-plain" if resource.kind=="tree" and resource.crystals==0 else resource.kind,at)
+	if resource.marked:
+		draw_line(at+Vector2(-27,0),at+Vector2(-27,-42),Color("d3b476"),2)
+		draw_colored_polygon(PackedVector2Array([at+Vector2(-27,-42),at+Vector2(-9,-36),at+Vector2(-27,-29)]),Color("8fe2d0"))
+		if resource.worker>=0:
+			draw_rect(Rect2(at+Vector2(-20,4),Vector2(40,3)),Color("243940"))
+			draw_rect(Rect2(at+Vector2(-20,4),Vector2(40*(1-resource.remaining_work/75.0),3)),Color("d3dca3"))
+
+func _person(person: Dictionary, protected: bool) -> void:
+	var at := Vector2(person.x,person.get("y",430.0))
+	var direction: float = person.get("direction",1.0)
+	var state: String = person.get("work_state","idle")
+	var time: float = _sim.workforce.elapsed
+	var frame := int(time*8)%4 if person.get("moving",false) else 0
+	var source: Rect2
+	var texture: Texture2D
+	if person.role=="engineer":
+		var row := 0 if person.get("moving",false) or state=="climb" else 3
+		if state=="work": row=1
+		elif state=="haul": row=2
+		frame = int(time*8)%6 if row!=3 else int(time*3)%6
+		source=Rect2(frame*64,row*64,64,64)
+		texture=art.engineer_atlas
+	else:
+		var column: int = {"wanderer":0,"citizen":1,"farmer":2,"hunter":3,"guard":4}[person.role]
+		source=Rect2(column*64,frame*64,64,64)
+		texture=art.citizens_atlas
+	draw_set_transform(at,0,Vector2(direction,1))
+	draw_texture_rect_region(texture,Rect2(-32,-62,64,64),source,Color(1,0.65,0.65) if person.hurt>0 else Color.WHITE)
+	draw_set_transform(Vector2.ZERO)
+	if protected and person.role!="wanderer": draw_arc(at+Vector2(0,-24),29,PI,TAU,16,Color("81ddda"),1)
+	var label: String={"wanderer":"流浪者","citizen":"居民","engineer":"工匠","farmer":"農夫","hunter":"獵人","guard":"守備兵"}[person.role]
+	if state=="haul": label="搬運中"
+	elif state=="work": label="作業中"
+	_text(label,at.x,at.y-55,Color("d6e2d6"),12)
