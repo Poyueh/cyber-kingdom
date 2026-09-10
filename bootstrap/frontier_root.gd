@@ -5,9 +5,13 @@ var _map_seed: int
 var _seed_initialized := false
 var _requested_new_map := false
 var _terrain: Node2D
+var _requested_throw := false
 
 func _ready() -> void:
 	super._ready()
+	view.crystal_radius=tuning.crystal_radius
+	hud.throw_requested.connect(func(): _requested_throw = true)
+	controls.throw_requested.connect(func(): _requested_throw = true)
 	$Knight/Camera2D.zoom=Vector2.ONE*tuning.camera_zoom
 	if tuning.larger_desktop_window and DisplayServer.get_name()!= "headless" and not OS.has_feature("mobile"):
 		var window:=get_window()
@@ -30,6 +34,7 @@ func restart() -> void:
 	knight.position = Vector2(30,430)
 	paused = false
 	_requested_interaction = false
+	_requested_throw = false
 	controls.release_all()
 	_build_terrain()
 
@@ -39,6 +44,15 @@ func _physics_process(seconds: float) -> void:
 		_map_seed += 1
 		restart()
 	super._physics_process(seconds)
+	if _requested_throw and not paused:
+		sim.throw_crystal(knight.position.x,knight.position.y,sim.hero.facing)
+		hud.present_world(sim,paused,knight.position.x,knight.is_on_floor())
+	_requested_throw = false
+
+func _notification(what: int) -> void:
+	super._notification(what)
+	if what == NOTIFICATION_APPLICATION_FOCUS_OUT or what == NOTIFICATION_APPLICATION_PAUSED:
+		_requested_throw = false
 
 func _build_terrain() -> void:
 	var map = sim.frontier
