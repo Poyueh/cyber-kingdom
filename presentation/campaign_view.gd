@@ -1,4 +1,6 @@
 extends "res://presentation/frontier_view.gd"
+const Icons=preload("res://presentation/ui_icons.gd")
+const SITE_ICONS={"hall":"camp","workshop":"hammer","armory":"sword","farm_tools":"hoe","hunt_tools":"bow","forge":"gear","beacon":"shield","wall":"wall","farm":"food","drill":"sword","trade":"trade","heal":"heal","outpost":"outpost","recruit":"person","chest":"chest","mark":"hammer"}
 const EXTRA_ART := {"campfire":preload("res://art/campaign/v001/campfire.png"),"stone":preload("res://art/campaign/v001/stone.png"),"herbs":preload("res://art/campaign/v001/herbs.png"),"plot":preload("res://art/campaign/v001/plot.png")}
 
 func _prop(name: String, at: Vector2, scale: float = 1.0, tint := Color.WHITE) -> void:
@@ -22,6 +24,10 @@ func _draw_structures() -> void:
 	_text("營火 · 王國由此開始" if map.city_level==0 else "聚落 %d/3 · 收貨點" % map.city_level,hall,282,Color("f3d299"),15)
 	# Before the first investment there is only a campfire and nearby wanderers.
 	if map.city_level==0: return
+	for site in world.sites:
+		var x: float=world.sites[site]
+		if site=="hall": continue
+		_icon(SITE_ICONS.get(site,"hand"),Vector2(x,276 if _sim.built.get(site,false) else 343),23)
 	for site in ["workshop","armory","farm_tools","hunt_tools","forge","beacon"]:
 		var at := Vector2(world.sites[site],430)
 		var asset: String = {"farm_tools":"workshop","hunt_tools":"armory"}.get(site,site)
@@ -49,13 +55,17 @@ func _draw_structures() -> void:
 			draw_rect(Rect2(at.x-40,355,80*map.farm_progress/map.farm_cycle,3),Color("d8dd9f"))
 
 func _person(person: Dictionary, protected: bool) -> void:
-	if _sim.person_visible(person): super._person(person,protected)
+	if not _sim.person_visible(person): return
+	super._person(person,protected)
+	var key: String={"wanderer":"person","citizen":"person","engineer":"hammer","farmer":"hoe","hunter":"bow","guard":"sword"}[person.role]
+	_icon(key,Vector2(person.x,person.get("y",430)-66),17,Color("b4e7df") if person.role!="wanderer" else Color("d4c3a7"))
 
 func _draw_activity() -> void:
 	for pile in _sim.pouch.drops:
 		for index in range(mini(5,pile.amount)):
 			_crystal(Vector2(pile.x+(index-2)*8,pile.y-8-(index%2)*4),true,4)
-		_text("龍晶 ×%d" % pile.amount,pile.x,pile.y-70,Color("a6f2e0"),12)
+		_icon("crystal",Vector2(pile.x-9,pile.y-65),17)
+		_number(str(pile.amount),Vector2(pile.x+3,pile.y-60))
 	super._draw_activity()
 
 func _crystal(at: Vector2, filled: bool, radius: float = 6.0) -> void:
@@ -66,22 +76,54 @@ func _crystal(at: Vector2, filled: bool, radius: float = 6.0) -> void:
 
 func _draw_interaction() -> void:
 	if _context.id.is_empty(): return
-	var left: float = (get_viewport().get_canvas_transform().affine_inverse()*Vector2.ZERO).x
-	var x := clampf(_context.x,left+199,left+get_viewport_rect().size.x-199)
-	draw_rect(Rect2(x-192,184,384,82),Color(0.035,0.09,0.13,0.94))
-	draw_rect(Rect2(x-192,184,384,82),Color("527574"),false,1)
-	_text(_context.text,x,207,Color("f0e6c8"),14)
-	var hint := "E / 互動"
-	if _context.cost>0: hint="E / 每次投入 1 龍晶 · %d/%d" % [_context.paid,_context.cost]
-	if not _context.enabled: hint=_context.reason
-	_text(hint,x,230,Color("98e4d4") if _context.enabled else Color("d1af93"),12)
+	var requirements: Dictionary=_context.get("requirements",{})
+	var width:=maxf(96,_context.cost*18+48)
+	width=maxf(width,requirements.size()*52+28)
+	var inverse:=get_viewport().get_canvas_transform().affine_inverse()
+	var left: float=(inverse*Vector2.ZERO).x
+	var right: float=(inverse*get_viewport_rect().size).x
+	var x:=clampf(_context.x,left+width*0.5+8,right-width*0.5-8)
+	var ground:=430.0
+	if _context.has("node_index"): ground=_sim.frontier.nodes[_context.node_index].y
+	var y:=ground-141
+	var height:=82.0 if not requirements.is_empty() else 62.0
+	draw_style_box(_bubble_style(),Rect2(x-width*0.5,y-20,width,height))
+	var key: String=SITE_ICONS.get(_context.id,"hand")
+	if _context.id=="mark":
+		key={"tree":"tree","crystal":"pickaxe","berries":"food","stone":"stone","herbs":"herbs"}.get(_sim.frontier.nodes[_context.node_index].kind,"hammer")
+	_icon(key,Vector2(x,y),28)
+	if not _context.enabled: _icon("lock",Vector2(x+width*0.5-15,y-3),17,Color("d4a994"))
 	for index in range(_context.cost):
-		_crystal(Vector2(x+(index-(_context.cost-1)*0.5)*19,250),index<_context.paid)
-	if _context.cost==0: _text("直接開啟" if _context.id=="chest" else "不需龍晶",x,254,Color("a5bdba"),12)
+		_crystal(Vector2(x+(index-(_context.cost-1)*0.5)*18,y+27),index<_context.paid)
+	if _context.cost==0: _icon("hand" if _context.enabled else "check",Vector2(x,y+27),18)
+	var index:=0
+	for resource in requirements:
+		var at:=Vector2(x+(index-(requirements.size()-1)*0.5)*52,y+48)
+		_icon(resource,at-Vector2(10,0),17)
+		_number(str(requirements[resource]),at+Vector2(3,5))
+		index+=1
+
+func _bubble_style() -> StyleBoxFlat:
+	var style:=StyleBoxFlat.new()
+	style.bg_color=Color(0.035,0.09,0.13,0.88)
+	style.border_color=Color("668f88")
+	style.set_border_width_all(1)
+	style.set_corner_radius_all(8)
+	return style
+
+func _icon(key: String, at: Vector2, size: float=24, tint:=Color.WHITE) -> void:
+	draw_texture_rect(Icons.get_icon(key),Rect2(at-Vector2.ONE*size*0.5,Vector2.ONE*size),false,tint)
+
+func _number(value: String, at: Vector2) -> void:
+	draw_string(_font,at,value,HORIZONTAL_ALIGNMENT_LEFT,-1,12,Color("e1e4d0"))
+
+func _text(value: String, x: float, y: float, _color:=Color.WHITE, _size: int=15) -> void:
+	# The campaign's world language is symbols; legacy scenes retain their labels.
+	if value=="!": _icon("sword",Vector2(x,y-8),18,Color("ffbd7f"))
 
 func _resource(resource) -> void:
 	if resource.kind=="cache" and resource.delivered:
 		_prop("cache",Vector2(resource.x,resource.y),1.0,Color(0.5,0.6,0.6,0.55))
-		_text("已開啟",resource.x,resource.y-42,Color("9bbdb8"),12)
+		_icon("check",Vector2(resource.x,resource.y-47),18)
 		return
 	super._resource(resource)

@@ -51,7 +51,7 @@ func run_scene() -> void:
 	await frames(2)
 	key(KEY_SPACE, false)
 	check(scene.knight.velocity.y < 0.0, "Space starts physical jump")
-	check(scene.knight.visual.animation == &"idle", "airborne knight stops ground run animation")
+	check(scene.knight.visual.animation == &"jump", "airborne knight uses dedicated jump drawing")
 	key(KEY_L, true)
 	await frames(2)
 	key(KEY_L, false)

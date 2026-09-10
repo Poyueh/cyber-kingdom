@@ -43,11 +43,18 @@ func run_test() -> void:
 	var scene = current_scene
 	check(scene.scene_file_path == "res://scenes/frontier.tscn","training entry opens the new playable frontier")
 	check(scene.knight.is_on_floor(),"frontier has a grounded playable knight")
+	check(not scene.hud.get_node("Top").visible and not scene.hud.get_node("Keys").visible,"text panels leave the playable view clear")
+	check(scene.hud.interact_button.text.is_empty() and scene.hud.interact_button.icon!=null,"interaction is represented by an icon")
+	check(not scene.hud.new_map_button.visible,"destructive actions are tucked into pause menu")
+	check(scene.knight.get_node("Camera2D").zoom.x>1.0,"campaign framing enlarges characters")
 	var signature: String = scene.sim.frontier.layout_signature()
 	key(KEY_R,true)
 	await frames(2)
 	key(KEY_R,false)
 	check(scene.sim.frontier.layout_signature() == signature,"R replays the same map")
+	key(KEY_ESCAPE,true)
+	await frames(2)
+	key(KEY_ESCAPE,false)
 	await click(scene.hud.new_map_button)
 	check(scene.sim.frontier.layout_signature() != signature,"new-map touch button generates a different frontier")
 	var seed_before: int = scene.sim.map_seed
@@ -102,8 +109,8 @@ func run_test() -> void:
 	await frames(3)
 	check(scene.sim.frontier.regions[resource.region].outpost_built,"cleared-site button orders a resident-built frontier depot")
 	check(scene.sim.frontier.discovered_count()>0,"walking outside reveals a region")
-	check(scene.hud.calendar_label.text.contains("已熬過 0 晚"),"HUD displays survival calendar")
-	check(scene.hud.status.text.contains("木材") and scene.hud.status.text.contains("食物"),"HUD displays both new resources")
+	check(scene.hud.dashboard.values.survived==0,"icon HUD displays survival calendar")
+	check(scene.hud.dashboard.values.has("wood") and scene.hud.dashboard.values.has("food"),"icon HUD displays resource amounts")
 	var cache
 	for node in scene.sim.frontier.nodes:
 		if node.y == 366:

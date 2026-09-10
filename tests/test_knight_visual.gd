@@ -59,8 +59,8 @@ func test_airborne_does_not_play_ground_run_cycle(t) -> void:
 	var view = KnightVisual.new()
 	var pose := {"alive": true, "facing": 1, "moving": true, "invulnerable": false, "grounded": false}
 	view.present(pose, 0.3)
-	t.equal(view.animation, &"idle", "airborne movement holds a neutral pose until jump art exists")
-	t.equal(view.frame, 0, "airborne pose does not breathe or run")
+	t.equal(view.animation, &"jump", "airborne movement selects dedicated jump artwork")
+	t.equal(view.frame, 2, "zero vertical speed uses the apex drawing")
 	view.free()
 
 func test_attack_respects_authored_anticipation_and_recovery_durations(t) -> void:

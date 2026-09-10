@@ -113,7 +113,8 @@ func _person(person: Dictionary, protected: bool) -> void:
 	var at := Vector2(person.x,person.get("y",430.0))
 	var direction: float = person.get("direction",1.0)
 	var state: String = person.get("work_state","idle")
-	var time: float = _sim.workforce.elapsed
+	var time: float = _sim.workforce.elapsed+float(_sim.world.people.find(person))*0.19
+	at.y += -absf(sin(time*TAU*2))*0.8 if person.get("moving",false) else sin(time*2.6)*0.35
 	var frame := int(time*8)%4 if person.get("moving",false) else 0
 	var source: Rect2
 	var texture: Texture2D
