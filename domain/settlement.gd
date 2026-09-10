@@ -4,6 +4,8 @@ var scrap: int
 var crystals: int
 var people: Array[Dictionary] = []
 var supplies: Array[Dictionary] = []
+var tool_sites := {"hammer":"workshop", "blade":"armory"}
+var tool_roles := {"hammer":"engineer", "blade":"guard"}
 var tools := {"hammer": 0, "blade": 0}
 var sites := {"forge":350.0, "workshop":520.0, "armory":710.0, "beacon":890.0, "wall":1100.0, "horn":1360.0}
 var wall := {"level":0, "hp":0, "pending":false, "progress":0.0, "repair":false}
@@ -46,11 +48,11 @@ func claim_tool(index: int, kind: String) -> bool:
 	if index < 0 or index >= people.size() or not tools.has(kind) or tools[kind] <= 0:
 		return false
 	var person: Dictionary = people[index]
-	var location: float = sites.workshop if kind == "hammer" else sites.armory
+	var location: float = tool_location(kind)
 	if person.role != "citizen" or absf(person.x-location)>12:
 		return false
 	tools[kind] -= 1
-	person.role = "engineer" if kind == "hammer" else "guard"
+	person.role = tool_roles[kind]
 	return true
 
 func wall_cost() -> int:
@@ -108,3 +110,6 @@ func hit_wall(amount: int) -> bool:
 		return false
 	wall.hp = maxi(0,wall.hp-amount)
 	return true
+
+func tool_location(kind: String) -> float:
+	return sites[tool_sites[kind]]

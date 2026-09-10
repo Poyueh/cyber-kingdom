@@ -101,14 +101,18 @@ func _draw() -> void:
 
 func _tool(at: Vector2, kind: String) -> void:
 	draw_line(at+Vector2(0,12),at+Vector2(0,-12),Color("c1aa7b"),3)
-	if kind == "hammer":
+	if kind == "hoe":
+		draw_line(at+Vector2(-1,-12),at+Vector2(10,-8),Color("a6c2b1"),4)
+	elif kind == "bow":
+		draw_arc(at,15,-PI*0.5,PI*0.5,6,Color("ceaf7a"),3)
+	elif kind == "hammer":
 		draw_rect(Rect2(at+Vector2(-8,-14),Vector2(17,7)),Color("9bafb6"))
 	else:
 		draw_line(at+Vector2(-7,0),at+Vector2(7,0),Color("9ee4df"),3)
 		draw_line(at,at+Vector2(0,-18),Color("d6eae1"),3)
 
 func _person(person: Dictionary, protected: bool) -> void:
-	var coat: Color = {"wanderer":Color("706477"),"citizen":Color("b78b65"),"engineer":Color("d3b066"),"guard":Color("78afba")}[person.role]
+	var coat: Color = {"wanderer":Color("706477"),"citizen":Color("b78b65"),"engineer":Color("d3b066"),"guard":Color("78afba"),"farmer":Color("96b36c"),"hunter":Color("bd9872")}[person.role]
 	var colors := {"h":Color("46323d"),"s":Color("d5ac91"),"c":coat,"b":Color("3c4e60")}
 	for row in range(PeopleArt.PERSON.size()):
 		for column in range(PeopleArt.PERSON[row].length()):
@@ -116,6 +120,8 @@ func _person(person: Dictionary, protected: bool) -> void:
 			if colors.has(key): draw_rect(Rect2(roundf(person.x)-12+column*3,394+row*3,3,3),colors[key])
 	if person.role == "engineer": _tool(Vector2(person.x+17,411),"hammer")
 	if person.role == "guard": _tool(Vector2(person.x+17,411),"blade")
+	if person.role == "farmer": _tool(Vector2(person.x+17,411),"hoe")
+	if person.role == "hunter": _tool(Vector2(person.x+17,411),"bow")
 	if protected and person.role != "wanderer": draw_arc(Vector2(person.x,408),27,PI,TAU,16,Color("77ded4"),1)
-	var label: String = {"wanderer":"流浪者","citizen":"居民","engineer":"工程師","guard":"守備兵"}[person.role]
+	var label: String = {"wanderer":"流浪者","citizen":"居民","engineer":"工程師","guard":"守備兵","farmer":"農夫","hunter":"獵人"}[person.role]
 	_text(label,person.x,381,Color("e5a087") if person.hurt>0 else Color("bdd1cf"),12)

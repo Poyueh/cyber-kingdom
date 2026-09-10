@@ -86,3 +86,14 @@ Application 依賴 ProgressStore，正式場景注入 JsonProgressStore，流程
 `data/settlement.tres` 可調起始資源、夜襲時間、居民速度與護盾量。所有新進度限本輪記憶體，不新增存檔 port 或寫入原有存檔。防線作為模擬中攔截敵人的目標，騎士可穿過，並非角色物理牆。現階段只做固定平地、一側夜襲，不提供跨平台居民尋路框架。
 
 完整檢查包含居民自主完整路徑、實際近身攻擊、重新招攬就職、護民塔阻擋、倒數到期、守備兵反擊與一次性廢料拾取。場景測試以鍵盤／指標驗證投入、行走、施工、暫停、重試與騎士劈砍。
+
+
+## 邊境探索與經濟
+
+`domain/frontier.gd` 管理種子區塊、有限採集結果、農作及城鎮成本；`harvest_node.gd` 提供與 Combatant 相容的受擊物件，使資源跟敵人一樣遵守有效揮擊及同刀不重複命中。種子使用 Godot 基礎 RNG，不載入場景、輸入或存檔。
+
+`application/frontier_session.gd` 延伸已驗證的居民、夜襲與現場投入，新增採集、農夫／獵人、騎士訓練及王國判定。Settlement 的器具位置／職業以資料映射擴充，原場景仍可運作。`finished()` 仍僅代表三波結束，獨立的 `kingdom_established()` 檢查建城與居民，避免未建王城時錯誤生成第四波。
+
+`scenes/frontier.tscn` 繼承 settlement 場景；`bootstrap/frontier_root.gd` 注入 frontier.tres 的種子與生產／訓練數值，依生成邊界建立實際地面、牆界、相機及平台。規則只傳普通數值；Resource 留在外層。場景與經濟共用同一組資源座標，平台使用原本的一致圖形／碰撞元件。
+
+`presentation/frontier_*` 負責新圖意圖、HUD、森林晶礦／農田／城鎮示意。換圖與重試建立新的整輪模擬，不保存王國或改動訓練場存檔。城鎮成本與資源保底目前集中於 domain/frontier.gd，生產週期、產量與訓練數值則已開放 Inspector；增加調參需求時再擴充 Resource，避免每個生成細節都先做通用編輯器。

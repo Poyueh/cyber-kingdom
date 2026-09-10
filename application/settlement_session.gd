@@ -33,6 +33,7 @@ func context(x: float) -> Dictionary:
 			nearest = distance
 			result = {"id":"recruit", "x":person.x, "text":"投放補給，招攬流浪者", "cost":1,"currency":"廢料","enabled":world.scrap>0,"reason":"廢料不足"}
 	for site in world.sites:
+		if not ["forge","workshop","armory","beacon","wall","horn"].has(site): continue
 		var distance := absf(world.sites[site]-x)
 		if distance >= nearest:
 			continue
@@ -173,7 +174,7 @@ func _advance_people(seconds: float) -> void:
 			"citizen":
 				var nearest := INF
 				for kind in world.tools:
-					var rack: float = world.sites.workshop if kind == "hammer" else world.sites.armory
+					var rack: float = world.tool_location(kind)
 					if world.tools[kind]>0 and absf(rack-person.x)<nearest:
 						nearest = absf(rack-person.x)
 						target = rack
