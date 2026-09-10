@@ -103,6 +103,7 @@ func _campaign_site(site: String) -> Dictionary:
 		var materials := frontier.city_cost()
 		choice.text = "升級聚落 · %d 木 / %d 糧 / %d 石" % [materials.wood,materials.food,frontier.city_level*3]
 		choice.key = "hall:%d" % frontier.city_level
+		choice["requirements"]={"wood":materials.wood,"food":materials.food,"stone":frontier.city_level*3}
 		choice.enabled = frontier.city_level<3 and frontier.wood>=materials.wood and frontier.food>=materials.food and frontier.stone>=frontier.city_level*3
 		choice.reason = "先讓居民採木、採石與生產食物" if frontier.city_level<3 else "王城已完成 · 繼續守住居民"
 		return choice
@@ -118,27 +119,33 @@ func _campaign_site(site: String) -> Dictionary:
 	elif site=="wall":
 		var repair: bool = world.wall.level>0 and world.wall.hp<world.wall.level*40
 		choice.cost = prices.repair if repair else (prices.wall if world.wall.level==0 else prices.wall_upgrade)
+		if not repair and world.wall.level>0: choice["requirements"]={"stone":3}
 		choice.text = "修復防線" if repair else ("建立木防線" if world.wall.level==0 else "升級石防線 · 3 石材")
 		choice.key = "wall:%d:%s" % [world.wall.level,repair]
 		choice.enabled = not world.wall.pending and (repair or world.wall.level<2) and (repair or world.wall.level==0 or frontier.stone>=3)
 		choice.reason = "施工中／防線已滿，升級需要 3 石材"
 	elif site=="forge":
+		choice["requirements"]={"scrap":2}
 		choice.text="義肢爐 · 2 廢料 / 護盾 +%d" % world.shield_value
 		choice.enabled=world.scrap>=2
 		choice.reason="需要從寶箱或敵人回收 2 廢料"
 	elif site=="farm":
+		choice["requirements"]={"wood":2,"food":1}
 		choice.text = "開墾農田 · 2 木材 / 1 食物"
 		choice.enabled = not frontier.farm_active and frontier.wood>=2 and frontier.food>=1
 		choice.reason = "已播種，或缺少木材與種子食物"
 	elif site=="drill":
+		choice["requirements"]={"food":frontier.training_food}
 		choice.text = "劍術訓練 · %d 食物 / 劍傷 +%d" % [frontier.training_food,frontier.training_damage]
 		choice.enabled = frontier.food>=frontier.training_food and frontier.drill_level<frontier.training_limit
 		choice.reason = "食物不足或訓練已滿"
 	elif site=="trade":
+		choice["requirements"]={"food":4}
 		choice.text = "交易 · 4 食物換 2 龍晶"
 		choice.enabled = frontier.food>=4
 		choice.reason = "需要 4 食物 · 農夫可持續留種生產"
 	elif site=="heal":
+		choice["requirements"]={"herbs":2}
 		choice.text = "治療 · 2 藥草回復 30 生命"
 		choice.enabled = frontier.herbs>=2 and hero.hp<hero.stats.max_hp
 		choice.reason = "需要 2 藥草，或目前生命已滿"

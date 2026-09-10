@@ -119,3 +119,12 @@ SettlementSession 提供 `_engineer_target` 小型擴充點；原場景只建牆
 `bootstrap/frontier_root.gd` 現在注入 `data/campaign.tres` 的背包、日夜、成長與龍晶價格；`scenes/frontier.tscn` 使用 campaign_view/hud，復用原有地形、人物圖集與觸控路徑。UI 只讀 paid/cost 畫格子，不掌管扣款。未探索地景由淡霧呈現，未揭露人物不繪製。
 
 戰役進度只在記憶體內；N／R 重新建立模擬並清除投資、掉落、居民和日曆。沒有把此狀態寫入舊訓練場存檔。
+
+
+## 圖示與角色移動呈現
+
+`ui_icons.gd` 是原創 SVG 圖示資源目錄，HUD、世界提示共用同一語彙。`icon_dashboard.gd` 只畫生命、資源、日夜與選單狀態；`campaign_hud.gd` 排列既有輸入節點，保留 TouchScreenButton 的多點觸控路徑。CampaignView 使用圖示泡泡與材料數字，原規則提供 requirements，呈現層不解析文字、不扣資源。
+
+`knight_motion_frames.tres` 只包含新的 run/jump 圖集。KnightVisual 在本地複製 SpriteFrames 後替換移動動畫，保留原始檔及出劍／衝刺時間權重；ActorBody 只額外傳垂直速度，讓呈現選上升／頂點／下降姿勢，物理和傷害不由動畫推算。待機與落地過渡都依遊戲時間更新，暫停不自行播放。
+
+campaign.tres 繼承的 Presentation 設定控制 Camera Zoom 和 Larger Desktop Window；不修改全域 ProjectSettings，也不把裝置／視窗 API 放入 domain 或 application。

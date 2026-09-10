@@ -8,6 +8,12 @@ var _terrain: Node2D
 
 func _ready() -> void:
 	super._ready()
+	$Knight/Camera2D.zoom=Vector2.ONE*tuning.camera_zoom
+	if tuning.larger_desktop_window and DisplayServer.get_name()!= "headless" and not OS.has_feature("mobile"):
+		var window:=get_window()
+		var usable:=DisplayServer.screen_get_usable_rect()
+		window.size=Vector2i(mini(1440,usable.size.x-60),mini(810,usable.size.y-60))
+		window.position=usable.position+(usable.size-window.size)/2
 	hud.new_map_requested.connect(func(): _requested_new_map = true)
 	controls.new_map_requested.connect(func(): _requested_new_map = true)
 

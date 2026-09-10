@@ -1,4 +1,7 @@
 extends "res://data/frontier_tuning.gd"
+@export_group("Presentation")
+@export_range(1.0,1.4,0.05) var camera_zoom: float = 1.15
+@export var larger_desktop_window: bool = true
 @export_group("Knight backpack")
 @export_range(2,30,1) var backpack_capacity: int = 12
 @export_range(0,30,1) var initial_crystals: int = 12
