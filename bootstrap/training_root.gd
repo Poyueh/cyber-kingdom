@@ -109,4 +109,4 @@ func _visit_refuge() -> void:
 	if expedition_mode:
 		retreat_requested.emit()
 	else:
-		get_tree().change_scene_to_file("res://scenes/settlement.tscn")
+		get_tree().change_scene_to_file("res://scenes/frontier.tscn")
