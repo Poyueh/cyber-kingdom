@@ -1,5 +1,8 @@
 extends "res://application/frontier_session.gd"
 ## Playable campaign orchestration. Wallet and calendar rules remain in domain.
+const Roaming = preload("res://domain/resident_roaming.gd")
+var stroll_speed: float = 24.0
+var _hero_x: float = 0.0
 const Pouch = preload("res://domain/crystal_pouch.gd")
 const Calendar = preload("res://domain/campaign_clock.gd")
 const Harvest = preload("res://domain/harvest_node.gd")
@@ -16,6 +19,7 @@ const NAMES := {"hall":"營火","workshop":"工匠器具","armory":"守備器具
 
 func _init(config: Dictionary = {}, hero_stats: Stats = null) -> void:
 	super(config,hero_stats)
+	stroll_speed=maxf(1.0,float(config.get("stroll_speed",24.0)))
 	pouch = Pouch.new(config.get("capacity",12),config.get("starting_crystals",12))
 	pouch.magnet_radius = maxf(32,config.get("magnet_radius",112.0))
 	pouch.magnet_speed = maxf(32,config.get("magnet_speed",300.0))
@@ -227,6 +231,7 @@ func _execute(choice: Dictionary) -> void:
 		"heal": frontier.herbs-=2; hero.hp=mini(hero.stats.max_hp,hero.hp+30)
 
 func advance(seconds: float, hero_x: float, hero_y: float = 430.0) -> void:
+	_hero_x=hero_x
 	super.advance(seconds,hero_x,hero_y)
 	if seconds<=0 or not is_finite(seconds) or not hero.is_alive(): return
 	# Offered currency can recruit; ordinary treasure and delivered pay cannot.
@@ -253,13 +258,24 @@ func _receive_delivery(delivery: Dictionary) -> void:
 	pouch.drop(crystals,delivery.x)
 
 func _advance_people(seconds: float) -> void:
+	var previous: Array=[]
+	for person in world.people: previous.append(float(person.x))
 	super._advance_people(seconds)
-	for person in world.people:
-		if person.role=="citizen" and not person.get("moving",false):
-			var before: float=person.x
-			person.x=move_toward(person.x,world.sites.hall,_person_speed*seconds)
-			person.moving=absf(person.x-before)>0.01
-			if person.moving: person["direction"]=signf(person.x-before)
+	for index in range(world.people.size()):
+		var person: Dictionary=world.people[index]
+		# Supplies, tools and occupations have already chosen their real destinations.
+		if person.role not in ["wanderer","citizen"] or person.get("moving",false): continue
+		if person.role=="wanderer" and absf(person.x-_hero_x)<=72: continue
+		var before: float=person.x
+		var radius:=64.0 if person.role=="wanderer" else 100.0
+		var target:=Roaming.destination(person,index,world.sites.hall,radius,seconds,frontier.left_boundary+16,frontier.right_boundary-16)
+		person.x=move_toward(person.x,target,stroll_speed*seconds)
+		person.moving=absf(person.x-before)>0.01
+		if person.moving: person.direction=signf(person.x-before)
+
+	for index in range(world.people.size()):
+		var person: Dictionary=world.people[index]
+		person["walk_distance"]=float(person.get("walk_distance",0.0))+absf(person.x-previous[index])
 
 func finished() -> bool: return false
 func begin_raid() -> bool: return false # The calendar alone starts a night.
