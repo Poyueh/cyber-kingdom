@@ -1,6 +1,7 @@
 extends "res://presentation/fighter_visual.gd"
 ## New locomotion drawings are isolated from the editable combat animation resource.
 const MotionFrames=preload("res://data/knight_motion_frames.tres")
+@export var texture_overrides: Dictionary = {}
 var _motion_time:=0.0
 var _was_grounded:=true
 var _landing:=0.0
@@ -11,6 +12,7 @@ func _init() -> void:
 	texture_filter=CanvasItem.TEXTURE_FILTER_NEAREST
 func _ready() -> void:
 	_bind_motion() # PackedScene may assign its own frames after _init.
+	_apply_art_overrides()
 func _bind_motion() -> void:
 	sprite_frames=sprite_frames.duplicate()
 	for clip in [&"run",&"jump"]:
@@ -19,6 +21,16 @@ func _bind_motion() -> void:
 		sprite_frames.set_animation_speed(clip,MotionFrames.get_animation_speed(clip))
 		for index in range(MotionFrames.get_frame_count(clip)):
 			sprite_frames.add_frame(clip,MotionFrames.get_frame_texture(clip,index))
+func _apply_art_overrides() -> void:
+	# Swap atlas pixels only; preserve user-edited frame duration, region and speed.
+	for clip in sprite_frames.get_animation_names():
+		for index in range(sprite_frames.get_frame_count(clip)):
+			var source:=sprite_frames.get_frame_texture(clip,index)
+			if source is AtlasTexture and source.atlas!=null and texture_overrides.has(source.atlas.resource_path):
+				var replacement: AtlasTexture=source.duplicate()
+				replacement.atlas=texture_overrides[source.atlas.resource_path]
+				sprite_frames.set_frame(clip,index,replacement,sprite_frames.get_frame_duration(clip,index))
+
 func reset_pose() -> void:
 	super.reset_pose()
 	_motion_time=0
