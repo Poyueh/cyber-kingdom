@@ -31,7 +31,7 @@ func restart() -> void:
 		"first_raid":tuning.first_raid_seconds,"raid_gap":tuning.raid_gap_seconds,
 		"person_speed":tuning.resident_speed,"shield_value":tuning.shield_per_crystal}
 	config.merge(tuning.campaign_rules(),true)
-	sim = FrontierSession.new(config,Mapper.combat_stats(knight_tuning))
+	sim = FrontierSession.new(config,Mapper.knight_stats(knight_tuning,combo_tuning))
 	knight.configure(sim.hero,knight_tuning)
 	knight.position = Vector2(30,430)
 	investment=InvestmentHold.new(tuning.investment_hold_delay,tuning.investment_interval)

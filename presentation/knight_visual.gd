@@ -61,6 +61,9 @@ func present(pose: Dictionary, seconds: float) -> void:
 	if not pose.alive: return
 	var gait:=int(fposmod(_gait_time*sprite_frames.get_animation_speed(&"run"),sprite_frames.get_frame_count(&"run")))
 	if animation==&"run": frame=gait
+	if animation==&"attack" and int(pose.get("combo_step",0))==2:
+		# Reverse time, not just the index: respect authored frame weights.
+		frame=_action_frame(&"attack",1.0-clampf(float(pose.attack_progress),0.0,1.0))
 	if seconds>0 and is_finite(seconds):
 		_motion_time+=seconds
 		_landing=maxf(0,_landing-seconds)

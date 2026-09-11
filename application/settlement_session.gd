@@ -205,6 +205,9 @@ func _advance_raider(raider: Dictionary, seconds: float, hero_x: float, hero_y: 
 	if not raider.fighter.is_alive():
 		return
 	raider.cooldown = maxf(0,raider.cooldown-seconds)
+	if float(raider.get("stagger",0.0)) > 0.0:
+		raider.stagger = maxf(0.0,raider.stagger-seconds)
+		return
 	if raider.windup > 0:
 		raider.windup = maxf(0,raider.windup-seconds)
 		if raider.windup == 0:
@@ -241,7 +244,12 @@ func strike_from(x: float, y: float) -> void:
 		return
 	for raider in raiders:
 		if hero.strike(raider.fighter,raider.x-x):
-			effects.append({"kind":"hit","x":raider.x,"to":raider.x,"life":0.2})
+			var heavy := hero.combo_step == 3
+			effects.append({"kind":"hit","x":raider.x,"to":raider.x,"life":0.28 if heavy else 0.2,"heavy":heavy,"facing":hero.attack_facing})
+			if heavy:
+				raider.x += hero.attack_facing * 22.0
+				raider.windup = 0.0
+				raider["stagger"] = 0.24
 
 func _advance_invasion(seconds: float) -> void:
 	if _spawn_remaining > 0:
@@ -257,6 +265,7 @@ func _advance_invasion(seconds: float) -> void:
 
 func _spawn_raider() -> Dictionary:
 	var stats := Stats.new()
+	stats.hurt_invulnerability = 0.12
 	stats.max_hp = 60
 	stats.damage = 15
 	return {"x":1580.0,"fighter":Fighter.new(stats),"windup":0.0,"cooldown":0.0,"target":{}}

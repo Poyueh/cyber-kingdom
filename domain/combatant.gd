@@ -13,6 +13,10 @@ var cooldown_remaining: float = 0.0
 var dash_remaining: float = 0.0
 var invulnerability_remaining: float = 0.0
 var _hit_targets: Dictionary = {}
+var combo_step: int = 0
+var _swing_duration: float = 0.0
+var _queued_attack_seconds: float = 0.0
+var _combo_grace_remaining: float = 0.0
 
 func _init(configuration: Stats) -> void:
 	stats = configuration
@@ -22,14 +26,45 @@ func _init(configuration: Stats) -> void:
 func is_alive() -> bool:
 	return hp > 0
 
+## True means the press started a swing or queued exactly one continuation.
 func start_attack() -> bool:
-	if not is_alive() or attack_remaining > 0.0 or cooldown_remaining > 0.0 or dash_remaining > 0.0:
+	if not is_alive() or dash_remaining > 0.0:
 		return false
-	attack_facing = facing
-	attack_remaining = stats.attack_duration
-	cooldown_remaining = stats.attack_cooldown
-	_hit_targets.clear()
+	if stats.combo_enabled and combo_step > 0 and combo_step < 3:
+		if attack_remaining > 0.0:
+			_queued_attack_seconds = stats.combo_buffer_seconds
+			return true
+		if _combo_grace_remaining > 0.0:
+			_begin_attack(combo_step + 1)
+			return true
+	if attack_remaining > 0.0 or cooldown_remaining > 0.0:
+		return false
+	_begin_attack(1 if stats.combo_enabled else 0)
 	return true
+
+func _begin_attack(step: int) -> void:
+	combo_step = step
+	attack_facing = facing
+	var duration_scale := stats.combo_return_duration if step == 2 else (stats.combo_finisher_duration if step == 3 else 1.0)
+	_swing_duration = maxf(0.001, stats.attack_duration * duration_scale)
+	attack_remaining = _swing_duration
+	cooldown_remaining = maxf(stats.attack_cooldown, _swing_duration + 0.12) if stats.combo_enabled else stats.attack_cooldown
+	_queued_attack_seconds = 0.0
+	_combo_grace_remaining = 0.0
+	_hit_targets.clear()
+
+## Pause/focus loss discards intent while preserving the current pose.
+func clear_attack_buffer() -> void:
+	_queued_attack_seconds = 0.0
+
+func _cancel_combo() -> void:
+	clear_attack_buffer()
+	_combo_grace_remaining = 0.0
+	combo_step = 0
+	attack_remaining = 0.0
+
+func attack_damage() -> int:
+	return maxi(1, roundi(stats.damage * stats.combo_finisher_damage)) if combo_step == 3 else stats.damage
 
 func start_dash() -> bool:
 	if not is_alive() or dash_remaining > 0.0 or stamina < stats.dash_cost:
@@ -38,7 +73,7 @@ func start_dash() -> bool:
 	dash_remaining = stats.dash_duration
 	invulnerability_remaining = maxf(invulnerability_remaining, stats.dash_invulnerability)
 	# A dodge cancels the current sword swing, preventing an invisible attack.
-	attack_remaining = 0.0
+	_cancel_combo()
 	return true
 
 func strike(target: RefCounted, signed_distance: float) -> bool:
@@ -49,7 +84,7 @@ func strike(target: RefCounted, signed_distance: float) -> bool:
 	var target_id: int = target.get_instance_id()
 	if _hit_targets.has(target_id):
 		return false
-	if not target.take_damage(stats.damage):
+	if not target.take_damage(attack_damage()):
 		return false
 	_hit_targets[target_id] = true
 	return true
@@ -61,27 +96,53 @@ func take_damage(amount: int) -> bool:
 	shield = maxi(0, shield - absorbed)
 	shield_absorbed += absorbed
 	hp = maxi(0, hp - (amount - absorbed))
+	if stats.combo_enabled:
+		_cancel_combo()
 	invulnerability_remaining = stats.hurt_invulnerability
 	return true
 
 func advance(seconds: float) -> void:
 	if seconds <= 0.0 or not is_finite(seconds):
 		return
-	attack_remaining = maxf(0.0, attack_remaining - seconds)
-	cooldown_remaining = maxf(0.0, cooldown_remaining - seconds)
+	_advance_attack(seconds)
 	dash_remaining = maxf(0.0, dash_remaining - seconds)
 	invulnerability_remaining = maxf(0.0, invulnerability_remaining - seconds)
 	if is_alive():
 		stamina = minf(stats.max_stamina, stamina + stats.stamina_regen * seconds)
 
+func _advance_attack(seconds: float) -> void:
+	# Split at the handoff so a coarse frame cannot erase or delay a valid press.
+	var handoff := maxf(0.0, attack_remaining - _swing_duration * (1.0 - stats.combo_chain_progress))
+	if stats.combo_enabled and combo_step > 0 and combo_step < 3 and _queued_attack_seconds > 0.0 and _queued_attack_seconds >= handoff and seconds >= handoff:
+		_begin_attack(combo_step + 1)
+		_advance_attack(seconds - handoff)
+		return
+	var previous_remaining := attack_remaining
+	attack_remaining = maxf(0.0, attack_remaining - seconds)
+	cooldown_remaining = maxf(0.0, cooldown_remaining - seconds)
+	_queued_attack_seconds = maxf(0.0, _queued_attack_seconds - seconds)
+	if stats.combo_enabled and attack_remaining <= 0.0:
+		if previous_remaining > 0.0 and combo_step < 3:
+			_combo_grace_remaining = maxf(0.0, stats.combo_grace_seconds - (seconds - previous_remaining))
+		else:
+			_combo_grace_remaining = maxf(0.0, _combo_grace_remaining - seconds)
+		if _combo_grace_remaining <= 0.0 and cooldown_remaining <= 0.0:
+			combo_step = 0
+
 func attack_progress() -> float:
-	if attack_remaining <= 0.0 or stats.attack_duration <= 0.0:
+	if attack_remaining <= 0.0 or _swing_duration <= 0.0:
 		return 1.0
-	return clampf(1.0 - attack_remaining / stats.attack_duration, 0.0, 1.0)
+	return clampf(1.0 - attack_remaining / _swing_duration, 0.0, 1.0)
 
 func is_attack_active() -> bool:
 	var progress := attack_progress()
-	return progress >= 0.4 and progress < 0.75
+	return progress >= attack_active_start() and progress < attack_active_end()
+
+func attack_active_start() -> float:
+	return 0.25 if combo_step == 2 else 0.4
+
+func attack_active_end() -> float:
+	return 0.65 if combo_step == 2 else 0.75
 
 func dash_progress() -> float:
 	if dash_remaining <= 0.0 or stats.dash_duration <= 0.0:

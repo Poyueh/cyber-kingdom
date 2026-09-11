@@ -24,6 +24,7 @@ python3 "$ROOT/tools/check_architecture.py"
 run_check import --editor --import
 run_check behavior --script res://tests/run_tests.gd
 run_check integration --script res://tests/test_scene.gd
+run_check combo --script res://tests/test_combo_scene.gd
 run_check traversal --script res://tests/test_traversal.gd
 run_check refuge --script res://tests/test_refuge_scene.gd
 run_check settlement --script res://tests/test_settlement_scene.gd

@@ -12,3 +12,12 @@ var dash_cost: float = 30.0
 var dash_duration: float = 0.20
 var dash_invulnerability: float = 0.25
 var hurt_invulnerability: float = 0.35
+
+# Player-only combo; enemies retain independent single swings.
+var combo_enabled: bool = false
+var combo_buffer_seconds: float = 0.30
+var combo_grace_seconds: float = 0.18
+var combo_chain_progress: float = 0.88
+var combo_return_duration: float = 0.82
+var combo_finisher_duration: float = 1.25
+var combo_finisher_damage: float = 1.6
