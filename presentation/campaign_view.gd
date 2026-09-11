@@ -24,6 +24,11 @@ func _prop(name: String, at: Vector2, scale: float = 1.0, tint := Color.WHITE) -
 		draw_texture_rect(emission,Rect2(at-Vector2(size.x*0.5,size.y),size),false,Color(1,1,1,pulse*tint.a))
 
 func _draw_atmosphere(_left: float) -> void:
+	if art.show_river:
+		var inverse := get_viewport().get_canvas_transform().affine_inverse()
+		var top_left := inverse*Vector2.ZERO
+		var bottom_right := inverse*get_viewport_rect().size
+		Scenery.river(self,art,_sim,Rect2(top_left,bottom_right-top_left))
 	if art.show_power_grid: _draw_power_grid()
 	if _sim.clock.is_night:
 		draw_rect(_background_rect(),Color(0.03,0.07,0.18,0.32))

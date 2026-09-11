@@ -1,4 +1,5 @@
 extends "res://presentation/settlement_view.gd"
+const Scenery = preload("res://presentation/refuge_scenery.gd")
 @export var art: Resource = preload("res://data/frontier_art.tres")
 
 func _prop(name: String, at: Vector2, scale: float = 1.0, tint := Color.WHITE) -> void:
@@ -12,6 +13,7 @@ func _draw() -> void:
 	var left: float = (get_viewport().get_canvas_transform().affine_inverse()*Vector2.ZERO).x
 	# Frame the complete skyline above the real floor, independently of camera zoom.
 	draw_texture_rect(art.woodland,_background_rect(),false)
+	Scenery.forest(self,art.forest_layer,_background_rect(),art.forest_scroll)
 	var tile_x: float = map.left_boundary
 	while tile_x<map.right_boundary:
 		var width := minf(768,map.right_boundary-tile_x)
