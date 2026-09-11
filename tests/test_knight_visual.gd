@@ -123,3 +123,29 @@ func test_default_cleave_shows_all_eight_poses_at_thirty_fps(t) -> void:
 		elapsed += 1.0 / 30.0
 	t.equal(seen.size(), 8, "mobile cadence must show every transition drawing")
 	view.free()
+
+func test_running_phase_continues_through_attack_and_recovery(t) -> void:
+	var view=KnightVisual.new()
+	var pose={"alive":true,"facing":1,"moving":true,"grounded":true,"invulnerable":false,"attack_progress":1.0}
+	view.present(pose,0.15)
+	pose.attack_progress=0.4
+	view.present(pose,0.2)
+	pose.attack_progress=1.0
+	view.present(pose,0)
+	t.equal(view.frame,4,"running resumes at continuing stride, not frame zero")
+	view.present(pose,0)
+	t.equal(view.frame,4,"paused stride holds its phase")
+	view.free()
+
+func test_moving_swing_displays_running_legs_without_changing_attack_timing(t) -> void:
+	var view=KnightVisual.new()
+	view.set("moving_attack_atlas",preload("res://art/characters/fluid-v001/moving-attack.png"))
+	var pose={"alive":true,"facing":1,"moving":true,"grounded":true,"invulnerable":false,"attack_progress":0.45}
+	view.present(pose,0.1)
+	var legs=view.get_node_or_null("MovingAttack")
+	t.truth(legs!=null and legs.visible,"moving attack draws its combined gait and sword")
+	t.equal(view.frame,4,"moving attack keeps authored strike timing")
+	pose.moving=false
+	view.present(pose,0)
+	t.truth(legs!=null and not legs.visible,"stopping restores planted attack pose")
+	view.free()

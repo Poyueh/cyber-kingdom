@@ -149,3 +149,46 @@ func test_ground_raider_cannot_hit_a_worker_on_an_elevated_site(t) -> void:
 	raider.windup=0.1
 	sim.advance(0.1,-1000)
 	t.equal(sim.world.people[0].role,"engineer","vertical distance prevents a ground hit through the platform")
+
+func test_wanderers_stroll_turn_and_stay_near_their_discovery_place(t) -> void:
+	var sim=preload("res://application/campaign_session.gd").new({"first_raid":10000.0})
+	var person=sim.world.people[0]
+	var start: float=person.x
+	var left:=start
+	var right:=start
+	var directions:={}
+	for tick in range(240):
+		sim.advance(0.1,-1000)
+		left=minf(left,person.x)
+		right=maxf(right,person.x)
+		if person.get("moving",false): directions[person.direction]=true
+	t.truth(right-left>25,"wanderer actually strolls rather than animating in place")
+	t.truth(directions.size()==2,"stroll turns around")
+	t.truth(left>=start-72 and right<=start+72,"wanderer remains near its original discovery location")
+
+func test_idle_citizen_strolls_but_available_tools_interrupt_immediately(t) -> void:
+	var sim=preload("res://application/campaign_session.gd").new({"first_raid":10000.0})
+	var person=sim.world.people[0]
+	person.role="citizen"
+	person.x=sim.world.sites.hall
+	var start: float=person.x
+	for tick in range(50): sim.advance(0.1,-1000)
+	t.truth(absf(person.x-start)>10,"idle citizen walks around camp")
+	sim.world.tools.hammer=1
+	var distance: float=absf(person.x-sim.world.sites.workshop)
+	sim.advance(0.1,-1000)
+	t.truth(absf(person.x-sim.world.sites.workshop)<distance,"real tool task overrides stroll")
+	for tick in range(150): sim.advance(0.1,-1000)
+	t.equal(person.role,"engineer","strolling resident still gets equipped")
+
+func test_approaching_wanderer_stops_for_recruitment_and_invalid_time_does_not_move(t) -> void:
+	var sim=preload("res://application/campaign_session.gd").new()
+	var person=sim.world.people[0]
+	for tick in range(30): sim.advance(0.1,-1000)
+	var at: float=person.x
+	for tick in range(20): sim.advance(0.1,at)
+	t.equal(person.x,at,"nearby wanderer waits so the player can invest")
+	sim.advance(0,-1000)
+	t.equal(person.x,at,"zero simulation time cannot advance strolling")
+	t.truth(sim.interact(at),"strolling wanderer remains recruitable")
+	t.equal(person.role,"citizen","recruitment still changes actual role")

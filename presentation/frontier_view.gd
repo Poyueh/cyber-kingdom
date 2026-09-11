@@ -123,14 +123,15 @@ func _person(person: Dictionary, protected: bool) -> void:
 	var state: String = person.get("work_state","idle")
 	var time: float = _sim.workforce.elapsed+float(_sim.world.people.find(person))*0.19
 	at.y += -absf(sin(time*TAU*2))*0.8 if person.get("moving",false) else sin(time*2.6)*0.35
-	var frame := int(time*8)%4 if person.get("moving",false) else 0
+	var walk_step:=int(float(person.get("walk_distance",time*60.0))/7.5)
+	var frame := walk_step%4 if person.get("moving",false) else 0
 	var source: Rect2
 	var texture: Texture2D
 	if person.role=="engineer":
 		var row := 0 if person.get("moving",false) or state=="climb" else 3
 		if state=="work": row=1
 		elif state=="haul": row=2
-		frame = int(time*8)%6 if row!=3 else int(time*3)%6
+		frame = (walk_step%6 if person.get("moving",false) else int(time*8)%6) if row!=3 else int(time*3)%6
 		source=Rect2(frame*64,row*64,64,64)
 		texture=art.engineer_atlas
 	else:
