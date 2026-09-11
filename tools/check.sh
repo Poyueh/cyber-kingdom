@@ -29,5 +29,6 @@ run_check refuge --script res://tests/test_refuge_scene.gd
 run_check settlement --script res://tests/test_settlement_scene.gd
 run_check frontier --script res://tests/test_frontier_scene.gd
 run_check crystal --script res://tests/test_crystal_scene.gd
+run_check investment --script res://tests/test_investment_scene.gd
 run_check scene --quit-after 120
 echo 'PASS: architecture, import, behavior, and main scene smoke checks.'
