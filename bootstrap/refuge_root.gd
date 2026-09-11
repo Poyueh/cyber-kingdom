@@ -5,6 +5,7 @@ const Memory = preload("res://infrastructure/memory_progress_store.gd")
 const Mapper = preload("res://bootstrap/tuning_mapper.gd")
 const Encounter = preload("res://scenes/training.tscn")
 @export var tuning: Resource = preload("res://data/refuge.tres")
+@export var combo_tuning: Resource = preload("res://data/knight_combo.tres")
 @export var knight_tuning: Resource = preload("res://data/expedition_knight.tres")
 @export var sentinel_tuning: Resource = preload("res://data/sentinel.tres")
 @onready var panel = $Panel
@@ -12,7 +13,7 @@ var run: Refuge
 var battle_view: Node2D
 
 func _ready() -> void:
-	run = Refuge.new(Mapper.combat_stats(knight_tuning), Mapper.combat_stats(sentinel_tuning),
+	run = Refuge.new(Mapper.knight_stats(knight_tuning,combo_tuning), Mapper.enemy_stats(sentinel_tuning),
 		Memory.new(), tuning.crystals, tuning.shield_per_crystal, tuning.residents)
 	panel.allocation_requested.connect(_allocate)
 	panel.depart_requested.connect(_depart_or_retry)

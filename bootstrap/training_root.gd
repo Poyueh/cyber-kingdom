@@ -3,6 +3,7 @@ extends Node2D
 const Session = preload("res://application/training_session.gd")
 const FileStore = preload("res://infrastructure/json_progress_store.gd")
 const Mapper = preload("res://bootstrap/tuning_mapper.gd")
+@export var combo_tuning: Resource = preload("res://data/knight_combo.tres")
 @export var knight_tuning: Resource = preload("res://data/knight.tres")
 @export var sentinel_tuning: Resource = preload("res://data/sentinel.tres")
 @export_range(0, 1000) var defeat_reward: int = 20
@@ -27,7 +28,7 @@ var paused: bool = false
 func _ready() -> void:
 	if session == null:
 		store = FileStore.new(progress_path)
-		session = Session.new(Mapper.combat_stats(knight_tuning), Mapper.combat_stats(sentinel_tuning), store, defeat_reward)
+		session = Session.new(Mapper.knight_stats(knight_tuning,combo_tuning), Mapper.enemy_stats(sentinel_tuning), store, defeat_reward)
 	_initial_scrap = session.scrap
 	hud.refuge_requested.connect(_visit_refuge)
 	hud.configure_expedition(expedition_mode)
@@ -47,6 +48,7 @@ func _reset_bodies() -> void:
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_APPLICATION_FOCUS_OUT or what == NOTIFICATION_APPLICATION_PAUSED:
 		paused = true
+		if session != null: session.hero.clear_attack_buffer()
 		_buffered_actions.clear()
 		if is_instance_valid(controls):
 			controls.release_all()
@@ -55,6 +57,7 @@ func _physics_process(seconds: float) -> void:
 	var command: Dictionary = controls.read_frame()
 	if command.pause:
 		paused = not paused
+		session.hero.clear_attack_buffer()
 		_buffered_actions.clear()
 		controls.release_all()
 	if command.retry_save:

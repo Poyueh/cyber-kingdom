@@ -182,3 +182,29 @@ func test_insufficient_crystals_preserve_partial_project_and_target_independence
 	sim.interact(30)
 	t.equal(sim.frontier.city_level,1,"returning with one remaining crystal completes the camp")
 	t.equal(sim.pouch.amount,0,"independent transactions conserve every crystal")
+
+func test_campaign_raid_receives_three_cuts_and_finisher_pushback(t) -> void:
+	var stats = preload("res://domain/combat_stats.gd").new()
+	stats.combo_enabled = true
+	var sim = preload("res://application/campaign_session.gd").new({},stats)
+	# Advance the actual calendar to obtain a real raid enemy.
+	sim.clock.remaining = 0.01
+	sim.advance(0.02,30,430)
+	var raider = sim.raiders[0]
+	raider.fighter.hp = 200
+	raider.fighter.stats.max_hp = 200
+	raider.x = 55.0
+	raider.cooldown = 10.0
+	var checked_finisher := false
+	for tick in range(65):
+		sim.advance(1.0/60,30,430)
+		if tick in [0,8,23]: sim.hero.start_attack()
+		sim.strike_from(30,430)
+		if not checked_finisher and raider.fighter.hp==110:
+			var x: float = raider.x
+			sim.strike_from(30,430)
+			t.equal(raider.x,x,"repeated active finisher overlap cannot push again")
+			checked_finisher = true
+	t.equal(raider.fighter.hp,110,"spawned raid enemy accepts all three distinct cuts")
+	t.truth(checked_finisher,"duplicate overlap is checked during actual finisher contact")
+	t.truth(raider.x>55,"finisher drives the surviving enemy backward")

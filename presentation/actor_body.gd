@@ -58,7 +58,7 @@ func refresh_visual(seconds: float) -> void:
 	if visual != null:
 		visual.present({"alive": model.is_alive(), "facing": action_facing(),
 			"moving": absf(velocity.x) > 0.1, "locomotion_rate": velocity.x*action_facing()/maxf(1,tuning.move_speed), "grounded": is_on_floor(), "vertical_speed":velocity.y,
-			"telegraph": telegraph, "dashing": model.dash_remaining > 0.0, "dash_progress": model.dash_progress(), "attack_progress": model.attack_progress(),
+			"telegraph": telegraph, "dashing": model.dash_remaining > 0.0, "dash_progress": model.dash_progress(), "attack_progress": model.attack_progress(), "combo_step": model.combo_step,
 			"invulnerable": model.invulnerability_remaining > 0.0}, seconds)
 		if model.dash_remaining > 0.0 and model.is_alive():
 			if _trail_interval <= 0.0:
@@ -105,21 +105,23 @@ func _draw() -> void:
 		draw_rect(Rect2(-24, -72, 48.0 * model.hp / model.stats.max_hp, 4), Color("d97884"))
 
 func _draw_slash(reach: float, facing: int) -> void:
-	var progress := clampf((model.attack_progress() - 0.4) / 0.35, 0.0, 1.0)
+	var progress := clampf((model.attack_progress() - model.attack_active_start()) / (model.attack_active_end()-model.attack_active_start()), 0.0, 1.0)
+	var rising := model.combo_step == 2
+	var heavy := model.combo_step == 3
 	var leading_angle := lerpf(0.1, 0.8, progress)
 	var origin := Vector2(0, -27)
 	var points := PackedVector2Array()
 	# A tapered crescent travels downward; mirroring preserves sword direction.
 	for index in range(9):
 		var angle := leading_angle - 1.5 + index * 1.5 / 8.0
-		points.append((origin + Vector2(cos(angle) * facing, sin(angle) * 0.55) * reach).round())
+		points.append((origin + Vector2(cos(angle) * facing, sin(angle) * (-0.55 if rising else 0.55)) * reach).round())
 	for index in range(8, -1, -1):
 		var angle := leading_angle - 1.5 + index * 1.5 / 8.0
-		var radius := reach - 1.0 - sin(index * PI / 8.0) * 5.0
-		points.append((origin + Vector2(cos(angle) * facing, sin(angle) * 0.55) * radius).round())
-	var tint := Color("ffbd68") if is_enemy else Color("8ce9e1")
-	draw_colored_polygon(points, Color(tint, 0.65))
-	var tip := origin + Vector2(cos(leading_angle) * facing, sin(leading_angle) * 0.55) * reach
+		var radius := reach - 1.0 - sin(index * PI / 8.0) * (9.0 if heavy else 5.0)
+		points.append((origin + Vector2(cos(angle) * facing, sin(angle) * (-0.55 if rising else 0.55)) * radius).round())
+	var tint := Color("ffbd68") if is_enemy else (Color("d2fff0") if heavy else Color("8ce9e1"))
+	draw_colored_polygon(points, Color(tint, 0.85 if heavy else 0.65))
+	var tip := origin + Vector2(cos(leading_angle) * facing, sin(leading_angle) * (-0.55 if rising else 0.55)) * reach
 	draw_line((tip - Vector2(3 * facing, 5)).round(), tip.round(), Color("fff2cd"), 2.0)
 
 func _draw_dash_trail() -> void:

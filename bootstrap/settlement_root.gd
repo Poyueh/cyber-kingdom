@@ -2,6 +2,7 @@ extends Node2D
 const Session = preload("res://application/settlement_session.gd")
 const Mapper = preload("res://bootstrap/tuning_mapper.gd")
 @export var tuning: Resource = preload("res://data/settlement.tres")
+@export var combo_tuning: Resource = preload("res://data/knight_combo.tres")
 @export var knight_tuning: Resource = preload("res://data/knight.tres")
 @onready var knight = $Knight
 @onready var view = $WorldView
@@ -19,7 +20,7 @@ func _ready() -> void:
 func restart() -> void:
 	sim = Session.new({"scrap":tuning.starting_scrap,"crystals":tuning.starting_crystals,
 		"first_raid":tuning.first_raid_seconds,"raid_gap":tuning.raid_gap_seconds,
-		"person_speed":tuning.resident_speed,"shield_value":tuning.shield_per_crystal},Mapper.combat_stats(knight_tuning))
+		"person_speed":tuning.resident_speed,"shield_value":tuning.shield_per_crystal},Mapper.knight_stats(knight_tuning,combo_tuning))
 	knight.configure(sim.hero,knight_tuning)
 	knight.position = Vector2(150,430)
 	paused = false
@@ -29,6 +30,7 @@ func restart() -> void:
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_APPLICATION_FOCUS_OUT or what == NOTIFICATION_APPLICATION_PAUSED:
 		paused = true
+		if sim != null: sim.hero.clear_attack_buffer()
 		_requested_interaction = false
 		if is_instance_valid(controls): controls.release_all()
 
@@ -38,6 +40,7 @@ func _physics_process(seconds: float) -> void:
 		restart()
 	if command.pause:
 		paused = not paused
+		sim.hero.clear_attack_buffer()
 		_requested_interaction = false
 		controls.release_all()
 	if not paused:

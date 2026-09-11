@@ -297,6 +297,7 @@ func _advance_invasion(seconds: float) -> void:
 func _spawn_raider() -> Dictionary:
 	var raider := super._spawn_raider()
 	var stats := Stats.new()
+	stats.hurt_invulnerability = raider.fighter.stats.hurt_invulnerability
 	stats.max_hp=60+(clock.day-1)*enemy_health_growth
 	stats.damage=15+(clock.day-1)*enemy_damage_growth
 	raider.fighter=Fighter.new(stats)

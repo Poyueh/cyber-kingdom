@@ -149,3 +149,25 @@ func test_moving_swing_displays_running_legs_without_changing_attack_timing(t) -
 	view.present(pose,0)
 	t.truth(legs!=null and not legs.visible,"stopping restores planted attack pose")
 	view.free()
+
+func test_return_cut_starts_from_previous_low_pose_and_rises_while_running(t) -> void:
+	var view = KnightVisual.new()
+	view.moving_attack_atlas = preload("res://art/characters/fluid-v001/moving-attack.png")
+	var pose = {"alive":true,"facing":1,"moving":true,"grounded":true,"invulnerable":false,"attack_progress":0.95,"combo_step":1}
+	view.present(pose,0.1)
+	var previous: int = view.frame
+	pose.combo_step = 2
+	pose.attack_progress = 0.0
+	view.present(pose,0.0)
+	t.equal(view.frame, previous, "return cut picks up the first cut's low sword")
+	pose.attack_progress = 0.95
+	view.present(pose,0.15)
+	t.equal(view.frame, 0, "return cut ends with sword raised for the finisher")
+	var stride = view.get_node("MovingAttack")
+	t.truth(stride.visible, "return cut keeps its running legs")
+	t.equal(int(stride.texture.region.position.x), 0, "combined atlas follows reversed sword pose")
+	pose.combo_step = 3
+	pose.attack_progress = 0.0
+	view.present(pose,0.0)
+	t.equal(view.frame, 0, "finisher begins from raised return-cut pose")
+	view.free()
