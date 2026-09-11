@@ -65,24 +65,39 @@ func _choice(id: String, x: float, title: String, cost: int = 0, allowed: bool =
 	return {"id":id,"x":x,"text":title,"cost":cost,"currency":"龍晶" if cost>0 else "","enabled":allowed,"reason":reason,"key":id,"paid":0}
 
 func context(x: float) -> Dictionary:
-	var choice := _choice("",x,"探索邊境，尋找流浪者與寶箱",0,false,"靠近目標互動")
-	var nearest := 73.0
+	var selected := _no_interaction(x)
+	for candidate in _interaction_candidates(x):
+		if selected.id.is_empty() or (candidate.enabled and not selected.enabled) or (candidate.enabled==selected.enabled and absf(candidate.x-x)<absf(selected.x-x)):
+			selected=candidate
+	return selected
+
+func context_for_key(x: float, key: String) -> Dictionary:
+	for candidate in _interaction_candidates(x):
+		if candidate.key==key: return candidate
+	return _no_interaction(x)
+
+func _no_interaction(x: float) -> Dictionary:
+	return _choice("",x,"探索邊境，尋找流浪者與寶箱",0,false,"靠近目標互動")
+
+func _interaction_candidates(x: float) -> Array[Dictionary]:
+	var candidates: Array[Dictionary] = []
+	var choice: Dictionary
 	for index in range(world.people.size()):
 		var person: Dictionary = world.people[index]
-		if person.role!="wanderer" or not person_visible(person) or absf(person.x-x)>=nearest or absf(person.get("y",430)-_player_y)>42: continue
-		nearest = absf(person.x-x)
+		if person.role!="wanderer" or not person_visible(person) or absf(person.x-x)>=73.0 or absf(person.get("y",430)-_player_y)>42: continue
 		choice = _choice("recruit",person.x,"招攬流浪者",prices.recruit,person.hurt<=0,"等待流浪者恢復")
 		choice["person_index"] = index
 		choice.key = "recruit:%d" % index
+		candidates.append(choice)
 	if absf(_player_y-430)<=42:
 		for site in world.sites:
-			if absf(world.sites[site]-x)>=nearest: continue
-			nearest = absf(world.sites[site]-x)
+			if frontier.city_level==0 and site!="hall": continue
+			if absf(world.sites[site]-x)>=73.0: continue
 			choice = _campaign_site(site)
+			candidates.append(choice)
 	for index in range(frontier.nodes.size()):
 		var node = frontier.nodes[index]
-		if node.collected or not frontier.regions[node.region].discovered or absf(node.x-x)>=nearest or absf(node.y-_player_y)>42: continue
-		nearest = absf(node.x-x)
+		if node.collected or not frontier.regions[node.region].discovered or absf(node.x-x)>=73.0 or absf(node.y-_player_y)>42: continue
 		if node.kind=="cache":
 			choice = _choice("chest",node.x,"開啟寶箱 · %d 龍晶 / %d 廢料" % [node.crystals,node.scrap])
 		else:
@@ -90,18 +105,20 @@ func context(x: float) -> Dictionary:
 			choice = _choice("mark",node.x,"委託工匠"+label,prices.mark,not node.marked,"已下令 · 等待工匠採集搬運")
 		choice["node_index"] = index
 		choice.key = "node:%d" % index
+		candidates.append(choice)
 	for index in range(frontier.regions.size()):
 		var region: Dictionary = frontier.regions[index]
-		if not region.outpost_ready or absf(region.outpost_x-x)>=nearest or absf(_player_y-430)>42: continue
-		nearest = absf(region.outpost_x-x)
+		if not region.outpost_ready or absf(region.outpost_x-x)>=73.0 or absf(_player_y-430)>42: continue
 		choice = _choice("outpost",region.outpost_x,"建立拓荒站",prices.outpost,not region.outpost_pending and not region.outpost_built,"工匠施工中" if region.outpost_pending else "拓荒站已建成")
 		choice["region_index"] = index
 		choice.key = "outpost:%d" % index
-	choice.paid = int(investments.get(choice.key,0))
-	if choice.enabled and choice.cost>0 and pouch.amount<=0:
-		choice.enabled = false
-		choice.reason = "背包沒有龍晶 · 尋找寶箱、收貨點或交易食物"
-	return choice
+		candidates.append(choice)
+	for candidate in candidates:
+		candidate.paid = int(investments.get(candidate.key,0))
+		if candidate.enabled and candidate.cost>0 and pouch.amount<=0:
+			candidate.enabled = false
+			candidate.reason = "背包沒有龍晶 · 尋找寶箱、收貨點或交易食物"
+	return candidates
 
 func _campaign_site(site: String) -> Dictionary:
 	var at: float = world.sites[site]
@@ -159,9 +176,9 @@ func _campaign_site(site: String) -> Dictionary:
 		choice.reason = "需要 2 藥草，或目前生命已滿"
 	return choice
 
-func interact(x: float) -> bool:
+func interact(x: float, target_key: String = "") -> bool:
 	if not hero.is_alive(): return false
-	var choice := context(x)
+	var choice := context(x) if target_key.is_empty() else context_for_key(x,target_key)
 	if not choice.enabled: return false
 	if choice.cost>0:
 		if not pouch.spend(): return false

@@ -3,11 +3,16 @@ const Icons=preload("res://presentation/ui_icons.gd")
 const Dashboard=preload("res://presentation/icon_dashboard.gd")
 signal throw_requested
 var drop_button: Button
+var interact_held := false
+var focus_key := ""
 var dashboard: Node2D
 var fullscreen_button: Button
 
 func _ready() -> void:
 	super._ready()
+	interact_button.action_mode=BaseButton.ACTION_MODE_BUTTON_PRESS
+	interact_button.button_down.connect(func(): interact_held=true)
+	interact_button.button_up.connect(func(): interact_held=false)
 	$Top.hide()
 	$Keys.hide()
 	dashboard=Dashboard.new()
@@ -87,7 +92,7 @@ func _layout() -> void:
 
 func present_world(sim, is_paused: bool, at: float, grounded: bool) -> void:
 	# No textual panel participates in the playable HUD.
-	var choice: Dictionary=sim.context(at)
+	var choice: Dictionary=sim.context(at) if focus_key.is_empty() else sim.context_for_key(at,focus_key)
 	interact_button.disabled=is_paused or not grounded or not choice.enabled or not sim.hero.is_alive()
 	interact_button.icon=Icons.get_icon("chest" if choice.id=="chest" else "crystal" if choice.cost>0 else "hand")
 	$restart.visible=is_paused or not sim.hero.is_alive()

@@ -1,5 +1,7 @@
 extends "res://bootstrap/settlement_root.gd"
 const FrontierSession = preload("res://application/campaign_session.gd")
+const InvestmentHold = preload("res://application/investment_hold.gd")
+var investment: RefCounted
 const Platform = preload("res://scenes/platform.tscn")
 var _map_seed: int
 var _seed_initialized := false
@@ -32,6 +34,10 @@ func restart() -> void:
 	sim = FrontierSession.new(config,Mapper.combat_stats(knight_tuning))
 	knight.configure(sim.hero,knight_tuning)
 	knight.position = Vector2(30,430)
+	investment=InvestmentHold.new(tuning.investment_hold_delay,tuning.investment_interval)
+	investment.cancel()
+	hud.interact_held=false
+	_sync_investment_focus()
 	paused = false
 	_requested_interaction = false
 	_requested_throw = false
@@ -48,11 +54,27 @@ func _physics_process(seconds: float) -> void:
 		sim.throw_crystal(knight.position.x,knight.position.y,sim.hero.facing)
 		hud.present_world(sim,paused,knight.position.x,knight.is_on_floor())
 	_requested_throw = false
+	if paused or not sim.hero.is_alive():
+		investment.cancel()
+		hud.interact_held=false
+		_sync_investment_focus()
+
+func _apply_interaction(command: Dictionary, seconds: float) -> void:
+	var held: bool=command.interaction_held or hud.interact_held or _requested_interaction
+	investment.step(seconds,held,knight.is_on_floor() and not (command.jump or command.jump_held) and sim.hero.is_alive(),sim,knight.position.x)
+	_sync_investment_focus()
+
+func _sync_investment_focus() -> void:
+	view.focus_key=investment.target_key
+	hud.focus_key=investment.target_key
+	view.investment_progress=investment.progress()
 
 func _notification(what: int) -> void:
 	super._notification(what)
 	if what == NOTIFICATION_APPLICATION_FOCUS_OUT or what == NOTIFICATION_APPLICATION_PAUSED:
 		_requested_throw = false
+		if investment!=null: investment.cancel()
+		if is_instance_valid(hud): hud.interact_held=false
 
 func _build_terrain() -> void:
 	var map = sim.frontier

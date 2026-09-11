@@ -3,9 +3,16 @@ const Ambient=preload("res://presentation/ambient_motion.gd")
 @export var wanderer_idle: Texture2D=preload("res://art/ambient/v001/wanderer-idle.png")
 @export var chest_open: Texture2D=preload("res://art/ambient/v001/chest-open.png")
 var crystal_radius: float = 9.0
+var focus_key := ""
+var investment_progress := 0.0
 const Icons=preload("res://presentation/ui_icons.gd")
 const SITE_ICONS={"hall":"camp","workshop":"hammer","armory":"sword","farm_tools":"hoe","hunt_tools":"bow","forge":"gear","beacon":"shield","wall":"wall","farm":"food","drill":"sword","trade":"trade","heal":"heal","outpost":"outpost","recruit":"person","chest":"chest","mark":"hammer"}
 const EXTRA_ART := {"campfire":preload("res://art/campaign/v001/campfire.png"),"stone":preload("res://art/campaign/v001/stone.png"),"herbs":preload("res://art/campaign/v001/herbs.png"),"plot":preload("res://art/campaign/v001/plot.png")}
+
+func present(sim, player_x: float) -> void:
+	_sim=sim
+	_context=sim.context(player_x) if focus_key.is_empty() else sim.context_for_key(player_x,focus_key)
+	queue_redraw()
 
 func _prop(name: String, at: Vector2, scale: float = 1.0, tint := Color.WHITE) -> void:
 	var texture: Texture2D=EXTRA_ART.get(name,art.props.get(name))
@@ -104,6 +111,10 @@ func _draw_interaction() -> void:
 	var x:=clampf(_context.x,left+width*0.5+8,right-width*0.5-8)
 	var ground:=430.0
 	if _context.has("node_index"): ground=_sim.frontier.nodes[_context.node_index].y
+	var marker_color:=Color("a3efcd") if _context.enabled else Color("769394")
+	draw_line(Vector2(_context.x-15,ground+2),Vector2(_context.x+15,ground+2),marker_color,2)
+	for side in [-1,1]:
+		draw_line(Vector2(_context.x+side*15,ground-3),Vector2(_context.x+side*15,ground+3),marker_color,2)
 	var y:=ground-141
 	var height:=82.0 if not requirements.is_empty() else 62.0
 	draw_style_box(_bubble_style(),Rect2(x-width*0.5,y-20,width,height))
@@ -113,7 +124,10 @@ func _draw_interaction() -> void:
 	_icon(key,Vector2(x,y),28)
 	if not _context.enabled: _icon("lock",Vector2(x+width*0.5-15,y-3),17,Color("d4a994"))
 	for index in range(_context.cost):
-		_crystal(Vector2(x+(index-(_context.cost-1)*0.5)*18,y+27),index<_context.paid)
+		var slot:=Vector2(x+(index-(_context.cost-1)*0.5)*18,y+27)
+		_crystal(slot,index<_context.paid)
+		if index==_context.paid and investment_progress>0:
+			draw_arc(slot,8,-PI*0.5,-PI*0.5+TAU*investment_progress,24,Color("e6f6b4"),2)
 	if _context.cost==0: _icon("hand" if _context.enabled else "check",Vector2(x,y+27),18)
 	var index:=0
 	for resource in requirements:
