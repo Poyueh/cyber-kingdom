@@ -34,6 +34,7 @@ func wait_for_damage(fighter) -> void:
 			return
 
 func run_scene() -> void:
+	verify_art_override()
 	var scene = load("res://scenes/training.tscn").instantiate()
 	var location := "user://test_scene_%d.json" % Time.get_ticks_usec()
 	scene.progress_path = location
@@ -171,3 +172,22 @@ func run_scene() -> void:
 	DirAccess.remove_absolute(location)
 	print("Scene assertions: %d; failures: %d" % [assertions, failures])
 	quit(0 if failures == 0 else 1)
+
+func verify_art_override() -> void:
+	var sprite=load("res://scenes/knight_visual.tscn").instantiate()
+	var original=load("res://data/knight_animation_frames.tres")
+	var atlas_path: String=original.get_frame_texture("idle",0).atlas.resource_path
+	var replacement=load("res://art/eightbit/v001/knight-idle.png")
+	sprite.texture_overrides={atlas_path:replacement}
+	root.add_child(sprite)
+	check(sprite.sprite_frames.get_frame_texture("idle",0).atlas==replacement,"art override replaces the atlas actually displayed")
+	var timing_preserved:=true
+	for clip in [&"idle",&"attack",&"dash"]:
+		timing_preserved=timing_preserved and sprite.sprite_frames.get_frame_count(clip)==original.get_frame_count(clip)
+		timing_preserved=timing_preserved and sprite.sprite_frames.get_animation_speed(clip)==original.get_animation_speed(clip)
+		for index in range(original.get_frame_count(clip)):
+			timing_preserved=timing_preserved and sprite.sprite_frames.get_frame_duration(clip,index)==original.get_frame_duration(clip,index)
+	check(timing_preserved,"art override preserves editable frame counts, speeds and durations")
+	check(sprite.sprite_frames.get_frame_texture("idle",0).region==original.get_frame_texture("idle",0).region,"art override preserves frame crop and alignment")
+	check(original.get_frame_texture("idle",0).atlas.resource_path==atlas_path,"art override never mutates the shared original resource")
+	sprite.queue_free()
