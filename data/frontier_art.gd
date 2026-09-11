@@ -5,3 +5,6 @@ extends Resource
 @export var engineer_atlas: Texture2D
 @export var citizens_atlas: Texture2D
 @export var props: Dictionary = {}
+
+@export var emission_masks: Dictionary = {}
+@export var show_power_grid: bool = false

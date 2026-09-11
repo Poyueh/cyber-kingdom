@@ -15,19 +15,49 @@ func present(sim, player_x: float) -> void:
 	queue_redraw()
 
 func _prop(name: String, at: Vector2, scale: float = 1.0, tint := Color.WHITE) -> void:
-	var texture: Texture2D=EXTRA_ART.get(name,art.props.get(name))
+	var texture: Texture2D=art.props.get(name,EXTRA_ART.get(name))
 	Ambient.prop(self,texture,name,at,scale,tint,_sim.workforce.elapsed)
+	var emission: Texture2D=art.emission_masks.get(name)
+	if emission!=null:
+		var size:=texture.get_size()*scale
+		var pulse: float=0.20+0.16*sin(_sim.workforce.elapsed*2.4+at.x*0.013)
+		draw_texture_rect(emission,Rect2(at-Vector2(size.x*0.5,size.y),size),false,Color(1,1,1,pulse*tint.a))
 
-func _draw_atmosphere(left: float) -> void:
+func _draw_atmosphere(_left: float) -> void:
+	if art.show_power_grid: _draw_power_grid()
 	if _sim.clock.is_night:
-		draw_rect(Rect2(left,0,get_viewport_rect().size.x,430),Color(0.03,0.07,0.18,0.32))
+		draw_rect(_background_rect(),Color(0.03,0.07,0.18,0.32))
+
+func _draw_power_grid() -> void:
+	# Decorative circuitry follows actual constructed sites and the paused game clock.
+	if _sim.frontier.city_level==0: return
+	var points: Array[float]=[float(_sim.world.sites.hall)]
+	for site in _sim.built:
+		if _sim.built[site]: points.append(float(_sim.world.sites[site]))
+	if _sim.world.wall.level>0: points.append(float(_sim.world.sites.wall))
+	if _sim.frontier.farm_active: points.append(float(_sim.world.sites.farm))
+	points.sort()
+	if points.size()<2: return
+	var length: float=points.back()-points.front()
+	if length<=0: return
+	draw_rect(Rect2(points.front(),443,length,5),Color("102934"))
+	draw_line(Vector2(points.front(),445),Vector2(points.back(),445),Color("27717e"),1)
+	var phase: float=fposmod(_sim.workforce.elapsed*48,length)
+	for offset in range(0,ceili(length),96):
+		var x: float=points.front()+fposmod(phase+offset,length)
+		draw_rect(Rect2(x,444,minf(9,points.back()-x),2),Color("6ef2dc"))
+	for x in points:
+		draw_line(Vector2(x,430),Vector2(x,445),Color("306b78"),2)
 
 func _draw_structures() -> void:
 	var world = _sim.world
 	var map = _sim.frontier
 	var hall: float = world.sites.hall
 	if map.city_level>0: _prop("hall-%d" % map.city_level,Vector2(hall,430))
-	_prop("campfire",Vector2(hall+(70 if map.city_level>0 else 0),430),0.7 if map.city_level>0 else 1.0)
+	_prop("campfire",Vector2(hall+(104 if map.city_level>0 else 0),430),0.7 if map.city_level>0 else 1.0)
+	if art.props.has("relay"):
+		_prop("relay",Vector2(hall-115,430),0.8)
+		if map.city_level>0: _prop("relay",Vector2(_sim.world.sites.workshop-100,430),0.8)
 	_text("營火 · 王國由此開始" if map.city_level==0 else "聚落 %d/3 · 收貨點" % map.city_level,hall,282,Color("f3d299"),15)
 	# Before the first investment there is only a campfire and nearby wanderers.
 	if map.city_level==0: return
@@ -158,8 +188,9 @@ func _resource(resource) -> void:
 	if resource.kind=="cache" and resource.delivered:
 		var index: int=_sim.frontier.nodes.find(resource)
 		var elapsed: float=_sim.workforce.elapsed-_sim.opened_chests.get(index,0.0)
-		var size:=chest_open.get_size()
+		var texture: Texture2D=art.props.get("chest-open",chest_open)
+		var size:=texture.get_size()
 		size.y*=lerpf(0.72,1.0,clampf(elapsed/0.18,0,1))
-		draw_texture_rect(chest_open,Rect2(Vector2(resource.x-size.x*0.5,resource.y-size.y),size),false,Color(0.8,0.9,0.9))
+		draw_texture_rect(texture,Rect2(Vector2(resource.x-size.x*0.5,resource.y-size.y),size),false,Color(0.8,0.9,0.9))
 		return
 	super._resource(resource)

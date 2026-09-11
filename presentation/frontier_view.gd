@@ -10,8 +10,8 @@ func _draw() -> void:
 	if _sim == null or _font == null: return
 	var map = _sim.frontier
 	var left: float = (get_viewport().get_canvas_transform().affine_inverse()*Vector2.ZERO).x
-	# Scenic backdrop stays behind the moving foreground; terrain tops match collision y=430.
-	draw_texture_rect(art.woodland,Rect2(left,0,get_viewport_rect().size.x,430),false)
+	# Frame the complete skyline above the real floor, independently of camera zoom.
+	draw_texture_rect(art.woodland,_background_rect(),false)
 	var tile_x: float = map.left_boundary
 	while tile_x<map.right_boundary:
 		var width := minf(768,map.right_boundary-tile_x)
@@ -44,6 +44,12 @@ func _draw() -> void:
 			_text("施工 %d%%" % int(100*region.outpost_progress/map.outpost_seconds),at.x,315,Color("edd19d"),13)
 		else: _text("拓荒站" if region.outpost_built else "已清理 · 可拓建",at.x,312,Color("b6dfd0"),13)
 	super._draw()
+
+func _background_rect() -> Rect2:
+	var inverse:=get_viewport().get_canvas_transform().affine_inverse()
+	var top_left:=inverse*Vector2.ZERO
+	var bottom_right:=inverse*get_viewport_rect().size
+	return Rect2(top_left,Vector2(bottom_right.x-top_left.x,430-top_left.y))
 
 func _draw_structures() -> void:
 	var world = _sim.world

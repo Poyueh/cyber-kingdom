@@ -1,15 +1,17 @@
-[gd_scene load_steps=7 format=3]
+[gd_scene load_steps=8 format=3]
 [ext_resource type="PackedScene" path="res://scenes/settlement.tscn" id="base"]
 [ext_resource type="Script" path="res://bootstrap/frontier_root.gd" id="root"]
 [ext_resource type="Resource" path="res://data/campaign.tres" id="tuning"]
 [ext_resource type="Script" path="res://presentation/campaign_view.gd" id="view"]
 [ext_resource type="Script" path="res://presentation/frontier_controls.gd" id="controls"]
 [ext_resource type="Script" path="res://presentation/campaign_hud.gd" id="hud"]
+[ext_resource type="Resource" path="res://data/cyber_frontier_art.tres" id="cyber-art"]
 [node name="Frontier" instance=ExtResource("base")]
 script = ExtResource("root")
 tuning = ExtResource("tuning")
 [node name="WorldView" parent="." index="5"]
 script = ExtResource("view")
+art = ExtResource("cyber-art")
 [node name="InputAdapter" parent="." index="6"]
 script = ExtResource("controls")
 [node name="HUD" parent="." index="7"]
