@@ -3,9 +3,12 @@ extends "res://presentation/fighter_visual.gd"
 const MotionFrames=preload("res://data/knight_motion_frames.tres")
 @export var texture_overrides: Dictionary = {}
 @export var moving_attack_atlas: Texture2D
+@export var combo_motion: Resource
 var _gait_time:=0.0
 var _moving_attack: Sprite2D
 var _moving_region:=AtlasTexture.new()
+var _combo_attack: Sprite2D
+var _combo_region:=AtlasTexture.new()
 var _motion_time:=0.0
 var _was_grounded:=true
 var _landing:=0.0
@@ -14,6 +17,11 @@ func _init() -> void:
 	_moving_attack.name="MovingAttack"
 	_moving_attack.visible=false
 	add_child(_moving_attack)
+	_combo_attack=Sprite2D.new()
+	_combo_attack.name="ComboAttack"
+	_combo_attack.visible=false
+	_combo_attack.offset=Vector2(0,-16)
+	add_child(_combo_attack)
 	sprite_frames=preload("res://data/knight_animation_frames.tres")
 	_bind_motion()
 	animation=&"idle"
@@ -44,6 +52,7 @@ func reset_pose() -> void:
 	_gait_time=0
 	self_modulate=Color.WHITE
 	_moving_attack.visible=false
+	_combo_attack.visible=false
 	_motion_time=0
 	_landing=0
 	_was_grounded=true
@@ -58,10 +67,12 @@ func present(pose: Dictionary, seconds: float) -> void:
 	super.present(pose,seconds)
 	self_modulate=Color.WHITE
 	_moving_attack.visible=false
+	_combo_attack.visible=false
+	_moving_attack.offset=Vector2.ZERO
 	if not pose.alive: return
 	var gait:=int(fposmod(_gait_time*sprite_frames.get_animation_speed(&"run"),sprite_frames.get_frame_count(&"run")))
 	if animation==&"run": frame=gait
-	if animation==&"attack" and int(pose.get("combo_step",0))==2:
+	if combo_motion==null and animation==&"attack" and int(pose.get("combo_step",0))==2:
 		# Reverse time, not just the index: respect authored frame weights.
 		frame=_action_frame(&"attack",1.0-clampf(float(pose.attack_progress),0.0,1.0))
 	if seconds>0 and is_finite(seconds):
@@ -88,8 +99,26 @@ func present(pose: Dictionary, seconds: float) -> void:
 		scale=Vector2(1+amount,1-amount)
 		offset.y+=amount*24
 
-	if striding and animation==&"attack" and moving_attack_atlas!=null:
-		# Offline-composited torso + gait keeps runtime work to one texture region.
+	if animation==&"attack" and combo_motion!=null and combo_motion.planted_atlas!=null:
+		var step:=clampi(int(pose.get("combo_step",1)),1,3)
+		var drawing: int=combo_motion.frame_at(step,float(pose.attack_progress))
+		if striding and combo_motion.moving_atlas!=null:
+			_moving_region.atlas=combo_motion.moving_atlas
+			_moving_region.region=Rect2(drawing*160,((step-1)*8+gait)*128,160,128)
+			_moving_attack.texture=_moving_region
+			_moving_attack.flip_h=flip_h
+			_moving_attack.offset=Vector2(0,-16)
+			_moving_attack.visible=true
+		else:
+			_combo_region.atlas=combo_motion.planted_atlas
+			_combo_region.region=Rect2(drawing*160,(step-1)*128,160,128)
+			_combo_attack.texture=_combo_region
+			_combo_attack.flip_h=flip_h
+			_combo_attack.visible=true
+		self_modulate=Color(1,1,1,0)
+		offset=Vector2.ZERO
+	elif striding and animation==&"attack" and moving_attack_atlas!=null:
+		# Legacy fallback for scenes without the independently authored combo.
 		_moving_region.atlas=moving_attack_atlas
 		_moving_region.region=Rect2(frame*128,gait*96,128,96)
 		_moving_attack.texture=_moving_region
