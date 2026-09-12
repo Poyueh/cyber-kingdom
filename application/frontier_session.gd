@@ -126,6 +126,7 @@ func _advance_people(seconds: float) -> void:
 	workforce.deliveries.clear()
 	var farmers := 0
 	for person in world.people:
+		if person.get("sheltering",false): continue
 		var before: float = person.x
 		if person.role == "farmer":
 			person.x = move_toward(person.x,world.sites.farm,_person_speed*seconds)

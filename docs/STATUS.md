@@ -402,3 +402,19 @@ TDD 先確認 8 個真實場景失敗（第一刀滑步、跑步腿與連斬距�
 
 乾淨版本完整 tools/check.sh 通過 **665 項斷言、零失敗**；分層、匯入、SCRIPT ERROR 掃描與主場景啟動均通過。舊 v002／v003 六張素材重製逐位元一致，24 新圖格與原生錄影檢查亦通過。保留原有 25 個個人設定／編輯器檔案，SHA-256 全數不變；標準回歸用倉庫長按等待 0.5 秒，個人 1 秒設定保留。新美術仍需使用者判斷，iPhone／iPad 實機尚未驗證。
 版本：feature/stylish-knight-swordplay 驗證後依 Gitflow 合併本地 develop，未推送遠端。
+
+## Kingdom Demo：居民日夜職責（2026-09-12）
+
+完整目標為有可玩性與適中難度的 Kingdom 類 Demo、平衡的騎士成長／戰鬥，以及 iOS／Android／Mac／Windows 交付。已保存官方玩法研究、逐項驗收與現有缺口於 [Demo 規格](design/kingdom-demo.md)，未將本單元縮減成果當成完整目標完成。
+
+本單元實作依回程距離提早收工；工匠保存工作與搬運貨物，農夫停產回營，天亮續做；獵人白天狩獵、晚上在城牆後射擊。無職居民回營，未招攬流浪者仍留在探索地點。參數集中 campaign.tres 的 Resident Night Safety。
+
+TDD 首次 9 個預期失敗後完成實作，新增 17 行為與 9 實際場景斷言。乾淨版本完整 tools/check.sh 通過 **691 項斷言、零失敗**（537 行為、154 場景），分層、匯入、SCRIPT ERROR 掃描與主場景啟動通過。[原生回營動畫](previews/resident-return-v001.gif)、[夜間射擊](previews/hunter-defense-v001.gif) 已目視確認，沿用現有角色美術，未新增拉弓動作。
+
+另執行 18 組固定守軍測量：[原始結果](design/balance-resident-night.json)、[方法與限制](design/resident-night-cycle.md)。修正測量用 Dictionary.merge 未覆寫城牆初值的 fixture 問題後，一守備兵＋木牆可守首夜，兩守備兵＋石牆可守第三夜，單靠獵人仍脆弱。這不代表已證明完整流程難度適中，亦未調弱敵人。聚落沒有真正失守終局是下一階段必補缺口。
+
+使用者確認實機為 iPhone 17e、iPhone 16 Pro Max；Android／Windows 裝置及 Apple 開發者帳號仍未知。已核對 Godot 4.7.2，本機沒有完整 Xcode、預設位置沒有 Android SDK；官方匯出模板準備中。尚未產出可安裝手機版，不能稱為四平台已完成。
+
+[第二十四課：調整收工時間](lessons/24-resident-night-safety.md)。原有 25 個未提交個人設定／編輯器檔案 SHA-256 不變；標準回歸使用倉庫長按等待 0.5 秒，個人 1 秒保留。本功能經 feature/demo-resident-night-cycle 按 Gitflow 整合本地 develop，未推送遠端。
+
+下一單元：左右防線／夜襲與可見勝敗，後續補可延續經濟、有限騎士成長、完整遊玩與四平台驗收；總目標仍進行中。

@@ -1,7 +1,12 @@
 extends "res://application/frontier_session.gd"
 ## Playable campaign orchestration. Wallet and calendar rules remain in domain.
+const Schedule = preload("res://domain/resident_schedule.gd")
 const Roaming = preload("res://domain/resident_roaming.gd")
 var stroll_speed: float = 24.0
+var return_margin: float = 15.0
+var hunter_damage: int = 12
+var hunter_range: float = 170.0
+var hunter_interval: float = 1.2
 var _hero_x: float = 0.0
 const Pouch = preload("res://domain/crystal_pouch.gd")
 const Calendar = preload("res://domain/campaign_clock.gd")
@@ -19,6 +24,10 @@ const NAMES := {"hall":"營火","workshop":"工匠器具","armory":"守備器具
 
 func _init(config: Dictionary = {}, hero_stats: Stats = null) -> void:
 	super(config,hero_stats)
+	return_margin = maxf(0.0,float(config.get("return_margin",15.0)))
+	hunter_damage = maxi(1,int(config.get("hunter_damage",12)))
+	hunter_range = maxf(30.0,float(config.get("hunter_range",170.0)))
+	hunter_interval = maxf(0.2,float(config.get("hunter_interval",1.2)))
 	stroll_speed=maxf(1.0,float(config.get("stroll_speed",24.0)))
 	pouch = Pouch.new(config.get("capacity",12),config.get("starting_crystals",12))
 	pouch.magnet_radius = maxf(32,config.get("magnet_radius",112.0))
@@ -264,7 +273,7 @@ func _advance_people(seconds: float) -> void:
 	for index in range(world.people.size()):
 		var person: Dictionary=world.people[index]
 		# Supplies, tools and occupations have already chosen their real destinations.
-		if person.role not in ["wanderer","citizen"] or person.get("moving",false): continue
+		if person.role not in ["wanderer","citizen"] or person.get("moving",false) or person.get("sheltering",false): continue
 		if person.role=="wanderer" and absf(person.x-_hero_x)<=72: continue
 		var before: float=person.x
 		var radius:=64.0 if person.role=="wanderer" else 100.0
@@ -276,6 +285,29 @@ func _advance_people(seconds: float) -> void:
 	for index in range(world.people.size()):
 		var person: Dictionary=world.people[index]
 		person["walk_distance"]=float(person.get("walk_distance",0.0))+absf(person.x-previous[index])
+
+func _override_resident_target(index: int, seconds: float) -> float:
+	var person: Dictionary = world.people[index]
+	if person.role not in ["citizen","engineer","farmer","hunter"]: return NAN
+	var home: float = world.sites.hall + (index%5-2)*22.0
+	if person.role=="hunter" and world.wall.hp>0:
+		home = world.sites.wall-90.0-(index%4)*24.0
+	if not Schedule.should_return(clock.is_night,clock.remaining,person.x,home,_person_speed,return_margin):
+		return NAN
+	person["sheltering"] = true
+	person["work_state"] = "walk"
+	if person.role=="engineer":
+		for job in frontier.nodes:
+			if job.worker==index and job.carried:
+				person.work_state = "haul"
+				break
+		if absf(person.get("y",430.0)-430.0)>0.1:
+			person["y"] = move_toward(person.get("y",430.0),430.0,70.0*seconds)
+			person.work_state = "climb"
+			return person.x
+	if person.role=="hunter":
+		_shoot_nearest_raider(person,hunter_range,hunter_damage,hunter_interval)
+	return home
 
 func finished() -> bool: return false
 func begin_raid() -> bool: return false # The calendar alone starts a night.

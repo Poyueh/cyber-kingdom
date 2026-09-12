@@ -150,3 +150,7 @@ Mapper 只對騎士設定 attack_movement_locked，敵人沿用原移動規則�
 ActorBody 將踏步距離除以本次遊戲時間作為水平速度，仍交由 move_and_slide 解決碰撞；被牆擋下的距離不保留，也不直接改 position。攻擊期間屏蔽方向鍵水平速度，視覺傳入非跑步狀態，使全身斬擊與前進相配。既有跳躍、重力及命中停頓的部分物理時間處理保留。domain 不依賴物理節點或動畫圖集。
 
 主戰役 v004 僅換 ComboMotion 圖集及畫格權重；有效揮擊起點仍與既有 Combatant 對齊。素材配方可個別指定 24 個來源裁切範圍和已目視確認的清理遮罩，避免生成網格不齊、相鄰刀光溢出造成切格錯誤。離線改動不進入 domain 或執行時程式。
+
+## 居民日夜職責
+
+ResidentSchedule 為純路程／時間規則；CampaignSession 決定職業避難位置，SettlementSession 的目的地 override 在一般工作前執行，FrontierSession 跳過已回防職業的第二次工作更新。射擊共用最近敵人與真正扣血，視覺只播放 bolt。工作認領與貨物不在回防時清除，天亮由原 Workforce 續做。Inspector 參數經 campaign_rules 注入，見 docs/design/resident-night-cycle.md。
