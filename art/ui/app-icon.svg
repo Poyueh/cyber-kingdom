@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 64 64" shape-rendering="crispEdges">
+<!-- Original Cyber Kingdom emblem: a dragon crystal powering a steel knight helm. -->
+<path fill="#101826" d="M0 0h64v64H0z"/>
+<path fill="#202c42" d="M8 8h48v48H8z"/>
+<path fill="#31545d" d="M12 12h40v40H12z"/>
+<path fill="#101826" d="M16 12h32v4h4v28h-4v4h-4v4H20v-4h-4v-4h-4V16h4z"/>
+<path fill="#8c3e66" d="M8 26h4v12H8zm44 0h4v12h-4zM24 52h16v4H24z"/>
+<path fill="#587887" d="M20 20h24v4h4v16h-4v4h-4v4H24v-4h-4v-4h-4V24h4z"/>
+<path fill="#bbccc4" d="M20 20h24v4H20zm-4 4h4v8h-4zm28 0h4v8h-4z"/>
+<path fill="#20354a" d="M20 28h24v4H20zm4 8h16v4H24zm4 4h8v8h-8z"/>
+<path fill="#64d8ca" d="M20 28h8v4h-8zm16 0h8v4h-8z"/>
+<path fill="#218c9b" d="M28 8h8v4h4v8h-4v4h-8v-4h-4v-8h4z"/>
+<path fill="#78eed5" d="M28 8h8v4h-4v8h-4v-4h-4v-4h4z"/>
+<path fill="#e6f2cd" d="M28 8h4v4h-4z"/>
+<path fill="#172336" d="M0 0h8v8H0zm56 0h8v8h-8zM0 56h8v8H0zm56 0h8v8h-8z"/>
+</svg>

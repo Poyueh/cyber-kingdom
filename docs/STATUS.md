@@ -560,3 +560,21 @@ TDD 先重現缺少快照、合法 JSON 內含非法世界資料、缺少檔案 
 Mac 仍 ad-hoc 未公證；Windows 未簽章且未實機。feature/campaign-save-resume 驗證後按 Gitflow 整合本地 develop，未推送。原有 25 個個人檔案雜湊保持不變；未改個人 1 秒長按設定。
 
 完整目標仍在進行。使用者測試裝置為 iPhone 17e／iPhone 16 Pro Max，兩台尚未安裝這版；付費 Apple Developer Program 尚待回覆。下一步首輪圖示引導、手機安全區與多指操作、iOS／Android 安裝交付；Windows 仍缺實機，真人難度與美感亦未驗收。
+
+## 手機安全區、觸控恢復與 Android 安裝版（2026-09-13）
+
+主戰役按鈕放大為 64×64 邏輯單位，HUD 依安全區換算後排版；較窄區域將核心／方向預警換行，手機隱藏全螢幕切換。保留 16:9 畫布與寬螢幕黑邊。經濟、戰鬥參數、角色美術與存檔版本皆未改動，第一刀仍原地、連斬仍踏進。
+
+TDD 重現切背景後 Input action 雖解除、按鈕仍占用舊手指，新手指不能操作的問題。原生 TouchScreenButton 和 GUI 投入鈕都要釋放捕捉；保留內建多指，不新增自製觸控框架。純幾何涵蓋左右缺口、平板與較窄範圍；實際場景涵蓋多指移動／投入／拋晶、移動時起手站定、未收到舊 release 也能重新移動／付款。
+
+最終乾淨 tools/check.sh 通過 **1094 項 Godot 斷言及 2 個 Python 建置測試**（840 行為、254 場景），架構／匯入／入口啟動無 ERROR。735 個遊戲、測試與關鍵設定檔比對產物來源一致。圖示匯出先以失敗回歸驗證，再補原創可編輯 SVG 及暫存副本設定；不覆寫個人 project.godot。
+
+Android 安裝環境已建立：官方 SDK、現有 OpenJDK 21、本機測試 key、隔離 AOSP Android 15 ARM64 模擬器。首版缺少 project icon 雖產出 APK 仍判失敗；乾淨 v2 已完成簽章和 16 KiB 對齊驗證，約 43.0 MiB。模擬器實際長按兩晶建營地、行走、拋晶、背景保存及冷重開通過：騎士 x 30→156.67、背包剩 9、保留一顆實體龍晶，重開先暫停，檢查點內容完全相同。冷重開有一次 shader cache 重編譯警告，沒有腳本錯誤或崩潰。
+
+[Android 建營地畫面](previews/android-camp-v001.png)、[Android 重開續玩](previews/android-reopened-v001.png) 是實際安裝版模擬器截圖；[左缺口](previews/mobile-safe-left-v001.png)、[右缺口](previews/mobile-safe-right-v001.png) 是桌面模擬安全區，非 iPhone 實機。軟體 GPU 不能代表手機效能，單指 adb 操作也未冒充實體多指操作。完整證據見 [報告](reports/mobile-controls-v001/manifest.json)。
+
+產物 builds/android-touch-20260913-v2 與 builds/desktop-touch-20260913 來自 tree c5e5df2a3c5a5959891a6899338c66adb965b689。Mac 73.3 MiB／Windows 51.9 MiB，ZIP、SHA-256、Mac codesign 與 Windows PE 通過；真正 Mac release 120 幀及實際 PCK 建設／居民／成長／外擴／續玩檢查通過。Mac ad-hoc 未公證，Windows 未簽章；Android 為 debug key，皆非商店正式版。
+
+feature/mobile-safe-controls 完成驗證後按 Gitflow 整合本地 develop，未推送。原有 25 個個人設定／編輯器檔案雜湊不變，個人長按 1 秒仍保留。新增 [第三十二課：手機安全區](lessons/32-mobile-safe-area.md)，未將提供教材當成使用者已學會。
+
+完整目標持續進行。下一步首輪圖示引導、Xcode／iOS 簽署安裝及兩支 iPhone 實測；Windows 與 Android 仍缺實體遊玩，外擴整局效益、真人適中難度與斬擊美感尚待驗收。iPhone 17e／iPhone 16 Pro Max 已列測試裝置；既有 Apple Developer Program 問題尚待回覆，未重複追問。

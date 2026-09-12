@@ -1,39 +1,59 @@
-# 桌面試玩包
-2026-09-13。這是目前原型的桌面交付，不是完整 Demo 目標完成或商店正式發行。
+# 測試安裝包
+
+2026-09-13。原型可在 Mac、Windows 打包，Android 已有模擬器安裝證據；不是完整 Demo 驗收或商店正式發行。
 
 ## 現有產物
-最新領土外擴版位於 builds/desktop-expansion-20260913（不提交 Git）；首版 desktop-preview-20260912-r2 保留作歷史版本：
-- macOS/Cyber Kingdom Demo.app：直接開啟進入營火戰役。
-- Cyber-Kingdom-macOS.zip：Mac 傳輸包，Universal 2（Intel／Apple Silicon）。
-- Cyber-Kingdom-Windows.zip：解壓後開啟 Cyber Kingdom Demo.exe，旁邊的 .pck 必須保留。
-- manifest.json：來源 tree、Godot 版本、入口和 ZIP SHA-256。
-- 匯入與兩平台匯出日誌保留在同一資料夾。
 
-Mac 使用 ad-hoc 簽章且未公證；Windows 未正式簽章。這些是開發測試包，跨電腦下載仍可能有系統安全提示；正式販售簽署另行處理。暫用 Bundle ID org.cyberkingdom.demo，不代表已登記 Apple 商店識別碼。
+- builds/desktop-touch-20260913/Cyber-Kingdom-macOS.zip：約 73.3 MiB，解壓後開啟 .app。
+- builds/desktop-touch-20260913/Cyber-Kingdom-Windows.zip：約 51.9 MiB，解壓後開啟 .exe，旁邊 .pck 必須保留。
+- builds/android-touch-20260913-v2/Cyber-Kingdom-Android-debug.apk：約 43.0 MiB，ARM64 Android 測試版。
+- 各資料夾的 manifest.json 保存來源 tree、雜湊與建置用途；安裝包不提交 Git。
 
-## 可重現建置
-需要 macOS、Python 3、Godot 4.7.2 及同版本官方匯出模板。本機已完成模板下載、ZIP CRC 驗證與安裝。程式使用 macOS ditto 保留 .app 權限，不宣稱建置腳本能在 Windows 主機執行。
+三份產物來自 c5e5df2a3c5a5959891a6899338c66adb965b689，入口皆為營火戰役 frontier.tscn。後續文件、預覽及驗證報告不改變遊戲內容。原 desktop-save／expansion 與失敗的 android-touch-20260913 留作歷史；Android 請用 v2。
 
-在倉庫根目錄執行：
+Mac 為 ad-hoc 簽章、未公證；Windows 未簽署；Android 使用本機 debug certificate。Bundle/package ID 暫為 org.cyberkingdom.demo，未代表 Apple 商店正式登記。iOS 尚無可安裝包。
+
+## 可重現桌面建置
+
+需要 macOS、Python 3、Godot 4.7.2 與相同版本官方匯出模板：
 
 ```sh
 python3 tools/build_desktop.py --ref develop --output builds/my-desktop-preview
 ```
 
-output 必須是尚未存在的目錄，避免蓋掉既有成果。預設取 HEAD 的已提交資料，也可傳明確 commit 或 staged tree；不會混入工作目錄未提交設定。可用 GODOT_BIN 或 --godot 指定引擎。
+output 必須是新目錄。預設取 HEAD 已提交資料，亦可指定 commit／tree；不混入工作目錄未提交設定。Mac ZIP 使用 ditto 保留權限，未宣稱此腳本可直接在 Windows 主機執行。
 
-建置只在暫存副本將入口改為 frontier.tscn、名稱改為 Cyber Kingdom Demo，並啟用 Apple 晶片匯出要求的 ETC2／ASTC 貼圖匯入。使用者編輯中的 project.godot 不會被改動。若直接從 Godot Export 選單匯出，仍沿用你工作目錄的入口／貼圖設定；要得到本文件的結果請使用上述流程。
+工具只在暫存副本設定 frontier 入口、Cyber Kingdom Demo 名稱、原創龍晶騎士 app-icon.svg，及 ETC2／ASTC 貼圖匯入。原 project.godot 不變。直接使用 Godot Export 選單則沿用工作目錄設定；要重現此文件請用工具。
 
-兩個 export_presets.cfg 排除研究文件、測試、工具、概念圖、生成原圖與 contact 圖。其餘遊戲資源保留，包含舊場景可用資源，尚未做最終體積最佳化。程式檢查工具退出碼與 Godot ERROR，不能讓錯誤的匯出繼續產生成功清單。
+## Android 本機測試建置
 
-## 已驗證與限制
-- 首次匯出發現 Universal／arm64 要求 ETC2／ASTC；新增會失敗的 staging 測試，再補建置副本設定，測試轉綠。
-- 兩個 Python 行為測試涵蓋暫存入口／貼圖設定與不改工作目錄，以及 Godot 退出碼為零但輸出 SCRIPT ERROR 時仍停止建置。
-- Mac、Windows release 匯出與日誌錯誤掃描成功；ZIP CRC／檔案大小、Windows x86-64 PE 格式與 Mac codesign 完整性另檢查。
-- 真正 Mac 執行檔已從預設入口啟動，headless 120 幀零錯誤；原生 GUI 視窗存在。
-- 為測試遊戲流程，用相同版本 Godot 執行器載入實際產物 .pck，驗證外擴建牆／工匠施工／城外敵襲、日出補員／招募付款／不重複再生、電容安裝／充能、容量 HUD、營火投入、招募、左側城牆投入、核心失守／重開、暫停、入口與測試檔排除；同時真正渲染並保存畫面。這是打包資源驗證，不能寫成真人在成品程式完成了整局。
-- 打包驗證須從專案外執行，例如使用 --path /tmp；否則本機 res:// 測試檔會疊在 PCK 上，導致資源排除檢查誤判。本次先重現這個失敗，再隔離目錄，以相同產物與相同斷言通過。
-- 正式 release template 不提供 --script 參數；最初外部腳本未執行而啟動一般遊戲，沒有把這次沒有結果的嘗試算作測試成功。
-- Windows 沒有實機遊玩證據；兩支 iPhone 尚未安裝，Android 尚未產出 APK；完整 Xcode、手機簽署、存續檔與完整難度驗收仍待完成。
+已在此 Mac 安裝官方 command-line tools、platform-tools、Android 35／36 platform、build-tools 35.0.1／36.0.0。Godot 4.7.2 模板實際 target SDK 為 36、minimum 24。使用現有 OpenJDK 21；Godot 設定的 Android SDK 與 Java SDK 路徑須指向本機安裝處。
 
-研究依據：[Godot Mac 匯出](https://docs.godotengine.org/en/stable/tutorials/export/exporting_for_macos.html)、[Windows 匯出](https://docs.godotengine.org/en/stable/tutorials/export/exporting_for_windows.html)、[命令列匯出](https://docs.godotengine.org/en/stable/tutorials/editor/command_line_tutorial.html)。實際選項與需求另由本機 4.7.2 引擎核對。
+在 Godot Editor Settings → Export → Android 設定路徑。本機 Android SDK 為 /Users/jenpoyueh/Library/Android/sdk，JDK 為 /opt/homebrew/Cellar/openjdk/21.0.3/libexec/openjdk.jdk/Contents/Home；其他電腦請使用自己的路徑。
+
+本機 debug key 放在 ~/.android/cyber-kingdom-debug.keystore，未提交 Git。這是測試專用、標準公開 debug 密碼，不是正式發行憑證。另一台電腦可建立自己的 debug key：
+
+```sh
+keytool -genkeypair -keystore ~/.android/cyber-kingdom-debug.keystore -alias androiddebugkey -keyalg RSA -keysize 2048 -validity 10000 -storepass android -keypass android -dname "CN=Android Debug,O=Android,C=US"
+python3 tools/build_android.py --ref develop --output builds/my-android-preview
+```
+
+keytool 需要 ~/.android 已存在；若已有同名檔案請保留，勿重建覆蓋。可用 --debug-key 指定另一個測試 key。不同簽章不能直接更新已有同 package 安裝，解除安裝會刪進度，所以同一測試期保留這支 key。
+
+預設非 Gradle 匯出，沒有加入 NDK／CMake 等此流程不需要的工具。APK 只含 ARM64 ABI，未要求網際網路權限；支援範圍還需實體裝置驗證。正式商店後續改用 release key、AAB 與版本碼流程，不能把此 APK 當正式上架。
+
+## 驗證與限制
+
+乾淨副本完整 tools/check.sh 通過 1094 項 Godot 斷言及 2 個 Python 建置測試。建置比對 735 個遊戲／測試／設定檔案與產物來源一致，原個人 25 檔不動。
+
+桌面 ZIP CRC／SHA-256、Mac 簽章完整性、Windows x86-64 格式通過；真正 Mac release 入口 120 幀無錯誤。引擎載入實際 PCK 驗證建設、居民、成長、外擴、核心終局與完整續玩，原生渲染通過。PCK 檢查必須從專案外執行，例如 --path /tmp；使用原生圖形模式，不能用 headless 截圖。這不是真人完成整局的證明。
+
+Android v2 無匯出 ERROR，v2/v3 APK 簽章與 16 KiB native alignment 檢查通過。已在隔離 AOSP Android 15 ARM64 模擬器安裝、冷啟動，觸控長按建營地、移動、拋晶、回首頁存檔、停止程序和重開續玩通過。冷重開出現一次軟體 GLES shader cache 重編譯警告，仍成功渲染，無 SCRIPT ERROR 或崩潰。沒有從模擬器推論實體手機 FPS／耗電。
+
+Android 4.7.2 模板的可啟動 alias 是 com.godot.game.GodotAppLauncher；內部 GodotApp activity 不對外開放。測試啟動請讀 APK manifest／套件解析結果，不要為了測試修改 activity 權限。
+
+三平台排除 docs、tests、tools、概念圖、原始生成圖及 contact 圖，仍保留舊場景可用資源；尚未最終縮減體積。錯誤掃描不只看退出碼；初次缺少 project icon 即使有 APK 仍算失敗，修正後重建 v2。
+
+iPhone 17e／iPhone 16 Pro Max 尚未安裝。完整 Xcode 與 Apple 簽署未完成；iPad、Android 真機、Windows 實機、真人難度與動作美感仍未驗收。[驗證報告](reports/mobile-controls-v001/manifest.json)、[手機規格](design/mobile-controls.md)。
+
+參考：[Godot Android 匯出](https://docs.godotengine.org/en/stable/tutorials/export/exporting_for_android.html)、[官方 Android 工具](https://developer.android.com/studio#command-line-tools-only)、[Godot iOS 匯出](https://docs.godotengine.org/en/stable/tutorials/export/exporting_for_ios.html)。選項另以本機 4.7.2 實際輸出核對。

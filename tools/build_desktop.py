@@ -40,6 +40,11 @@ def prepare_tree(ref, destination):
     content, count = re.subn(r'^config/name=.*$', 'config/name="Cyber Kingdom Demo"', content, flags=re.M)
     if count != 1:
         raise ValueError("Expected exactly one application name")
+    icon = 'config/icon="res://art/ui/app-icon.svg"'
+    if re.search(r'^config/icon=.*$', content, flags=re.M):
+        content = re.sub(r'^config/icon=.*$', icon, content, flags=re.M)
+    else:
+        content = content.replace('[application]', '[application]\n' + icon, 1)
     setting = "textures/vram_compression/import_etc2_astc"
     if re.search(r"^" + re.escape(setting) + r"=.*$", content, flags=re.M):
         content = re.sub(r"^" + re.escape(setting) + r"=.*$", setting + "=true", content, flags=re.M)
