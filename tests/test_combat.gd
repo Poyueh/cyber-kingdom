@@ -237,3 +237,52 @@ func test_each_combo_cut_locks_direction_when_it_begins(t) -> void:
 	t.equal(hero.attack_facing, 1, "queued turn cannot flip current sword")
 	hero.advance(0.22)
 	t.equal(hero.attack_facing, -1, "new cut takes current movement facing")
+
+func test_followup_travel_is_timed_directional_and_consumed_once(t) -> void:
+	var hero = combo_fighter()
+	hero.start_attack()
+	hero.advance(0.34)
+	t.equal(hero.consume_attack_travel(), 0.0, "first slash stays rooted")
+	hero.start_attack()
+	hero.advance(0.04)
+	t.equal(hero.consume_attack_travel(), 0.0, "followup anticipation stays planted")
+	hero.facing = -1
+	hero.advance(0.09)
+	var partial: float = hero.consume_attack_travel()
+	t.truth(partial > 0.0 and partial < 22.0, "followup advances during the cut in its locked direction")
+	t.equal(hero.consume_attack_travel(), 0.0, "same movement cannot be applied twice")
+	hero.advance(0.2)
+	t.truth(is_equal_approx(partial + hero.consume_attack_travel(), 22.0), "second cut travels its full distance")
+	hero.start_attack()
+	hero.advance(0.5)
+	t.truth(is_equal_approx(hero.consume_attack_travel(), -32.0), "finisher steps farther in its own locked direction")
+
+func test_step_distance_survives_coarse_handoff_and_custom_timing(t) -> void:
+	for duration in [0.2, 0.6]:
+		var coarse = combo_fighter()
+		var fine = combo_fighter()
+		for hero in [coarse, fine]:
+			hero.stats.attack_duration = duration
+			hero.start_attack()
+			hero.advance(duration * 0.7)
+			hero.consume_attack_travel()
+			hero.start_attack()
+		coarse.advance(duration * 1.2)
+		var total := 0.0
+		for tick in range(120):
+			fine.advance(duration / 100.0)
+			total += fine.consume_attack_travel()
+		t.truth(is_equal_approx(coarse.consume_attack_travel(), total) and is_equal_approx(total, 22.0), "frame size and swing duration do not change forward step distance")
+
+func test_cancelled_combo_discards_unapplied_step(t) -> void:
+	for cancel in ["dash", "hurt", "death"]:
+		var hero = combo_fighter()
+		hero.start_attack()
+		hero.advance(0.34)
+		hero.start_attack()
+		hero.advance(0.13)
+		if cancel == "dash": hero.start_dash()
+		else: hero.take_damage(999 if cancel == "death" else 1)
+		t.equal(hero.consume_attack_travel(), 0.0, "cancel discards pending step: " + cancel)
+		hero.advance(0.3)
+		t.equal(hero.consume_attack_travel(), 0.0, "cancelled sword cannot resume stepping: " + cancel)

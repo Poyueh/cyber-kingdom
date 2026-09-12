@@ -12,6 +12,9 @@ static func combat_stats(tuning: Resource) -> Stats:
 
 static func knight_stats(tuning: Resource, combo: Resource) -> Stats:
 	var stats := combat_stats(tuning)
+	stats.attack_movement_locked = true
+	stats.combo_return_step = combo.return_step_distance
+	stats.combo_finisher_step = combo.finisher_step_distance
 	stats.combo_enabled = combo.enabled
 	stats.combo_buffer_seconds = combo.input_buffer_seconds
 	stats.combo_grace_seconds = combo.followup_grace_seconds
