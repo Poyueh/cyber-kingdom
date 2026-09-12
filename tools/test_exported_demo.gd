@@ -52,6 +52,24 @@ func review() -> void:
 	assert(scene.sim.clock.remaining==time)
 	scene.restart()
 	assert(scene.sim.frontier.city_level==0 and scene.sim.pouch.amount==12)
+	scene.sim.world.people.clear()
+	scene.sim.frontier.city_level=1
+	scene.sim.world.scrap=3
+	scene.knight.position.x=350
+	scene._physics_process(1.0/60)
+	for i in range(2):
+		scene.hud.interact_button.button_down.emit()
+		scene._physics_process(1.0/60)
+		scene.hud.interact_button.button_up.emit()
+		scene._physics_process(1.0/60)
+	assert(scene.sim.hero.shield==20 and scene.sim.growth.capacity()==20)
+	assert(scene.hud.dashboard.values.shield_capacity==20 and scene.hud.interact_button.disabled)
+	scene.sim.hero.take_damage(15)
+	scene.hud.interact_button.button_down.emit()
+	scene._physics_process(1.0/60)
+	scene.hud.interact_button.button_up.emit()
+	assert(scene.sim.hero.shield==20 and scene.sim.world.scrap==0)
+	print("PASS: bounded capacitor install, recharge and HUD in exported bundle")
 	print("PASS: exported bundle entry, camp investment, recruitment, left-wall investment, core defeat, mission reset, pause, restart, and resource exclusions")
 	scene.queue_free()
 	await process_frame

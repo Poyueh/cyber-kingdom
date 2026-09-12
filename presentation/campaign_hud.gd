@@ -102,6 +102,8 @@ func present_world(sim, is_paused: bool, at: float, grounded: bool) -> void:
 	var map=sim.frontier
 	dashboard.values={"hp":sim.hero.hp,"shield":sim.hero.shield,"crystal":"%d/%d" % [sim.pouch.amount,sim.pouch.capacity],"wood":map.wood,"food":map.food,"stone":map.stone,"herbs":map.herbs,"scrap":sim.world.scrap,"day":sim.clock.day,"survived":sim.clock.survived,"full":sim.pouch.amount>=sim.pouch.capacity}
 	var pressure: Dictionary=sim.raid_pressure()
+	dashboard.values["damage"]=sim.hero.stats.damage
+	dashboard.values["shield_capacity"]=sim.growth.capacity()
 	dashboard.values["core_hp"]=sim.mission.core_hp
 	dashboard.values["core_max_hp"]=sim.mission.core_max_hp
 	dashboard.values["defeat_reason"]=sim.mission.defeat_reason

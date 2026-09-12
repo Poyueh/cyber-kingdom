@@ -7,7 +7,7 @@ var crystal_radius: float = 9.0
 var focus_key := ""
 var investment_progress := 0.0
 const Icons=preload("res://presentation/ui_icons.gd")
-const SITE_ICONS={"rift":"rift","core_charge":"camp","hall":"camp","workshop":"hammer","armory":"sword","farm_tools":"hoe","hunt_tools":"bow","forge":"gear","beacon":"shield","wall":"wall","wall_left":"wall","farm":"food","drill":"sword","trade":"trade","heal":"heal","outpost":"outpost","recruit":"person","chest":"chest","mark":"hammer"}
+const SITE_ICONS={"shield_charge":"shield","rift":"rift","core_charge":"camp","hall":"camp","workshop":"hammer","armory":"sword","farm_tools":"hoe","hunt_tools":"bow","forge":"gear","beacon":"shield","wall":"wall","wall_left":"wall","farm":"food","drill":"sword","trade":"trade","heal":"heal","outpost":"outpost","recruit":"person","chest":"chest","mark":"hammer"}
 const EXTRA_ART := {"campfire":preload("res://art/campaign/v001/campfire.png"),"stone":preload("res://art/campaign/v001/stone.png"),"herbs":preload("res://art/campaign/v001/herbs.png"),"plot":preload("res://art/campaign/v001/plot.png")}
 
 func present(sim, player_x: float) -> void:
@@ -73,6 +73,7 @@ func _draw_structures() -> void:
 	for site in world.sites:
 		var x: float=world.sites[site]
 		if site=="hall": continue
+		if not _context.id.is_empty() and absf(_context.x-x)<1:continue
 		_icon(SITE_ICONS.get(site,"hand"),Vector2(x,276 if _sim.built.get(site,false) else 343),23)
 	for site in ["workshop","armory","farm_tools","hunt_tools","forge","beacon"]:
 		var at := Vector2(world.sites[site],430)
@@ -157,8 +158,10 @@ func _draw_interaction() -> void:
 	if _context.id.is_empty(): return
 	var requirements: Dictionary=_context.get("requirements",{})
 	var prerequisites: Array=_context.get("prerequisites",[])
+	var upgrade: Dictionary=_context.get("upgrade",{})
 	var width:=maxf(96,_context.cost*18+48)
 	width=maxf(width,maxi(requirements.size(),prerequisites.size())*52+28)
+	if not upgrade.is_empty():width=maxf(width,136)
 	var inverse:=get_viewport().get_canvas_transform().affine_inverse()
 	var left: float=(inverse*Vector2.ZERO).x
 	var right: float=(inverse*get_viewport_rect().size).x
@@ -169,8 +172,8 @@ func _draw_interaction() -> void:
 	draw_line(Vector2(_context.x-15,ground+2),Vector2(_context.x+15,ground+2),marker_color,2)
 	for side in [-1,1]:
 		draw_line(Vector2(_context.x+side*15,ground-3),Vector2(_context.x+side*15,ground+3),marker_color,2)
-	var y:=ground-(184 if _context.id=="rift" else 141)
-	var height:=82.0 if not requirements.is_empty() or not prerequisites.is_empty() else 62.0
+	var height:=62.0+(20 if not requirements.is_empty() else 0)+(20 if not prerequisites.is_empty() else 0)+(40 if not upgrade.is_empty() else 0)
+	var y:=ground-(184 if _context.id=="rift" else 141)-(height-62)
 	draw_style_box(_bubble_style(),Rect2(x-width*0.5,y-20,width,height))
 	var key: String=SITE_ICONS.get(_context.id,"hand")
 	if _context.id=="mark":
@@ -186,18 +189,29 @@ func _draw_interaction() -> void:
 		var status: String="hand" if _context.enabled else "check"
 		if _context.id=="rift" and not _sim.mission.rifts[_context.rift_index].sealed:status="hammer"
 		_icon(status,Vector2(x,y+27),18)
+	var row_y:=y+48
 	var index:=0
 	for resource in requirements:
-		var at:=Vector2(x+(index-(requirements.size()-1)*0.5)*52,y+48)
+		var at:=Vector2(x+(index-(requirements.size()-1)*0.5)*52,row_y)
 		_icon(resource,at-Vector2(10,0),17)
 		_number(str(requirements[resource]),at+Vector2(3,5))
 		index+=1
 
+	if not requirements.is_empty():row_y+=20
 	for i in range(prerequisites.size()):
 		var item: Dictionary=prerequisites[i]
-		var at:=Vector2(x+(i-(prerequisites.size()-1)*0.5)*52,y+48)
+		var at:=Vector2(x+(i-(prerequisites.size()-1)*0.5)*52,row_y)
 		_icon(item.icon,at-Vector2(10,0),17,Color("dbb397"))
 		_number(str(item.value),at+Vector2(3,5))
+
+	if not prerequisites.is_empty():row_y+=20
+	if not upgrade.is_empty():
+		_icon(upgrade.icon,Vector2(x-46,row_y),20,Color("a6e6d3"))
+		_number(str(upgrade.value),Vector2(x-27,row_y+5))
+		_icon("right",Vector2(x+4,row_y),16,Color("b9c8b4"))
+		_number(str(upgrade.next),Vector2(x+20,row_y+5))
+		for i in range(upgrade.limit):
+			draw_rect(Rect2(x+(i-(upgrade.limit-1)*0.5)*14-4,row_y+15,8,5),Color("9fdbbf") if i<upgrade.level else Color("435660"))
 
 func _bubble_style() -> StyleBoxFlat:
 	var style:=StyleBoxFlat.new()

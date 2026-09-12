@@ -15,21 +15,24 @@ func number(value: String, at: Vector2, color:=Color("e6e7d2"), size: int=15) ->
 	draw_string(_font,at,value,HORIZONTAL_ALIGNMENT_LEFT,-1,size,color)
 func _draw() -> void:
 	var width:=get_viewport_rect().size.x
-	draw_style_box(_panel(),Rect2(16,14,180,38))
+	draw_style_box(_panel(),Rect2(16,14,212,38))
 	icon("heart",Vector2(36,33),24)
 	draw_rect(Rect2(55,23,80,6),Color("303f48"))
 	draw_rect(Rect2(55,23,80*health_ratio,6),Color("dd8899"))
 	number(str(values.get("hp",0)),Vector2(56,46),Color("e9cdcf"),13)
 	icon("shield",Vector2(153,33),20)
-	number(str(values.get("shield",0)),Vector2(167,39),Color("a7e6dc"),13)
+	number("%d/%d" % [values.get("shield",0),values.get("shield_capacity",0)],Vector2(167,39),Color("a7e6dc"),13)
 	var index:=0
 	for key in ["crystal","wood","food","stone","herbs","scrap"]:
 		if not values.has(key): continue
-		var x:=211.0+index*65+(16 if index>0 else 0)
+		var x:=243.0+index*65+(16 if index>0 else 0)
 		draw_style_box(_panel(),Rect2(x-3,14,78 if key=="crystal" else 62,38))
 		icon(key,Vector2(x+12,32),23)
 		number(str(values[key]),Vector2(x+28,38),Color("a8eddc") if key=="crystal" else Color("e3dfcc"),13)
 		index+=1
+	draw_style_box(_panel(),Rect2(659,14,72,38))
+	icon("sword",Vector2(677,33),23)
+	number(str(values.get("damage",0)),Vector2(695,39),Color("e9d5a7"),13)
 	var center:=width*0.5
 	draw_style_box(_panel(),Rect2(center-88,62,176,34))
 	icon("moon" if is_night else "sun",Vector2(center-64,79),22)
@@ -47,7 +50,7 @@ func _draw() -> void:
 		number(str(count),Vector2(x+47,85),Color("ffd5a0"))
 	_draw_mission(center)
 	if values.get("full",false):
-		icon("bag",Vector2(220,68),22,Color("f5b87c"))
+		icon("bag",Vector2(252,68),22,Color("f5b87c"))
 	if is_paused or dead or victory:
 		var at:=Vector2(center,get_viewport_rect().size.y*0.45)
 		draw_style_box(_panel(),Rect2(at-Vector2(52,48),Vector2(104,96)))

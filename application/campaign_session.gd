@@ -1,5 +1,7 @@
 extends "res://application/frontier_session.gd"
 ## Playable campaign orchestration. Wallet and calendar rules remain in domain.
+const Growth=preload("res://domain/knight_growth.gd")
+var growth: Growth
 const Mission=preload("res://domain/campaign_mission.gd")
 var mission: Mission
 const RiftWorkforce=preload("res://application/rift_workforce.gd")
@@ -38,6 +40,7 @@ func _init(config: Dictionary = {}, hero_stats: Stats = null) -> void:
 	super(resolved,hero_stats)
 	world.add_wall("wall_left",left_post)
 	mission=Mission.new(config)
+	growth=Growth.new(config,world.shield_value)
 	mission.add_rift(-1,frontier.left_boundary-180.0)
 	mission.add_rift(1,frontier.right_boundary+180.0)
 	frontier.left_boundary-=400.0
@@ -203,20 +206,46 @@ func _campaign_site(site: String) -> Dictionary:
 		choice.enabled = not defense.pending and (repair or defense.level<2) and (repair or defense.level==0 or frontier.stone>=3)
 		choice.reason = "施工中／防線已滿，升級需要 3 石材"
 	elif site=="forge":
-		choice["requirements"]={"scrap":2}
-		choice.text="義肢爐 · 2 廢料 / 護盾 +%d" % world.shield_value
-		choice.enabled=world.scrap>=2
-		choice.reason="需要從寶箱或敵人回收 2 廢料"
+		var charging:=hero.shield<growth.capacity()
+		choice.id="shield_charge" if charging else "forge"
+		choice.key="shield_charge" if charging else "forge:%d" % growth.capacitor_level
+		choice.cost=growth.charge_cost if charging else growth.crystal_cost(prices.forge,growth.capacitor_level)
+		var scrap: int=growth.charge_scrap if charging else growth.capacitor_scrap()
+		choice["requirements"]={"scrap":scrap}
+		choice.enabled=world.scrap>=scrap and (charging or growth.can_install(frontier.city_level))
+		choice["prerequisites"]=[]
+		if not charging and growth.capacitor_level<growth.capacitor_limit and frontier.city_level<=growth.capacitor_level:
+			choice.prerequisites.append({"icon":"camp","value":growth.capacitor_level+1})
+		choice["upgrade"]={"icon":"shield","level":growth.capacitor_level,"limit":growth.capacitor_limit,
+			"value":hero.shield if charging else growth.capacity(),
+			"next":growth.recharge(hero.shield) if charging else mini(growth.capacitor_level+1,growth.capacitor_limit)*growth.shield_per_cell}
+		if not charging and growth.capacitor_level>=growth.capacitor_limit:
+			choice.cost=0
+			choice.requirements={}
+		choice.text="護盾充能" if charging else "擴充義肢電容"
+		choice.reason="先升級聚落、取得廢料，或電容已滿階"
 	elif site=="farm":
 		choice["requirements"]={"wood":2,"food":1}
 		choice.text = "開墾農田 · 2 木材 / 1 食物"
 		choice.enabled = not frontier.farm_active and frontier.wood>=2 and frontier.food>=1
 		choice.reason = "已播種，或缺少木材與種子食物"
 	elif site=="drill":
-		choice["requirements"]={"food":frontier.training_food}
-		choice.text = "劍術訓練 · %d 食物 / 劍傷 +%d" % [frontier.training_food,frontier.training_damage]
-		choice.enabled = frontier.food>=frontier.training_food and frontier.drill_level<frontier.training_limit
-		choice.reason = "食物不足或訓練已滿"
+		var limit:=mini(3,frontier.training_limit)
+		var food: int=growth.lesson_food(frontier.training_food,frontier.drill_level)
+		choice.key="drill:%d" % frontier.drill_level
+		choice.cost=growth.crystal_cost(prices.drill,frontier.drill_level)
+		choice["requirements"]={"food":food}
+		choice["prerequisites"]=[]
+		if frontier.drill_level<limit and frontier.city_level<=frontier.drill_level:
+			choice.prerequisites.append({"icon":"camp","value":frontier.drill_level+1})
+		choice["upgrade"]={"icon":"sword","level":frontier.drill_level,"limit":limit,
+			"value":hero.stats.damage,"next":hero.stats.damage+(frontier.training_damage if frontier.drill_level<limit else 0)}
+		if frontier.drill_level>=limit:
+			choice.cost=0
+			choice.requirements={}
+		choice.text="劍術訓練"
+		choice.enabled=frontier.food>=food and frontier.drill_level<limit and frontier.drill_level<frontier.city_level
+		choice.reason="先升級聚落、儲備食物，或劍術已滿階"
 	elif site=="trade":
 		choice["requirements"]={"food":4}
 		choice.text = "交易 · 4 食物換 2 龍晶"
@@ -273,10 +302,16 @@ func _execute(choice: Dictionary) -> void:
 			defense.merge({"pending":true,"repair":repair,"progress":0.0},true)
 		"outpost": frontier.regions[choice.region_index].outpost_pending=true
 		"farm": frontier.plant()
-		"forge": world.scrap-=2; hero.shield+=world.shield_value; built.forge=true
+		"forge":
+			world.scrap-=growth.capacitor_scrap()
+			hero.shield=growth.install(frontier.city_level)
+			built.forge=true
+		"shield_charge":
+			world.scrap-=growth.charge_scrap
+			hero.shield=growth.recharge(hero.shield)
 		"beacon": world.barrier+=1; built.beacon=true
 		"drill":
-			frontier.food-=frontier.training_food
+			frontier.food-=growth.lesson_food(frontier.training_food,frontier.drill_level)
 			frontier.drill_level+=1
 			hero.stats.damage+=frontier.training_damage
 		"trade": frontier.food-=4; pouch.receive(2,choice.x)
