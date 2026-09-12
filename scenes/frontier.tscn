@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3]
+[gd_scene load_steps=17 format=3]
 [ext_resource type="PackedScene" path="res://scenes/settlement.tscn" id="base"]
 [ext_resource type="Script" path="res://bootstrap/frontier_root.gd" id="root"]
 [ext_resource type="Resource" path="res://data/campaign.tres" id="tuning"]
@@ -14,6 +14,7 @@
 [ext_resource type="Texture2D" path="res://art/characters/fluid-v001/run.png" id="knight-run"]
 [ext_resource type="Texture2D" path="res://art/characters/prosthetic-v001/knight-jump.png" id="knight-jump"]
 [ext_resource type="Texture2D" path="res://art/characters/fluid-v001/moving-attack.png" id="moving-attack"]
+[ext_resource type="Resource" path="res://data/knight_combo_motion.tres" id="combo-motion"]
 [node name="Frontier" instance=ExtResource("base")]
 script = ExtResource("root")
 tuning = ExtResource("tuning")
@@ -25,7 +26,10 @@ wanderer_idle = ExtResource("wanderer")
 script = ExtResource("controls")
 [node name="HUD" parent="." index="7"]
 script = ExtResource("hud")
+[node name="Knight" parent="."]
+procedural_slash = false
 [node name="KnightVisual" parent="Knight"]
+combo_motion = ExtResource("combo-motion")
 moving_attack_atlas = ExtResource("moving-attack")
 texture_overrides = {
 "res://art/characters/knight/processed/attack-v003.png": ExtResource("knight-attack"),

@@ -171,3 +171,37 @@ func test_return_cut_starts_from_previous_low_pose_and_rises_while_running(t) ->
 	view.present(pose,0.0)
 	t.equal(view.frame, 0, "finisher begins from raised return-cut pose")
 	view.free()
+
+func test_authored_combo_uses_independent_forward_frames_and_freezes(t) -> void:
+	var view = KnightVisual.new()
+	var motion = preload("res://data/combo_motion.gd").new()
+	# Existing textures stand in for imported pixels; assert actual visible regions.
+	motion.planted_atlas = preload("res://art/characters/fluid-v001/moving-attack.png")
+	motion.moving_atlas = motion.planted_atlas
+	view.combo_motion = motion
+	var pose = {"alive":true,"facing":-1,"moving":false,"grounded":true,"invulnerable":false,"attack_progress":0.0,"combo_step":2}
+	view.present(pose,0.1)
+	var sprite = view.get_node_or_null("ComboAttack")
+	t.truth(sprite!=null and sprite.visible,"authored return has its own visible sprite")
+	if sprite==null:
+		view.free()
+		return
+	t.equal(sprite.texture.region,Rect2(0,128,160,128),"return begins on its first drawing, not reversed slash")
+	t.truth(sprite.flip_h,"authored attack mirrors to face left")
+	pose.attack_progress=0.5
+	view.present(pose,0.0)
+	var region: Rect2 = sprite.texture.region
+	view.present(pose,0.0)
+	t.equal(sprite.texture.region,region,"paused pose is deterministic")
+	pose.combo_step=3
+	view.present(pose,0)
+	t.equal(sprite.texture.region.position.y,256.0,"finisher selects independent choreography")
+	pose.moving=true
+	view.present(pose,0.1)
+	var moving=view.get_node("MovingAttack")
+	t.truth(moving.visible and not sprite.visible,"moving combo uses one integrated body")
+	t.truth(moving.texture.region.position.y>=2048,"moving finisher selects its own gait group")
+	pose.attack_progress=1.0
+	view.present(pose,0)
+	t.truth(not sprite.visible and not moving.visible,"recovery restores normal locomotion without stale overlay")
+	view.free()
