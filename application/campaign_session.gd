@@ -8,6 +8,7 @@ var hunter_damage: int = 12
 var hunter_range: float = 170.0
 var hunter_interval: float = 1.2
 var _hero_x: float = 0.0
+var _night_spawn_index := 0
 const Pouch = preload("res://domain/crystal_pouch.gd")
 const Calendar = preload("res://domain/campaign_clock.gd")
 const Harvest = preload("res://domain/harvest_node.gd")
@@ -20,10 +21,16 @@ var prices: Dictionary
 var enemy_health_growth: int
 var enemy_damage_growth: int
 const TOOL_KINDS := {"workshop":"hammer","armory":"blade","farm_tools":"hoe","hunt_tools":"bow"}
-const NAMES := {"hall":"營火","workshop":"工匠器具","armory":"守備器具","farm_tools":"農具","hunt_tools":"獵弓","forge":"義肢爐","beacon":"護民塔","wall":"防線","farm":"農田","drill":"劍術訓練","trade":"食物交易","heal":"藥草治療"}
+const NAMES := {"hall":"營火","workshop":"工匠器具","armory":"守備器具","farm_tools":"農具","hunt_tools":"獵弓","forge":"義肢爐","beacon":"護民塔","wall":"右防線","wall_left":"左防線","farm":"農田","drill":"劍術訓練","trade":"食物交易","heal":"藥草治療"}
 
 func _init(config: Dictionary = {}, hero_stats: Stats = null) -> void:
-	super(config,hero_stats)
+	var resolved:=config.duplicate(true)
+	var economy: Dictionary=config.get("economy",{}).duplicate(true)
+	var left_post:=minf(-950.0,float(config.get("left_defense_x",-1100.0)))
+	economy["settlement_left"]=left_post-200.0
+	resolved["economy"]=economy
+	super(resolved,hero_stats)
+	world.add_wall("wall_left",left_post)
 	return_margin = maxf(0.0,float(config.get("return_margin",15.0)))
 	hunter_damage = maxi(1,int(config.get("hunter_damage",12)))
 	hunter_range = maxf(30.0,float(config.get("hunter_range",170.0)))
@@ -154,13 +161,14 @@ func _campaign_site(site: String) -> Dictionary:
 		choice.text += " · 庫存 %d/3" % world.tools[kind]
 		choice.enabled = world.tools[kind]<3
 		choice.reason = "器具架已滿，等待居民領取"
-	elif site=="wall":
-		var repair: bool = world.wall.level>0 and world.wall.hp<world.wall.level*40
-		choice.cost = prices.repair if repair else (prices.wall if world.wall.level==0 else prices.wall_upgrade)
-		if not repair and world.wall.level>0: choice["requirements"]={"stone":3}
-		choice.text = "修復防線" if repair else ("建立木防線" if world.wall.level==0 else "升級石防線 · 3 石材")
-		choice.key = "wall:%d:%s" % [world.wall.level,repair]
-		choice.enabled = not world.wall.pending and (repair or world.wall.level<2) and (repair or world.wall.level==0 or frontier.stone>=3)
+	elif world.walls.has(site):
+		var defense: Dictionary=world.walls[site]
+		var repair: bool = defense.level>0 and defense.hp<defense.level*40
+		choice.cost = prices.repair if repair else (prices.wall if defense.level==0 else prices.wall_upgrade)
+		if not repair and defense.level>0: choice["requirements"]={"stone":3}
+		choice.text = "修復防線" if repair else ("建立木防線" if defense.level==0 else "升級石防線 · 3 石材")
+		choice.key = "%s:%d:%s" % [site,defense.level,repair]
+		choice.enabled = not defense.pending and (repair or defense.level<2) and (repair or defense.level==0 or frontier.stone>=3)
 		choice.reason = "施工中／防線已滿，升級需要 3 石材"
 	elif site=="forge":
 		choice["requirements"]={"scrap":2}
@@ -224,10 +232,11 @@ func _execute(choice: Dictionary) -> void:
 		"workshop","armory","farm_tools","hunt_tools":
 			world.tools[TOOL_KINDS[choice.id]]+=1
 			built[choice.id]=true
-		"wall":
-			var repair: bool = world.wall.level>0 and world.wall.hp<world.wall.level*40
-			if not repair and world.wall.level>0: frontier.stone-=3
-			world.wall.merge({"pending":true,"repair":repair,"progress":0.0},true)
+		"wall","wall_left":
+			var defense: Dictionary=world.walls[choice.id]
+			var repair: bool=defense.level>0 and defense.hp<defense.level*40
+			if not repair and defense.level>0: frontier.stone-=3
+			defense.merge({"pending":true,"repair":repair,"progress":0.0},true)
 		"outpost": frontier.regions[choice.region_index].outpost_pending=true
 		"farm": frontier.plant()
 		"forge": world.scrap-=2; hero.shield+=world.shield_value; built.forge=true
@@ -267,6 +276,7 @@ func _receive_delivery(delivery: Dictionary) -> void:
 	pouch.drop(crystals,delivery.x)
 
 func _advance_people(seconds: float) -> void:
+	_assign_defense_posts()
 	var previous: Array=[]
 	for person in world.people: previous.append(float(person.x))
 	super._advance_people(seconds)
@@ -288,10 +298,14 @@ func _advance_people(seconds: float) -> void:
 
 func _override_resident_target(index: int, seconds: float) -> float:
 	var person: Dictionary = world.people[index]
+	if person.role=="guard":
+		_shoot_nearest_raider(person,190.0,20,0.85)
+		person["direction"]=1.0 if person.defense_post=="wall" else -1.0
+		return _defense_position(index,65.0)
 	if person.role not in ["citizen","engineer","farmer","hunter"]: return NAN
 	var home: float = world.sites.hall + (index%5-2)*22.0
-	if person.role=="hunter" and world.wall.hp>0:
-		home = world.sites.wall-90.0-(index%4)*24.0
+	if person.role=="hunter" and world.walls[person.defense_post].hp>0:
+		home = _defense_position(index,90.0)
 	if not Schedule.should_return(clock.is_night,clock.remaining,person.x,home,_person_speed,return_margin):
 		return NAN
 	person["sheltering"] = true
@@ -309,6 +323,38 @@ func _override_resident_target(index: int, seconds: float) -> float:
 		_shoot_nearest_raider(person,hunter_range,hunter_damage,hunter_interval)
 	return home
 
+func _assign_defense_posts() -> void:
+	var counts: Dictionary={"wall":0,"wall_left":0}
+	for person in world.people:
+		if person.role not in ["guard","hunter"]:
+			person.erase("defense_post")
+		elif person.has("defense_post"):
+			counts[person.defense_post]+=1
+	for person in world.people:
+		if person.role in ["guard","hunter"] and not person.has("defense_post"):
+			var post: String="wall" if counts.wall<=counts.wall_left else "wall_left"
+			person["defense_post"]=post
+			counts[post]+=1
+
+func _defense_position(index: int, inset: float) -> float:
+	var post: String=world.people[index].defense_post
+	var rank:=0
+	for i in range(index):
+		if world.people[i].get("defense_post","")==post: rank+=1
+	var side:=1.0 if post=="wall" else -1.0
+	return world.sites[post]-side*(inset+mini(rank,4)*18.0)
+
+func raid_pressure() -> Dictionary:
+	var pressure: Dictionary={"left":0,"right":0}
+	if not clock.is_night and clock.remaining>30: return pressure
+	for enemy in raiders:
+		if enemy.fighter.is_alive(): pressure["right" if enemy.get("side",1)>0 else "left"]+=1
+	var start: int=_night_spawn_index if clock.is_night else 0
+	var pending: int=_spawn_remaining if clock.is_night else mini(12,2+clock.day)
+	for i in range(start,start+pending):
+		pressure["right" if i%2==0 else "left"]+=1
+	return pressure
+
 func finished() -> bool: return false
 func begin_raid() -> bool: return false # The calendar alone starts a night.
 
@@ -318,10 +364,18 @@ func _advance_invasion(seconds: float) -> void:
 		wave=clock.day
 		_spawn_remaining=mini(12,2+clock.day)
 		_spawn_timer=0.0
+		_night_spawn_index=0
 	if _spawn_remaining>0:
 		_spawn_timer-=seconds
 		if _spawn_timer<=0:
-			raiders.append(_spawn_raider())
+			var enemy:=_spawn_raider()
+			var side:=1 if _night_spawn_index%2==0 else -1
+			enemy["side"]=side
+			enemy.x=world.sites.wall+480.0 if side>0 else world.sites.wall_left-480.0
+			enemy["exit_x"]=enemy.x+side*70.0
+			enemy["direction"]=-float(side)
+			raiders.append(enemy)
+			_night_spawn_index+=1
 			_spawn_remaining-=1
 			_spawn_timer=2.5
 	time_to_raid=clock.remaining
@@ -344,4 +398,4 @@ func kingdom_established() -> bool:
 	var citizens := 0
 	for person in world.people:
 		if person.role!="wanderer": citizens+=1
-	return hero.is_alive() and clock.survived>=3 and frontier.city_level>=3 and world.wall.level>=2 and world.wall.hp>0 and citizens>=3
+	return hero.is_alive() and clock.survived>=3 and frontier.city_level>=3 and world.walls.values().all(func(w):return w.level>=2 and w.hp>0) and citizens>=3

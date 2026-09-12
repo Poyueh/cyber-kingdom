@@ -64,14 +64,21 @@ func advance_engineer(index: int, seconds: float) -> float:
 		if region.outpost_pending and absf(region.outpost_x-person.x)<nearest:
 			nearest = absf(region.outpost_x-person.x)
 			construction = region_index
-	if world.wall.pending or construction>=0:
+	var wall_id := ""
+	var wall_distance := INF
+	for id in world.walls:
+		if world.walls[id].pending and absf(world.sites[id]-person.x)<wall_distance:
+			wall_id=id
+			wall_distance=absf(world.sites[id]-person.x)
+	if not wall_id.is_empty() or construction>=0:
 		if job!=null: job.worker=-1
 		if not _grounded(person,seconds): return person.x
-		var target: float = world.sites.wall-12 if world.wall.pending else frontier.regions[construction].outpost_x-12
+		var side: float=signf(world.sites[wall_id]-world.sites.hall) if not wall_id.is_empty() else 1.0
+		var target: float=world.sites[wall_id]-side*12 if not wall_id.is_empty() else frontier.regions[construction].outpost_x-12
 		if absf(target-person.x)<8:
 			person.work_state = "work"
-			person["direction"] = 1.0
-			if world.wall.pending: world.work_wall(index,seconds)
+			person["direction"] = side
+			if not wall_id.is_empty(): world.work_wall(index,seconds,wall_id)
 			else: frontier.work_outpost(construction,seconds)
 		return target
 	if job==null:

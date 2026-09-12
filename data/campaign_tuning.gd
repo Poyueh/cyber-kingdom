@@ -15,6 +15,8 @@ extends "res://data/frontier_tuning.gd"
 @export_range(6,14,1) var crystal_radius: float = 9.0
 @export_group("Resident stroll")
 @export_range(8,50,1) var stroll_speed: float = 24.0
+@export_group("Defense posts")
+@export_range(-1200,-950,10) var left_defense_x: float = -1100.0
 @export_group("Resident night safety")
 @export_range(0,60,1) var return_margin: float = 15.0
 @export_range(1,30,1) var hunter_damage: int = 12
@@ -28,4 +30,4 @@ extends "res://data/frontier_tuning.gd"
 @export_group("Crystal slots per interaction")
 @export var crystal_prices: Dictionary = {"camp":2,"hall":5,"workshop":2,"armory":3,"farm_tools":2,"hunt_tools":3,"forge":2,"beacon":1,"wall":3,"wall_upgrade":4,"repair":2,"farm":3,"drill":2,"outpost":3,"mark":1,"recruit":1}
 func campaign_rules() -> Dictionary:
-	return {"return_margin":return_margin,"hunter_damage":hunter_damage,"hunter_range":hunter_range,"hunter_interval":hunter_interval,"stroll_speed":stroll_speed,"magnet_radius":magnet_radius,"magnet_speed":magnet_speed,"throw_grace":throw_grace,"capacity":backpack_capacity,"starting_crystals":initial_crystals,"day_seconds":day_seconds,"night_seconds":night_seconds,"enemy_health_growth":enemy_health_growth,"enemy_damage_growth":enemy_damage_growth,"prices":crystal_prices}
+	return {"left_defense_x":left_defense_x,"return_margin":return_margin,"hunter_damage":hunter_damage,"hunter_range":hunter_range,"hunter_interval":hunter_interval,"stroll_speed":stroll_speed,"magnet_radius":magnet_radius,"magnet_speed":magnet_speed,"throw_grace":throw_grace,"capacity":backpack_capacity,"starting_crystals":initial_crystals,"day_seconds":day_seconds,"night_seconds":night_seconds,"enemy_health_growth":enemy_health_growth,"enemy_damage_growth":enemy_damage_growth,"prices":crystal_prices}

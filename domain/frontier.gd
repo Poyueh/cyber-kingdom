@@ -24,6 +24,7 @@ var work_seconds := 6.0
 var outpost_seconds := 5.0
 
 func _init(map_seed: int, rules: Dictionary = {}) -> void:
+	left_boundary=float(rules.get("settlement_left",-700.0))
 	work_seconds = maxf(0.1,float(rules.get("work_seconds",6.0)))
 	outpost_seconds = maxf(0.1,float(rules.get("outpost_seconds",5.0)))
 	farm_cycle = maxf(0.1,float(rules.get("farm_cycle",12.0)))

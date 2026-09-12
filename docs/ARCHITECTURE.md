@@ -154,3 +154,7 @@ ActorBody 將踏步距離除以本次遊戲時間作為水平速度，仍交由 
 ## 居民日夜職責
 
 ResidentSchedule 為純路程／時間規則；CampaignSession 決定職業避難位置，SettlementSession 的目的地 override 在一般工作前執行，FrontierSession 跳過已回防職業的第二次工作更新。射擊共用最近敵人與真正扣血，視覺只播放 bolt。工作認領與貨物不在回防時清除，天亮由原 Workforce 續做。Inspector 參數經 campaign_rules 注入，見 docs/design/resident-night-cycle.md。
+
+## 雙側防線
+
+Settlement.walls 保存各防線字典，既有 wall 引用右側同一份資料，舊原型不建立左牆。Campaign 注入左側位置並保留外側隨機地景空間；Workforce 選擇最近付費防線。敵襲依據點交替出生，命中前按實際路徑檢查城牆，Presentation 只讀獨立狀態和預警數字。見 design/bilateral-defense.md。

@@ -9,10 +9,12 @@ var tool_roles := {"hammer":"engineer", "blade":"guard"}
 var tools := {"hammer": 0, "blade": 0}
 var sites := {"forge":350.0, "workshop":520.0, "armory":710.0, "beacon":890.0, "wall":1100.0, "horn":1360.0}
 var wall := {"level":0, "hp":0, "pending":false, "progress":0.0, "repair":false}
+var walls: Dictionary = {}
 var barrier: int = 0
 var shield_value: int
 
 func _init(config: Dictionary = {}) -> void:
+	walls["wall"] = wall
 	scrap = maxi(0, int(config.get("scrap",14)))
 	crystals = maxi(0,int(config.get("crystals",3)))
 	shield_value = maxi(1,int(config.get("shield_value",20)))
@@ -55,31 +57,33 @@ func claim_tool(index: int, kind: String) -> bool:
 	person.role = tool_roles[kind]
 	return true
 
-func wall_cost() -> int:
-	return 2 if wall.level > 0 and wall.hp < wall.level*40 else (3 if wall.level == 0 else 4)
+func add_wall(id: String, x: float) -> void:
+	if walls.has(id): return
+	sites[id]=x
+	walls[id]={"level":0,"hp":0,"pending":false,"progress":0.0,"repair":false}
 
-func order_wall() -> bool:
-	var repair: bool = wall.level > 0 and wall.hp < wall.level*40
-	if wall.pending or (wall.level >= 2 and not repair) or scrap < wall_cost():
-		return false
-	scrap -= wall_cost()
-	wall.pending = true
-	wall.repair = repair
-	wall.progress = 0.0
+func wall_cost(id: String = "wall") -> int:
+	var defense: Dictionary=walls[id]
+	return 2 if defense.level>0 and defense.hp<defense.level*40 else (3 if defense.level==0 else 4)
+
+func order_wall(id: String = "wall") -> bool:
+	var defense: Dictionary=walls[id]
+	var repair: bool=defense.level>0 and defense.hp<defense.level*40
+	if defense.pending or (defense.level>=2 and not repair) or scrap<wall_cost(id): return false
+	scrap-=wall_cost(id)
+	defense.merge({"pending":true,"repair":repair,"progress":0.0},true)
 	return true
 
-func work_wall(index: int, seconds: float) -> bool:
-	if seconds <= 0 or not is_finite(seconds) or not wall.pending:
-		return false
-	var person: Dictionary = people[index]
-	if person.role != "engineer" or absf(person.x-sites.wall)>20:
-		return false
-	wall.progress += seconds
-	if wall.progress >= 3.0:
-		if not wall.repair:
-			wall.level += 1
-		wall.hp = wall.level*40
-		wall.pending = false
+func work_wall(index: int, seconds: float, id: String = "wall") -> bool:
+	var defense: Dictionary=walls[id]
+	if seconds<=0 or not is_finite(seconds) or not defense.pending: return false
+	var person: Dictionary=people[index]
+	if person.role!="engineer" or absf(person.x-sites[id])>20: return false
+	defense.progress+=seconds
+	if defense.progress>=3.0:
+		if not defense.repair: defense.level+=1
+		defense.hp=defense.level*40
+		defense.pending=false
 	return true
 
 func take_knight_crystal() -> int:
@@ -105,10 +109,11 @@ func hit_person(index: int) -> bool:
 	people[index].hurt = 2.0
 	return true
 
-func hit_wall(amount: int) -> bool:
-	if wall.hp <= 0 or amount <= 0:
+func hit_wall(amount: int, id: String = "wall") -> bool:
+	var defense: Dictionary=walls[id]
+	if defense.hp <= 0 or amount <= 0:
 		return false
-	wall.hp = maxi(0,wall.hp-amount)
+	defense.hp = maxi(0,defense.hp-amount)
 	return true
 
 func tool_location(kind: String) -> float:
