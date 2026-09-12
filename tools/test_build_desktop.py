@@ -23,6 +23,7 @@ class DesktopBuildTests(unittest.TestCase):
             project = (stage / "project.godot").read_text()
             self.assertIn('run/main_scene="res://scenes/frontier.tscn"', project)
             self.assertIn("textures/vram_compression/import_etc2_astc=true", project)
+            self.assertIn('config/icon="res://art/ui/app-icon.svg"', project)
             self.assertEqual((ROOT / "project.godot").read_bytes(), before)
 
     def test_godot_error_with_zero_exit_code_stops_the_build(self):

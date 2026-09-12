@@ -1,0 +1,91 @@
+{
+  "source_tree": "c5e5df2a3c5a5959891a6899338c66adb965b689",
+  "engine": "4.7.2.stable.official.ed1daf0bf",
+  "android": {
+    "build": {
+      "source_tree": "c5e5df2a3c5a5959891a6899338c66adb965b689",
+      "architecture": "arm64-v8a",
+      "package": "org.cyberkingdom.demo",
+      "signing": "local debug certificate; not a store release",
+      "sha256": "7cd8b9293d4a35c597ccdd3bc9c8654dc453b536d75da07f97fafdd9b9e63881",
+      "runtime_playtest": "record separately; export alone is not validation"
+    },
+    "environment": "AOSP Android 15 API 35 ARM64; Pixel 7 AVD; 2400x1080 landscape; software GPU",
+    "package_min_sdk": 24,
+    "package_target_sdk": 36,
+    "signature": "v2/v3 debug verified",
+    "zipalign": "16 KiB native library alignment check passed",
+    "actions": [
+      "launcher cold start",
+      "touch pause/resume",
+      "hold invest: camp level 0→1, crystals 12→10",
+      "hold movement: x 30→156.66667175293",
+      "throw: pouch 10→9, one physical drop",
+      "HOME background save",
+      "force-stop",
+      "launcher cold restart"
+    ],
+    "restart_checkpoint_exactly_equal": true,
+    "checkpoint_sha256": "6a0d27b54b163e89fc6b88098ab3da0c2d7ac98d5b1cf924728590ec9970725c",
+    "observed_reopened": "paused; camp built; pouch 9; thrown crystal visible; position retained",
+    "runtime_errors": 0,
+    "limitations": [
+      "emulator, not physical phone",
+      "single-finger adb controls; native multi-touch separately tested in Godot scenes",
+      "no FPS/battery/thermal claim"
+    ],
+    "warnings": [
+      "On cold reopen, software GLES shader cache could not load and was recompiled; rendering completed. No SCRIPT ERROR or crash."
+    ]
+  },
+  "desktop": {
+    "source_tree": "c5e5df2a3c5a5959891a6899338c66adb965b689",
+    "engine": "4.7.2.stable.official.ed1daf0bf",
+    "entry": "res://scenes/frontier.tscn",
+    "configuration": "committed settings, release export, prototype content",
+    "macOS_signing": "ad-hoc; not notarized",
+    "Windows_signing": "unsigned",
+    "checksums_sha256": {
+      "Cyber-Kingdom-macOS.zip": "4fb9bb708759c31dc6d76db59d7d4288b2a109a2f421ea25a1646bbd71040eae",
+      "Cyber-Kingdom-Windows.zip": "2fc15be4da991e93c3be15dcd9ced94b945719f172601a1f25a97b5540e051ad"
+    },
+    "platform_playtest": "must be recorded separately; export alone is not a pass"
+  },
+  "desktop_checks": [
+    "ZIP CRC + SHA256",
+    "Mac codesign --deep --strict",
+    "Windows x86-64 PE",
+    "actual Mac release 120 frames",
+    "native rendering with actual exported PCK, isolated outside checkout"
+  ],
+  "failures_resolved": [
+    "Initial Android export logged missing project icon; added original editable SVG and staging setting after failing regression test. First APK not accepted as clean build.",
+    "Initial adb start targeted non-exported internal activity. Read manifest, then used the exported GodotAppLauncher alias. No game permissions changed.",
+    "avdmanager warned about missing optional devices.xml but created Pixel 7 config; actual AVD boot, install and launch verified."
+  ],
+  "still_unverified": [
+    "iPhone 17e",
+    "iPhone 16 Pro Max",
+    "iPad",
+    "physical Android",
+    "Windows gameplay",
+    "human difficulty and art approval"
+  ],
+  "checks": {
+    "godot_assertions": 1094,
+    "behavior_assertions": 840,
+    "scene_assertions": 254,
+    "python_build_tests": 2,
+    "errors": 0,
+    "compared_source_files": 735,
+    "source_mismatches": 0
+  },
+  "evidence_sha256": {
+    "android-runtime.log": "59ee769ba8b482b5d79909342ded55e77afe9ef148ef1768108af16aaffe4e16",
+    "android-checkpoint.json": "6a0d27b54b163e89fc6b88098ab3da0c2d7ac98d5b1cf924728590ec9970725c",
+    "mac-release.log": "6c536b7ab6a1ee8e7ac91fdd27709abb484073b092cabb70d205c4f987e47ddd",
+    "mac-packaged-review.log": "58827c956066f33693e3d265a6cff2f44ac6586d267f13b3e7243ab54b93ed9c",
+    "check.log": "f637259921322aefed76c1beae7b91ca74a0b261d32d3d0172794897765bf7c2"
+  },
+  "log_normalization": "Only trailing spaces and trailing blank lines removed from committed logs; source temporary logs retained unchanged."
+}

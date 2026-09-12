@@ -189,3 +189,10 @@ application/campaign_snapshot.gd 擷取固定類別的純資料，對戰鬥目�
 infrastructure/json_campaign_store.gd 使用暫存檔替換與內容指紋檢查。bootstrap/frontier_root.gd 依生命週期和時間觸發保存、組裝還原場景；presentation/campaign_hud.gd 提供狀態和重試圖示。測試／預覽明確停用正式持久化，存檔測試使用唯一位置。
 
 純模型的狀態新增需同步版本及驗證；不把未知欄位略過當成向前相容。輸入緩衝和效果排除，投資格與實體龍晶保留。規格見 design/campaign-save-resume.md。
+
+
+## 手機介面與輸入生命週期
+
+presentation/campaign_layout.gd 集中 HUD 區域的座標換算與排版，不管理資源或戰鬥。CampaignHUD 在手機讀取 DisplayServer 安全區，透過 Viewport 的反向螢幕轉換取得邏輯座標；IconDashboard 與控制鈕共用排版結果。桌面 Inspector 可用 Preview Safe Margins 模擬缺口。
+
+保留 Godot 原生 TouchScreenButton 多指行為，以及既有 GUI 投入／拋晶鈕。切背景、暫停與重開時，HUD 同時釋放 action 與 GUI 按鈕的手指捕捉；只清 Input action 不足以解除舊手指的占用。純幾何測試和實際 InputEventScreenTouch 場景測試分開；觸控不進入 domain/application。

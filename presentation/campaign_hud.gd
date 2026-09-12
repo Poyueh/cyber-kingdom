@@ -1,4 +1,7 @@
 extends "res://presentation/frontier_hud.gd"
+const Layout=preload("res://presentation/campaign_layout.gd")
+@export var preview_safe_margins:=Vector4.ZERO
+var _last_safe_rect:=Rect2()
 const Icons=preload("res://presentation/ui_icons.gd")
 const Dashboard=preload("res://presentation/icon_dashboard.gd")
 signal save_requested
@@ -26,7 +29,7 @@ func _ready() -> void:
 		button.get_node("Fill").hide()
 		button.get_node("Label").hide()
 		var shape:=CircleShape2D.new()
-		shape.radius=29
+		shape.radius=32
 		button.shape=shape
 		button.texture_normal=_button_texture({"move_left":"left","move_right":"right","attack":"sword"}.get(key,key))
 		button.texture_pressed=button.texture_normal
@@ -57,11 +60,11 @@ func _ready() -> void:
 
 func _button_texture(key: String) -> Texture2D:
 	# SVG drawing remains editable and matches the resource and interaction symbols.
-	var image:=Image.create(58,58,false,Image.FORMAT_RGBA8)
+	var image:=Image.create(64,64,false,Image.FORMAT_RGBA8)
 	image.fill(Color(0.04,0.09,0.12,0.72))
 	var glyph:=Icons.get_icon(key).get_image()
-	glyph.resize(30,30,Image.INTERPOLATE_LANCZOS)
-	image.blend_rect(glyph,Rect2i(0,0,30,30),Vector2i(14,14))
+	glyph.resize(32,32,Image.INTERPOLATE_LANCZOS)
+	image.blend_rect(glyph,Rect2i(0,0,32,32),Vector2i(16,16))
 	return ImageTexture.create_from_image(image)
 
 func _skin(button: Button, key: String) -> void:
@@ -81,26 +84,31 @@ func _skin(button: Button, key: String) -> void:
 	button.add_theme_stylebox_override("pressed",pressed)
 	button.add_theme_stylebox_override("hover",pressed)
 
+func safe_rect() -> Rect2:
+	var viewport:=get_viewport().get_visible_rect()
+	if preview_safe_margins!=Vector4.ZERO:
+		var margins:=preview_safe_margins
+		var result:=Rect2(viewport.position+Vector2(margins.x,margins.y),viewport.size-Vector2(margins.x+margins.z,margins.y+margins.w))
+		return result.intersection(viewport) if result.has_area() else viewport
+	if OS.has_feature("mobile"):
+		return Layout.screen_to_canvas(viewport,get_viewport().get_screen_transform(),Rect2(DisplayServer.get_display_safe_area()))
+	return viewport
+
+func _process(_seconds: float) -> void:
+	if safe_rect()!=_last_safe_rect:_layout()
+
 func _layout() -> void:
-	var size:=get_viewport().get_visible_rect().size
-	var height:=size.y
-	var width:=size.x
-	for pair in [["move_left",24.0],["move_right",92.0],["dash",width-216],["jump",width-148],["attack",width-80]]:
-		get_node(pair[0]).position=Vector2(pair[1],height-82)
-	drop_button.position=Vector2(178,height-82)
-	drop_button.size=Vector2(58,58)
-	$pause.position=Vector2(width-80,14)
-	$restart.position=Vector2(width-148,82)
-	interact_button.position=Vector2(width-292,height-82)
-	interact_button.size=Vector2(62,58)
-	new_map_button.position=Vector2(width-216,82)
-	new_map_button.size=Vector2(58,58)
-	$Refuge.position=Vector2(width-80,82)
-	$Refuge.size=Vector2(58,58)
-	fullscreen_button.position=Vector2(width-148,14)
-	fullscreen_button.size=Vector2(58,58)
-	save_button.position=Vector2(width-216,14)
-	save_button.size=Vector2(58,58)
+	_last_safe_rect=safe_rect()
+	var layout:=Layout.arrange(_last_safe_rect)
+	for key in ["move_left","move_right","dash","jump","attack","pause","restart"]:
+		get_node(key).position=layout.buttons[key].position
+	var buttons={"drop":drop_button,"interact":interact_button,"new_map":new_map_button,"refuge":$Refuge,"fullscreen":fullscreen_button,"save":save_button}
+	for key in buttons:
+		buttons[key].position=layout.buttons[key].position
+		buttons[key].size=layout.buttons[key].size
+	dashboard.panels=layout.panels
+	dashboard.queue_redraw()
+	fullscreen_button.visible=not OS.has_feature("mobile")
 
 func present_world(sim, is_paused: bool, at: float, grounded: bool) -> void:
 	if _pause_icon_state!=is_paused:
@@ -144,3 +152,14 @@ func present_save(status: String, is_paused: bool) -> void:
 	save_button.disabled=status=="protected"
 	save_button.icon=Icons.get_icon("lock" if status=="protected" else "save_retry" if status=="error" else "save")
 	save_button.modulate=Color("ffba78") if status in ["error","protected"] else Color("86d9cc")
+
+func cancel_touch_gestures() -> void:
+	# Release both action buttons' finger ownership and GUI buttons' press capture.
+	var buttons: Array=[interact_button,drop_button,new_map_button,$Refuge,fullscreen_button,save_button]
+	for key in ["move_left","move_right","dash","jump","attack","pause","restart"]:
+		buttons.append(get_node(key))
+	for button in buttons:
+		if button.visible:
+			button.hide()
+			button.show()
+	interact_held=false

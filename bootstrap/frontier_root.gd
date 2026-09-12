@@ -76,6 +76,7 @@ func restart() -> void:
 	_requested_interaction = false
 	_requested_throw = false
 	controls.release_all()
+	hud.cancel_touch_gestures()
 	_build_terrain()
 	if progress!=null:save_campaign()
 
@@ -88,6 +89,7 @@ func _physics_process(seconds: float) -> void:
 	var was_paused:=paused
 	var was_running:=sim.is_running()
 	super._physics_process(seconds)
+	if paused and not was_paused:hud.cancel_touch_gestures()
 	if _requested_throw and not paused:
 		sim.throw_crystal(knight.position.x,knight.position.y,sim.hero.facing)
 		hud.present_world(sim,paused,knight.position.x,knight.is_on_floor())
@@ -116,7 +118,7 @@ func _notification(what: int) -> void:
 	if what == NOTIFICATION_APPLICATION_FOCUS_OUT or what == NOTIFICATION_APPLICATION_PAUSED:
 		_requested_throw = false
 		if investment!=null: investment.cancel()
-		if is_instance_valid(hud): hud.interact_held=false
+		if is_instance_valid(hud): hud.cancel_touch_gestures()
 		if progress!=null:save_campaign()
 	if what==NOTIFICATION_WM_CLOSE_REQUEST and progress!=null:save_campaign()
 
