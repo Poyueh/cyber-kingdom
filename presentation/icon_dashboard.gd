@@ -45,12 +45,36 @@ func _draw() -> void:
 		icon(side,Vector2(x+14,79),18,Color("ffbe89"))
 		icon("sword",Vector2(x+33,79),18,Color("ffbe89"))
 		number(str(count),Vector2(x+47,85),Color("ffd5a0"))
+	_draw_mission(center)
 	if values.get("full",false):
 		icon("bag",Vector2(220,68),22,Color("f5b87c"))
 	if is_paused or dead or victory:
 		var at:=Vector2(center,get_viewport_rect().size.y*0.45)
 		draw_style_box(_panel(),Rect2(at-Vector2(52,48),Vector2(104,96)))
-		icon("skull" if dead else ("crown" if victory else "pause"),at,52)
+		icon("skull" if dead else ("crown" if victory else "pause"),at-Vector2(0,9) if dead or victory else at,44)
+		if dead: icon("camp" if values.get("defeat_reason","")=="core" else "heart",at+Vector2(0,27),22,Color("efb1a0"))
+		elif victory:
+			icon("rift",at+Vector2(-13,27),20,Color("a4e5be"))
+			number("2/2",at+Vector2(2,32),Color("a4e5be"),13)
+func _draw_mission(center: float) -> void:
+	if not values.has("core_hp"):return
+	draw_style_box(_panel(),Rect2(center-88,102,176,34))
+	icon("camp",Vector2(center-64,119),22)
+	var ratio:=clampf(float(values.core_hp)/values.core_max_hp,0,1)
+	var tint:=Color("f29594") if ratio<0.35 else Color("9fe1d7")
+	draw_rect(Rect2(center-45,111,64,5),Color("303f48"))
+	draw_rect(Rect2(center-45,111,64*ratio,5),tint)
+	number(str(values.core_hp),Vector2(center-44,131),tint,12)
+	var index:=0
+	for rift in values.get("rifts",[]):
+		var color:=Color("52626b")
+		if rift.discovered:color=Color("bc98d4")
+		if rift.ordered:color=Color("efc98b")
+		if rift.sealed:color=Color("8ee2bb")
+		var at:=Vector2(center+35+index*30,119)
+		icon("check" if rift.sealed else "rift",at,20,color)
+		index+=1
+
 func _panel() -> StyleBoxFlat:
 	if _panel_cache==null:
 		_panel_cache=StyleBoxFlat.new()

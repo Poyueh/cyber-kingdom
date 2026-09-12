@@ -1,4 +1,5 @@
 extends "res://presentation/frontier_view.gd"
+const RiftVisual=preload("res://presentation/rift_visual.gd")
 const Ambient=preload("res://presentation/ambient_motion.gd")
 @export var wanderer_idle: Texture2D=preload("res://art/ambient/v001/wanderer-idle.png")
 @export var chest_open: Texture2D=preload("res://art/ambient/v001/chest-open.png")
@@ -6,7 +7,7 @@ var crystal_radius: float = 9.0
 var focus_key := ""
 var investment_progress := 0.0
 const Icons=preload("res://presentation/ui_icons.gd")
-const SITE_ICONS={"hall":"camp","workshop":"hammer","armory":"sword","farm_tools":"hoe","hunt_tools":"bow","forge":"gear","beacon":"shield","wall":"wall","wall_left":"wall","farm":"food","drill":"sword","trade":"trade","heal":"heal","outpost":"outpost","recruit":"person","chest":"chest","mark":"hammer"}
+const SITE_ICONS={"rift":"rift","core_charge":"camp","hall":"camp","workshop":"hammer","armory":"sword","farm_tools":"hoe","hunt_tools":"bow","forge":"gear","beacon":"shield","wall":"wall","wall_left":"wall","farm":"food","drill":"sword","trade":"trade","heal":"heal","outpost":"outpost","recruit":"person","chest":"chest","mark":"hammer"}
 const EXTRA_ART := {"campfire":preload("res://art/campaign/v001/campfire.png"),"stone":preload("res://art/campaign/v001/stone.png"),"herbs":preload("res://art/campaign/v001/herbs.png"),"plot":preload("res://art/campaign/v001/plot.png")}
 
 func present(sim, player_x: float) -> void:
@@ -59,12 +60,14 @@ func _draw_structures() -> void:
 	var world = _sim.world
 	var map = _sim.frontier
 	var hall: float = world.sites.hall
-	if map.city_level>0: _prop("hall-%d" % map.city_level,Vector2(hall,430))
-	_prop("campfire",Vector2(hall+(104 if map.city_level>0 else 0),430),0.7 if map.city_level>0 else 1.0)
+	var core_tint:=Color.WHITE if _sim.mission.core_hp>0 else Color("566779")
+	if map.city_level>0: _prop("hall-%d" % map.city_level,Vector2(hall,430),1.0,core_tint)
+	_prop("campfire",Vector2(hall+(104 if map.city_level>0 else 0),430),0.7 if map.city_level>0 else 1.0,core_tint)
 	if art.props.has("relay"):
 		_prop("relay",Vector2(hall-115,430),0.8)
 		if map.city_level>0: _prop("relay",Vector2(_sim.world.sites.workshop-100,430),0.8)
 	_text("營火 · 王國由此開始" if map.city_level==0 else "聚落 %d/3 · 收貨點" % map.city_level,hall,282,Color("f3d299"),15)
+	_draw_mission()
 	# Before the first investment there is only a campfire and nearby wanderers.
 	if map.city_level==0: return
 	for site in world.sites:
@@ -99,6 +102,17 @@ func _draw_structures() -> void:
 		_text(_sim.NAMES[site],at.x,345,Color("d0d9b8"),13)
 		if site=="farm" and map.farm_active:
 			draw_rect(Rect2(at.x-40,355,80*map.farm_progress/map.farm_cycle,3),Color("d8dd9f"))
+
+func _draw_mission() -> void:
+	var mission=_sim.mission
+	var x: float=_sim.world.sites.hall
+	var y:=314.0 if _sim.frontier.city_level==0 else 267.0
+	var ratio: float=float(mission.core_hp)/mission.core_max_hp
+	_icon("camp",Vector2(x-42,y),18,Color("9edbd3"))
+	draw_rect(Rect2(x-28,y-3,56,5),Color("25373e"))
+	draw_rect(Rect2(x-28,y-3,56*ratio,5),Color("eea097") if ratio<0.35 else Color("9edbd3"))
+	for rift in mission.rifts:
+		if rift.discovered:RiftVisual.draw_gate(self,rift,_sim.workforce.elapsed,mission.seal_seconds)
 
 func _person(person: Dictionary, protected: bool) -> void:
 	if not _sim.person_visible(person): return
@@ -142,8 +156,9 @@ func _crystal(at: Vector2, filled: bool, radius: float = 6.0) -> void:
 func _draw_interaction() -> void:
 	if _context.id.is_empty(): return
 	var requirements: Dictionary=_context.get("requirements",{})
+	var prerequisites: Array=_context.get("prerequisites",[])
 	var width:=maxf(96,_context.cost*18+48)
-	width=maxf(width,requirements.size()*52+28)
+	width=maxf(width,maxi(requirements.size(),prerequisites.size())*52+28)
 	var inverse:=get_viewport().get_canvas_transform().affine_inverse()
 	var left: float=(inverse*Vector2.ZERO).x
 	var right: float=(inverse*get_viewport_rect().size).x
@@ -154,26 +169,35 @@ func _draw_interaction() -> void:
 	draw_line(Vector2(_context.x-15,ground+2),Vector2(_context.x+15,ground+2),marker_color,2)
 	for side in [-1,1]:
 		draw_line(Vector2(_context.x+side*15,ground-3),Vector2(_context.x+side*15,ground+3),marker_color,2)
-	var y:=ground-141
-	var height:=82.0 if not requirements.is_empty() else 62.0
+	var y:=ground-(184 if _context.id=="rift" else 141)
+	var height:=82.0 if not requirements.is_empty() or not prerequisites.is_empty() else 62.0
 	draw_style_box(_bubble_style(),Rect2(x-width*0.5,y-20,width,height))
 	var key: String=SITE_ICONS.get(_context.id,"hand")
 	if _context.id=="mark":
 		key={"tree":"tree","crystal":"pickaxe","berries":"food","stone":"stone","herbs":"herbs"}.get(_sim.frontier.nodes[_context.node_index].kind,"hammer")
 	_icon(key,Vector2(x,y),28)
-	if not _context.enabled: _icon("lock",Vector2(x+width*0.5-15,y-3),17,Color("d4a994"))
+	if not _context.enabled and not (_context.id=="rift" and _sim.mission.rifts[_context.rift_index].ordered): _icon("lock",Vector2(x+width*0.5-15,y-3),17,Color("d4a994"))
 	for index in range(_context.cost):
 		var slot:=Vector2(x+(index-(_context.cost-1)*0.5)*18,y+27)
 		_crystal(slot,index<_context.paid)
 		if index==_context.paid and investment_progress>0:
 			draw_arc(slot,8,-PI*0.5,-PI*0.5+TAU*investment_progress,24,Color("e6f6b4"),2)
-	if _context.cost==0: _icon("hand" if _context.enabled else "check",Vector2(x,y+27),18)
+	if _context.cost==0:
+		var status: String="hand" if _context.enabled else "check"
+		if _context.id=="rift" and not _sim.mission.rifts[_context.rift_index].sealed:status="hammer"
+		_icon(status,Vector2(x,y+27),18)
 	var index:=0
 	for resource in requirements:
 		var at:=Vector2(x+(index-(requirements.size()-1)*0.5)*52,y+48)
 		_icon(resource,at-Vector2(10,0),17)
 		_number(str(requirements[resource]),at+Vector2(3,5))
 		index+=1
+
+	for i in range(prerequisites.size()):
+		var item: Dictionary=prerequisites[i]
+		var at:=Vector2(x+(i-(prerequisites.size()-1)*0.5)*52,y+48)
+		_icon(item.icon,at-Vector2(10,0),17,Color("dbb397"))
+		_number(str(item.value),at+Vector2(3,5))
 
 func _bubble_style() -> StyleBoxFlat:
 	var style:=StyleBoxFlat.new()

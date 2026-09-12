@@ -1,5 +1,9 @@
 extends "res://application/frontier_session.gd"
 ## Playable campaign orchestration. Wallet and calendar rules remain in domain.
+const Mission=preload("res://domain/campaign_mission.gd")
+var mission: Mission
+const RiftWorkforce=preload("res://application/rift_workforce.gd")
+var expedition: RiftWorkforce
 const Schedule = preload("res://domain/resident_schedule.gd")
 const Roaming = preload("res://domain/resident_roaming.gd")
 var stroll_speed: float = 24.0
@@ -18,6 +22,8 @@ var opened_chests: Dictionary = {}
 var investments: Dictionary = {}
 var built: Dictionary = {}
 var prices: Dictionary
+var warden_health: int
+var warden_damage: int
 var enemy_health_growth: int
 var enemy_damage_growth: int
 const TOOL_KINDS := {"workshop":"hammer","armory":"blade","farm_tools":"hoe","hunt_tools":"bow"}
@@ -31,6 +37,12 @@ func _init(config: Dictionary = {}, hero_stats: Stats = null) -> void:
 	resolved["economy"]=economy
 	super(resolved,hero_stats)
 	world.add_wall("wall_left",left_post)
+	mission=Mission.new(config)
+	mission.add_rift(-1,frontier.left_boundary-180.0)
+	mission.add_rift(1,frontier.right_boundary+180.0)
+	frontier.left_boundary-=400.0
+	frontier.right_boundary+=400.0
+	expedition=RiftWorkforce.new(world,frontier,mission)
 	return_margin = maxf(0.0,float(config.get("return_margin",15.0)))
 	hunter_damage = maxi(1,int(config.get("hunter_damage",12)))
 	hunter_range = maxf(30.0,float(config.get("hunter_range",170.0)))
@@ -45,9 +57,11 @@ func _init(config: Dictionary = {}, hero_stats: Stats = null) -> void:
 	for node in frontier.nodes:
 		if node.y<430: pouch.platforms.append({"left":node.x-70,"right":node.x+70,"y":node.y})
 	clock = Calendar.new(config.get("day_seconds",180.0),config.get("night_seconds",60.0))
-	prices = {"camp":2,"hall":5,"workshop":2,"armory":3,"farm_tools":2,"hunt_tools":3,"forge":2,"beacon":1,"wall":3,"wall_upgrade":4,"repair":2,"farm":3,"drill":2,"outpost":3,"mark":1,"recruit":1}
+	prices = {"camp":2,"hall":5,"workshop":2,"armory":3,"farm_tools":2,"hunt_tools":3,"forge":2,"beacon":1,"wall":3,"wall_upgrade":4,"repair":2,"farm":3,"drill":2,"outpost":3,"mark":1,"recruit":1,"core_charge":2,"rift":4}
 	prices.merge(config.get("prices",{}),true)
 	for key in prices: prices[key]=clampi(int(prices[key]),1,12)
+	warden_health=maxi(1,int(config.get("warden_health",90)))
+	warden_damage=maxi(1,int(config.get("warden_damage",18)))
 	enemy_health_growth = maxi(1,int(config.get("enemy_health_growth",12)))
 	enemy_damage_growth = maxi(1,int(config.get("enemy_damage_growth",3)))
 	world.crystals = 0
@@ -101,6 +115,7 @@ func _no_interaction(x: float) -> Dictionary:
 
 func _interaction_candidates(x: float) -> Array[Dictionary]:
 	var candidates: Array[Dictionary] = []
+	if not is_running():return candidates
 	var choice: Dictionary
 	for index in range(world.people.size()):
 		var person: Dictionary = world.people[index]
@@ -133,6 +148,21 @@ func _interaction_candidates(x: float) -> Array[Dictionary]:
 		choice["region_index"] = index
 		choice.key = "outpost:%d" % index
 		candidates.append(choice)
+	for index in range(mission.rifts.size()):
+		var rift: Dictionary=mission.rifts[index]
+		if not rift.discovered or absf(rift.x-x)>=73 or absf(_player_y-430)>42:continue
+		var prerequisites: Array=[]
+		if frontier.city_level<2:prerequisites.append({"icon":"camp","value":2})
+		if clock.survived<1:prerequisites.append({"icon":"survived","value":1})
+		if not world.people.any(func(p):return p.role=="engineer"):prerequisites.append({"icon":"hammer","value":1})
+		choice=_choice("rift",rift.x,"封印龍裂隙",prices.rift,prerequisites.is_empty() and not rift.ordered and not rift.sealed,"升級聚落、熬過一晚並招募工匠")
+		choice.key="rift:%d" % index
+		choice["rift_index"]=index
+		choice["prerequisites"]=prerequisites
+		if rift.ordered:
+			choice.cost=0
+			choice.reason="封印完成" if rift.sealed else "護送工匠、擊退守門者並留在裂隙附近"
+		candidates.append(choice)
 	for candidate in candidates:
 		candidate.paid = int(investments.get(candidate.key,0))
 		if candidate.enabled and candidate.cost>0 and pouch.amount<=0:
@@ -144,6 +174,8 @@ func _campaign_site(site: String) -> Dictionary:
 	var at: float = world.sites[site]
 	var choice := _choice(site,at,NAMES[site],int(prices.get(site,0)))
 	if site=="hall":
+		if frontier.city_level>0 and mission.core_hp<mission.core_max_hp:
+			return _choice("core_charge",at,"核心充能",prices.core_charge)
 		if frontier.city_level==0: return _choice("hall",at,"營火 · 建立第一座營地",prices.camp)
 		var materials := frontier.city_cost()
 		choice.text = "升級聚落 · %d 木 / %d 糧 / %d 石" % [materials.wood,materials.food,frontier.city_level*3]
@@ -198,7 +230,7 @@ func _campaign_site(site: String) -> Dictionary:
 	return choice
 
 func interact(x: float, target_key: String = "") -> bool:
-	if not hero.is_alive(): return false
+	if not is_running(): return false
 	var choice := context(x) if target_key.is_empty() else context_for_key(x,target_key)
 	if not choice.enabled: return false
 	if choice.cost>0:
@@ -212,6 +244,8 @@ func interact(x: float, target_key: String = "") -> bool:
 
 func _execute(choice: Dictionary) -> void:
 	match choice.id:
+		"rift": mission.order(choice.rift_index)
+		"core_charge": mission.recharge_core()
 		"recruit": world.people[choice.person_index].role="citizen"
 		"chest":
 			var node = frontier.nodes[choice.node_index]
@@ -249,9 +283,17 @@ func _execute(choice: Dictionary) -> void:
 		"heal": frontier.herbs-=2; hero.hp=mini(hero.stats.max_hp,hero.hp+30)
 
 func advance(seconds: float, hero_x: float, hero_y: float = 430.0) -> void:
+	if seconds<=0 or not is_finite(seconds):return
+	mission.resolve(hero.is_alive(),raiders.is_empty())
+	if not is_running():return
 	_hero_x=hero_x
+	mission.reveal(hero_x)
 	super.advance(seconds,hero_x,hero_y)
-	if seconds<=0 or not is_finite(seconds) or not hero.is_alive(): return
+	mission.resolve(hero.is_alive(),raiders.is_empty())
+	if not is_running(): return
+	_advance_expeditions(seconds,hero_x,hero_y)
+	mission.resolve(hero.is_alive(),raiders.is_empty())
+	if not is_running():return
 	# Offered currency can recruit; ordinary treasure and delivered pay cannot.
 	for person in world.people:
 		if person.role=="wanderer" and person.hurt<=0 and person_visible(person) and pouch.consume_offering(person.x,person.get("y",430)):
@@ -267,7 +309,7 @@ func advance(seconds: float, hero_x: float, hero_y: float = 430.0) -> void:
 	pouch.pickups.clear()
 
 func throw_crystal(x: float, y: float, facing: int) -> bool:
-	return hero.is_alive() and pouch.toss(x,y,facing)
+	return is_running() and pouch.toss(x,y,facing)
 
 func _receive_delivery(delivery: Dictionary) -> void:
 	super._receive_delivery(delivery)
@@ -276,6 +318,7 @@ func _receive_delivery(delivery: Dictionary) -> void:
 	pouch.drop(crystals,delivery.x)
 
 func _advance_people(seconds: float) -> void:
+	expedition.prepare()
 	_assign_defense_posts()
 	var previous: Array=[]
 	for person in world.people: previous.append(float(person.x))
@@ -298,6 +341,8 @@ func _advance_people(seconds: float) -> void:
 
 func _override_resident_target(index: int, seconds: float) -> float:
 	var person: Dictionary = world.people[index]
+	var expedition_target:=expedition.target(index,seconds)
+	if is_finite(expedition_target):return expedition_target
 	if person.role=="guard":
 		_shoot_nearest_raider(person,190.0,20,0.85)
 		person["direction"]=1.0 if person.defense_post=="wall" else -1.0
@@ -346,16 +391,28 @@ func _defense_position(index: int, inset: float) -> float:
 
 func raid_pressure() -> Dictionary:
 	var pressure: Dictionary={"left":0,"right":0}
-	if not clock.is_night and clock.remaining>30: return pressure
+	if not clock.is_night and clock.remaining>30 and raiders.is_empty(): return pressure
 	for enemy in raiders:
 		if enemy.fighter.is_alive(): pressure["right" if enemy.get("side",1)>0 else "left"]+=1
 	var start: int=_night_spawn_index if clock.is_night else 0
-	var pending: int=_spawn_remaining if clock.is_night else mini(12,2+clock.day)
+	var pending: int=_spawn_remaining if clock.is_night else (mini(12,2+clock.day) if clock.remaining<=30 else 0)
 	for i in range(start,start+pending):
-		pressure["right" if i%2==0 else "left"]+=1
+		if mission.side_open(1 if i%2==0 else -1):pressure["right" if i%2==0 else "left"]+=1
 	return pressure
 
-func finished() -> bool: return false
+func is_running() -> bool:
+	return hero.is_alive() and mission.outcome=="active"
+
+func finished() -> bool:return mission.outcome!="active"
+
+func _strategic_target(_raider: Dictionary) -> Dictionary:
+	return {"kind":"core","x":world.sites.hall}
+
+func _hit_structure(target: Dictionary, amount: int) -> void:
+	if target.kind=="core":
+		mission.damage_core(amount)
+		mission.resolve(hero.is_alive(),false)
+	else:super._hit_structure(target,amount)
 func begin_raid() -> bool: return false # The calendar alone starts a night.
 
 func _advance_invasion(seconds: float) -> void:
@@ -367,16 +424,17 @@ func _advance_invasion(seconds: float) -> void:
 		_night_spawn_index=0
 	if _spawn_remaining>0:
 		_spawn_timer-=seconds
-		if _spawn_timer<=0:
-			var enemy:=_spawn_raider()
+		while _spawn_timer<=0 and _spawn_remaining>0:
 			var side:=1 if _night_spawn_index%2==0 else -1
+			_night_spawn_index+=1
+			_spawn_remaining-=1
+			if not mission.side_open(side):continue
+			var enemy:=_spawn_raider()
 			enemy["side"]=side
 			enemy.x=world.sites.wall+480.0 if side>0 else world.sites.wall_left-480.0
 			enemy["exit_x"]=enemy.x+side*70.0
 			enemy["direction"]=-float(side)
 			raiders.append(enemy)
-			_night_spawn_index+=1
-			_spawn_remaining-=1
 			_spawn_timer=2.5
 	time_to_raid=clock.remaining
 
@@ -389,6 +447,27 @@ func _spawn_raider() -> Dictionary:
 	raider.fighter=Fighter.new(stats)
 	raider["wall_damage"]=20+(clock.day-1)*enemy_damage_growth
 	return raider
+
+func _advance_expeditions(seconds: float, hero_x: float, hero_y: float) -> void:
+	for index in range(mission.rifts.size()):
+		var rift: Dictionary=mission.rifts[index]
+		if not rift.ordered or rift.sealed:continue
+		var ready:=expedition.worker_ready(rift)
+		var knight_near:=absf(hero_x-rift.x)<160 and absf(hero_y-430)<80
+		if ready and knight_near and not rift.wardens_spawned:
+			rift.wardens_spawned=true
+			for offset in [-120.0,120.0]:
+				var enemy:=_spawn_raider()
+				enemy.fighter.stats.max_hp=maxi(warden_health,enemy.fighter.stats.max_hp)
+				enemy.fighter.hp=enemy.fighter.stats.max_hp
+				enemy.fighter.stats.damage=maxi(warden_damage,enemy.fighter.stats.damage)
+				enemy.x=rift.x+offset
+				enemy["side"]=rift.side
+				enemy["kind"]="warden"
+				enemy["direction"]=-signf(offset)
+				raiders.append(enemy)
+		var contested:=raiders.any(func(r):return r.fighter.is_alive() and absf(r.x-rift.x)<180)
+		mission.advance_seal(index,seconds,ready,knight_near,contested)
 
 func _collect_loot(drop: Dictionary) -> void:
 	super._collect_loot(drop)

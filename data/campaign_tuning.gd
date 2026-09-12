@@ -15,6 +15,12 @@ extends "res://data/frontier_tuning.gd"
 @export_range(6,14,1) var crystal_radius: float = 9.0
 @export_group("Resident stroll")
 @export_range(8,50,1) var stroll_speed: float = 24.0
+@export_group("Core and expedition")
+@export_range(40,600,10) var core_max_hp: int = 180
+@export_range(10,180,10) var core_recharge: int = 60
+@export_range(2,30,1) var rift_seal_seconds: float = 8.0
+@export_range(40,300,10) var warden_health: int = 90
+@export_range(5,60,1) var warden_damage: int = 18
 @export_group("Defense posts")
 @export_range(-1200,-950,10) var left_defense_x: float = -1100.0
 @export_group("Resident night safety")
@@ -28,6 +34,6 @@ extends "res://data/frontier_tuning.gd"
 @export_range(1,50,1) var enemy_health_growth: int = 12
 @export_range(1,20,1) var enemy_damage_growth: int = 3
 @export_group("Crystal slots per interaction")
-@export var crystal_prices: Dictionary = {"camp":2,"hall":5,"workshop":2,"armory":3,"farm_tools":2,"hunt_tools":3,"forge":2,"beacon":1,"wall":3,"wall_upgrade":4,"repair":2,"farm":3,"drill":2,"outpost":3,"mark":1,"recruit":1}
+@export var crystal_prices: Dictionary = {"camp":2,"hall":5,"workshop":2,"armory":3,"farm_tools":2,"hunt_tools":3,"forge":2,"beacon":1,"wall":3,"wall_upgrade":4,"repair":2,"farm":3,"drill":2,"outpost":3,"mark":1,"recruit":1,"core_charge":2,"rift":4}
 func campaign_rules() -> Dictionary:
-	return {"left_defense_x":left_defense_x,"return_margin":return_margin,"hunter_damage":hunter_damage,"hunter_range":hunter_range,"hunter_interval":hunter_interval,"stroll_speed":stroll_speed,"magnet_radius":magnet_radius,"magnet_speed":magnet_speed,"throw_grace":throw_grace,"capacity":backpack_capacity,"starting_crystals":initial_crystals,"day_seconds":day_seconds,"night_seconds":night_seconds,"enemy_health_growth":enemy_health_growth,"enemy_damage_growth":enemy_damage_growth,"prices":crystal_prices}
+	return {"warden_health":warden_health,"warden_damage":warden_damage,"rift_seal_seconds":rift_seal_seconds,"core_max_hp":core_max_hp,"core_recharge":core_recharge,"left_defense_x":left_defense_x,"return_margin":return_margin,"hunter_damage":hunter_damage,"hunter_range":hunter_range,"hunter_interval":hunter_interval,"stroll_speed":stroll_speed,"magnet_radius":magnet_radius,"magnet_speed":magnet_speed,"throw_grace":throw_grace,"capacity":backpack_capacity,"starting_crystals":initial_crystals,"day_seconds":day_seconds,"night_seconds":night_seconds,"enemy_health_growth":enemy_health_growth,"enemy_damage_growth":enemy_damage_growth,"prices":crystal_prices}

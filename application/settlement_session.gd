@@ -21,6 +21,9 @@ func _init(config: Dictionary = {}, hero_stats: Stats = null) -> void:
 	_raid_gap = maxf(1.0,float(config.get("raid_gap",30.0)))
 	_person_speed = maxf(1.0,float(config.get("person_speed",60.0)))
 
+func is_running() -> bool:
+	return hero.is_alive()
+
 func finished() -> bool:
 	return wave >= 3 and raiders.is_empty() and _spawn_remaining == 0
 
@@ -124,7 +127,7 @@ func begin_raid() -> bool:
 	return true
 
 func advance(seconds: float, hero_x: float, hero_y: float = 430.0) -> void:
-	if seconds <= 0 or not is_finite(seconds) or not hero.is_alive():
+	if seconds <= 0 or not is_finite(seconds) or not is_running():
 		return
 	hero.advance(seconds)
 	for effect in effects:
@@ -136,6 +139,8 @@ func advance(seconds: float, hero_x: float, hero_y: float = 430.0) -> void:
 	_advance_invasion(seconds)
 	for raider in raiders:
 		_advance_raider(raider,seconds,hero_x,hero_y)
+		if not is_running(): break
+	if not is_running(): return
 	for raider in raiders:
 		if not raider.fighter.is_alive() and not raider.get("escaped", false):
 			loot.append({"x":raider.x,"taken":false})
@@ -217,8 +222,18 @@ func _target(raider: Dictionary, hero_x: float, hero_y: float) -> Dictionary:
 			if person.role!="wanderer" and absf(person.get("y",430)-430)<42 and absf(person.x-raider.x)<nearest:
 				nearest=absf(person.x-raider.x)
 				result={"kind":"person","x":person.x,"index":index}
+	var strategic:=_strategic_target(raider)
+	if not strategic.is_empty() and result.kind!="hero":
+		if result.kind=="leave" or absf(strategic.x-raider.x)<absf(result.x-raider.x):
+			result=strategic
 	var wall_target:=_blocking_wall(raider.x,result.x,int(raider.get("side",1)) if result.kind=="leave" else 0)
 	return result if wall_target.is_empty() else wall_target
+
+func _strategic_target(_raider: Dictionary) -> Dictionary:
+	return {}
+
+func _hit_structure(target: Dictionary, amount: int) -> void:
+	if target.kind=="wall":world.hit_wall(amount,target.get("wall_id","wall"))
 
 func _blocking_wall(from_x: float, to_x: float, approach_side: int = 0) -> Dictionary:
 	var nearest:=INF
@@ -257,7 +272,7 @@ func _advance_raider(raider: Dictionary, seconds: float, hero_x: float, hero_y: 
 				match target.kind:
 					"hero":
 						if absf(hero_y-430)<42: hero.take_damage(raider.fighter.stats.damage)
-					"wall": world.hit_wall(raider.get("wall_damage",20),target.get("wall_id","wall"))
+					"wall","core": _hit_structure(target,raider.get("wall_damage",20))
 					"person":
 						if absf(world.people[target.index].get("y",430)-430)<42: world.hit_person(target.index)
 				effects.append({"kind":"hit","x":at,"to":at,"life":0.25})
@@ -279,6 +294,7 @@ func _advance_raider(raider: Dictionary, seconds: float, hero_x: float, hero_y: 
 		raider.cooldown = 1.5
 
 func strike_from(x: float, y: float) -> void:
+	if not is_running():return
 	if absf(y-430)>hero.stats.vertical_range:
 		return
 	for raider in raiders:

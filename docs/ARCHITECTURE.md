@@ -158,3 +158,10 @@ ResidentSchedule 為純路程／時間規則；CampaignSession 決定職業避�
 ## 雙側防線
 
 Settlement.walls 保存各防線字典，既有 wall 引用右側同一份資料，舊原型不建立左牆。Campaign 注入左側位置並保留外側隨機地景空間；Workforce 選擇最近付費防線。敵襲依據點交替出生，命中前按實際路徑檢查城牆，Presentation 只讀獨立狀態和預警數字。見 design/bilateral-defense.md。
+
+## 核心與裂隙
+CampaignMission 是純 domain 狀態與終局規則，resolve 將死亡優先於勝利且終局不可逆；CampaignSession 以 is_running 封鎖後續互動與更新。SettlementSession 提供戰略目標與結構受擊掛點，舊模式仍無核心。
+
+RiftWorkforce 只引用 world／frontier／mission，不回指 session，避免 RefCounted 循環。出征先挑空手工匠，保留搬運與被中斷的工作；地面抵達與替補交由其管理。CampaignSession 在正常敵人更新後生成守門者、判斷現場安全與封印進度，夜襲排程依封印狀態跳過來源。bootstrap 停止終局移動、投入與拋晶，仍呈現最後狀態。
+
+RiftVisual 使用模擬時間繪製像素裂隙，IconDashboard 與 CampaignHUD 只讀 mission。解鎖條件 prerequisites 與消耗材料 requirements 分開提供，避免把聚落等級當成要花掉的材料。參數由 campaign_tuning.gd 經 campaign_rules 注入；沒有新增持久化格式。
