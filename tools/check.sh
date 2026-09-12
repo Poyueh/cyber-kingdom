@@ -11,7 +11,7 @@ run_check() {
   local name="$1"
   shift
   local result=0
-  "$GODOT_BIN" --headless --path "$ROOT" "$@" > "$ROOT/test-results/$name.log" 2>&1 || result=$?
+  "$GODOT_BIN" --headless --path "$ROOT" "$@" -- --no-campaign-save > "$ROOT/test-results/$name.log" 2>&1 || result=$?
   cat "$ROOT/test-results/$name.log"
   if [ "$result" -ne 0 ]; then return "$result"; fi
   # Godot can emit a script error without a nonzero process exit.
@@ -32,6 +32,7 @@ run_check mission --script res://tests/test_mission_scene.gd
 run_check growth --script res://tests/test_growth_scene.gd
 run_check ecology --script res://tests/test_ecology_scene.gd
 run_check expansion --script res://tests/test_expansion_scene.gd
+run_check campaign_save --script res://tests/test_campaign_save_scene.gd
 run_check traversal --script res://tests/test_traversal.gd
 run_check refuge --script res://tests/test_refuge_scene.gd
 run_check settlement --script res://tests/test_settlement_scene.gd

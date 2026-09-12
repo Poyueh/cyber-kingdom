@@ -3,6 +3,11 @@ extends SceneTree
 ## plus --main-pack pointing at the actual exported PCK. Local res:// files must not overlay it.
 ## Release templates do not accept --script; this checks packaged resources, not OS input.
 func _initialize() -> void:
+	if DisplayServer.get_name()=="headless":
+		printerr("This review captures a native screenshot; run without --headless.")
+		quit(1)
+		return
+	ProjectSettings.set_setting("campaign/persistence_enabled",false)
 	call_deferred("review")
 func review() -> void:
 	assert(ProjectSettings.get_setting("application/run/main_scene")=="res://scenes/frontier.tscn")
@@ -124,4 +129,28 @@ func review() -> void:
 	print("PASS: exported bundle entry, camp investment, recruitment, left-wall investment, core defeat, mission reset, pause, restart, and resource exclusions")
 	scene.queue_free()
 	await process_frame
+	ProjectSettings.set_setting("campaign/persistence_enabled",true)
+	var location="user://test_packaged_campaign_%d.json" % Time.get_ticks_usec()
+	scene=load("res://scenes/frontier.tscn").instantiate()
+	scene.campaign_save_path=location
+	root.add_child(scene)
+	for i in range(3):await physics_frame
+	scene.sim.interact(30)
+	scene.sim.throw_crystal(30,430,-1)
+	scene._notification(Node.NOTIFICATION_APPLICATION_PAUSED)
+	assert(scene.progress.status=="saved")
+	var wallet: int=scene.sim.pouch.amount
+	scene.queue_free()
+	await process_frame
+	scene=load("res://scenes/frontier.tscn").instantiate()
+	scene.campaign_save_path=location
+	root.add_child(scene)
+	for i in range(3):await physics_frame
+	assert(scene.paused and scene.sim.context(30).paid==1)
+	assert(scene.sim.pouch.amount==wallet and scene.sim.pouch.ground_total()==1)
+	assert(scene.hud.save_button.visible)
+	scene.queue_free()
+	await process_frame
+	DirAccess.remove_absolute(location)
+	print("PASS: actual packaged campaign saves, reopens paused and preserves payment and thrown crystal")
 	quit()

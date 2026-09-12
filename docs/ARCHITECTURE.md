@@ -96,7 +96,7 @@ Application 依賴 ProgressStore，正式場景注入 JsonProgressStore，流程
 
 `scenes/frontier.tscn` 繼承 settlement 場景；`bootstrap/frontier_root.gd` 注入 frontier.tres 的種子與生產／訓練數值，依生成邊界建立實際地面、牆界、相機及平台。規則只傳普通數值；Resource 留在外層。場景與經濟共用同一組資源座標，平台使用原本的一致圖形／碰撞元件。
 
-`presentation/frontier_*` 負責新圖意圖、HUD、森林晶礦／農田／城鎮示意。換圖與重試建立新的整輪模擬，不保存王國或改動訓練場存檔。城鎮成本與資源保底目前集中於 domain/frontier.gd，生產週期、產量與訓練數值則已開放 Inspector；增加調參需求時再擴充 Resource，避免每個生成細節都先做通用編輯器。
+`presentation/frontier_*` 負責新圖意圖、HUD、森林晶礦／農田／城鎮示意。換圖與重試建立新的整輪模擬；現行戰役會先封存上一局，不改動訓練場存檔。城鎮成本與資源保底目前集中於 domain/frontier.gd，生產週期、產量與訓練數值則已開放 Inspector；增加調參需求時再擴充 Resource，避免每個生成細節都先做通用編輯器。
 
 
 ## 居民主導開拓與美術 v002
@@ -118,7 +118,7 @@ SettlementSession 提供 `_engineer_target` 小型擴充點；原場景只建牆
 
 `bootstrap/frontier_root.gd` 現在注入 `data/campaign.tres` 的背包、日夜、成長與龍晶價格；`scenes/frontier.tscn` 使用 campaign_view/hud，復用原有地形、人物圖集與觸控路徑。UI 只讀 paid/cost 畫格子，不掌管扣款。未探索地景由淡霧呈現，未揭露人物不繪製。
 
-戰役進度只在記憶體內；N／R 重新建立模擬並清除投資、掉落、居民和日曆。沒有把此狀態寫入舊訓練場存檔。
+戰役另用完整檢查點保存本局，N／R 先封存舊局再建立新模擬；不寫入舊訓練場存檔。
 
 
 ## 圖示與角色移動呈現
@@ -181,3 +181,11 @@ CampaignView 讀取生態狀態畫營地與 consequences，角色仍使用原本
 
 ## 領土防線
 FrontierDefenses 以區域外邊界建立穩定防線 ID，集中管理施工前提、最外層存活守點、出生點與受保護拓荒站。CampaignSession 保存左右分工，把實際目的地交給既有居民移動；Settlement / FrontierWorkforce 繼續處理獨立城牆生命及施工。呈現層讀取可見性和條件圖示，不下建設決策。
+
+## 戰役檢查點
+
+application/campaign_snapshot.gd 擷取固定類別的純資料，對戰鬥目標建立穩定的本次快照索引，還原時接回新物件。campaign_checkpoint_rules.gd 集中版本 1 的形狀與圖關係驗證，campaign_progress.gd 決定還原／保護／保存／封存；唯一檔案相依是 application/ports/campaign_store.gd。
+
+infrastructure/json_campaign_store.gd 使用暫存檔替換與內容指紋檢查。bootstrap/frontier_root.gd 依生命週期和時間觸發保存、組裝還原場景；presentation/campaign_hud.gd 提供狀態和重試圖示。測試／預覽明確停用正式持久化，存檔測試使用唯一位置。
+
+純模型的狀態新增需同步版本及驗證；不把未知欄位略過當成向前相容。輸入緩衝和效果排除，投資格與實體龍晶保留。規格見 design/campaign-save-resume.md。

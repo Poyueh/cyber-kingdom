@@ -1,0 +1,42 @@
+{
+  "build_source_tree": "92892d340ddf49ad27d15ededbd84181115371c7",
+  "engine": "4.7.2.stable.official.ed1daf0bf",
+  "driver": "tools/play_campaign_resume.gd",
+  "checkpoint_interval_simulated_seconds": 120,
+  "resource_grants": false,
+  "runs": [
+    {
+      "seed": 1,
+      "route": "residents",
+      "outcome": "victory",
+      "seconds": 1234.4,
+      "reopens": 10,
+      "hp": 100,
+      "core": 180,
+      "report": "save-resume-seed1-final.json",
+      "log": "save-resume-seed1-final.log"
+    },
+    {
+      "seed": 7,
+      "route": "knight",
+      "outcome": "victory",
+      "seconds": 986.4,
+      "reopens": 8,
+      "hp": 100,
+      "core": 180,
+      "report": "save-resume-seed7-final.json",
+      "log": "save-resume-seed7-final.log"
+    }
+  ],
+  "limitations": [
+    "Native automated physics/input; no human difficulty or mobile lifecycle acceptance.",
+    "Seed 1 run preceded the final archive-failure status-only correction; it never invokes archive. Seed 7 uses final implementation.",
+    "Only scene destruction/reconstruction here; file store and separate packaged process startup are checked independently."
+  ],
+  "sha256": {
+    "save-resume-seed7-final.log": "43044f7a1f01451631e3640c5275db2c9b9e1a9fd26d3e6b31fae2425f84ce94",
+    "save-resume-seed7-final.json": "00cce82c73feb29377b2a1ac2754db514b86cddbe23c8e9eabb917ee63e4127a",
+    "save-resume-seed1-final.log": "700812c8dc64119f0fd965e175d9c1c74cf9872f36223ea5d164a4782e0c52ae",
+    "save-resume-seed1-final.json": "ee7d035bd6158131b84d8b176ef6d9ebf2d30f97e047c82f392b8e79e62f9b80"
+  }
+}

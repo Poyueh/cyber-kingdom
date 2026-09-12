@@ -538,3 +538,25 @@ feature/outward-defense-expansion 按 Gitflow 整合本地 develop，未推送�
 乾淨 tools/check.sh 通過 **972 項 Godot 斷言與 2 個 Python 建置測試**，完整試玩皆退出 0、日誌無 SCRIPT ERROR。遊戲及美術沒有變更，試玩包沿用 desktop-expansion-20260913，不重複打包相同內容。feature/campaign-playthrough-balance 按 Gitflow 整合本地 develop，未推送；原有 25 個個人設定／編輯器檔案雜湊保留。
 
 完整目標仍未完成。下一步戰役存續／背景恢復與首輪圖示引導，再驗證手機安全區、多指、簽署安裝。六組未刻意外擴新牆，還缺外擴整局效益、真人難度回饋、iOS／Android 可安裝交付及 Windows 實機。
+
+## 戰役存檔與暫停續玩（2026-09-13）
+
+實作獨立完整戰役檢查點：正常每 5 秒、暫停／背景／離場儲存，重新啟動自動還原並先暫停。保留地圖、探索、居民工作與搬運、未滿付款格、建築與防線、日夜／裂隙、騎士與敵人戰鬥、背包及實體龍晶、騎士位置與速度。清除輸入緩衝及裝飾效果，同刀命中身分重新接回，不能靠載入多砍一次。沒有離線收益或離線敵襲。
+
+檔案寫入採同目錄暫存＋flush＋rename；失敗保留上次成功進度並提供橙色圖示重試。未知版本／損壞資料鎖定原檔；明確重開或新圖先封存舊局再建立新檔。尚無跨裝置／雲端同步或舊格式遷移。分層為 Snapshot／Rules／Progress／Store port／JSON adapter／場景組裝，未把檔案操作放進規則。測試與預覽隔離正式存檔。
+
+TDD 先重現缺少快照、合法 JSON 內含非法世界資料、缺少檔案 port 及實際場景未接續玩的失敗。正常還原測試發現 Dictionary 的整數／浮點比較與 JSON 約 3.7e-13 的精度差異，改用小數容差後確認時間凍結；沒有為測試推進或重置時間。原生目視發現停用樣式隱藏成功圖示，已修正，暫停時改顯示播放圖示。
+
+最終乾淨 tools/check.sh 通過 **1061 項 Godot 斷言與 2 個 Python 建置測試**（822 行為、239 場景），無 SCRIPT ERROR。新增 69 行為與 20 場景斷言，包括實際檔案、損壞／未知版本／缺漏欄位、工人貨物、敵人蓄力、同刀防重複、空中續接、背景輸入釋放、暫停凍結與儲存按鈕重試。
+
+正常資源的實際物理／輸入操作器每 120 秒保存、銷毀場景並從檔案重建。種子 1 居民路線 10 次續玩、1234.4 秒勝利；種子 7 騎士路線 8 次續玩、986.4 秒勝利，雙方皆完成雙裂隙，核心 180、騎士生命 100。兩局使用自動閃避，不能當成真人適中難度的證明。來源差異、輸入紀錄與限制見 [續玩測量](reports/campaign-resume-v001/manifest.json)。
+
+[原生還原畫面](previews/campaign-resumed-v001.png)、[儲存失敗圖示](previews/campaign-save-retry-v001.png) 已目視確認；沿用原有美術。規格見 [存檔與續玩](design/campaign-save-resume.md)，[第三十一課](lessons/31-campaign-save.md) 示範在 Frontier 節點修改 Autosave Seconds。未宣稱使用者已完成練習。
+
+新試玩包 builds/desktop-save-20260913，來源 tree 92892d340ddf49ad27d15ededbd84181115371c7；遊戲檔案已逐一核對與完整測試副本相同。Mac ZIP 73.3 MiB、Windows ZIP 51.9 MiB，SHA-256／ZIP CRC、Mac 簽章完整性與 Windows 檔案格式通過。真正 Mac release 入口啟動 120 幀成功；在專案外以實際 PCK 驗證背景存檔、重新建立場景、暫停／付款格／投擲龍晶保留，以及既有營火、居民、成長、外牆和終局功能，退出 0 且無腳本錯誤。
+
+第一次誤用無圖形模式跑既有會截圖的 PCK 檢查工具，於截圖步驟失敗，不列為通過；停止該流程，以工具所需的原生圖形模式完整重跑成功，並補上誤用時立即退出的提示。打包後只補文件、報告及產物排除的工具檢查；遊戲內容未再變動。
+
+Mac 仍 ad-hoc 未公證；Windows 未簽章且未實機。feature/campaign-save-resume 驗證後按 Gitflow 整合本地 develop，未推送。原有 25 個個人檔案雜湊保持不變；未改個人 1 秒長按設定。
+
+完整目標仍在進行。使用者測試裝置為 iPhone 17e／iPhone 16 Pro Max，兩台尚未安裝這版；付費 Apple Developer Program 尚待回覆。下一步首輪圖示引導、手機安全區與多指操作、iOS／Android 安裝交付；Windows 仍缺實機，真人難度與美感亦未驗收。
