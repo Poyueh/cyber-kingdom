@@ -418,3 +418,19 @@ TDD 首次 9 個預期失敗後完成實作，新增 17 行為與 9 實際場景
 [第二十四課：調整收工時間](lessons/24-resident-night-safety.md)。原有 25 個未提交個人設定／編輯器檔案 SHA-256 不變；標準回歸使用倉庫長按等待 0.5 秒，個人 1 秒保留。本功能經 feature/demo-resident-night-cycle 按 Gitflow 整合本地 develop，未推送遠端。
 
 下一單元：左右防線／夜襲與可見勝敗，後續補可延續經濟、有限騎士成長、完整遊玩與四平台驗收；總目標仍進行中。
+
+## 桌面原型交付（2026-09-13）
+
+已完成官方 Godot 4.7.2 模板下載、ZIP CRC 校驗與本機安裝；建立 macOS Demo／Windows Demo 兩個匯出設定，以及從指定 Git tree 的暫存副本匯出的 tools/build_desktop.py。副本設定為直接進營火戰役、啟用 Apple 必要貼圖格式，沒有改使用者工作目錄入口。文件、測試、工具與生成原圖不放入遊戲包。
+
+產物在 builds/desktop-preview-20260912-r2：Mac Universal app 與約 73 MiB ZIP，Windows x86-64 exe＋pck 與約 52 MiB ZIP；manifest 保存來源 tree 與 SHA-256。Mac 為 ad-hoc 簽章、未公證，Windows 未正式簽章；僅開發測試用途，尚非 App Store 或完整 Demo 發行。[建置與交付說明](BUILDING.md)。
+
+首次 Mac 匯出因缺少 ETC2／ASTC 失敗，先以 staging 測試重現，再補暫存副本設定。完整乾淨回歸通過 **691 項 Godot 斷言與 2 個 Python 建置測試**；匯入、架構、錯誤掃描與啟動檢查通過。兩平台 release 匯出、ZIP CRC、Windows PE／Mac 雙架構與 codesign 完整性均通過。
+
+真正 Mac 執行檔預設入口 headless 120 幀零錯誤，原生 GUI 已啟動。另外以相同版本 Godot 載入實際產物 PCK，通過營火投入、招攬、暫停、重開、入口與排除測試資源的檢查，並[真正渲染畫面](previews/desktop-pack-v001.png)。release template 不支援外部 --script，最初因此沒有測試結果的嘗試未列為成功。打包資源測試不是 Windows／手機實機或真人完整通關。
+
+Godot 小教學：編輯器的專案設定與已匯出的應用程式是各自獨立的；在 Inspector 改數值後，需重新打包才能更新桌面程式。此建置工具取已提交版本，正式輸出前先完成測試與 Git 提交；不會把未儲存或未提交設定偷偷混入試玩包。
+
+feature/demo-desktop-distribution 驗證後依 Gitflow 合併本地 develop，未推送；原有 25 個個人設定／編輯器檔案 SHA-256 不變。比對產物來源與最終整合內容，遊戲程式、素材、匯出設定與建置腳本一致，後加的只有文件、預覽、排除的測試與快取忽略規則。
+
+iPhone 17e／iPhone 16 Pro Max 仍待完整 Xcode、簽署與安裝驗證；Android APK／Windows 實機未完成。完整目標仍進行中：下一單元為雙側防守及核心失守／反攻終局，之後補持續經濟、有限騎士成長、完整難度與四平台驗收。
