@@ -21,3 +21,8 @@ var combo_chain_progress: float = 0.88
 var combo_return_duration: float = 0.82
 var combo_finisher_duration: float = 1.25
 var combo_finisher_damage: float = 1.6
+
+# Player movement is rooted during a swing; followups provide authored travel.
+var attack_movement_locked: bool = false
+var combo_return_step: float = 22.0
+var combo_finisher_step: float = 32.0

@@ -17,6 +17,7 @@ var combo_step: int = 0
 var _swing_duration: float = 0.0
 var _queued_attack_seconds: float = 0.0
 var _combo_grace_remaining: float = 0.0
+var _pending_attack_travel: float = 0.0
 
 func _init(configuration: Stats) -> void:
 	stats = configuration
@@ -58,6 +59,7 @@ func clear_attack_buffer() -> void:
 	_queued_attack_seconds = 0.0
 
 func _cancel_combo() -> void:
+	_pending_attack_travel = 0.0
 	clear_attack_buffer()
 	_combo_grace_remaining = 0.0
 	combo_step = 0
@@ -102,6 +104,7 @@ func take_damage(amount: int) -> bool:
 	return true
 
 func advance(seconds: float) -> void:
+	_pending_attack_travel = 0.0
 	if seconds <= 0.0 or not is_finite(seconds):
 		return
 	_advance_attack(seconds)
@@ -114,9 +117,11 @@ func _advance_attack(seconds: float) -> void:
 	# Split at the handoff so a coarse frame cannot erase or delay a valid press.
 	var handoff := maxf(0.0, attack_remaining - _swing_duration * (1.0 - stats.combo_chain_progress))
 	if stats.combo_enabled and combo_step > 0 and combo_step < 3 and _queued_attack_seconds > 0.0 and _queued_attack_seconds >= handoff and seconds >= handoff:
+		_accumulate_attack_travel(handoff)
 		_begin_attack(combo_step + 1)
 		_advance_attack(seconds - handoff)
 		return
+	_accumulate_attack_travel(seconds)
 	var previous_remaining := attack_remaining
 	attack_remaining = maxf(0.0, attack_remaining - seconds)
 	cooldown_remaining = maxf(0.0, cooldown_remaining - seconds)
@@ -148,3 +153,22 @@ func dash_progress() -> float:
 	if dash_remaining <= 0.0 or stats.dash_duration <= 0.0:
 		return 1.0
 	return clampf(1.0 - dash_remaining / stats.dash_duration, 0.0, 1.0)
+
+## Signed horizontal travel produced by combat time, consumed by the physics adapter.
+func consume_attack_travel() -> float:
+	var travel := _pending_attack_travel
+	_pending_attack_travel = 0.0
+	return travel
+
+func _accumulate_attack_travel(seconds: float) -> void:
+	if attack_remaining <= 0.0 or combo_step < 2:
+		return
+	var distance := stats.combo_return_step if combo_step == 2 else stats.combo_finisher_step
+	var before := attack_progress()
+	var after := minf(1.0, before + seconds / _swing_duration)
+	_pending_attack_travel += attack_facing * maxf(0.0, distance) * (_step_fraction(after) - _step_fraction(before))
+
+func _step_fraction(progress: float) -> float:
+	# Ease into and out of the active sword cut; anticipation/recovery stay planted.
+	var phase := clampf((progress - attack_active_start()) / (attack_active_end() - attack_active_start()), 0.0, 1.0)
+	return phase * phase * (3.0 - 2.0 * phase)
