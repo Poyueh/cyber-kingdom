@@ -177,3 +177,7 @@ UI 以 upgrade 資料畫目前／下一階值與階數；requirements 和 prereq
 FrontierEcology 只依賴地圖資料並讀取人物陣列，管理棲地、等待名額與日出再生，傳回新人物位置／區域；CampaignSession 透過既有建立人物入口追加，既有索引不變。Calendar 確認夜襲清空後的 dawn 事件才觸發，模型再以 last_dawn 去重。已送達植物原位置再生，保留 Resource 物件，不新增節點或重建工作索引；搬運中／未交付的貨物和有限礦藏不刷新。
 
 CampaignView 讀取生態狀態畫營地與 consequences，角色仍使用原本的日夜排程、閒置散步和觸控互動；未在呈現層判斷生產或招募結果。
+
+
+## 領土防線
+FrontierDefenses 以區域外邊界建立穩定防線 ID，集中管理施工前提、最外層存活守點、出生點與受保護拓荒站。CampaignSession 保存左右分工，把實際目的地交給既有居民移動；Settlement / FrontierWorkforce 繼續處理獨立城牆生命及施工。呈現層讀取可見性和條件圖示，不下建設決策。

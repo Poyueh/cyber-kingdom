@@ -93,6 +93,32 @@ func review() -> void:
 	assert(scene.sim.clock.day==2 and scene.sim.world.people.size()==14)
 	scene.restart()
 	assert(scene.sim.world.people.size()==8 and scene.sim.ecology.last_dawn==1)
+	scene.sim.frontier.city_level=2
+	scene.sim.world.people.clear()
+	var wall_id: String="frontier_wall:3"
+	var wall_x: float=scene.sim.world.sites[wall_id]
+	scene.sim.frontier.regions[3].discovered=true
+	scene.sim.frontier.regions[3].outpost_built=true
+	scene.sim.world.wall.merge({"level":1,"hp":40},true)
+	for node in scene.sim.frontier.nodes:
+		if node.kind=="tree" and absf(node.x-wall_x)<80:node.collected=true
+	scene.knight.position=Vector2(wall_x,430)
+	for i in range(2):await physics_frame
+	scene._physics_process(1.0/60)
+	assert(scene.view._context.id=="wall" and scene.view._context.x==wall_x)
+	for i in range(3):
+		scene.hud.interact_button.button_down.emit()
+		scene._physics_process(1.0/60)
+		scene.hud.interact_button.button_up.emit()
+		scene._physics_process(1.0/60)
+	assert(scene.sim.world.walls[wall_id].pending and scene.sim.pouch.amount==9)
+	scene.sim.world.people.append({"role":"engineer","x":wall_x-12,"y":430.0,"hurt":0.0,"cooldown":0.0,"region":-1})
+	for i in range(200):scene._physics_process(1.0/60)
+	assert(scene.sim.world.walls[wall_id].hp==40 and scene.sim.defenses.active_post(1)==wall_id)
+	scene.sim.clock.remaining=0.01
+	scene._physics_process(0.02)
+	assert(scene.sim.raiders[0].x>wall_x)
+	print("PASS: outward wall touch payment, resident construction and outside spawn in exported bundle")
 	print("PASS: dawn recruitment, payment, no duplicate renewal, pause and reset in exported bundle")
 	print("PASS: bounded capacitor install, recharge and HUD in exported bundle")
 	print("PASS: exported bundle entry, camp investment, recruitment, left-wall investment, core defeat, mission reset, pause, restart, and resource exclusions")
