@@ -26,7 +26,7 @@ func run_scene() -> void:
 	scene._physics_process(1.0/60)
 	pay(scene);pay(scene)
 	check(sim.pouch.amount==4,"camp and two wall orders consume exactly eight crystals")
-	for id in sim.world.walls:
+	for id in ["wall","wall_left"]:
 		var side:=1 if id=="wall" else -1
 		sim.world.people.append({"role":"engineer","x":sim.world.sites[id]-side*12,"y":430.0,"hurt":0.0,"cooldown":0.0,"region":-1})
 	scene.paused=true

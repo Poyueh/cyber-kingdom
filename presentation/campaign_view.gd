@@ -75,9 +75,10 @@ func _draw_structures() -> void:
 	if map.city_level==0: return
 	for site in world.sites:
 		var x: float=world.sites[site]
+		if not _sim.defenses.visible(site):continue
 		if site=="hall": continue
 		if not _context.id.is_empty() and absf(_context.x-x)<1:continue
-		_icon(SITE_ICONS.get(site,"hand"),Vector2(x,276 if _sim.built.get(site,false) else 343),23)
+		_icon("wall" if world.walls.has(site) else SITE_ICONS.get(site,"hand"),Vector2(x,276 if _sim.built.get(site,false) else 343),23)
 	for site in ["workshop","armory","farm_tools","hunt_tools","forge","beacon"]:
 		var at := Vector2(world.sites[site],430)
 		var asset: String = {"farm_tools":"workshop","hunt_tools":"armory"}.get(site,site)
@@ -90,6 +91,7 @@ func _draw_structures() -> void:
 			for index in range(world.tools[kind]): _tool(at+Vector2(-20+index*20,-22),kind)
 		elif site=="beacon" and world.barrier>0: _text("防護 ×%d" % world.barrier,at.x,310,Color("8ce2dc"),13)
 	for id in world.walls:
+		if not _sim.defenses.visible(id):continue
 		var wall_x: float=world.sites[id]
 		var defense: Dictionary=world.walls[id]
 		if defense.level>0:
