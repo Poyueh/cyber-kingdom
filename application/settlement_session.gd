@@ -151,34 +151,54 @@ func _advance_people(seconds: float) -> void:
 		person.hurt = maxf(0,person.hurt-seconds)
 		person.cooldown = maxf(0,person.cooldown-seconds)
 		var target: float = person.x
-		match person.role:
-			"wanderer":
-				var nearest := INF
-				for supply_index in range(world.supplies.size()):
-					var supply: Dictionary = world.supplies[supply_index]
-					if not supply.taken and absf(supply.x-person.x)<nearest:
-						nearest = absf(supply.x-person.x)
-						target = supply.x
-						world.collect_supply(index,supply_index)
-			"citizen":
-				var nearest := INF
-				for kind in world.tools:
-					var rack: float = world.tool_location(kind)
-					if world.tools[kind]>0 and absf(rack-person.x)<nearest:
-						nearest = absf(rack-person.x)
-						target = rack
-						world.claim_tool(index,kind)
-			"engineer": target = _engineer_target(index,seconds)
-			"guard":
-				target = world.sites.wall-65-index*18
-				for raider in raiders:
-					if raider.fighter.is_alive() and absf(raider.x-person.x)<190 and person.cooldown <= 0:
-						raider.fighter.take_damage(20)
-						person.cooldown = 0.85
-						effects.append({"kind":"bolt","x":person.x,"to":raider.x,"life":0.18})
+		person["sheltering"] = false
+		var override_target := _override_resident_target(index,seconds)
+		if is_finite(override_target):
+			target = override_target
+		else:
+			match person.role:
+				"wanderer":
+					var nearest := INF
+					for supply_index in range(world.supplies.size()):
+						var supply: Dictionary = world.supplies[supply_index]
+						if not supply.taken and absf(supply.x-person.x)<nearest:
+							nearest = absf(supply.x-person.x)
+							target = supply.x
+							world.collect_supply(index,supply_index)
+				"citizen":
+					var nearest := INF
+					for kind in world.tools:
+						var rack: float = world.tool_location(kind)
+						if world.tools[kind]>0 and absf(rack-person.x)<nearest:
+							nearest = absf(rack-person.x)
+							target = rack
+							world.claim_tool(index,kind)
+				"engineer": target = _engineer_target(index,seconds)
+				"guard":
+					target = world.sites.wall-65-index*18
+					_shoot_nearest_raider(person,190.0,20,0.85)
 		person["moving"] = absf(target-person.x)>1
 		if person.moving: person["direction"] = signf(target-person.x)
 		person.x = move_toward(person.x,target,_person_speed*seconds)
+
+## Campaign policies can take priority over routine job destinations.
+func _override_resident_target(_index: int, _seconds: float) -> float:
+	return NAN
+
+func _shoot_nearest_raider(person: Dictionary, reach: float, damage: int, interval: float) -> bool:
+	if person.cooldown > 0.0 or absf(person.get("y",430.0)-430.0)>42:
+		return false
+	var nearest: Dictionary = {}
+	var distance := reach
+	for raider in raiders:
+		if raider.fighter.is_alive() and absf(raider.x-person.x)<distance:
+			nearest = raider
+			distance = absf(raider.x-person.x)
+	if nearest.is_empty(): return false
+	nearest.fighter.take_damage(damage)
+	person.cooldown = interval
+	effects.append({"kind":"bolt","x":person.x,"to":nearest.x,"life":0.18})
+	return true
 
 func _engineer_target(index: int, seconds: float) -> float:
 	if world.wall.pending:
