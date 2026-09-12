@@ -13,3 +13,5 @@ tools/prepare_combo_motion.py 使用已授權的本機 Pillow／NumPy 去背、�
 - 全身貼圖與移動貼圖約 4.4 百萬像素，未壓縮 RGBA 約 17.6 MB；iOS 實機效能及整體記憶體仍待驗證。
 
 data/knight_combo_motion.tres 提供三刀各自的畫格時間權重；固定出刀時長和命中窗口仍由 combatant 決定。主戰役關閉舊大型程序刀光，使用新劍刃本身的少量光邊及既有命中火花。訓練入口和未配置此資源的舊場景保留原呈現作為相容路徑。
+
+目前處理腳本已改用 recipe.json 保存本版的切格／錨點／遮罩配方，預設無參數仍重製本版；可指定 v003 的配方產生橫掃版本。重構後已核對 planted、moving、contact 與本版提交檔逐位元相同。
