@@ -171,3 +171,9 @@ RiftVisual 使用模擬時間繪製像素裂隙，IconDashboard 與 CampaignHUD 
 KnightGrowth 集中電容容量、充能封頂與漸增成本；不改 Combatant 的普遍護盾行為，舊原型保持自身規則。CampaignSession 組合聚落與材料門檻，再透過既有逐晶投入完成交易。容量升級以階數組成穩定 key，充能另用獨立 key，故受擊不會使同一長按把升級付款轉成補能。
 
 UI 以 upgrade 資料畫目前／下一階值與階數；requirements 和 prerequisites 分開列，避免消耗材料與解鎖條件重疊。HUD 顯示實際單刀基礎傷害和目前盾值／已裝容量。訓練與電容皆由重開重置，未更動存檔格式。
+
+
+## 持續邊境生態
+FrontierEcology 只依賴地圖資料並讀取人物陣列，管理棲地、等待名額與日出再生，傳回新人物位置／區域；CampaignSession 透過既有建立人物入口追加，既有索引不變。Calendar 確認夜襲清空後的 dawn 事件才觸發，模型再以 last_dawn 去重。已送達植物原位置再生，保留 Resource 物件，不新增節點或重建工作索引；搬運中／未交付的貨物和有限礦藏不刷新。
+
+CampaignView 讀取生態狀態畫營地與 consequences，角色仍使用原本的日夜排程、閒置散步和觸控互動；未在呈現層判斷生產或招募結果。

@@ -488,3 +488,19 @@ TDD 先重現 23 個有限成長問題、4 個 HUD 接線缺漏，另補 2 個�
 [玩法與維護](design/knight-growth.md)、[第二十七課：電容階數](lessons/27-knight-growth.md)。feature/bounded-knight-upgrades 按 Gitflow 整合本地 develop，未推送。原有 25 個個人設定／編輯器檔案雜湊不變；標準驗證使用倉庫 0.5 秒長按，保留個人 1 秒設定。打包後只補文件、預覽、測量與排除於產物的驗證工具，遊戲程式仍與驗證 tree 相同。
 
 下一步仍是可恢復招募與收入、向外防線、三個種子與兩種投資順序的全流程驗證，再處理存續檔與手機驗收。本機重新確認仍只有 Command Line Tools、預設位置沒有 Android SDK；已詢問是否加入 Apple Developer Program，尚未收到回覆，不能當作已無帳號。完整三項目標持續進行。
+
+## 日出生態與可持續招募（2026-09-13）
+
+實際熬過一晚後，六處探索營地各最多補一位流浪者；每處等待上限 2、全局人物上限 24。新來者仍需龍晶招攬、自行取器具；出生空位避開舊角色，索引不重排。保留森林能補回已獵取動物，已交貨莓果／藥草重新生長且需再委託；不複製搬運中物資、不重置礦藏、樹木或寶箱。日出沒有直接增加庫存。
+
+最後一棵樹的委託以人形／弓劃除提示清林後果；砍光停止該森林後續新人與獵物，原有人物與尚存獵物保留，植物仍可生長。木材預算測試發現每樹 3 木會逼迫清光兩林才夠農場與三級聚落，主戰役調為 4：採六棵取得 24，用掉 22，能各留一樹。此算例額外提供其他材料，不能充當自然開局完整通關。
+
+沿用 Clean Architecture，由 FrontierEcology 決定生態規則，CampaignSession 在真正 dawn 接上，CampaignView 只顯示圖示。TDD 先驗證缺少再生功能，再重現重疊招募、保林木材不足與空地植物不能再生。標準乾淨 tree 92e5a962a1b2021b2dcc8c1f2c33454b3f13d00e 完整回歸通過 **924 項 Godot 斷言與 2 個 Python 建置測試**（715 行為、209 場景），無 SCRIPT ERROR；架構、匯入與主場景啟動通過。實際場景涵蓋新生流浪者觸控招募、獵人跨日狩獵、食物交易龍晶、暫停及重開。
+
+[日出營地](previews/renewal-camp-v001.png)、[清林警示](previews/clearcut-warning-v001.png) 已原生渲染與目視檢查；沿用現有原創素材，未宣稱角色劍術美感已獲認可。視覺 fixture 調整日夜／採收狀態，非真人完整通關。[規則與限制](design/frontier-renewal.md)、[第二十八課：營地等候名額](lessons/28-frontier-renewal.md)。
+
+新試玩包 builds/desktop-ecology-20260913，來源為上述完整驗證 tree。Mac Universal ZIP 約 73.3 MiB，Windows x86-64 ZIP 約 51.8 MiB；ZIP CRC／SHA-256、Mac 簽章完整性與 Windows 格式通過。真正 Mac release 預設入口啟動 120 幀零錯誤。實際 PCK 通過日出補員、真實招募付款、重複更新／暫停／重開，以及前版電容、營火、左牆和核心失守檢查。初次從倉庫執行被本機測試檔疊加而未通過資源排除，移到專案外後以相同 PCK 和斷言通過；初次失敗未算為成功，遊戲內容無需為此修改。
+
+Mac 仍為 ad-hoc 未公證、Windows 未簽署且未實機；iPhone 17e／iPhone 16 Pro Max 尚未安裝，付費 Apple Developer Program 問題仍待回覆。Android 安裝、向外防線、三個種子／兩條投資路線全流程難度、存續檔與手機操作仍未完成，完整目標持續進行。
+
+feature/renewable-frontier-economy 驗證後按 Gitflow 整合本地 develop，未推送；保留原有 25 個個人設定／編輯器檔案雜湊，個人長按 1 秒不動，標準回歸用倉庫 0.5 秒。產物之後補文件、預覽及排除的驗證工具，遊戲內容與測試 tree 一致。
