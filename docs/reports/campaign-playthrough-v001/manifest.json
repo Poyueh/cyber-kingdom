@@ -1,0 +1,27 @@
+{
+  "game_commit": "f9d3c9a4c302f9fd58ccb2443738187c2d7d69c6",
+  "engine": "4.7.2.stable.official.ed1daf0bf",
+  "physics_fps": 60,
+  "display": "headless",
+  "settings": "clean committed resources; only map_seed changed before scene starts",
+  "matrix_driver_sha256": "f054eb97461752d8ed618a62da35c17dcda621401830d90768792a8e26765156",
+  "current_driver_sha256": "0dce15134c1e9be0d1b9cffd5766b00ae4e65d62ea10c7b18f1843e9d5c2e13f",
+  "driver_difference": "Current driver adds optional no_dodge control and shield reporting; default reactive decisions are unchanged. Original source retained in driver-v4.gd.txt.",
+  "observability_limits": [
+    "Automated input uses exact enemy windup state, not human reaction.",
+    "Planner knows region bounds and facility rules; resource targets require discovery.",
+    "Per-tick total pouch plus ground deltas are net changes. Opposing income and expenditure within one tick can cancel; these are not gross revenue/cost totals.",
+    "Raw matrix fields crystals_generated/crystals_spent are historical names for those observed net increases/decreases.",
+    "Events mark controller errand completion/interruption, not authoritative purchase receipts.",
+    "No OS install, touch hardware, audio/visual or human fun validation is established by these headless runs."
+  ],
+  "checksums_sha256": {
+    "1-knight.json": "29650bd463b6a02105441d4643377858f15bfab3c8d724c9c651dcdb2b69929f",
+    "1-residents.json": "66e20472267e117ab244ba988e6b7a6755803841da75db7c3df9aaadefbcd23d",
+    "7-knight.json": "886c0d754030eff34370ddb5ef53cfb37fc76fbfa7a0a5c8d0141e455c9cff47",
+    "7-residents.json": "9d232af684ed9879981f0cddb55f1d85597ac581e2113ba5a48d6d230773bcf8",
+    "42-knight.json": "2336b6fc7013950e47c7e08b264ff2f77729ecd07f46a927d90c12f53f780dea",
+    "42-residents.json": "46557f3829502714d33bb244d31ff11f02aecdfeda85bb8c1145341502477ef4",
+    "1-knight-no-dodge.json": "a114a8fd47ab03070cb44f1e44f353c26ba55c530313e48bc3be06d685042ed2"
+  }
+}
