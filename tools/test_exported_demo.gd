@@ -1,5 +1,6 @@
 extends SceneTree
-## Run with the editor executable plus --main-pack pointing at the actual exported PCK.
+## Run from outside any project (for example --path /tmp) with the editor executable
+## plus --main-pack pointing at the actual exported PCK. Local res:// files must not overlay it.
 ## Release templates do not accept --script; this checks packaged resources, not OS input.
 func _initialize() -> void:
 	call_deferred("review")
@@ -69,6 +70,30 @@ func review() -> void:
 	scene._physics_process(1.0/60)
 	scene.hud.interact_button.button_up.emit()
 	assert(scene.sim.hero.shield==20 and scene.sim.world.scrap==0)
+	scene.restart()
+	scene.sim.clock.is_night=true
+	scene.sim.clock.remaining=0.01
+	scene._physics_process(0.02)
+	assert(scene.sim.clock.day==2 and scene.sim.world.people.size()==14)
+	scene._physics_process(0.02)
+	assert(scene.sim.world.people.size()==14)
+	var arrival: Dictionary=scene.sim.world.people.back()
+	scene.knight.position=Vector2(arrival.x,430)
+	for i in range(2):await physics_frame
+	scene._physics_process(1.0/60)
+	var before_recruit: int=scene.sim.pouch.amount
+	scene.hud.interact_button.button_down.emit()
+	scene._physics_process(1.0/60)
+	scene.hud.interact_button.button_up.emit()
+	assert(arrival.role=="citizen" and scene.sim.pouch.amount==before_recruit-1)
+	scene.paused=true
+	scene.sim.clock.is_night=true
+	scene.sim.clock.remaining=0.01
+	scene._physics_process(0.02)
+	assert(scene.sim.clock.day==2 and scene.sim.world.people.size()==14)
+	scene.restart()
+	assert(scene.sim.world.people.size()==8 and scene.sim.ecology.last_dawn==1)
+	print("PASS: dawn recruitment, payment, no duplicate renewal, pause and reset in exported bundle")
 	print("PASS: bounded capacitor install, recharge and HUD in exported bundle")
 	print("PASS: exported bundle entry, camp investment, recruitment, left-wall investment, core defeat, mission reset, pause, restart, and resource exclusions")
 	scene.queue_free()

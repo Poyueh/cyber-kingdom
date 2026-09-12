@@ -1,5 +1,7 @@
 extends "res://application/frontier_session.gd"
 ## Playable campaign orchestration. Wallet and calendar rules remain in domain.
+const Ecology=preload("res://domain/frontier_ecology.gd")
+var ecology: Ecology
 const Growth=preload("res://domain/knight_growth.gd")
 var growth: Growth
 const Mission=preload("res://domain/campaign_mission.gd")
@@ -88,7 +90,10 @@ func _init(config: Dictionary = {}, hero_stats: Stats = null) -> void:
 	for node in frontier.nodes:
 		if node.kind=="cache": node.crystals=6
 		elif node.kind=="crystal": node.crystals=6
-		elif node.kind=="tree": node.crystals=2
+		elif node.kind=="tree":
+			node.crystals=2
+			node.wood=maxi(1,int(config.get("tree_timber",4)))
+	ecology=Ecology.new(frontier,config)
 	time_to_raid = clock.remaining
 
 func _add_person(x: float, region: int) -> void:
@@ -142,6 +147,7 @@ func _interaction_candidates(x: float) -> Array[Dictionary]:
 			var label: String = {"tree":"伐木","crystal":"採晶","berries":"採果","stone":"採石","herbs":"採藥"}[node.kind]
 			choice = _choice("mark",node.x,"委託工匠"+label,prices.mark,not node.marked,"已下令 · 等待工匠採集搬運")
 		choice["node_index"] = index
+		if ecology.clearing_last_tree(node):choice["consequences"]=["person","bow"]
 		choice.key = "node:%d" % index
 		candidates.append(choice)
 	for index in range(frontier.regions.size()):
@@ -452,6 +458,8 @@ func begin_raid() -> bool: return false # The calendar alone starts a night.
 
 func _advance_invasion(seconds: float) -> void:
 	var transition := clock.advance(seconds,raiders.is_empty() and _spawn_remaining==0)
+	if transition=="dawn":
+		for arrival in ecology.renew(clock.day,world.people):_add_person(arrival.x,arrival.region)
 	if transition=="night":
 		wave=clock.day
 		_spawn_remaining=mini(12,2+clock.day)

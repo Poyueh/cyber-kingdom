@@ -5,6 +5,7 @@ const Ambient=preload("res://presentation/ambient_motion.gd")
 @export var chest_open: Texture2D=preload("res://art/ambient/v001/chest-open.png")
 var crystal_radius: float = 9.0
 var focus_key := ""
+var _view_player_x := 0.0
 var investment_progress := 0.0
 const Icons=preload("res://presentation/ui_icons.gd")
 const SITE_ICONS={"shield_charge":"shield","rift":"rift","core_charge":"camp","hall":"camp","workshop":"hammer","armory":"sword","farm_tools":"hoe","hunt_tools":"bow","forge":"gear","beacon":"shield","wall":"wall","wall_left":"wall","farm":"food","drill":"sword","trade":"trade","heal":"heal","outpost":"outpost","recruit":"person","chest":"chest","mark":"hammer"}
@@ -12,6 +13,7 @@ const EXTRA_ART := {"campfire":preload("res://art/campaign/v001/campfire.png"),"
 
 func present(sim, player_x: float) -> void:
 	_sim=sim
+	_view_player_x=player_x
 	_context=sim.context(player_x) if focus_key.is_empty() else sim.context_for_key(player_x,focus_key)
 	queue_redraw()
 
@@ -68,6 +70,7 @@ func _draw_structures() -> void:
 		if map.city_level>0: _prop("relay",Vector2(_sim.world.sites.workshop-100,430),0.8)
 	_text("營火 · 王國由此開始" if map.city_level==0 else "聚落 %d/3 · 收貨點" % map.city_level,hall,282,Color("f3d299"),15)
 	_draw_mission()
+	_draw_recruitment_camps()
 	# Before the first investment there is only a campfire and nearby wanderers.
 	if map.city_level==0: return
 	for site in world.sites:
@@ -103,6 +106,22 @@ func _draw_structures() -> void:
 		_text(_sim.NAMES[site],at.x,345,Color("d0d9b8"),13)
 		if site=="farm" and map.farm_active:
 			draw_rect(Rect2(at.x-40,355,80*map.farm_progress/map.farm_cycle,3),Color("d8dd9f"))
+
+func _draw_recruitment_camps() -> void:
+	for i in range(_sim.frontier.regions.size()):
+		if not _sim.frontier.regions[i].discovered:continue
+		var x: float=_sim.ecology.camp_x(i)
+		var active: bool=_sim.ecology.habitat(i)
+		_prop("campfire" if active else "stone",Vector2(x,430),0.35,Color.WHITE if active else Color("5b6876"))
+		if absf(_view_player_x-x)>180:continue
+		var count: int=_sim.ecology.waiting(i,_sim.world.people)
+		var full: bool=_sim.world.people.size()>=_sim.ecology.population_limit
+		draw_style_box(_bubble_style(),Rect2(x-46,326,92,34))
+		_icon("person",Vector2(x-29,343),18)
+		_number("%d/%d" % [_sim.world.people.size() if full else count,_sim.ecology.population_limit if full else _sim.ecology.waiting_limit],Vector2(x-15,348))
+		_icon("lock" if full else "sun",Vector2(x+31,343),17,Color("dd9c91") if full else Color("d9d7ac"))
+		if not active:
+			draw_line(Vector2(x-38,354),Vector2(x+38,330),Color("c99187"),2)
 
 func _draw_mission() -> void:
 	var mission=_sim.mission
@@ -159,6 +178,7 @@ func _draw_interaction() -> void:
 	var requirements: Dictionary=_context.get("requirements",{})
 	var prerequisites: Array=_context.get("prerequisites",[])
 	var upgrade: Dictionary=_context.get("upgrade",{})
+	var consequences: Array=_context.get("consequences",[])
 	var width:=maxf(96,_context.cost*18+48)
 	width=maxf(width,maxi(requirements.size(),prerequisites.size())*52+28)
 	if not upgrade.is_empty():width=maxf(width,136)
@@ -172,7 +192,7 @@ func _draw_interaction() -> void:
 	draw_line(Vector2(_context.x-15,ground+2),Vector2(_context.x+15,ground+2),marker_color,2)
 	for side in [-1,1]:
 		draw_line(Vector2(_context.x+side*15,ground-3),Vector2(_context.x+side*15,ground+3),marker_color,2)
-	var height:=62.0+(20 if not requirements.is_empty() else 0)+(20 if not prerequisites.is_empty() else 0)+(40 if not upgrade.is_empty() else 0)
+	var height:=62.0+(20 if not requirements.is_empty() else 0)+(20 if not prerequisites.is_empty() else 0)+(40 if not upgrade.is_empty() else 0)+(22 if not consequences.is_empty() else 0)
 	var y:=ground-(184 if _context.id=="rift" else 141)-(height-62)
 	draw_style_box(_bubble_style(),Rect2(x-width*0.5,y-20,width,height))
 	var key: String=SITE_ICONS.get(_context.id,"hand")
@@ -212,6 +232,13 @@ func _draw_interaction() -> void:
 		_number(str(upgrade.next),Vector2(x+20,row_y+5))
 		for i in range(upgrade.limit):
 			draw_rect(Rect2(x+(i-(upgrade.limit-1)*0.5)*14-4,row_y+15,8,5),Color("9fdbbf") if i<upgrade.level else Color("435660"))
+
+	if not consequences.is_empty():
+		if not upgrade.is_empty():row_y+=40
+		for i in range(consequences.size()):
+			var at:=Vector2(x+(i-(consequences.size()-1)*0.5)*32,row_y)
+			_icon(consequences[i],at,18,Color("dfa092"))
+			draw_line(at+Vector2(-8,8),at+Vector2(8,-8),Color("ee857f"),2)
 
 func _bubble_style() -> StyleBoxFlat:
 	var style:=StyleBoxFlat.new()
