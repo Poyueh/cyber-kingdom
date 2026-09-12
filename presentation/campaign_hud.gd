@@ -1,6 +1,9 @@
 extends "res://presentation/frontier_hud.gd"
 const Icons=preload("res://presentation/ui_icons.gd")
 const Dashboard=preload("res://presentation/icon_dashboard.gd")
+signal save_requested
+var save_button: Button
+var _pause_icon_state:=false
 signal throw_requested
 var drop_button: Button
 var interact_held := false
@@ -42,6 +45,13 @@ func _ready() -> void:
 	add_child(drop_button)
 	_skin(drop_button,"drop")
 	drop_button.pressed.connect(func(): throw_requested.emit())
+	save_button=Button.new()
+	save_button.name="SaveStatus"
+	add_child(save_button)
+	_skin(save_button,"save")
+	save_button.add_theme_stylebox_override("disabled",save_button.get_theme_stylebox("normal"))
+	save_button.add_theme_color_override("icon_disabled_color",Color.WHITE)
+	save_button.pressed.connect(func(): save_requested.emit())
 	get_viewport().size_changed.connect(_layout)
 	_layout()
 
@@ -89,8 +99,14 @@ func _layout() -> void:
 	$Refuge.size=Vector2(58,58)
 	fullscreen_button.position=Vector2(width-148,14)
 	fullscreen_button.size=Vector2(58,58)
+	save_button.position=Vector2(width-216,14)
+	save_button.size=Vector2(58,58)
 
 func present_world(sim, is_paused: bool, at: float, grounded: bool) -> void:
+	if _pause_icon_state!=is_paused:
+		_pause_icon_state=is_paused
+		$pause.texture_normal=_button_texture("play" if is_paused else "pause")
+		$pause.texture_pressed=$pause.texture_normal
 	# No textual panel participates in the playable HUD.
 	var choice: Dictionary=sim.context(at) if focus_key.is_empty() else sim.context_for_key(at,focus_key)
 	interact_button.disabled=is_paused or not grounded or not choice.enabled or not sim.is_running()
@@ -121,3 +137,10 @@ func present_world(sim, is_paused: bool, at: float, grounded: bool) -> void:
 func _toggle_fullscreen() -> void:
 	var window:=get_window()
 	window.mode=Window.MODE_WINDOWED if window.mode==Window.MODE_FULLSCREEN else Window.MODE_FULLSCREEN
+
+func present_save(status: String, is_paused: bool) -> void:
+	if not is_instance_valid(save_button):return
+	save_button.visible=status!="disabled" and (is_paused or status in ["error","protected"])
+	save_button.disabled=status=="protected"
+	save_button.icon=Icons.get_icon("lock" if status=="protected" else "save_retry" if status=="error" else "save")
+	save_button.modulate=Color("ffba78") if status in ["error","protected"] else Color("86d9cc")

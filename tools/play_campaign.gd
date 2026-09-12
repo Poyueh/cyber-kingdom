@@ -23,6 +23,7 @@ var losses:=0
 var stall:=0.0
 var last_x:=30.0
 func _initialize() -> void:
+	ProjectSettings.set_setting("campaign/persistence_enabled",false)
 	var args=OS.get_cmdline_user_args()
 	if args.size()>0:run_seed=int(args[0])
 	if args.size()>1:route=args[1]

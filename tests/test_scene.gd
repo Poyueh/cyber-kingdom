@@ -4,6 +4,7 @@ var failures: int = 0
 var assertions: int = 0
 
 func _initialize() -> void:
+	ProjectSettings.set_setting("campaign/persistence_enabled",false)
 	call_deferred("run_scene")
 
 func check(value: bool, description: String) -> void:

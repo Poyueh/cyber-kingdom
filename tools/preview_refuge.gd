@@ -3,6 +3,7 @@ extends SceneTree
 var scene
 var output := "/tmp/refuge-review"
 func _initialize() -> void:
+	ProjectSettings.set_setting("campaign/persistence_enabled",false)
 	if not OS.get_cmdline_user_args().is_empty(): output=OS.get_cmdline_user_args()[0]
 	call_deferred("capture")
 func frames(count: int) -> void:
