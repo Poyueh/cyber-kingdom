@@ -110,17 +110,19 @@ func test_generated_resources_leave_space_for_both_defense_sites(t):
 		var sim=Campaign.new({"seed":seed_value})
 		t.truth(sim.frontier.nodes.all(func(n):return absf(n.x-sim.world.sites.wall_left)>120),"left wall does not overlap random trees or treasure")
 
-func test_empty_camp_attackers_leave_both_sides_without_false_loot(t):
-	var sim=camp()
-	sim.clock.remaining=0.01
-	var saw_left:=false
-	for i in range(100):
-		sim.advance(0.1,30)
-		saw_left=saw_left or sim.raiders.any(func(r):return r.get("side",1)<0)
-	t.truth(saw_left,"withdrawal test includes a real left attacker")
-	t.equal(sim.raiders.size(),0,"empty camp attackers can leave from either direction")
-	t.equal(sim.world.scrap,0,"departing enemies cannot create kill rewards")
-	t.equal(sim.pouch.amount,12,"retreat does not create free crystals")
+func test_legacy_encounter_left_retreat_does_not_create_false_loot(t):
+	# Campaign now attacks the core; the older standalone encounter retains withdrawal.
+	var sim=load("res://application/settlement_session.gd").new({"first_raid":1000.0,"scrap":0})
+	var enemy=sim._spawn_raider()
+	enemy.x=-1580
+	enemy["side"]=-1
+	enemy["exit_x"]=-1650.0
+	sim.raiders.append(enemy)
+	for i in range(100):sim.advance(0.1,30)
+	t.truth(enemy.get("escaped",false),"legacy left attacker can retreat through its own exit")
+	t.equal(sim.raiders.size(),0,"retreat completes in the legacy encounter")
+	t.equal(sim.world.scrap,0,"departure does not create scrap")
+	t.equal(sim.loot.size(),0,"departure does not leave false kill rewards")
 
 func test_kingdom_milestone_requires_both_defenses(t):
 	var sim=camp()

@@ -23,7 +23,7 @@ func measure(day: int, guards: int, hunters: int, wall_level: int) -> Dictionary
 	sim.clock.day=day
 	sim.clock.remaining=0.01
 	var elapsed:=0.0
-	while elapsed<120.0 and sim.clock.day==day:
+	while elapsed<120.0 and sim.clock.day==day and sim.is_running():
 		sim.advance(1.0/60,-5000)
 		elapsed+=1.0/60
 	var survivors:=0
@@ -32,4 +32,5 @@ func measure(day: int, guards: int, hunters: int, wall_level: int) -> Dictionary
 	return {"day":day,"guards":guards,"hunters":hunters,"wall_level":wall_level,
 		"wall_hp":{"left":sim.world.walls.wall_left.hp,"right":sim.world.wall.hp},"remaining_defenders":survivors,"initial_defenders":guards+hunters,
 		"seconds":snappedf(elapsed,0.1),"reached_dawn":sim.clock.day>day,
+		"core_hp":sim.mission.core_hp,"mission_outcome":sim.mission.outcome,
 		"outcome":"held" if sim.world.walls.values().all(func(w):return w.hp>0) and survivors==guards+hunters and sim.clock.day>day else ("lost" if survivors==0 else "breached")}

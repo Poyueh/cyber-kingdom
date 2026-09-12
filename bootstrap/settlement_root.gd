@@ -45,14 +45,15 @@ func _physics_process(seconds: float) -> void:
 		controls.release_all()
 	if not paused:
 		sim.advance(seconds,knight.position.x,knight.position.y)
-		if command.direction != 0 and sim.hero.dash_remaining <= 0:
-			sim.hero.facing = int(signf(command.direction))
-		if command.attack: sim.hero.start_attack()
-		if command.dash: sim.hero.start_dash()
-		_apply_interaction(command,seconds)
-		knight.advance_motion(command.direction,command.jump,seconds)
-		sim.strike_from(knight.position.x,knight.position.y)
-		knight.refresh_visual(seconds)
+		if sim.is_running():
+			if command.direction != 0 and sim.hero.dash_remaining <= 0:
+				sim.hero.facing = int(signf(command.direction))
+			if command.attack: sim.hero.start_attack()
+			if command.dash: sim.hero.start_dash()
+			_apply_interaction(command,seconds)
+			knight.advance_motion(command.direction,command.jump,seconds)
+			sim.strike_from(knight.position.x,knight.position.y)
+		knight.refresh_visual(seconds if sim.is_running() else 0.0)
 	_requested_interaction = false
 	view.present(sim,knight.position.x)
 	hud.present_world(sim,paused,knight.position.x,knight.is_on_floor())

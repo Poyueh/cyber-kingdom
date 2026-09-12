@@ -93,23 +93,27 @@ func _layout() -> void:
 func present_world(sim, is_paused: bool, at: float, grounded: bool) -> void:
 	# No textual panel participates in the playable HUD.
 	var choice: Dictionary=sim.context(at) if focus_key.is_empty() else sim.context_for_key(at,focus_key)
-	interact_button.disabled=is_paused or not grounded or not choice.enabled or not sim.hero.is_alive()
+	interact_button.disabled=is_paused or not grounded or not choice.enabled or not sim.is_running()
 	interact_button.icon=Icons.get_icon("chest" if choice.id=="chest" else "crystal" if choice.cost>0 else "hand")
-	$restart.visible=is_paused or not sim.hero.is_alive()
-	new_map_button.visible=is_paused or not sim.hero.is_alive()
+	$restart.visible=is_paused or not sim.is_running()
+	new_map_button.visible=is_paused or not sim.is_running()
 	$Refuge.visible=is_paused
-	drop_button.disabled=is_paused or not sim.hero.is_alive() or sim.pouch.amount<=0
+	drop_button.disabled=is_paused or not sim.is_running() or sim.pouch.amount<=0
 	var map=sim.frontier
 	dashboard.values={"hp":sim.hero.hp,"shield":sim.hero.shield,"crystal":"%d/%d" % [sim.pouch.amount,sim.pouch.capacity],"wood":map.wood,"food":map.food,"stone":map.stone,"herbs":map.herbs,"scrap":sim.world.scrap,"day":sim.clock.day,"survived":sim.clock.survived,"full":sim.pouch.amount>=sim.pouch.capacity}
 	var pressure: Dictionary=sim.raid_pressure()
+	dashboard.values["core_hp"]=sim.mission.core_hp
+	dashboard.values["core_max_hp"]=sim.mission.core_max_hp
+	dashboard.values["defeat_reason"]=sim.mission.defeat_reason
+	dashboard.values["rifts"]=sim.mission.rifts
 	dashboard.values["raid_left"]=pressure.left
 	dashboard.values["raid_right"]=pressure.right
 	dashboard.health_ratio=clampf(float(sim.hero.hp)/sim.hero.stats.max_hp,0,1)
 	dashboard.phase_ratio=clampf(sim.clock.remaining/(sim.clock.night_seconds if sim.clock.is_night else sim.clock.day_seconds),0,1)
 	dashboard.is_night=sim.clock.is_night
 	dashboard.is_paused=is_paused
-	dashboard.dead=not sim.hero.is_alive()
-	dashboard.victory=sim.kingdom_established()
+	dashboard.dead=sim.mission.outcome=="defeat"
+	dashboard.victory=sim.mission.outcome=="victory"
 	dashboard.queue_redraw()
 
 func _toggle_fullscreen() -> void:

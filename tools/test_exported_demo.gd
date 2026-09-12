@@ -38,13 +38,21 @@ func review() -> void:
 	await process_frame
 	RenderingServer.force_draw(false)
 	root.get_texture().get_image().save_png("/tmp/cyber-exported-mac-review.png")
+	assert(scene.sim.mission.rifts.size()==2 and scene.sim.mission.core_hp==180)
+	scene.sim.mission.damage_core(180)
+	scene._physics_process(1.0/60)
+	assert(scene.sim.hero.is_alive() and scene.hud.dashboard.dead)
+	assert(scene.hud.get_node("restart").visible and scene.hud.drop_button.disabled)
+	scene.restart()
+	assert(scene.sim.is_running() and scene.sim.mission.core_hp==180)
+	assert(scene.sim.mission.rifts.all(func(r):return not r.ordered and not r.discovered))
 	scene.paused=true
 	var time: float=scene.sim.clock.remaining
 	scene._physics_process(1)
 	assert(scene.sim.clock.remaining==time)
 	scene.restart()
 	assert(scene.sim.frontier.city_level==0 and scene.sim.pouch.amount==12)
-	print("PASS: exported bundle entry, camp investment, recruitment, left-wall investment, pause, restart, and resource exclusions")
+	print("PASS: exported bundle entry, camp investment, recruitment, left-wall investment, core defeat, mission reset, pause, restart, and resource exclusions")
 	scene.queue_free()
 	await process_frame
 	quit()

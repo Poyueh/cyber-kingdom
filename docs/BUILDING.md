@@ -2,7 +2,7 @@
 2026-09-13。這是目前原型的桌面交付，不是完整 Demo 目標完成或商店正式發行。
 
 ## 現有產物
-最新雙側防守版位於 builds/desktop-bilateral-20260913（不提交 Git）；首版 desktop-preview-20260912-r2 保留作歷史版本：
+最新核心／裂隙版位於 builds/desktop-rift-20260913（不提交 Git）；首版 desktop-preview-20260912-r2 保留作歷史版本：
 - macOS/Cyber Kingdom Demo.app：直接開啟進入營火戰役。
 - Cyber-Kingdom-macOS.zip：Mac 傳輸包，Universal 2（Intel／Apple Silicon）。
 - Cyber-Kingdom-Windows.zip：解壓後開啟 Cyber Kingdom Demo.exe，旁邊的 .pck 必須保留。
@@ -31,8 +31,8 @@ output 必須是尚未存在的目錄，避免蓋掉既有成果。預設取 HEA
 - 兩個 Python 行為測試涵蓋暫存入口／貼圖設定與不改工作目錄，以及 Godot 退出碼為零但輸出 SCRIPT ERROR 時仍停止建置。
 - Mac、Windows release 匯出與日誌錯誤掃描成功；ZIP CRC／檔案大小、Windows x86-64 PE 格式與 Mac codesign 完整性另檢查。
 - 真正 Mac 執行檔已從預設入口啟動，headless 120 幀零錯誤；原生 GUI 視窗存在。
-- 為測試遊戲流程，用相同版本 Godot 執行器載入實際產物 .pck，驗證營火投入、招募、左側城牆投入、暫停、重開、入口與測試檔排除；同時真正渲染並保存畫面。這是打包資源驗證，不能寫成真人在成品程式完成了整局。
+- 為測試遊戲流程，用相同版本 Godot 執行器載入實際產物 .pck，驗證營火投入、招募、左側城牆投入、核心失守／重開、暫停、入口與測試檔排除；同時真正渲染並保存畫面。這是打包資源驗證，不能寫成真人在成品程式完成了整局。
 - 正式 release template 不提供 --script 參數；最初外部腳本未執行而啟動一般遊戲，沒有把這次沒有結果的嘗試算作測試成功。
-- Windows 沒有實機遊玩證據；兩支 iPhone 尚未安裝，Android 尚未產出 APK；完整 Xcode、手機簽署、存續檔、雙側戰役與完整難度驗收仍待完成。
+- Windows 沒有實機遊玩證據；兩支 iPhone 尚未安裝，Android 尚未產出 APK；完整 Xcode、手機簽署、存續檔與完整難度驗收仍待完成。
 
 研究依據：[Godot Mac 匯出](https://docs.godotengine.org/en/stable/tutorials/export/exporting_for_macos.html)、[Windows 匯出](https://docs.godotengine.org/en/stable/tutorials/export/exporting_for_windows.html)、[命令列匯出](https://docs.godotengine.org/en/stable/tutorials/editor/command_line_tutorial.html)。實際選項與需求另由本機 4.7.2 引擎核對。

@@ -54,14 +54,14 @@ func _physics_process(seconds: float) -> void:
 		sim.throw_crystal(knight.position.x,knight.position.y,sim.hero.facing)
 		hud.present_world(sim,paused,knight.position.x,knight.is_on_floor())
 	_requested_throw = false
-	if paused or not sim.hero.is_alive():
+	if paused or not sim.is_running():
 		investment.cancel()
 		hud.interact_held=false
 		_sync_investment_focus()
 
 func _apply_interaction(command: Dictionary, seconds: float) -> void:
 	var held: bool=command.interaction_held or hud.interact_held or _requested_interaction
-	investment.step(seconds,held,knight.is_on_floor() and not (command.jump or command.jump_held) and sim.hero.is_alive(),sim,knight.position.x)
+	investment.step(seconds,held,knight.is_on_floor() and not (command.jump or command.jump_held) and sim.is_running(),sim,knight.position.x)
 	_sync_investment_focus()
 
 func _sync_investment_focus() -> void:
