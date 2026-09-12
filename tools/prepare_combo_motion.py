@@ -2,21 +2,31 @@
 from pathlib import Path
 from PIL import Image, ImageDraw
 import numpy as np
+import json
+import sys
 
 ROOT = Path(__file__).resolve().parents[1]
-OUT = ROOT / 'art/characters/combo-v002'
+recipe_path=Path(sys.argv[1]).resolve() if len(sys.argv)>1 else ROOT/'art/characters/combo-v002/recipe.json'
+recipe=json.loads(recipe_path.read_text())
+SOURCE_ROOT=recipe_path.parent
+OUT=Path(sys.argv[2]).resolve() if len(sys.argv)>2 else SOURCE_ROOT
+OUT.mkdir(parents=True,exist_ok=True)
 CELL = (160, 128)
 BASELINE = 112
-def clean(image):
+def clean(image,index=-1):
     a = np.array(image.convert('RGBA'))
     rgb = a[:, :, :3].astype(int)
     candidate = (rgb.max(2)-rgb.min(2)<24)&(rgb.min(2)>170)
     mask = Image.fromarray(np.uint8(candidate)*255).copy()
     for x,y in [(x,y) for x in range(image.width) for y in [0,image.height-1]]+[(x,y) for y in range(image.height) for x in [0,image.width-1]]:
         if mask.getpixel((x,y))==255: ImageDraw.floodfill(mask,(x,y),128)
+    for seed in recipe.get("transparent_seeds",{}).get(str(index),[]):
+        assert mask.getpixel(tuple(seed)) in [128,255], "background landmark is not background"
+        if mask.getpixel(tuple(seed))==255: ImageDraw.floodfill(mask,tuple(seed),128)
     a[np.array(mask)==128] = 0
     return Image.fromarray(a)
-def core(image):
+def core(image,index=-1):
+    if str(index) in recipe.get("anchors",{}): return tuple(recipe["anchors"][str(index)])
     a=np.array(image);r,g,b=[a[:,:,i].astype(int) for i in range(3)]
     mask=(a[:,:,3]>0)&(g>125)&(b>135)&(r<g*.65)
     mask[:int(image.height*.35)]=False
@@ -25,11 +35,11 @@ def core(image):
     y,x=np.where(mask)
     assert len(x)>3, 'missing hip reference'
     return (float(np.median(x)),float(np.median(y)))
-sheet=Image.open(OUT/'sources/combo.png')
-cells=[clean(sheet.crop((i%4*256,i//4*256,i%4*256+(280 if i in [4,20] else 256),i//4*256+256))) for i in range(24)]
+sheet=Image.open(SOURCE_ROOT/'sources/combo.png')
+cells=[clean(sheet.crop((i%4*256,i//4*256,i%4*256+(256+recipe.get("extensions",{}).get(str(i),0)),i//4*256+256)),i) for i in range(24)]
 # Adjacent sword-tip fragments can cross the source grid; retain the body component.
 for i,im in enumerate(cells):
-    cx,cy=core(im)
+    cx,cy=core(im,i)
     mask=Image.fromarray(np.uint8(np.array(im)[:,:,3]>0)*255).copy()
     ImageDraw.floodfill(mask,(round(cx),round(cy)),128)
     a=np.array(im);a[np.array(mask)!=128]=0
@@ -42,12 +52,9 @@ poses=[]
 hips=[]
 weapon_masks=[]
 # Hilt and tip landmarks in each source cell preserve the low sword separately from legs.
-low_swords={0:((148,191),(225,230)),5:((148,176),(245,218)),6:((160,187),(252,227)),
-7:((130,179),(223,225)),8:((165,182),(252,220)),9:((135,178),(228,220)),
-18:((156,158),(241,207)),19:((135,172),(227,211)),20:((170,169),(274,206)),
-21:((150,161),(245,202)),22:((148,153),(237,195)),23:((124,160),(221,199))}
+low_swords={int(key):value for key,value in recipe["low_swords"].items()}
 for source_index,im in enumerate(cells):
-    cx,cy=core(im);box=im.getbbox()
+    cx,cy=core(im,source_index);box=im.getbbox()
     size=tuple(round(n*scale) for n in im.crop(box).size)
     sprite=im.crop(box).resize(size,Image.Resampling.LANCZOS)
     alpha=sprite.getchannel('A').point(lambda x:255 if x>120 else 0)
@@ -65,8 +72,8 @@ for source_index,im in enumerate(cells):
     weapon_masks.append(np.array(blade)>0)
     poses.append(frame)
     hips.append((80,round(BASELINE-(box[3]-cy)*scale)))
-# Last return pose is the opening finisher pose: preserve the raised-sword handoff.
-indices=list(range(16))+[15,16,17,18,19,20,21,23]
+# Authored endpoint reuse preserves each recipe handoff.
+indices=recipe["indices"]
 planted=Image.new('RGBA',(CELL[0]*8,CELL[1]*3))
 for i,source in enumerate(indices): planted.alpha_composite(poses[source],(i%8*CELL[0],i//8*CELL[1]))
 planted.save(OUT/'planted.png')
@@ -85,7 +92,8 @@ for gait in range(8):
         # Keep trailing red cape and the actual weapon, never planted boots.
         rgb=upper[:,:,:3].astype(int)
         cape=(rgb[:,:,0]>55)&(rgb[:,:,0]>rgb[:,:,1]*1.5)&(rgb[:,:,0]>rgb[:,:,2]*1.25)
-        upper[(yy>hip_y+3)&~cape&~weapon_masks[source]]=0
+        trail=(rgb[:,:,1]>120)&(rgb[:,:,2]>130)&(rgb[:,:,0]<rgb[:,:,1]*0.7)&(xx>100) if recipe.get("keep_cyan_trails",False) else np.zeros(xx.shape,dtype=bool)
+        upper[(yy>hip_y+3)&~cape&~weapon_masks[source]&~trail]=0
         top=Image.fromarray(upper)
         frame=leg.copy()
         frame.alpha_composite(top,(0,86-hip_y))
