@@ -29,6 +29,7 @@ run_check combo --script res://tests/test_combo_scene.gd
 run_check residents --script res://tests/test_resident_scene.gd
 run_check bilateral --script res://tests/test_bilateral_scene.gd
 run_check mission --script res://tests/test_mission_scene.gd
+run_check growth --script res://tests/test_growth_scene.gd
 run_check traversal --script res://tests/test_traversal.gd
 run_check refuge --script res://tests/test_refuge_scene.gd
 run_check settlement --script res://tests/test_settlement_scene.gd

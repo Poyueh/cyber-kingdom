@@ -1,0 +1,214 @@
+{
+  "dt": 0.0166666666666667,
+  "probe": "equal-nine-crystal-growth-comparison",
+  "results": [
+    {
+      "day": 1,
+      "duel": {
+        "hp_left": 85,
+        "landed_slashes": 3,
+        "seconds": 1.25,
+        "shield_left": 0,
+        "won": true
+      },
+      "route": "base",
+      "shield_capacity": 0,
+      "spent": {
+        "crystals": 0,
+        "food": 0,
+        "scrap": 0
+      },
+      "standing_still": {
+        "blow_causing_death": 7,
+        "dead": true,
+        "incoming_damage": 15
+      },
+      "sword_damage": 25
+    },
+    {
+      "day": 1,
+      "duel": {
+        "hp_left": 100,
+        "landed_slashes": 2,
+        "seconds": 0.38,
+        "shield_left": 0,
+        "won": true
+      },
+      "route": "sword",
+      "shield_capacity": 0,
+      "spent": {
+        "crystals": 9,
+        "food": 12,
+        "scrap": 0
+      },
+      "standing_still": {
+        "blow_causing_death": 7,
+        "dead": true,
+        "incoming_damage": 15
+      },
+      "sword_damage": 40
+    },
+    {
+      "day": 1,
+      "duel": {
+        "hp_left": 100,
+        "landed_slashes": 3,
+        "seconds": 1.25,
+        "shield_left": 45,
+        "won": true
+      },
+      "route": "capacitor",
+      "shield_capacity": 60,
+      "spent": {
+        "crystals": 9,
+        "food": 0,
+        "scrap": 9
+      },
+      "standing_still": {
+        "blow_causing_death": 11,
+        "dead": true,
+        "incoming_damage": 15
+      },
+      "sword_damage": 25
+    },
+    {
+      "day": 3,
+      "duel": {
+        "hp_left": 79,
+        "landed_slashes": 4,
+        "seconds": 1.48,
+        "shield_left": 0,
+        "won": true
+      },
+      "route": "base",
+      "shield_capacity": 0,
+      "spent": {
+        "crystals": 0,
+        "food": 0,
+        "scrap": 0
+      },
+      "standing_still": {
+        "blow_causing_death": 5,
+        "dead": true,
+        "incoming_damage": 21
+      },
+      "sword_damage": 25
+    },
+    {
+      "day": 3,
+      "duel": {
+        "hp_left": 79,
+        "landed_slashes": 3,
+        "seconds": 1.25,
+        "shield_left": 0,
+        "won": true
+      },
+      "route": "sword",
+      "shield_capacity": 0,
+      "spent": {
+        "crystals": 9,
+        "food": 12,
+        "scrap": 0
+      },
+      "standing_still": {
+        "blow_causing_death": 5,
+        "dead": true,
+        "incoming_damage": 21
+      },
+      "sword_damage": 40
+    },
+    {
+      "day": 3,
+      "duel": {
+        "hp_left": 100,
+        "landed_slashes": 4,
+        "seconds": 1.48,
+        "shield_left": 39,
+        "won": true
+      },
+      "route": "capacitor",
+      "shield_capacity": 60,
+      "spent": {
+        "crystals": 9,
+        "food": 0,
+        "scrap": 9
+      },
+      "standing_still": {
+        "blow_causing_death": 8,
+        "dead": true,
+        "incoming_damage": 21
+      },
+      "sword_damage": 25
+    },
+    {
+      "day": 5,
+      "duel": {
+        "hp_left": 73,
+        "landed_slashes": 5,
+        "seconds": 1.82,
+        "shield_left": 0,
+        "won": true
+      },
+      "route": "base",
+      "shield_capacity": 0,
+      "spent": {
+        "crystals": 0,
+        "food": 0,
+        "scrap": 0
+      },
+      "standing_still": {
+        "blow_causing_death": 4,
+        "dead": true,
+        "incoming_damage": 27
+      },
+      "sword_damage": 25
+    },
+    {
+      "day": 5,
+      "duel": {
+        "hp_left": 73,
+        "landed_slashes": 3,
+        "seconds": 1.25,
+        "shield_left": 0,
+        "won": true
+      },
+      "route": "sword",
+      "shield_capacity": 0,
+      "spent": {
+        "crystals": 9,
+        "food": 12,
+        "scrap": 0
+      },
+      "standing_still": {
+        "blow_causing_death": 4,
+        "dead": true,
+        "incoming_damage": 27
+      },
+      "sword_damage": 40
+    },
+    {
+      "day": 5,
+      "duel": {
+        "hp_left": 100,
+        "landed_slashes": 5,
+        "seconds": 1.82,
+        "shield_left": 33,
+        "won": true
+      },
+      "route": "capacitor",
+      "shield_capacity": 60,
+      "spent": {
+        "crystals": 9,
+        "food": 0,
+        "scrap": 9
+      },
+      "standing_still": {
+        "blow_causing_death": 6,
+        "dead": true,
+        "incoming_damage": 27
+      },
+      "sword_damage": 25
+    }
+  ],
+  "source_tree": "be6086ad85fab66b9865bf2770304aa815a55090"
+}

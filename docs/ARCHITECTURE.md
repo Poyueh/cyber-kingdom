@@ -165,3 +165,9 @@ CampaignMission 是純 domain 狀態與終局規則，resolve 將死亡優先於
 RiftWorkforce 只引用 world／frontier／mission，不回指 session，避免 RefCounted 循環。出征先挑空手工匠，保留搬運與被中斷的工作；地面抵達與替補交由其管理。CampaignSession 在正常敵人更新後生成守門者、判斷現場安全與封印進度，夜襲排程依封印狀態跳過來源。bootstrap 停止終局移動、投入與拋晶，仍呈現最後狀態。
 
 RiftVisual 使用模擬時間繪製像素裂隙，IconDashboard 與 CampaignHUD 只讀 mission。解鎖條件 prerequisites 與消耗材料 requirements 分開提供，避免把聚落等級當成要花掉的材料。參數由 campaign_tuning.gd 經 campaign_rules 注入；沒有新增持久化格式。
+
+
+## 有限騎士成長
+KnightGrowth 集中電容容量、充能封頂與漸增成本；不改 Combatant 的普遍護盾行為，舊原型保持自身規則。CampaignSession 組合聚落與材料門檻，再透過既有逐晶投入完成交易。容量升級以階數組成穩定 key，充能另用獨立 key，故受擊不會使同一長按把升級付款轉成補能。
+
+UI 以 upgrade 資料畫目前／下一階值與階數；requirements 和 prerequisites 分開列，避免消耗材料與解鎖條件重疊。HUD 顯示實際單刀基礎傷害和目前盾值／已裝容量。訓練與電容皆由重開重置，未更動存檔格式。
