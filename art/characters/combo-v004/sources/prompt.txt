@@ -1,0 +1,35 @@
+Production game asset: redraw a spectacular, fluid 3-hit longsword combo for a side-scrolling pixel action game. The attached image is COSTUME REFERENCE ONLY: closed silver visor, silver mechanical armor on black joints, small cyan dragon reactor at waist, red cape, single silver longsword. Do NOT copy that hunched squat pose. The current animation was rejected as stiff and ugly. Need elegant confident swordsmanship: a strong straight spine during guard, athletic asymmetric lunges, clear hip/shoulder rotation, long expressive silhouette, red cape following through one beat later, sharp silver blade. Crisp deliberate pixel clusters at about 60 game pixels character height, moderately simplified 32-color sprite art, not glossy illustration or noisy tiny armor scratches. Same character scale and proportions across every frame.
+
+EXACT layout: 4 columns x 6 rows, 24 evenly spaced individual complete sprites in row-major order on TRANSPARENT RGBA background. Canvas 1024 x 1536, each cell 256 square. No text, lines, numbers, shadows or floor. Each sprite fits fully inside its own cell including cape and blade with at least 16 pixels padding. Same planted foot baseline in every cell, fixed side-on game camera, enemy always to RIGHT. Feet pivot and transfer weight but don't jump. Keep visible helmet facing right while torso rotates distinctly towards/away from viewer. One sword held with anatomically clear grip, no weapon floating or bending. Effects only one clean tapered thin cyan crescent on impact drawings; no large halos or opaque glow covering body.
+
+Frames 1-8: DRAW-CUT / sweeping diagonal forehand.
+1: poised upright three-quarter guard, feet apart, blade low at left/rear hip pointing back left, head facing right.
+2: coil towards rear leg, chest rotates away, lead shoulder lowers, both hands draw to rear left hip; cape falls behind.
+3: deep athletic preload with hip low, sword pulled diagonally up-left behind shoulder, elbows below helmet; silhouette clearly different from guard.
+4: begin powerful waist uncoil, blade sweeps across front at diagonal, lead knee advances and rear heel pivots.
+5: IMPACT: wide forward stance, torso boldly turned towards viewer, arms fully extend to RIGHT, blade cuts across the right space with a thin diagonal crescent, back leg braces. Clear dramatic slash.
+6: follow through to low right, chest twists farther, cape fans to left a beat late; sword still one straight blade.
+7: gather arms to right hip as torso rises, blade angled up-right, recover balance.
+8: compact side guard with sword just right of chest at a shallow up-right diagonal, ready to cut back.
+
+Frames 9-16: BACKHAND RETURN / rising lateral slash, visibly different from first cut.
+9: precisely the same side guard as frame8.
+10: sink through knees, rotate chest towards camera, tuck grip by near right hip.
+11: pull waist and shoulder left-to-right, extend the backhand to the RIGHT at lower rib height, blade begins a rising diagonal.
+12: IMPACT: rear shoulder swings through into side/back view, sword clearly extending up-RIGHT at 35 degrees; strong opposed angles in legs and torso, elegant thin upward cyan crescent.
+13: follow through high to right at shoulder level, hand below eye level; torso turns away and cape briefly sweeps toward viewer.
+14: carry momentum around waist, sword dips across front rather than going overhead.
+15: gather both hands tightly at rear hip, torso recovers towards upright side view, blade points horizontally right through guard.
+16: coiled side-on thrust-ready guard: hands near rear ribs, sword horizontal and pointing right at chest level.
+
+Frames17-24: PIERCE FINISHER / decisive step-through long thrust, DISTINCT from both slashes.
+17: exactly matches frame16, held horizontal blade at chest level.
+18: compress on rear leg and retract hands closer to ribs, tip remains aimed right; cape settles.
+19: drive hips forward, front foot reaches, sword hand starts extending, rear heel rises.
+20: almost full arm extension, body begins long low lunge, sword aimed straight right with small bright tip streak.
+21: IMPACT: magnificent fully extended fencing lunge to RIGHT, front knee bent, rear leg long and straight, rear arm/cape counterbalances to left, torso long diagonal not folded; silver sword projects clearly forward and one narrow cyan motion streak, no huge effect.
+22: hold the extended pose with cape overshoot, then begin pulling elbow back; no extra sword.
+23: push off forward foot and recover upright, sword lowers to guard, cape settles.
+24: exact original frame1 balanced low guard ready to repeat.
+
+Animation continuity is critical: draw actual inbetween poses, not a catalogue of unrelated stances. Sword tip follows understandable curved trajectories then a straight thrust. Big readable weight transfer and crisp impactful silhouettes, beautiful expert pixel animation. No overhead axe chops, no vertical up/down motion, no constant crouch, no repeated identical body poses with only sword changed.

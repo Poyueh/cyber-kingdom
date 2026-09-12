@@ -133,7 +133,7 @@ campaign.tres 繼承的 Presentation 設定控制 Camera Zoom 和 Larger Desktop
 ## 三段連斬
 Combatant 管理出刀段數、單一按鍵緩衝、接招寬限、傷害和取消規則；未開啟 combo 的敵人保留單刀。每段開始清空該刀的命中集合，更新鎖定方向，將有效整刀時長保存，讓畫面與命中共同讀取同一進度。跨越接招時刻的較大時間步會保留剩餘時間。
 
-knight_combo.tres 由 bootstrap 的 Mapper 轉成純 Stats，訓練、出征與主戰役都用相同騎士設定。主戰役用 v003 三套獨立橫向弧線斬擊；未配置 ComboMotion 的舊原型保留第二刀倒播相容呈現。攻擊期間使用站定全身圖集，MovingAttack 僅保留相容支援。
+knight_combo.tres 由 bootstrap 的 Mapper 轉成純 Stats，訓練、出征與主戰役都用相同騎士設定。主戰役用 v004 三套獨立斜切、回斬、穿刺；未配置 ComboMotion 的舊原型保留第二刀倒播相容呈現。攻擊期間使用站定全身圖集，MovingAttack 僅保留相容支援。
 
 敵人的受擊無敵縮為 0.12 秒，使快速第二刀能命中；同刀重疊仍由命中集合阻擋。戰役第三刀確認命中後才產生擊退、短暫硬直及帶 heavy 欄位的效果快照，由呈現層畫火花。訓練場保留原本的命中停頓，戰役這次沒有新增時間暫停系統。暫停／失焦清掉未執行接招，當前動作則凍結。
 
@@ -148,3 +148,5 @@ knight_combo.tres 由 bootstrap 的 Mapper 轉成純 Stats，訓練、出征與�
 Mapper 只對騎士設定 attack_movement_locked，敵人沿用原移動規則。Combatant 以有效揮擊窗口的平滑累積曲線計算每次 advance 的有向位移；跨接招時拆分積分，改變攻速或更新粒度不改變完整踏步距離。consume_attack_travel 只取出一次當次位移，下一次 advance 丟棄未使用的舊值，中斷取消待用位移。
 
 ActorBody 將踏步距離除以本次遊戲時間作為水平速度，仍交由 move_and_slide 解決碰撞；被牆擋下的距離不保留，也不直接改 position。攻擊期間屏蔽方向鍵水平速度，視覺傳入非跑步狀態，使全身斬擊與前進相配。既有跳躍、重力及命中停頓的部分物理時間處理保留。domain 不依賴物理節點或動畫圖集。
+
+主戰役 v004 僅換 ComboMotion 圖集及畫格權重；有效揮擊起點仍與既有 Combatant 對齊。素材配方可個別指定 24 個來源裁切範圍和已目視確認的清理遮罩，避免生成網格不齊、相鄰刀光溢出造成切格錯誤。離線改動不進入 domain 或執行時程式。

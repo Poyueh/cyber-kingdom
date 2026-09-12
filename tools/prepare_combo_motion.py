@@ -24,6 +24,11 @@ def clean(image,index=-1):
         assert mask.getpixel(tuple(seed)) in [128,255], "background landmark is not background"
         if mask.getpixel(tuple(seed))==255: ImageDraw.floodfill(mask,tuple(seed),128)
     a[np.array(mask)==128] = 0
+    # Reviewed source overlaps only; preserve neighboring cape/foot outside each mask.
+    erase=Image.new('L',image.size)
+    for polygon in recipe.get("erase_polygons",{}).get(str(index),[]):
+        ImageDraw.Draw(erase).polygon([tuple(point) for point in polygon],fill=255)
+    a[np.array(erase)>0]=0
     return Image.fromarray(a)
 def core(image,index=-1):
     if str(index) in recipe.get("anchors",{}): return tuple(recipe["anchors"][str(index)])
@@ -36,7 +41,11 @@ def core(image,index=-1):
     assert len(x)>3, 'missing hip reference'
     return (float(np.median(x)),float(np.median(y)))
 sheet=Image.open(SOURCE_ROOT/'sources/combo.png')
-cells=[clean(sheet.crop((i%4*256,i//4*256,i%4*256+(256+recipe.get("extensions",{}).get(str(i),0)),i//4*256+256)),i) for i in range(24)]
+rects=recipe.get("source_rects",[
+    [i%4*256,i//4*256,i%4*256+256+recipe.get("extensions",{}).get(str(i),0),i//4*256+256]
+    for i in range(24)])
+assert len(rects)==24, 'three cuts require 24 source drawings'
+cells=[clean(sheet.crop(tuple(rect)),i) for i,rect in enumerate(rects)]
 # Adjacent sword-tip fragments can cross the source grid; retain the body component.
 for i,im in enumerate(cells):
     cx,cy=core(im,i)
