@@ -37,6 +37,14 @@ func _draw() -> void:
 	number(str(values.get("day",1)),Vector2(center-44,85))
 	icon("survived",Vector2(center+13,79),21)
 	number(str(values.get("survived",0)),Vector2(center+32,85))
+	for side in ["left","right"]:
+		var count: int=values.get("raid_"+side,0)
+		if count<=0: continue
+		var x: float=center-172 if side=="left" else center+104
+		draw_style_box(_panel(),Rect2(x,62,68,34))
+		icon(side,Vector2(x+14,79),18,Color("ffbe89"))
+		icon("sword",Vector2(x+33,79),18,Color("ffbe89"))
+		number(str(count),Vector2(x+47,85),Color("ffd5a0"))
 	if values.get("full",false):
 		icon("bag",Vector2(220,68),22,Color("f5b87c"))
 	if is_paused or dead or victory:

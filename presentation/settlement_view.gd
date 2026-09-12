@@ -81,9 +81,9 @@ func _draw_activity() -> void:
 		_person(person,world.barrier>0)
 	for raider in _sim.raiders:
 		var clip := "windup" if raider.windup>0 else "run"
-		var frame := 0 if clip == "windup" else int(raider.x/12)%2
+		var frame := 0 if clip == "windup" else posmod(int(raider.x/12),2)
 		var texture: Texture2D = EnemyFrames.get_frame_texture(clip,frame)
-		draw_set_transform(Vector2(raider.x,398),0,Vector2(-1,1))
+		draw_set_transform(Vector2(raider.x,398),0,Vector2(raider.get("direction",-1.0),1))
 		draw_texture(texture,-texture.get_size()*0.5,Color(1.5,1.6,1.6) if raider.fighter.invulnerability_remaining>0 else Color.WHITE)
 		draw_set_transform(Vector2.ZERO)
 		draw_rect(Rect2(raider.x-22,360,44,4),Color("482a3a"))

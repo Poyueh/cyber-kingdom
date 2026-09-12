@@ -101,6 +101,9 @@ func present_world(sim, is_paused: bool, at: float, grounded: bool) -> void:
 	drop_button.disabled=is_paused or not sim.hero.is_alive() or sim.pouch.amount<=0
 	var map=sim.frontier
 	dashboard.values={"hp":sim.hero.hp,"shield":sim.hero.shield,"crystal":"%d/%d" % [sim.pouch.amount,sim.pouch.capacity],"wood":map.wood,"food":map.food,"stone":map.stone,"herbs":map.herbs,"scrap":sim.world.scrap,"day":sim.clock.day,"survived":sim.clock.survived,"full":sim.pouch.amount>=sim.pouch.capacity}
+	var pressure: Dictionary=sim.raid_pressure()
+	dashboard.values["raid_left"]=pressure.left
+	dashboard.values["raid_right"]=pressure.right
 	dashboard.health_ratio=clampf(float(sim.hero.hp)/sim.hero.stats.max_hp,0,1)
 	dashboard.phase_ratio=clampf(sim.clock.remaining/(sim.clock.night_seconds if sim.clock.is_night else sim.clock.day_seconds),0,1)
 	dashboard.is_night=sim.clock.is_night

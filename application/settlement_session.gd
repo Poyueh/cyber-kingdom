@@ -207,17 +207,30 @@ func _engineer_target(index: int, seconds: float) -> float:
 	return world.people[index].x
 
 func _target(raider: Dictionary, hero_x: float, hero_y: float) -> Dictionary:
+	var result: Dictionary={"kind":"leave","x":raider.get("exit_x",1650.0)}
 	if absf(hero_x-raider.x)<65 and absf(hero_y-430)<42:
-		return {"kind":"hero","x":hero_x}
-	if world.wall.hp>0 and raider.x>=world.sites.wall-25:
-		return {"kind":"wall","x":world.sites.wall}
-	var result := {"kind":"leave","x":1650.0}
-	var nearest := INF
-	for index in range(world.people.size()):
-		var person: Dictionary = world.people[index]
-		if person.role != "wanderer" and absf(person.get("y",430)-430)<42 and absf(person.x-raider.x)<nearest:
-			nearest = absf(person.x-raider.x)
-			result = {"kind":"person","x":person.x,"index":index}
+		result={"kind":"hero","x":hero_x}
+	else:
+		var nearest:=INF
+		for index in range(world.people.size()):
+			var person: Dictionary=world.people[index]
+			if person.role!="wanderer" and absf(person.get("y",430)-430)<42 and absf(person.x-raider.x)<nearest:
+				nearest=absf(person.x-raider.x)
+				result={"kind":"person","x":person.x,"index":index}
+	var wall_target:=_blocking_wall(raider.x,result.x,int(raider.get("side",1)) if result.kind=="leave" else 0)
+	return result if wall_target.is_empty() else wall_target
+
+func _blocking_wall(from_x: float, to_x: float, approach_side: int = 0) -> Dictionary:
+	var nearest:=INF
+	var result: Dictionary={}
+	for id in world.walls:
+		if world.walls[id].hp<=0: continue
+		var at: float=world.sites[id]
+		var between: bool=at>=minf(from_x,to_x) and at<=maxf(from_x,to_x)
+		if approach_side!=0: between=(at-from_x)*-approach_side>=-25
+		if between and absf(at-from_x)<nearest:
+			nearest=absf(at-from_x)
+			result={"kind":"wall","x":at,"wall_id":id}
 	return result
 
 func _advance_raider(raider: Dictionary, seconds: float, hero_x: float, hero_y: float) -> void:
@@ -235,20 +248,26 @@ func _advance_raider(raider: Dictionary, seconds: float, hero_x: float, hero_y: 
 			var at: float = target.x
 			if target.kind == "person": at = world.people[target.index].x
 			if target.kind == "hero": at = hero_x
+			if target.kind!="wall":
+				var obstruction:=_blocking_wall(raider.x,at)
+				if not obstruction.is_empty():
+					target=obstruction
+					at=target.x
 			if absf(at-raider.x)<38:
 				match target.kind:
 					"hero":
 						if absf(hero_y-430)<42: hero.take_damage(raider.fighter.stats.damage)
-					"wall": world.hit_wall(raider.get("wall_damage",20))
+					"wall": world.hit_wall(raider.get("wall_damage",20),target.get("wall_id","wall"))
 					"person":
 						if absf(world.people[target.index].get("y",430)-430)<42: world.hit_person(target.index)
 				effects.append({"kind":"hit","x":at,"to":at,"life":0.25})
 		return
 	var target := _target(raider,hero_x,hero_y)
+	if absf(target.x-raider.x)>0.1: raider["direction"]=signf(target.x-raider.x)
 	if target.kind == "leave":
 		# Leaving has no melee stopping distance or attack windup.
 		raider.x = move_toward(raider.x,target.x,70*seconds)
-		if raider.x>=1640:
+		if absf(raider.x-target.x)<=10:
 			raider.fighter.hp = 0
 			raider["escaped"] = true
 		return

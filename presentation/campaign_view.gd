@@ -6,7 +6,7 @@ var crystal_radius: float = 9.0
 var focus_key := ""
 var investment_progress := 0.0
 const Icons=preload("res://presentation/ui_icons.gd")
-const SITE_ICONS={"hall":"camp","workshop":"hammer","armory":"sword","farm_tools":"hoe","hunt_tools":"bow","forge":"gear","beacon":"shield","wall":"wall","farm":"food","drill":"sword","trade":"trade","heal":"heal","outpost":"outpost","recruit":"person","chest":"chest","mark":"hammer"}
+const SITE_ICONS={"hall":"camp","workshop":"hammer","armory":"sword","farm_tools":"hoe","hunt_tools":"bow","forge":"gear","beacon":"shield","wall":"wall","wall_left":"wall","farm":"food","drill":"sword","trade":"trade","heal":"heal","outpost":"outpost","recruit":"person","chest":"chest","mark":"hammer"}
 const EXTRA_ART := {"campfire":preload("res://art/campaign/v001/campfire.png"),"stone":preload("res://art/campaign/v001/stone.png"),"herbs":preload("res://art/campaign/v001/herbs.png"),"plot":preload("res://art/campaign/v001/plot.png")}
 
 func present(sim, player_x: float) -> void:
@@ -39,7 +39,8 @@ func _draw_power_grid() -> void:
 	var points: Array[float]=[float(_sim.world.sites.hall)]
 	for site in _sim.built:
 		if _sim.built[site]: points.append(float(_sim.world.sites[site]))
-	if _sim.world.wall.level>0: points.append(float(_sim.world.sites.wall))
+	for id in _sim.world.walls:
+		if _sim.world.walls[id].level>0: points.append(float(_sim.world.sites[id]))
 	if _sim.frontier.farm_active: points.append(float(_sim.world.sites.farm))
 	points.sort()
 	if points.size()<2: return
@@ -81,14 +82,17 @@ func _draw_structures() -> void:
 			var kind: String = _sim.TOOL_KINDS[site]
 			for index in range(world.tools[kind]): _tool(at+Vector2(-20+index*20,-22),kind)
 		elif site=="beacon" and world.barrier>0: _text("防護 ×%d" % world.barrier,at.x,310,Color("8ce2dc"),13)
-	var wall: float = world.sites.wall
-	if world.wall.level>0:
-		_prop("wall",Vector2(wall,430),1.0,Color.WHITE if world.wall.hp>0 else Color(0.4,0.35,0.38))
-		draw_rect(Rect2(wall-28,316,56,4),Color("263940"))
-		draw_rect(Rect2(wall-28,316,56.0*world.wall.hp/(world.wall.level*40),4),Color("8fdbbe"))
-	else: _prop("plot",Vector2(wall,430))
-	_text("防線 %d/2" % world.wall.level,wall,300)
-	if world.wall.pending: _text("工匠施工中",wall,342,Color("f4d49d"),13)
+	for id in world.walls:
+		var wall_x: float=world.sites[id]
+		var defense: Dictionary=world.walls[id]
+		if defense.level>0:
+			_prop("wall",Vector2(wall_x,430),1.0,Color.WHITE if defense.hp>0 else Color(0.4,0.35,0.38))
+			draw_rect(Rect2(wall_x-28,316,56,4),Color("263940"))
+			draw_rect(Rect2(wall_x-28,316,56.0*defense.hp/(defense.level*40),4),Color("8fdbbe"))
+		else: _prop("plot",Vector2(wall_x,430))
+		if defense.pending:
+			_icon("hammer",Vector2(wall_x,307),18)
+			draw_rect(Rect2(wall_x-28,326,56.0*minf(1.0,defense.progress/3.0),3),Color("f4d49d"))
 	for site in ["farm","drill","trade","heal"]:
 		var at := Vector2(world.sites[site],430)
 		_prop("crops" if site=="farm" and map.farm_active else ("herbs" if site=="heal" else "plot"),at)
