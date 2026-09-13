@@ -1,0 +1,97 @@
+{
+  "base_commit": "fe079ba",
+  "source_tree": "483f49f18c21c2b991e2c35be4e86e431b94e75f",
+  "godot_assertions": 1322,
+  "python_tests": 10,
+  "map_default": {
+    "seed": 742601,
+    "old_width": 6800,
+    "new_width": 11700,
+    "old_regions": 6,
+    "new_regions": 12,
+    "old_resource_nodes": 24,
+    "new_resource_nodes": 48
+  },
+  "playthroughs": [
+    {
+      "seed": 1,
+      "route": "knight",
+      "outcome": "victory",
+      "seconds": 885.2
+    },
+    {
+      "seed": 7,
+      "route": "residents",
+      "outcome": "victory",
+      "seconds": 981.4
+    },
+    {
+      "seed": 42,
+      "route": "knight",
+      "outcome": "victory",
+      "seconds": 819.8
+    }
+  ],
+  "validation": "Normal-budget automated input playthroughs, full regression suite, native visual fixture, packaged PCK integration and actual Mac release startup. Windows/Android packages verified structurally, not physical playtests. iOS not built.",
+  "source_sha256": {
+    "domain/frontier.gd": "afd4336741e6c3ddb024ede18c08f5d8fe827208de1cdd35c4c3d6a4a0f02b0a",
+    "data/campaign_tuning.gd": "067284a2adc17e8423268c137f4f6c4a939bdc64508a3e87acdc9ab0ff23f827",
+    "presentation/resident_motion.gd": "e905b38126ec241b6097006d16d631cb71212bd46cd4e26f6b0d6161e71608b1",
+    "presentation/campaign_view.gd": "fa1ecdf366503b1d4d26dfc05291dca90d0a4da759271146514688eddd7c5d24",
+    "tests/test_frontier_depth.gd": "3385e5588453868b5627a8407de7e07246b4defa7bfa411674f72d251c615928",
+    "tests/test_resident_motion.gd": "359dcc9514ef37c58167b10ac0199c061f348c1190f79b7a79205f783598f3f8",
+    "tests/run_tests.gd": "dbd9db12866f7c87ddc2aa54b1bf1ddb0f4c19348fc3e2c9abb91e119bb97186",
+    "tests/test_ecology_scene.gd": "5d1889b667f5bbf84fc923a7ee1070501134c424f43d2ba9a5c6ac138ba7e484",
+    "tools/prepare_resident_motion.py": "826e8a8c68b990397092a8e662148da76a7d8e02fa0c9f942d8466251b23a542",
+    "tools/preview_frontier_life.gd": "49b9c746f2f44204370ce06fbd3211ea4e77dd9c9d413a8cd429d4440a3cfa59",
+    "tools/report_frontier_depth.gd": "2dde911d396862e68de6603affc509625f6a9c17845ea43085757c5a9644db16",
+    "tools/test_exported_demo.gd": "3e4517fbf83db7f52b59bbe4796d4430677c88f14b9ceb77d7144125d6ed718f",
+    "art/characters/resident-motion-v002/residents.png": "367506e832abd07bd9f4f009d942f6d62aa854a207da90dedcef1dfc8592df30"
+  },
+  "sha256": {
+    "play-42.json": "aa61e794107d41e2d4457367417a56b9ea22b1b44e0f0440c850f78183b13366",
+    "native.txt": "678f4cecd9638e21eb799b175e6bc704ee9fde60f09123b546ad10eafb67e837",
+    "residents-035.png": "127103f476f3d555981a826cbc495f97d3b7e72f907b9a93d1df478a20752cd0",
+    "map-sizes.txt": "f88956e9e617bb9baf3f45a9a12d53da2de34cf93f27e01f6d97c078569de967",
+    "outer-frontier.png": "e6ef6100df31d65d414c8d429942c6620b61310049153bbdc00d06c9aaeeb58e",
+    "map-red.txt": "ff0d409e368e2d1e80381dcd414dfbbcea227d46bdba1db12a567660b999be7d",
+    "check.txt": "40faa430f8868849343a925aae65928d881de68b361a05decbd21aabc4e5fc81",
+    "release-startup.txt": "6d1c065383a27c36804949b6ffa4b09714470b112e5dacc0bd5aeb7b9c147c4e",
+    "residents.mp4": "117264ceb372935356030e83a1a987e8ce72390a7b268990f9b4455e747fdc7b",
+    "map-green.txt": "3f0caeb90a3d0db08e24ce66b428293f238dca0a388c079a6f6ebce5e4d385d4",
+    "android-alignment.txt": "9eaed30577e14bd3363f6fc85684126f02f982d2eb8bf44ccf5d38ced7318e40",
+    "play-42.txt": "baa9c727759fb5a4fc268a60ec335280f2bcd2b048f5c681dab734c640575fb7",
+    "play-1.json": "46f57e0229f4ece05b030bec6342dd600db4842d95524366c5d1ca5bb91818b9",
+    "motion-red.txt": "af02cd6575dc8a3c803343b1eb1d1ba60b59cab8f4249993173526dcbb4320f5",
+    "motion-green.txt": "0963877b9a07e43475446b5b142e9c0cd3b7995b8f920c578f3805ad5b080370",
+    "packaged.txt": "8f4c9b2658cf71cf6f6094ae65a5d7d58c79137705a7c42bbc5f76c797c3e51a",
+    "play-7.txt": "4ce5063be7c490867f2e3135791d03b3c988748313939b7a0e52b1d9f43ee702",
+    "play-7.json": "80bda26ba1f410f44b83ddc66e223511f9e22854492a2c55b5ac8988d4fb2792",
+    "android-sign.txt": "c53d26a5f68368268a17e2e5ed4bc88ed271a301aebc094bfad59d648824eb89",
+    "play-1.txt": "f4d6d04be90a36bdd65720750faf1dd94a4661124c9e3feb8a22e9615d6819c5"
+  },
+  "builds": {
+    "desktop-frontier-life-20260913": {
+      "source_tree": "483f49f18c21c2b991e2c35be4e86e431b94e75f",
+      "engine": "4.7.2.stable.official.ed1daf0bf",
+      "entry": "res://scenes/frontier.tscn",
+      "configuration": "committed settings, release export, prototype content",
+      "macOS_signing": "ad-hoc; not notarized",
+      "Windows_signing": "unsigned",
+      "checksums_sha256": {
+        "Cyber-Kingdom-macOS.zip": "d548acb895176405e099aae5ca6e28af565eaf1ef911808cd15e15ab49cc0d73",
+        "Cyber-Kingdom-Windows.zip": "fe5bfefc0120ee5c7c41b302915edfc11e1814ce65fa09a7ef2ae621b779e66b"
+      },
+      "platform_playtest": "must be recorded separately; export alone is not a pass"
+    },
+    "android-frontier-life-20260913": {
+      "source_tree": "483f49f18c21c2b991e2c35be4e86e431b94e75f",
+      "architecture": "arm64-v8a",
+      "package": "org.cyberkingdom.demo",
+      "signing": "local debug certificate; not a store release",
+      "sha256": "70381dc6e0212431108bf6f07e3b48e7559b56fe31157ceb019038f90ad3bd80",
+      "runtime_playtest": "record separately; export alone is not validation"
+    }
+  },
+  "personal_files_preserved": 25
+}

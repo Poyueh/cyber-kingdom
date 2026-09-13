@@ -15,6 +15,11 @@ func review() -> void:
 	var scene=load("res://scenes/frontier.tscn").instantiate()
 	root.add_child(scene)
 	root.size=Vector2i(1440,810)
+	assert(scene.sim.frontier.regions.size()==12)
+	assert(scene.sim.frontier.right_boundary-scene.sim.frontier.left_boundary>10000)
+	assert(scene.view.resident_atlas.get_size()==Vector2(512,768))
+	var initial_people: int=scene.sim.world.people.size()
+	var first_dawn: int=mini(scene.sim.ecology.population_limit,initial_people+scene.sim.frontier.regions.size())
 	for i in range(8):await physics_frame
 	scene.set_physics_process(false)
 	for i in range(2):
@@ -79,9 +84,9 @@ func review() -> void:
 	scene.sim.clock.is_night=true
 	scene.sim.clock.remaining=0.01
 	scene._physics_process(0.02)
-	assert(scene.sim.clock.day==2 and scene.sim.world.people.size()==14)
+	assert(scene.sim.clock.day==2 and scene.sim.world.people.size()==first_dawn)
 	scene._physics_process(0.02)
-	assert(scene.sim.world.people.size()==14)
+	assert(scene.sim.world.people.size()==first_dawn)
 	var arrival: Dictionary=scene.sim.world.people.back()
 	scene.knight.position=Vector2(arrival.x,430)
 	for i in range(2):await physics_frame
@@ -95,9 +100,9 @@ func review() -> void:
 	scene.sim.clock.is_night=true
 	scene.sim.clock.remaining=0.01
 	scene._physics_process(0.02)
-	assert(scene.sim.clock.day==2 and scene.sim.world.people.size()==14)
+	assert(scene.sim.clock.day==2 and scene.sim.world.people.size()==first_dawn)
 	scene.restart()
-	assert(scene.sim.world.people.size()==8 and scene.sim.ecology.last_dawn==1)
+	assert(scene.sim.world.people.size()==initial_people and scene.sim.ecology.last_dawn==1)
 	scene.sim.frontier.city_level=2
 	scene.sim.world.people.clear()
 	var wall_id: String="frontier_wall:3"

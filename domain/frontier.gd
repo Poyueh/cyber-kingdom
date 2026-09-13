@@ -49,20 +49,42 @@ func _init(map_seed: int, rules: Dictionary = {}) -> void:
 		else:
 			right_boundary += width
 		regions.append({"kind":types[index],"x":x,"width":width,"discovered":false,"outpost_x":0.0,"outpost_ready":false,"outpost_pending":false,"outpost_built":false,"outpost_progress":0.0})
-		match types[index]:
-			"forest":
-				for tree in range(4):
-					_add(index,"tree",x+50+tree*(width-100)/3.0+rng.randf_range(-10,10),430,3,0,1 if tree == 0 else 0,0)
-				_add(index,"berries",x+width*0.5,430,0,2,0,0)
-				for animal in range(2):
-					animals.append({"x":x+90+animal*(width-180),"region":index,"alive":true})
-			"quarry":
-				_add(index,"crystal",x+width*0.3,430,0,0,2,0)
-				_add(index,"crystal",x+width*0.7,430,0,0,2,0)
-			"ruins":
-				_add(index,"cache",x+width*0.35,366,0,0,0,4)
-				_add(index,"cache",x+width*0.75,430,0,0,0,4)
+		_populate(index,types[index],x,width,rng)
+	# Keep the original six regions and random sequence intact for legacy saves.
+	var extra:=clampi(int(rules.get("outer_regions_per_side",0)),0,6)
+	for side in [-1,1]:
+		var outer_types: Array=["forest","quarry","ruins"]
+		for i in range(2,0,-1):
+			var swap:=rng.randi_range(0,i)
+			var kind: String=outer_types[i]
+			outer_types[i]=outer_types[swap]
+			outer_types[swap]=kind
+		for depth in range(extra):
+			var width:=float(rng.randi_range(6,9)*100)
+			var x:=right_boundary
+			if side<0:
+				left_boundary-=width
+				x=left_boundary
+			else:right_boundary+=width
+			var kind: String=outer_types[depth%3]
+			var index:=regions.size()
+			regions.append({"kind":kind,"x":x,"width":width,"discovered":false,"outpost_x":0.0,"outpost_ready":false,"outpost_pending":false,"outpost_built":false,"outpost_progress":0.0})
+			_populate(index,kind,x,width,rng)
 
+func _populate(index: int, kind: String, x: float, width: float, rng: RandomNumberGenerator) -> void:
+	match kind:
+		"forest":
+			for tree in range(4):
+				_add(index,"tree",x+50+tree*(width-100)/3.0+rng.randf_range(-10,10),430,3,0,1 if tree == 0 else 0,0)
+			_add(index,"berries",x+width*0.5,430,0,2,0,0)
+			for animal in range(2):
+				animals.append({"x":x+90+animal*(width-180),"region":index,"alive":true})
+		"quarry":
+			_add(index,"crystal",x+width*0.3,430,0,0,2,0)
+			_add(index,"crystal",x+width*0.7,430,0,0,2,0)
+		"ruins":
+			_add(index,"cache",x+width*0.35,366,0,0,0,4)
+			_add(index,"cache",x+width*0.75,430,0,0,0,4)
 func _add(region_index: int, kind: String, x: float, y: float, timber: int, rations: int, crystal: int, salvage: int) -> void:
 	var node := Harvest.new()
 	node.region = region_index

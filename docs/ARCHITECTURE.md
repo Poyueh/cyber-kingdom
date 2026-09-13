@@ -212,3 +212,7 @@ CampaignAudioCues 在 presentation 唯讀採樣 session 與特效參考，產生
 
 ## iOS 建置工具
 tools/build_ios.py 只處理本機前置檢查與 Git 來源匯出，共用 build_desktop.prepare_tree／run_logged；後者新增可選子程序 env，不修改全域環境。iOS 識別碼只填暫存副本，輸出拒絕覆蓋既有目錄。此工具不處理 gameplay、不依賴 Apple 帳號密碼，產物狀態明確區分 project-only 與真機安裝。
+
+
+## 外圍地圖與居民步相
+Campaign Tuning 在新局 economy 注入 outer_regions_per_side；Frontier 先建立相容的六段，再附加外圍內容，不改存檔欄位。Campaign View 使用 presentation/ResidentMotion 依移動距離及遊戲時間選步伐／收步／呼吸格，不反向改寫人物資料；工匠工作仍沿用既有專用圖集。規格見 design/frontier-depth-and-resident-motion.md。

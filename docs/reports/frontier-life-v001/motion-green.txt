@@ -1,0 +1,5 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS test_walk_tracks_distance_instead_of_render_rate
+PASS test_stopping_settles_and_pause_freezes_the_transition
+Assertions: 7; failures: 0

@@ -1,5 +1,8 @@
 extends "res://presentation/frontier_view.gd"
 const RiftVisual=preload("res://presentation/rift_visual.gd")
+const ResidentMotion=preload("res://presentation/resident_motion.gd")
+@export var resident_atlas: Texture2D=preload("res://art/characters/resident-motion-v002/residents.png")
+var _resident_motion:=ResidentMotion.new()
 const Ambient=preload("res://presentation/ambient_motion.gd")
 @export var wanderer_idle: Texture2D=preload("res://art/ambient/v001/wanderer-idle.png")
 @export var chest_open: Texture2D=preload("res://art/ambient/v001/chest-open.png")
@@ -12,6 +15,7 @@ const SITE_ICONS={"shield_charge":"shield","rift":"rift","core_charge":"camp","h
 const EXTRA_ART := {"campfire":preload("res://art/campaign/v001/campfire.png"),"stone":preload("res://art/campaign/v001/stone.png"),"herbs":preload("res://art/campaign/v001/herbs.png"),"plot":preload("res://art/campaign/v001/plot.png")}
 
 func present(sim, player_x: float) -> void:
+	if not is_same(_sim,sim): _resident_motion.clear()
 	_sim=sim
 	_view_player_x=player_x
 	_context=sim.context(player_x) if focus_key.is_empty() else sim.context_for_key(player_x,focus_key)
@@ -138,14 +142,21 @@ func _draw_mission() -> void:
 
 func _person(person: Dictionary, protected: bool) -> void:
 	if not _sim.person_visible(person): return
-	if person.role=="wanderer" and not person.get("moving",false):
-		var time: float=_sim.workforce.elapsed+_sim.world.people.find(person)*0.31
-		var frame: int=[0,1,2,3,4,5,4,3,2,1][int(time*4)%10]
+	var state: String=person.get("work_state","idle")
+	if person.role=="engineer" and state in ["work","haul","climb"]:
+		# Preserve authored hammer, cargo and ladder silhouettes for real work.
+		super._person(person,protected)
+	else:
+		var index: int=_sim.world.people.find(person)
+		var pose:=_resident_motion.sample(person,index,_sim.workforce.elapsed)
+		var role: int={"wanderer":0,"citizen":1,"farmer":2,"hunter":3,"guard":4,"engineer":5}[person.role]
+		var row:=role*2+(1 if pose.mode=="idle" else 0)
 		var at:=Vector2(person.x,person.get("y",430))
 		draw_set_transform(at,0,Vector2(person.get("direction",1.0),1))
-		draw_texture_rect_region(wanderer_idle,Rect2(-32,-61,64,64),Rect2(frame*64,0,64,64),Color(1,0.65,0.65) if person.hurt>0 else Color.WHITE)
+		draw_texture_rect_region(resident_atlas,Rect2(-32,-62,64,64),Rect2(pose.frame*64,row*64,64,64),Color(1,0.65,0.65) if person.hurt>0 else Color.WHITE)
 		draw_set_transform(Vector2.ZERO)
-	else: super._person(person,protected)
+		if protected and person.role!="wanderer": draw_arc(at+Vector2(0,-24),29,PI,TAU,16,Color("81ddda"),1)
+
 	var key: String={"wanderer":"person","citizen":"person","engineer":"hammer","farmer":"hoe","hunter":"bow","guard":"sword"}[person.role]
 	_icon(key,Vector2(person.x,person.get("y",430)-66),17,Color("b4e7df") if person.role!="wanderer" else Color("d4c3a7"))
 
