@@ -47,3 +47,8 @@ func advance_seal(index: int, seconds: float, ready: bool, knight_near: bool, co
 	if not rift.ordered or rift.sealed or not rift.wardens_spawned or not ready or not knight_near or contested:return
 	rift.progress=minf(seal_seconds,rift.progress+seconds)
 	if rift.progress>=seal_seconds:rift.sealed=true
+
+func entry_x(side: int) -> float:
+	for rift in rifts:
+		if rift.side==side:return float(rift.x)
+	return NAN

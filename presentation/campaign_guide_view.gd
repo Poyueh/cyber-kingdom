@@ -6,6 +6,7 @@ var safe:=Rect2()
 var player_x:=0.0
 var active_button:=Rect2()
 var can_invest:=false
+var touch_hint:=true
 var pulse:=0.0
 var _style: StyleBoxFlat
 func present(advice: Dictionary,area: Rect2,x: float,button: Rect2,ready: bool) -> void:
@@ -49,7 +50,7 @@ func _draw() -> void:
   for i in range(6):draw_circle(origin+Vector2(82+i*12,46),2,Color("80d7c5") if i<hint.stage else Color("3c5258"))
  if hint.has("requirement_count"):
   draw_string(ThemeDB.fallback_font,origin+Vector2(198,37),str(hint.requirement_count),HORIZONTAL_ALIGNMENT_LEFT,-1,13,Color("dce9dc"))
- if can_invest:
+ if can_invest and touch_hint:
   var alpha:=0.35+0.35*sin(pulse*PI)
   draw_arc(active_button.get_center(),36,-PI/2,TAU-PI/2,40,Color(0.50,0.94,0.82,alpha),2)
   _icon("hand",active_button.position+Vector2(32,-19),24,Color(0.76,0.96,0.86,0.65+0.25*sin(pulse*PI)))

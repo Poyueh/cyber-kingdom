@@ -1,0 +1,13 @@
+{
+  "source_tree": "3b561b1f2cd401f3082760c150e8161ae5c7d840",
+  "engine": "4.7.2.stable.official.ed1daf0bf",
+  "entry": "res://scenes/frontier.tscn",
+  "configuration": "committed settings, release export, prototype content",
+  "macOS_signing": "ad-hoc; not notarized",
+  "Windows_signing": "unsigned",
+  "checksums_sha256": {
+    "Cyber-Kingdom-macOS.zip": "e0ac5bbf61bd780cfbb2d0d58e6f76133bfe9cc737ce62d2e7a7f84b71acb418",
+    "Cyber-Kingdom-Windows.zip": "23e855b72a4ccb230a9376c9ca133621d4fbcc181b1bdd0614b707b1e82b010c"
+  },
+  "platform_playtest": "must be recorded separately; export alone is not a pass"
+}

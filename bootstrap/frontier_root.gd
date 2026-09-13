@@ -2,8 +2,13 @@ extends "res://bootstrap/settlement_root.gd"
 const FrontierSession = preload("res://application/campaign_session.gd")
 const InvestmentHold = preload("res://application/investment_hold.gd")
 const CampaignProgress=preload("res://application/campaign_progress.gd")
+const AudioPreferences=preload("res://infrastructure/audio_preferences.gd")
 const CampaignStore=preload("res://infrastructure/json_campaign_store.gd")
 @export var campaign_save_path: String="user://campaign_v1.json"
+@export var audio_preferences_path: String="user://audio.cfg"
+var preferences: RefCounted
+var manual_progress: RefCounted
+var _manual_available:=false
 @export_range(1.0,60.0,1.0) var autosave_seconds: float=5.0
 @onready var audio=$CampaignAudio
 var progress: RefCounted
@@ -39,21 +44,31 @@ func _ready() -> void:
 		progress=CampaignProgress.new(CampaignStore.new(campaign_save_path))
 		var restored: Dictionary=progress.open()
 		if not restored.is_empty():
-			sim=restored.session
-			_campaign_config=restored.config
-			_map_seed=sim.map_seed
-			knight.configure(sim.hero,knight_tuning)
-			knight.position=Vector2(restored.body.x,restored.body.y)
-			knight.velocity=Vector2(restored.body.vx,restored.body.vy)
-			_build_terrain()
-			paused=true
+			_apply_restored(restored)
 		elif progress.status=="protected":
 			paused=true
 		else:save_campaign()
 		knight.refresh_visual(0.0)
 		view.present(sim,knight.position.x)
 		hud.present_world(sim,paused,knight.position.x,knight.is_on_floor())
+	if progress!=null:
+		manual_progress=CampaignProgress.new(CampaignStore.new(campaign_save_path+".manual"))
+		_manual_available=not manual_progress.open().is_empty()
+	var allow_preferences: bool=ProjectSettings.get_setting("campaign/persistence_enabled",true) and (audio_preferences_path!="user://audio.cfg" or "--no-campaign-save" not in OS.get_cmdline_user_args())
+	if allow_preferences:
+		preferences=AudioPreferences.new(audio_preferences_path)
+		var levels: Dictionary=preferences.read()
+		audio.music_volume=levels.music;audio.effects_volume=levels.effects
+	hud.options_menu.set_levels(audio.music_volume,audio.effects_volume)
+	hud.options_menu.volume_changed.connect(func(music: float,effects: float):
+		audio.music_volume=music;audio.effects_volume=effects
+		if preferences!=null:preferences.write(music,effects))
+	hud.options_menu.save_checkpoint_requested.connect(save_manual_campaign)
+	hud.options_menu.load_checkpoint_requested.connect(load_manual_campaign)
+	view.interactions_visible=not paused
+	view.keyboard_hint=not hud.uses_touch_controls()
 	_present_save()
+	knight.visual.set_equipment(sim.frontier.drill_level,sim.growth.capacitor_level)
 	audio.observe(0,sim,knight.position.x,true)
 
 func restart() -> void:
@@ -85,6 +100,7 @@ func restart() -> void:
 	hud.cancel_touch_gestures()
 	_build_terrain()
 	if progress!=null:save_campaign()
+	if is_instance_valid(knight.visual):knight.visual.set_equipment(sim.frontier.drill_level,sim.growth.capacitor_level)
 	if is_instance_valid(audio):audio.observe(0,sim,knight.position.x,true)
 
 func _physics_process(seconds: float) -> void:
@@ -109,6 +125,9 @@ func _physics_process(seconds: float) -> void:
 	if (paused and not was_paused) or (was_running and not sim.is_running()) or _save_elapsed>=autosave_seconds:
 		save_campaign()
 	_present_save()
+	view.interactions_visible=not paused
+	view.keyboard_hint=not hud.uses_touch_controls()
+	knight.visual.set_equipment(sim.frontier.drill_level,sim.growth.capacitor_level)
 	audio.observe(seconds,sim,knight.position.x,paused)
 
 func _apply_interaction(command: Dictionary, seconds: float) -> void:
@@ -125,10 +144,13 @@ func _notification(what: int) -> void:
 	super._notification(what)
 	if what == NOTIFICATION_APPLICATION_FOCUS_OUT or what == NOTIFICATION_APPLICATION_PAUSED:
 		_requested_throw = false
-		if is_instance_valid(audio):audio.stop()
+		if is_instance_valid(audio):
+			audio.suspended=true
+			audio.stop()
 		if investment!=null: investment.cancel()
 		if is_instance_valid(hud): hud.cancel_touch_gestures()
 		if progress!=null:save_campaign()
+	if what in [NOTIFICATION_APPLICATION_FOCUS_IN,NOTIFICATION_APPLICATION_RESUMED] and is_instance_valid(audio):audio.suspended=false
 	if what==NOTIFICATION_WM_CLOSE_REQUEST and progress!=null:save_campaign()
 
 func save_campaign() -> bool:
@@ -138,8 +160,47 @@ func save_campaign() -> bool:
 	_present_save()
 	return result
 
+func _apply_restored(restored: Dictionary) -> void:
+	sim=restored.session
+	_campaign_config=restored.config
+	_map_seed=sim.map_seed
+	knight.configure(sim.hero,knight_tuning)
+	knight.position=Vector2(restored.body.x,restored.body.y)
+	knight.velocity=Vector2(restored.body.vx,restored.body.vy)
+	knight.visual.set_equipment(sim.frontier.drill_level,sim.growth.capacitor_level)
+	investment.cancel()
+	controls.release_all()
+	hud.cancel_touch_gestures()
+	hud.interact_held=false
+	_requested_interaction=false;_requested_throw=false;_requested_new_map=false
+	_sync_investment_focus()
+	_build_terrain()
+	paused=true
+	knight.refresh_visual(0.0)
+	view.present(sim,knight.position.x)
+	hud.present_world(sim,paused,knight.position.x,knight.is_on_floor())
+
+func save_manual_campaign() -> bool:
+	if manual_progress==null:return false
+	var saved: bool=manual_progress.save(sim,_campaign_config,{"x":knight.position.x,"y":knight.position.y,"vx":knight.velocity.x,"vy":knight.velocity.y})
+	if saved:_manual_available=true
+	_present_save()
+	return saved
+
+func load_manual_campaign() -> bool:
+	if manual_progress==null:return false
+	var restored: Dictionary=manual_progress.open()
+	_manual_available=not restored.is_empty()
+	if _manual_available:_apply_restored(restored)
+	_present_save()
+	return _manual_available
+
 func _present_save() -> void:
-	if is_instance_valid(hud):hud.present_save(progress.status if progress!=null else "disabled",paused)
+	if is_instance_valid(hud):
+		hud.present_save(progress.status if progress!=null else "disabled",paused)
+		if is_instance_valid(hud.options_menu):
+			hud.options_menu.record_status(_manual_available,manual_progress!=null and manual_progress.status=="saved",manual_progress!=null and manual_progress.status in ["error","protected"])
+			hud.options_menu.save_button.disabled=manual_progress==null or manual_progress.status=="protected"
 
 func _exit_tree() -> void:
 	if progress!=null and is_instance_valid(knight):save_campaign()

@@ -1,5 +1,5 @@
 extends RefCounted
-## Version 1 admission rules. Validate plain shapes before constructing live state.
+## Current schema admission rules, after known-version migration. Validate plain shapes before constructing live state.
 const Combatant=preload("res://domain/combatant.gd")
 const Stats=preload("res://domain/combat_stats.gd")
 const ROLES=["wanderer","citizen","engineer","guard","hunter","farmer"]

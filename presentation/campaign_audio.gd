@@ -12,22 +12,39 @@ signal cue_requested(kind: String)
  set(value):
   enabled=value
   if not enabled:stop()
+var music_volume:=0.4
+var effects_volume:=0.8
+var suspended:=false
+var music_player: AudioStreamPlayer
 var cues=Cues.new()
 var voices: Array[AudioStreamPlayer]=[]
 var _cooldowns: Dictionary={}
 func _ready() -> void:
+ music_player=AudioStreamPlayer.new()
+ music_player.name="Music"
+ var loop: AudioStreamWAV=preload("res://art/audio/frontier-music-v001/last-refuge.wav").duplicate()
+ loop.loop_mode=AudioStreamWAV.LOOP_FORWARD
+ loop.loop_end=loop.data.size()/2
+ music_player.stream=loop
+ add_child(music_player)
  for i in range(6):
   var voice=AudioStreamPlayer.new()
   add_child(voice)
   voices.append(voice)
 func observe(seconds: float,sim,x: float,paused: bool) -> void:
+ if is_instance_valid(music_player):
+  music_player.volume_db=-12+linear_to_db(maxf(0.0001,music_volume))
+  if enabled and not suspended and music_volume>0 and DisplayServer.get_name()!="headless":
+   if not music_player.playing:music_player.play()
+  else:music_player.stop()
  for key in _cooldowns:_cooldowns[key]=maxf(0,_cooldowns[key]-seconds)
- var pending: Array[String]=cues.sample(sim,x,paused or not enabled)
- if paused or not enabled:
-  stop()
+ var pending: Array[String]=cues.sample(sim,x,paused or not enabled or suspended)
+ if paused or not enabled or suspended:
+  for voice in voices:voice.stop()
   return
  for kind in pending:_play(kind)
 func _play(kind: String) -> void:
+ if effects_volume<=0:return
  if _cooldowns.get(kind,0.0)>0:return
  var available=voices.filter(func(v):return not v.playing)
  if available.is_empty():
@@ -37,15 +54,17 @@ func _play(kind: String) -> void:
  var voice: AudioStreamPlayer=available[0]
  voice.stop()
  voice.stream=SOUNDS[kind]
- voice.volume_db=volume_db
+ voice.volume_db=volume_db+linear_to_db(maxf(0.0001,effects_volume))
  if DisplayServer.get_name()!="headless":voice.play()
  voices.erase(voice);voices.append(voice)
  _cooldowns[kind]=0.08 if kind in ["pickup","hit","heavy"] else 0.05
  cue_requested.emit(kind)
 func stop() -> void:
+ if is_instance_valid(music_player):music_player.stop()
  for voice in voices:voice.stop()
 
 func _exit_tree() -> void:
  stop()
  for voice in voices:voice.stream=null
+ if is_instance_valid(music_player):music_player.stream=null
  cues=null

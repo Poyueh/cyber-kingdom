@@ -140,6 +140,11 @@ func deposit(node: RefCounted) -> Dictionary:
 		region.outpost_x = node.x
 	return {"crystals":node.crystals,"scrap":node.scrap}
 
+func expansion_cleared(index: int) -> bool:
+	if index<0 or index>=regions.size() or not regions[index].discovered:return false
+	# Buildings appear only after the finite terrain resources have actually been removed.
+	return not nodes.any(func(n):return n.region==index and n.kind in ["tree","crystal","stone","cache"] and not n.collected)
+
 func order_outpost(index: int, available_scrap: int) -> int:
 	if index<0 or index>=regions.size(): return 0
 	var region := regions[index]

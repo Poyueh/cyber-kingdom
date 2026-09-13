@@ -19,7 +19,7 @@ func run_scene() -> void:
 	sim.frontier.regions[3].outpost_built=true
 	sim.world.wall.merge({"level":1,"hp":40},true)
 	for node in sim.frontier.nodes:
-		if node.kind=="tree" and absf(node.x-x)<80:node.collected=true
+		if node.region==3 and node.kind in ["tree","crystal","stone","cache"]:node.collected=true
 	scene.knight.position=Vector2(x,430)
 	await frames(2)
 	scene._physics_process(1.0/60)

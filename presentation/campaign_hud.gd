@@ -1,4 +1,7 @@
 extends "res://presentation/frontier_hud.gd"
+const Options=preload("res://presentation/campaign_options.gd")
+@export_enum("Automatic","Touch","Desktop") var control_mode:int=0
+var options_menu: PanelContainer
 const Guide=preload("res://application/campaign_guide.gd")
 const ExpeditionGuide=preload("res://application/expedition_guide.gd")
 @export var expedition_guidance:=true
@@ -30,6 +33,7 @@ func _ready() -> void:
 	$Top.hide()
 	$Keys.hide()
 	dashboard=Dashboard.new()
+	dashboard.pause_overlay=false
 	add_child(dashboard)
 	# Keep input actions on TouchScreenButton for simultaneous movement and attacks.
 	for key in ["move_left","move_right","dash","jump","attack","pause","restart"]:
@@ -68,6 +72,10 @@ func _ready() -> void:
 	add_child(audio_button)
 	_skin(audio_button,"sound")
 	audio_button.pressed.connect(func():audio_toggled.emit())
+	options_menu=Options.new()
+	options_menu.name="OptionsMenu"
+	add_child(options_menu)
+	options_menu.hide()
 	get_viewport().size_changed.connect(_layout)
 	_layout()
 	guide_view=GuideView.new()
@@ -123,7 +131,10 @@ func _layout() -> void:
 		buttons[key].size=layout.buttons[key].size
 	dashboard.panels=layout.panels
 	dashboard.queue_redraw()
-	fullscreen_button.visible=not OS.has_feature("mobile")
+	fullscreen_button.visible=not uses_touch_controls()
+	if is_instance_valid(options_menu):
+		options_menu.size=Vector2(minf(370,_last_safe_rect.size.x-24),192)
+		options_menu.position=Vector2(_last_safe_rect.get_center().x-options_menu.size.x/2,layout.buttons.new_map.end.y+8)
 
 func present_world(sim, is_paused: bool, at: float, grounded: bool) -> void:
 	if _pause_icon_state!=is_paused:
@@ -134,6 +145,14 @@ func present_world(sim, is_paused: bool, at: float, grounded: bool) -> void:
 	var choice: Dictionary=sim.context(at) if focus_key.is_empty() else sim.context_for_key(at,focus_key)
 	interact_button.disabled=is_paused or not grounded or not choice.enabled or not sim.is_running()
 	interact_button.icon=Icons.get_icon("chest" if choice.id=="chest" else "crystal" if choice.cost>0 else "hand")
+	var touch:=uses_touch_controls()
+	for action in ["move_left","move_right","jump","dash","attack"]:
+		get_node(action).visible=touch and not is_paused and sim.is_running()
+	interact_button.visible=touch and not is_paused and sim.is_running()
+	drop_button.visible=touch and not is_paused and sim.is_running()
+	for pair in [["attack",sim.hero.stats.attack_cost],["jump",sim.hero.stats.jump_cost],["dash",sim.hero.stats.dash_cost]]:
+		get_node(pair[0]).modulate=Color(1,1,1,0.88 if sim.hero.stamina>=pair[1] else 0.3)
+	options_menu.visible=is_paused
 	$restart.visible=is_paused or not sim.is_running()
 	new_map_button.visible=is_paused or not sim.is_running()
 	$Refuge.visible=is_paused
@@ -150,6 +169,8 @@ func present_world(sim, is_paused: bool, at: float, grounded: bool) -> void:
 	dashboard.values["rifts"]=sim.mission.rifts
 	dashboard.values["raid_left"]=pressure.left
 	dashboard.values["raid_right"]=pressure.right
+	dashboard.values["stamina"]=sim.hero.stamina
+	dashboard.values["max_stamina"]=sim.hero.stats.max_stamina
 	dashboard.health_ratio=clampf(float(sim.hero.hp)/sim.hero.stats.max_hp,0,1)
 	dashboard.phase_ratio=clampf(sim.clock.remaining/(sim.clock.night_seconds if sim.clock.is_night else sim.clock.day_seconds),0,1)
 	dashboard.is_night=sim.clock.is_night
@@ -160,6 +181,7 @@ func present_world(sim, is_paused: bool, at: float, grounded: bool) -> void:
 	var advice: Dictionary=Guide.next(sim,at) if first_day_guidance and not is_paused else {}
 	if advice.is_empty() and expedition_guidance and not is_paused:advice=ExpeditionGuide.next(sim,at,sim._player_y)
 	var ready: bool=not advice.is_empty() and advice.action in ["invest","open"] and advice.key==choice.key and not interact_button.disabled
+	guide_view.touch_hint=touch
 	guide_view.present(advice,_last_safe_rect,at,Rect2(interact_button.position,interact_button.size),ready)
 
 func _toggle_fullscreen() -> void:
@@ -186,3 +208,7 @@ func cancel_touch_gestures() -> void:
 
 func set_audio_enabled(value: bool) -> void:
 	audio_button.icon=Icons.get_icon("sound" if value else "muted")
+
+func uses_touch_controls() -> bool:
+	var mode:=control_mode if control_mode!=0 else int(ProjectSettings.get_setting("campaign/control_preview",0))
+	return OS.has_feature("mobile") if mode==0 else mode==1

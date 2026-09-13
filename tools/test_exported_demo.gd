@@ -111,7 +111,7 @@ func review() -> void:
 	scene.sim.frontier.regions[3].outpost_built=true
 	scene.sim.world.wall.merge({"level":1,"hp":40},true)
 	for node in scene.sim.frontier.nodes:
-		if node.kind=="tree" and absf(node.x-wall_x)<80:node.collected=true
+		if node.region==3 and node.kind in ["tree","crystal","stone","cache"]:node.collected=true
 	scene.knight.position=Vector2(wall_x,430)
 	for i in range(2):await physics_frame
 	scene._physics_process(1.0/60)

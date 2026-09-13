@@ -7,6 +7,7 @@ var health_ratio:=1.0
 var phase_ratio:=1.0
 var is_night:=false
 var is_paused:=false
+var pause_overlay:=true
 var dead:=false
 var victory:=false
 var _font:=ThemeDB.fallback_font
@@ -25,6 +26,11 @@ func _draw() -> void:
 	number(str(values.get("hp",0)),at+Vector2(40,32),Color("e9cdcf"),13)
 	icon("shield",at+Vector2(137,19),20)
 	number("%d/%d" % [values.get("shield",0),values.get("shield_capacity",0)],at+Vector2(151,25),Color("a7e6dc"),13)
+	if values.has("stamina"):
+		var stamina_ratio:=clampf(float(values.stamina)/maxf(1,values.max_stamina),0,1)
+		icon("dash",at+Vector2(12,49),15,Color("b8d89b"))
+		draw_rect(Rect2(at+Vector2(26,44),Vector2(180,8)),Color("25363b"))
+		draw_rect(Rect2(at+Vector2(26,44),Vector2(180*stamina_ratio,8)),Color("afd58b") if stamina_ratio>0.18 else Color("d7826d"))
 	for key in ["crystal","wood","food","stone","herbs","scrap","damage"]:
 		if not values.has(key):continue
 		var rect: Rect2=panels[key]
@@ -48,7 +54,7 @@ func _draw() -> void:
 		icon("sword",rect.position+Vector2(30,17),18,Color("ffbe89"))
 		number(str(count),rect.position+Vector2(44,23),Color("ffd5a0"))
 	_draw_mission()
-	if is_paused or dead or victory:
+	if (is_paused and pause_overlay) or dead or victory:
 		at=panels.overlay.get_center()
 		draw_style_box(_panel(),panels.overlay)
 		icon("skull" if dead else ("crown" if victory else "pause"),at-Vector2(0,9) if dead or victory else at,44)

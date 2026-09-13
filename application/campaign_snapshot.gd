@@ -2,7 +2,7 @@ extends RefCounted
 ## Closed, versioned state graph. No script paths or object construction come from a save.
 const Campaign=preload("res://application/campaign_session.gd")
 const Rules=preload("res://application/campaign_checkpoint_rules.gd")
-const VERSION:=1
+const VERSION:=2
 const SESSION_SKIP=["raiders","effects","opened_chests"]
 const FIGHTER_SKIP=["_hit_targets","_queued_attack_seconds","_pending_attack_travel"]
 var last_error:=""
@@ -111,6 +111,7 @@ func restore(raw) -> Dictionary:
 	var data: Dictionary=_normalize(raw)
 	var keys=["version","config","body","session","world","frontier","nodes","clock","mission","growth","ecology","pouch","workforce","hero","raiders","hero_hits","opened"]
 	if data.size()!=keys.size() or not keys.all(func(k):return data.has(k)):return _invalid()
+	if data.version==1 and not _upgrade_v1(data):return _invalid()
 	if data.version!=VERSION or not data.config is Dictionary or not data.body is Dictionary:return _invalid()
 	if not Rules.config_valid(data.config):return _invalid()
 	for key in ["x","y","vx","vy"]:
@@ -148,3 +149,20 @@ func restore(raw) -> Dictionary:
 	if not sim.world.walls.has("wall"):return _invalid()
 	sim.world.wall=sim.world.walls.wall
 	return {"session":sim,"config":data.config,"body":data.body}
+
+func _upgrade_v1(data: Dictionary) -> bool:
+	# Upgrade only the known old stat shape; unknown fields still fail normal validation.
+	if not data.hero is Dictionary or not data.raiders is Array or not data.config is Dictionary:return false
+	var fighters: Array=[data.hero]
+	for enemy in data.raiders:
+		if not enemy is Dictionary or not enemy.get("fighter") is Dictionary:return false
+		fighters.append(enemy.fighter)
+	for fighter in fighters:
+		if not fighter.get("stats") is Dictionary:return false
+		if fighter.stats.has("attack_cost") or fighter.stats.has("jump_cost"):return false
+		fighter.stats["attack_cost"]=0.0
+		fighter.stats["jump_cost"]=0.0
+	data.hero.stats.attack_cost=data.config.get("attack_stamina",12.0)
+	data.hero.stats.jump_cost=data.config.get("jump_stamina",18.0)
+	data.version=VERSION
+	return true
