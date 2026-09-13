@@ -200,3 +200,7 @@ presentation/campaign_layout.gd 集中 HUD 區域的座標換算與排版，不�
 
 ## 首日建議
 CampaignGuide 是讀取 CampaignSession 的無狀態查詢，不新增存檔欄位，也不執行互動。它回傳語意種類、世界位置、目標 key 與行動建議；CampaignGuideView 負責圖示，CampaignHUD 以真實選定目標及按鈕 enabled 狀態決定提示環。只在已有職業與付款結果成立後切換提示，保持居民自治。
+
+
+## 出征建議
+ExpeditionGuide 共用 CampaignSession 的裂隙前置條件與參與狀態查詢，以及 CampaignGuide 的職業／資金建議。CampaignSession 在守門者生成後重新讀取敵人阻擋狀態，再累積封印；引導本身沒有副作用。GuideView 用動作、目標、輔助圖示與封印進度呈現，戰鬥／守住位置優先於近距離移動箭頭。詳見 design/expedition-guide.md。

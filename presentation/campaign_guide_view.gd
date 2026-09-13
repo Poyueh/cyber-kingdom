@@ -1,6 +1,6 @@
 extends Node2D
 const Icons=preload("res://presentation/ui_icons.gd")
-const SYMBOLS={"camp":"camp","recruit":"person","tool":"hammer","harvest":"tree","hunter":"bow","guard":"sword","wall":"wall","defend":"shield","chest":"chest","trade":"trade","collect":"crystal","explore":"map"}
+const SYMBOLS={"upgrade":"camp","core":"camp","delivery":"hammer","escort":"hammer","join":"rift","fight":"rift","seal":"rift","clear_enemies":"sword","rift":"rift","camp":"camp","recruit":"person","tool":"hammer","harvest":"tree","hunter":"bow","guard":"sword","wall":"wall","defend":"shield","chest":"chest","trade":"trade","collect":"crystal","explore":"map"}
 var hint: Dictionary={}
 var safe:=Rect2()
 var player_x:=0.0
@@ -33,16 +33,22 @@ func _draw() -> void:
  draw_style_box(_style,area)
  var center:=origin+Vector2(112,24)
  var distance: float=hint.x-player_x
- var operation: String="hand" if can_invest else "left" if distance < -40 else "right" if distance>40 else "gear" if hint.action=="wait" else "shield" if hint.kind=="defend" else "map"
+ var operation: String="hand" if can_invest else "sword" if hint.action=="fight" else "shield" if hint.action=="stay" else "left" if distance < -40 else "right" if distance>40 else "person" if hint.action=="follow" else "gear" if hint.action=="wait" else "shield" if hint.kind=="defend" else "map"
  _icon(operation,center-Vector2(65,0))
  _icon("right",center-Vector2(21,0),18)
  _icon(SYMBOLS.get(hint.kind,"map"),center+Vector2(18,0),30,Color("8fe2d4"))
- if hint.kind=="harvest":_icon("hammer",center+Vector2(69,0),20)
+ if hint.has("detail"):_icon(hint.detail,center+Vector2(69,0),20)
+ elif hint.kind=="harvest":_icon("hammer",center+Vector2(69,0),20)
  elif hint.action=="invest":_icon("crystal",center+Vector2(69,0),20)
  elif hint.action=="wait":_icon("person",center+Vector2(69,0),20)
  elif hint.kind=="defend":_icon("moon",center+Vector2(69,0),20)
- for i in range(6):
-  draw_circle(origin+Vector2(82+i*12,46),2,Color("80d7c5") if i<hint.stage else Color("3c5258"))
+ if hint.has("seal_progress"):
+  draw_rect(Rect2(origin+Vector2(48,44),Vector2(128,4)),Color("3c5258"))
+  draw_rect(Rect2(origin+Vector2(48,44),Vector2(128*clampf(hint.seal_progress,0,1),4)),Color("80d7c5"))
+ elif hint.stage>0 and hint.stage<=6:
+  for i in range(6):draw_circle(origin+Vector2(82+i*12,46),2,Color("80d7c5") if i<hint.stage else Color("3c5258"))
+ if hint.has("requirement_count"):
+  draw_string(ThemeDB.fallback_font,origin+Vector2(198,37),str(hint.requirement_count),HORIZONTAL_ALIGNMENT_LEFT,-1,13,Color("dce9dc"))
  if can_invest:
   var alpha:=0.35+0.35*sin(pulse*PI)
   draw_arc(active_button.get_center(),36,-PI/2,TAU-PI/2,40,Color(0.50,0.94,0.82,alpha),2)

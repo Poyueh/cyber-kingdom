@@ -164,10 +164,7 @@ func _interaction_candidates(x: float) -> Array[Dictionary]:
 	for index in range(mission.rifts.size()):
 		var rift: Dictionary=mission.rifts[index]
 		if not rift.discovered or absf(rift.x-x)>=73 or absf(_player_y-430)>42:continue
-		var prerequisites: Array=[]
-		if frontier.city_level<2:prerequisites.append({"icon":"camp","value":2})
-		if clock.survived<1:prerequisites.append({"icon":"survived","value":1})
-		if not world.people.any(func(p):return p.role=="engineer"):prerequisites.append({"icon":"hammer","value":1})
+		var prerequisites: Array=rift_requirements()
 		choice=_choice("rift",rift.x,"封印龍裂隙",prices.rift,prerequisites.is_empty() and not rift.ordered and not rift.sealed,"升級聚落、熬過一晚並招募工匠")
 		choice.key="rift:%d" % index
 		choice["rift_index"]=index
@@ -499,12 +496,26 @@ func _spawn_raider() -> Dictionary:
 	raider["wall_damage"]=20+(clock.day-1)*enemy_damage_growth
 	return raider
 
+func rift_requirements() -> Array[Dictionary]:
+	var requirements: Array[Dictionary]=[]
+	if frontier.city_level<2:requirements.append({"icon":"camp","value":2})
+	if clock.survived<1:requirements.append({"icon":"survived","value":1})
+	if not world.people.any(func(p):return p.role=="engineer"):requirements.append({"icon":"hammer","value":1})
+	return requirements
+
+func expedition_status(index: int, hero_x: float, hero_y: float) -> Dictionary:
+	var rift: Dictionary=mission.rifts[index]
+	return {"worker_ready":expedition.worker_ready(rift),
+		"knight_near":absf(hero_x-rift.x)<160 and absf(hero_y-430)<80,
+		"contested":raiders.any(func(r):return r.fighter.is_alive() and absf(r.x-rift.x)<180)}
+
 func _advance_expeditions(seconds: float, hero_x: float, hero_y: float) -> void:
 	for index in range(mission.rifts.size()):
 		var rift: Dictionary=mission.rifts[index]
 		if not rift.ordered or rift.sealed:continue
-		var ready:=expedition.worker_ready(rift)
-		var knight_near:=absf(hero_x-rift.x)<160 and absf(hero_y-430)<80
+		var status:=expedition_status(index,hero_x,hero_y)
+		var ready: bool=status.worker_ready
+		var knight_near: bool=status.knight_near
 		if ready and knight_near and not rift.wardens_spawned:
 			rift.wardens_spawned=true
 			for offset in [-120.0,120.0]:
@@ -517,7 +528,8 @@ func _advance_expeditions(seconds: float, hero_x: float, hero_y: float) -> void:
 				enemy["kind"]="warden"
 				enemy["direction"]=-signf(offset)
 				raiders.append(enemy)
-		var contested:=raiders.any(func(r):return r.fighter.is_alive() and absf(r.x-rift.x)<180)
+		# Wardens may have been added above; re-read contest status before sealing.
+		var contested: bool=expedition_status(index,hero_x,hero_y).contested
 		mission.advance_seal(index,seconds,ready,knight_near,contested)
 
 func _collect_loot(drop: Dictionary) -> void:

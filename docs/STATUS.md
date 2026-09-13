@@ -1,6 +1,6 @@
 # 製作進度
 
-目前試玩：Godot 打開 scenes/frontier.tscn 按 F6，或使用 builds/desktop-growth-20260913 的桌面程式直接進入營火戰役。最新進度見本文最後一節；前段保留歷次開發紀錄。美術沿用大致認可的 v002 營地基準與 v004 騎士劍術提案。
+目前試玩：Godot 打開 scenes/frontier.tscn 按 F6，或使用 builds/desktop-expedition-guide-20260913 的桌面程式直接進入營火戰役。最新進度見本文最後一節；前段保留歷次開發紀錄。美術沿用大致認可的 v002 營地基準與 v004 騎士劍術提案。
 
 ## 方向與時程
 
@@ -612,3 +612,21 @@ Xcode 仍只有 Command Line Tools。App Store 的 CUA getApp 讀取異常耗時
 feature/expansion-playthrough-study 按 Gitflow 驗證後整合本地 develop，未推送。原有 25 個個人檔案雜湊保留。[第三十四課](lessons/34-wall-clearance.md) 說明 Wall Clearance 與清地範圍；未將教材視為已學會。
 
 Xcode 再查仍未安裝，既有請使用者安裝／首次設定的問題尚待回覆，未重複詢問或重試曾卡住的 App Store 介面工具。完整目標仍在進行：iOS 簽署與安裝、Windows／Android 實體遊玩、遠征圖示教學、真人操作理解／難度與美感驗收仍未完成。
+
+## 出征圖示引導（2026-09-13）
+
+首日後接續聚落升級、遠征前置條件、未知方向探索、工匠護送、守門者清除、原地封印進度與殘敵清理。已下單不重付；搬運貨物先等待，工匠失職補人、無晶先找資源。熬過首晚卻尚未建營地也能正確指向營火。夜間尚未出征則提示回防。暫停／勝敗隱藏，HUD 的 Expedition Guidance 可獨立關閉。
+
+共享實際解鎖／封印查詢，不新增存檔欄位或改數值。戰鬥第一刀原地、第二三刀踏進及 v004 美術提案保持。圖示中封印／戰鬥動作優先於近距離移動，避免已在範圍內還被要求繼續走。
+
+TDD 新增 26 行為斷言及 7 終局場景斷言；完整 tools/check.sh 通過 **1153 項 Godot 斷言與 2 個 Python 測試**（885 行為／268 場景），無 ERROR。恢復情境測試第一次受 sandbox 測試檔寫入限制，改以可用測試儲存位置執行後，只剩晚建營地與無晶補人兩個預期失敗，修正再全綠。原生預覽目視核對升級、護送、清敵與封印；預覽是控制狀態，不冒充正常資源試玩。
+
+種子 7 的居民路線從標準 12 晶起跑，865.6 秒雙封印勝利，與修改前相同；核心 180、騎士 100。操作器讀精確預警、自動閃避，仍不代表真人適中難度。規格與全部證據見 [出征設計](design/expedition-guide.md)、[驗證報告](reports/expedition-guide-v001/manifest.json)。
+
+新版 builds/desktop-expedition-guide-20260913／android-expedition-guide-20260913，來源 tree e9031dd9db2d6104127bcc986126bfcbbac80e21。9 個來源檔與測試副本相同；其後只補工具、文件與預覽。Mac 73.3 MiB、Windows 51.9 MiB，APK 約 43 MiB；ZIP CRC／SHA-256、Mac 簽章、Windows PE、APK v2/v3 簽章與 16 KiB 對齊通過。真正 Mac release 啟動、實際 PCK 建設／居民／成長／續玩及出征提示開關皆通過。
+
+Android 隔離模擬器更新後完整檢查點相同，恢復可見既有居民與工匠器具建議。[實際 Android 畫面](previews/expedition-guide-android-v001.png)；軟體 GLES shader cache 重編譯警告仍有，無腳本錯誤／崩潰，不推論實機效能或手機整局通關。
+
+feature/expedition-icon-guide 驗證後按 Gitflow 整合本地 develop，未推送；原有 25 個個人檔案雜湊不變。[第三十五課](lessons/35-expedition-guide.md) 說明 Inspector 的出征提示開關，未將教材當成已學會。
+
+使用者已確認有 iPhone 17e／iPhone 16 Pro Max。iOS 尚未交付，既有請完成 Xcode 安裝／首次設定的請求尚待回覆，不重試曾卡住的 App Store 工具。Mac ad-hoc 未公證、Windows 未簽署、Android debug 仍屬測試產物。完整目標尚在進行；下一步 iOS 簽署與兩機安裝、真人首局圖示理解／難度測試，以及 Windows／Android 真機遊玩。美感仍未獲認可，不宣稱完成。

@@ -4,12 +4,12 @@
 
 ## 現有產物
 
-- builds/desktop-guide-20260913/Cyber-Kingdom-macOS.zip：約 73.3 MiB，解壓後開啟 .app。
-- builds/desktop-guide-20260913/Cyber-Kingdom-Windows.zip：約 51.9 MiB，解壓後開啟 .exe，旁邊 .pck 必須保留。
-- builds/android-guide-20260913/Cyber-Kingdom-Android-debug.apk：約 43.0 MiB，ARM64 Android 測試版。
+- builds/desktop-expedition-guide-20260913/Cyber-Kingdom-macOS.zip：約 73.3 MiB，解壓後開啟 .app。
+- builds/desktop-expedition-guide-20260913/Cyber-Kingdom-Windows.zip：約 51.9 MiB，解壓後開啟 .exe，旁邊 .pck 必須保留。
+- builds/android-expedition-guide-20260913/Cyber-Kingdom-Android-debug.apk：約 43.0 MiB，ARM64 Android 測試版。
 - 各資料夾的 manifest.json 保存來源 tree、雜湊與建置用途；安裝包不提交 Git。
 
-三份產物來自 ba61b19815f8e2ee39a69d2b684effa4e73557f1，入口皆為營火戰役 frontier.tscn。後續文件、預覽及驗證報告不改變遊戲內容。原 desktop-save／expansion 與失敗的 android-touch-20260913 留作歷史；Android 最新版請用 android-guide-20260913。
+三份產物來自 e9031dd9db2d6104127bcc986126bfcbbac80e21，入口皆為營火戰役 frontier.tscn。後續文件、預覽及驗證報告不改變遊戲內容。原 desktop-save／expansion 與失敗的 android-touch-20260913 留作歷史；Android 最新版請用 android-expedition-guide-20260913。
 
 Mac 為 ad-hoc 簽章、未公證；Windows 未簽署；Android 使用本機 debug certificate。Bundle/package ID 暫為 org.cyberkingdom.demo，未代表 Apple 商店正式登記。iOS 尚無可安裝包。
 
@@ -44,7 +44,7 @@ keytool 需要 ~/.android 已存在；若已有同名檔案請保留，勿重建
 
 ## 驗證與限制
 
-乾淨副本完整 tools/check.sh 通過 1120 項 Godot 斷言及 2 個 Python 建置測試。本次八個修改來源檔與完整測試副本逐一比對一致，其餘來自相同已提交基底，原個人 25 檔不動。
+乾淨副本完整 tools/check.sh 通過 1153 項 Godot 斷言及 2 個 Python 建置測試。本次九個修改來源檔與完整測試副本逐一比對一致，其餘來自相同已提交基底，原個人 25 檔不動。
 
 桌面 ZIP CRC／SHA-256、Mac 簽章完整性、Windows x86-64 格式通過；真正 Mac release 入口 120 幀無錯誤。引擎載入實際 PCK 驗證建設、居民、成長、外擴、核心終局與完整續玩，原生渲染通過。PCK 檢查必須從專案外執行，例如 --path /tmp；使用原生圖形模式，不能用 headless 截圖。這不是真人完成整局的證明。
 
@@ -59,3 +59,5 @@ iPhone 17e／iPhone 16 Pro Max 尚未安裝。完整 Xcode 與 Apple 簽署未�
 參考：[Godot Android 匯出](https://docs.godotengine.org/en/stable/tutorials/export/exporting_for_android.html)、[官方 Android 工具](https://developer.android.com/studio#command-line-tools-only)、[Godot iOS 匯出](https://docs.godotengine.org/en/stable/tutorials/export/exporting_for_ios.html)。選項另以本機 4.7.2 實際輸出核對。
 
 首日引導版額外驗證更新 APK 保留先前完整檢查點，恢復後投擲物招募居民，圖示提示隨職業需求切換。詳見 [首日引導報告](reports/first-day-guide-v001/manifest.json)。完整 Xcode 尚未安裝；官方安裝頁已開啟並請使用者完成安裝／首次設定。Apple 官方說明本機裝置測試可使用免費 Apple Account，App Store 販售才需加入付費方案：[Xcode 官方頁](https://apps.apple.com/tw/app/xcode/id497799835)。
+
+最新出征引導版補驗真實 PCK 的後期提示與關閉選項。Android 更新保留完整檢查點、正常恢復首日圖示；本次没有宣稱在 Android 通完整遠征。詳見 [出征引導驗證](reports/expedition-guide-v001/manifest.json)。

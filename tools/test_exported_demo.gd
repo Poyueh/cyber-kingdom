@@ -123,6 +123,18 @@ func review() -> void:
 	scene.sim.clock.remaining=0.01
 	scene._physics_process(0.02)
 	assert(scene.sim.raiders[0].x>wall_x)
+	# Read the actual packaged guide and its Inspector opt-out.
+	scene.sim.clock.is_night=false
+	scene.sim.clock.remaining=180
+	scene.sim.clock.survived=1
+	scene.sim.frontier.city_level=1
+	scene.hud.present_world(scene.sim,false,scene.knight.position.x,true)
+	assert(scene.hud.guide_view.hint.kind=="upgrade")
+	scene.hud.expedition_guidance=false
+	scene.hud.present_world(scene.sim,false,scene.knight.position.x,true)
+	assert(not scene.hud.guide_view.visible)
+	scene.hud.expedition_guidance=true
+	print("PASS: packaged expedition advice and Inspector opt-out")
 	print("PASS: outward wall touch payment, resident construction and outside spawn in exported bundle")
 	print("PASS: dawn recruitment, payment, no duplicate renewal, pause and reset in exported bundle")
 	print("PASS: bounded capacitor install, recharge and HUD in exported bundle")

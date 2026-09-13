@@ -64,15 +64,20 @@ func run_scene() -> void:
 		check(rift.ordered,"touch slots order actual expedition "+str(index))
 		await step(scene,2)
 		check(sim.raiders.size()==2,"scene summons real rift wardens "+str(index))
+		check(scene.hud.guide_view.hint.kind=="fight","expedition guide reports living wardens")
 		helpers.clear_wardens_with_sword(sim,rift.x)
 		var progress: float=rift.progress
 		scene.paused=true
 		await step(scene,3)
 		check(rift.progress==progress,"pause freezes sealing work")
+		check(not scene.hud.guide_view.visible,"pause hides expedition guide")
 		scene.paused=false
+		await step(scene,1)
+		check(scene.hud.guide_view.hint.kind=="seal","cleared wardens switch guide to live seal progress")
 		await step(scene,125)
 		check(rift.sealed,"scene finishes engineer sealing work "+str(index))
 	check(scene.hud.dashboard.victory and not scene.hud.dashboard.dead,"two seals and no enemies display victory")
+	check(not scene.hud.guide_view.visible,"victory removes expedition advice")
 	check(scene.hud.get_node("restart").visible and scene.hud.new_map_button.visible,"victory offers replay and new map")
 	var time: float=sim.clock.remaining
 	await step(scene,3)
