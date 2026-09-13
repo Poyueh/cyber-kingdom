@@ -4,10 +4,10 @@ static func next(sim, x: float) -> Dictionary:
  if not sim.is_running() or sim.clock.survived>0 or sim.frontier.city_level>=2:return {}
  if sim.clock.is_night or sim.clock.remaining<=30:
   return _hint("defend",sim.world.sites.hall,"","move",7)
- if sim.pouch.amount==0:return _funding(sim,x)
+ if sim.pouch.amount==0:return funding_hint(sim,x)
  if sim.frontier.city_level==0:return _hint("camp",sim.world.sites.hall,"hall","invest",1)
  var engineers=sim.world.people.filter(func(p):return p.role=="engineer")
- if engineers.is_empty():return _job(sim,x,"hammer","workshop",2)
+ if engineers.is_empty():return job_hint(sim,x,"hammer","workshop",2)
  var harvesting: bool=sim.frontier.wood>0 or sim.frontier.nodes.any(func(n):return n.kind=="tree" and (n.marked or n.collected))
  if not harvesting:
   var trees: Array=[]
@@ -17,7 +17,7 @@ static func next(sim, x: float) -> Dictionary:
     trees.append(_hint("harvest",node.x,"node:%d"%i,"invest",4))
   return _nearest(trees,x) if not trees.is_empty() else _explore(sim,x,4)
  var defenders=sim.world.people.filter(func(p):return p.role in ["hunter","guard"])
- if defenders.is_empty():return _job(sim,x,"bow","hunt_tools",5)
+ if defenders.is_empty():return job_hint(sim,x,"bow","hunt_tools",5)
  var walls: Array=[]
  for key in ["wall","wall_left"]:
   var wall: Dictionary=sim.world.walls[key]
@@ -25,7 +25,7 @@ static func next(sim, x: float) -> Dictionary:
  if not walls.is_empty():return _nearest(walls,x)
  return {}
 
-static func _job(sim,x: float,tool: String,site: String,stage: int) -> Dictionary:
+static func job_hint(sim,x: float,tool: String,site: String,stage: int) -> Dictionary:
  var citizens=sim.world.people.filter(func(p):return p.role=="citizen")
  if citizens.is_empty():
   var people: Array=[]
@@ -40,7 +40,7 @@ static func _job(sim,x: float,tool: String,site: String,stage: int) -> Dictionar
  if sim.world.tools[tool]>0:hint.action="wait"
  return hint
 
-static func _funding(sim,x: float) -> Dictionary:
+static func funding_hint(sim,x: float) -> Dictionary:
  var options: Array=[]
  for drop in sim.pouch.drops:
   if drop.amount>0 and not drop.offering and drop.age>=drop.grace:options.append(_hint("collect",drop.x,"","move",0))

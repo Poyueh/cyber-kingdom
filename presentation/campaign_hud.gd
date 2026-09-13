@@ -1,5 +1,7 @@
 extends "res://presentation/frontier_hud.gd"
 const Guide=preload("res://application/campaign_guide.gd")
+const ExpeditionGuide=preload("res://application/expedition_guide.gd")
+@export var expedition_guidance:=true
 const GuideView=preload("res://presentation/campaign_guide_view.gd")
 @export var first_day_guidance:=true
 var guide_view: Node2D
@@ -148,6 +150,7 @@ func present_world(sim, is_paused: bool, at: float, grounded: bool) -> void:
 	dashboard.victory=sim.mission.outcome=="victory"
 	dashboard.queue_redraw()
 	var advice: Dictionary=Guide.next(sim,at) if first_day_guidance and not is_paused else {}
+	if advice.is_empty() and expedition_guidance and not is_paused:advice=ExpeditionGuide.next(sim,at,sim._player_y)
 	var ready: bool=not advice.is_empty() and advice.action in ["invest","open"] and advice.key==choice.key and not interact_button.disabled
 	guide_view.present(advice,_last_safe_rect,at,Rect2(interact_button.position,interact_button.size),ready)
 
