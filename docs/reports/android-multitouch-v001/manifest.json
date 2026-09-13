@@ -1,0 +1,122 @@
+{
+  "date": "2026-09-13",
+  "runtime_commit": "de83023",
+  "apk_sha256": "caf0120c9ac51d2a250c80d9ce8051153c74cfa881c50df1ac1ad80dd2a894f1",
+  "platform": "Android 15 / API 35 ARM64 emulator; 2400x1080; SwiftShader; no audio",
+  "method": "External Android shell program injects MotionEvent with simultaneous pointer IDs 0 and 1. Optional pointer 2 pauses before either finger releases. Game package and saved resources are not modified. Each scenario restores the same in-game manual checkpoint.",
+  "checks": {
+    "jump_while_moving": true,
+    "dash_while_moving": true,
+    "first_attack_roots_while_movement_held": true,
+    "all_three_spend_stamina": true,
+    "resume_without_input_stays_still": true,
+    "fresh_movement_after_release_works": true
+  },
+  "observations": {
+    "start": {
+      "body": {
+        "vx": 0.0,
+        "vy": 0.0,
+        "x": 156.66667175293,
+        "y": 429.925262451172
+      },
+      "combat": {
+        "stamina": 100.0,
+        "attack_remaining": 0.0,
+        "combo_step": 0,
+        "dash_remaining": 0.0
+      },
+      "snapshot_sha256": "b3efb4793094187e090e718605d423a0588e0cd686914fc3d0dad6adbc07a8f6"
+    },
+    "jump": {
+      "body": {
+        "vx": 190.0,
+        "vy": -373.333251953125,
+        "x": 223.167175292969,
+        "y": 371.590850830078
+      },
+      "combat": {
+        "stamina": 84.9166666666667,
+        "attack_remaining": 0.0,
+        "combo_step": 0,
+        "dash_remaining": 0.0
+      },
+      "snapshot_sha256": "c95d21467019e5bf55e223c2004f76b6e52fccf66aceaa156bd462464636ec7f"
+    },
+    "dash": {
+      "body": {
+        "vx": 540.0,
+        "vy": 0.0,
+        "x": 251.833404541016,
+        "y": 429.925262451172
+      },
+      "combat": {
+        "stamina": 72.0833333333334,
+        "attack_remaining": 0.0,
+        "combo_step": 0,
+        "dash_remaining": 0.116666666666667
+      },
+      "snapshot_sha256": "3087efb6b49f2d03cf5bfa95e57235cdcca9f03b0a1118ec97dc0e9dde2fc9ac"
+    },
+    "attack": {
+      "body": {
+        "vx": 0.0,
+        "vy": 0.0,
+        "x": 185.166717529297,
+        "y": 429.925262451172
+      },
+      "combat": {
+        "stamina": 90.5,
+        "attack_remaining": 0.24,
+        "combo_step": 1,
+        "dash_remaining": 0.0
+      },
+      "snapshot_sha256": "d261c61f52550a6fcbf2b40c266d778b21b814301e8a88e21f825eb26fed5b58"
+    },
+    "released": {
+      "body": {
+        "vx": 0.0,
+        "vy": 0.0,
+        "x": 185.166717529297,
+        "y": 429.925262451172
+      },
+      "combat": {
+        "stamina": 100.0,
+        "attack_remaining": 0.0,
+        "combo_step": 0,
+        "dash_remaining": 0.0
+      },
+      "snapshot_sha256": "d61f9bc317f7d886b519bd6d7feadb5fe0b70c72dc3e9f70306432bd107bd553"
+    },
+    "fresh-move": {
+      "body": {
+        "vx": 0.0,
+        "vy": 0.0,
+        "x": 283.333648681641,
+        "y": 429.925262451172
+      },
+      "combat": {
+        "stamina": 100.0,
+        "attack_remaining": 0.0,
+        "combo_step": 0,
+        "dash_remaining": 0.0
+      },
+      "snapshot_sha256": "f3d3e0a0f5d75e59687309eb31b6af4cde2463ee93f16b326cd92bf88e4bd6ed"
+    }
+  },
+  "limits": [
+    "Emulator system multi-pointer injection, not physical fingers on an iPhone or Android phone",
+    "No physical comfort, audio, FPS, multi-finger combo-chain or whole-campaign difficulty conclusion",
+    "Only first attack in combo verified here; full combo rules have separate Godot scene tests"
+  ],
+  "full_check": {
+    "exit_code": 0,
+    "log": "full-check.log",
+    "runtime_source": "Unchanged de83023 isolated copy previously compared against tracked code/scenes/settings"
+  },
+  "screenshots": {
+    "jump.png": "f7e33a91afc719abbfd3adc137860f5bcbebf59bb3e549313f019ad5944af3e0",
+    "dash.png": "c8f4f9f5dba0b1c3a7c0938090cc431862b127f12f97828092cff2bd542d30d8",
+    "attack.png": "aac3284bb2e35b30cfd728c078f560c02c2809db2b8bf4048911cf2f7b89d68e"
+  }
+}
