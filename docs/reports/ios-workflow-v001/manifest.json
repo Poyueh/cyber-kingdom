@@ -1,0 +1,38 @@
+{
+  "base_commit": "3a55ea7",
+  "gameplay_changed": false,
+  "godot_assertions": 1187,
+  "python_tests": 10,
+  "new_ios_tool_tests": 8,
+  "native_preflight": {
+    "ready_for_export": false,
+    "installable": false,
+    "issues": [
+      "需要完整 Xcode 與 iOS 平台；目前路徑不是可用的完整 Xcode：/Library/Developer/CommandLineTools",
+      "請提供你實際帳號的 10 碼 Team ID；不可用顯示名稱或留白。"
+    ],
+    "godot": "4.7.2.stable.official.ed1daf0bf",
+    "ios_template": "/Users/jenpoyueh/Library/Application Support/Godot/export_templates/4.7.2.stable/ios.zip",
+    "observed_exit_code": 2,
+    "output_directory_created": false
+  },
+  "ios_export_executed": false,
+  "xcode_project_created": false,
+  "ios_app_installed": false,
+  "mocking_scope": "Python fixtures validate identifiers, environment isolation and filesystem guardrails; not Xcode/Godot iOS export",
+  "future_gate": "Install/setup full Xcode, real Team/Bundle configuration, export then compile/sign and test both iPhones",
+  "personal_files_preserved": 25,
+  "tested_sources_sha256": {
+    "tools/build_ios.py": "bbe149eef337448d7c661597998969fdac1a90e0ff2f389a02e0aec258f73777",
+    "tools/test_build_ios.py": "67f204b0bbc832c69aa7b39784672b8afdd341b975f2adc194b2fa12105fc521",
+    "tools/build_desktop.py": "e9d21f7d673bd90e0bd7665df14b2c51b8b0f994f7ee8f101139036501a19870",
+    "tools/check.sh": "cee927eb705dab8c86d6c3e2f18386238c0a2da1aa87bb27c220799abb551043",
+    "export_presets.cfg": "f4a057174659c064f5ce00a2cbba0b90435e3f1fd7087a552e7563605264d4d0"
+  },
+  "sha256": {
+    "check.txt": "190d39f594e1a7c0cf470936fccb9855e7f735855f13108602f91ce709cc352d",
+    "host-preflight.json": "b90944a30bb481922e0a1cda224cd59663d0b8713879deb2ce0b0b83259f7987",
+    "missing-workflow-red.txt": "fdab8e5e50c2ec0063fde22ab6ced4ec2692910490ed8940bef99e661a5b8861",
+    "python-tests.txt": "f4ba55437dc3d75b86a000fafe058270e80323a46c972e57192328d087777342"
+  }
+}

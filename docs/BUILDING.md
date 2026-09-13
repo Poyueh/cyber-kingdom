@@ -63,3 +63,23 @@ iPhone 17e／iPhone 16 Pro Max 尚未安裝。完整 Xcode 與 Apple 簽署未�
 最新出征引導版補驗真實 PCK 的後期提示與關閉選項。Android 更新保留完整檢查點、正常恢復首日圖示；本次没有宣稱在 Android 通完整遠征。詳見 [出征引導驗證](reports/expedition-guide-v001/manifest.json)。
 
 音效版新增真正 PCK 錄音驗證，包含三段揮擊、命中、付款與衝刺；有效訊號且零削波。headless 只驗證聲音請求，不啟動播放；Android 本次只核對更新存檔與喇叭圖示，模擬器未開音訊輸出。詳見 [音效驗證](reports/campaign-audio-v001/manifest.json)。
+
+
+## iOS 匯出準備
+
+已有 iOS Demo 設定與 tools/build_ios.py，目前本機只通過「缺少前置條件應停止」的驗證；尚無 Xcode 專案／IPA。
+
+唯讀檢查：
+
+```sh
+python3 tools/build_ios.py --check
+```
+
+Xcode 完成首次設定後，可指定其路徑；以下兩個變數須先在本機填入你實際使用的 Team ID／Bundle ID，沒有預填範例身分：
+
+```sh
+python3 tools/build_ios.py --check --xcode /Applications/Xcode.app --team-id "$CYBER_IOS_TEAM_ID" --bundle-id "$CYBER_IOS_BUNDLE_ID"
+python3 tools/build_ios.py --ref develop --output builds/my-ios-project --xcode /Applications/Xcode.app --team-id "$CYBER_IOS_TEAM_ID" --bundle-id "$CYBER_IOS_BUNDLE_ID"
+```
+
+工具只匯出 Xcode 專案，真正簽署／編譯／Run 到 iPhone 仍待執行。不要把預檢綠燈、專案目錄或其他平台 ZIP 當作 iOS 已安裝。規格、來源與實機步驟見 [iOS 交付](design/ios-device-delivery.md)。既有三平台音效版遊戲內容未變，本輪不重複打包。
