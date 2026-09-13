@@ -17,9 +17,9 @@ ROOT = Path(__file__).resolve().parents[1]
 def git(*args):
     return subprocess.check_output(["git", "-C", str(ROOT), *args])
 
-def run_logged(args, path):
+def run_logged(args, path, env=None):
     with path.open("w") as log:
-        result = subprocess.run(args, stdout=log, stderr=subprocess.STDOUT)
+        result = subprocess.run(args, env=env, stdout=log, stderr=subprocess.STDOUT)
     output = path.read_text(errors="replace")
     if result.returncode or re.search(r"SCRIPT ERROR:|(?:^|\s)ERROR:", output):
         raise RuntimeError("Build failed; see " + str(path))

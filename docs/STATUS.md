@@ -652,3 +652,22 @@ Android install -r 保留完整舊檢查點，冷啟動先暫停，實際點喇�
 feature/campaign-sound-feedback 驗證後按 Gitflow 整合本地 develop，未推送，原有 25 個個人檔案雜湊保留。[第三十六課](lessons/36-campaign-audio.md) 說明 CampaignAudio 的 Volume Db／Enabled，未將教材視為已學會。
 
 完整目標仍未完成：iOS 簽署安裝與兩支 iPhone 實測、Windows／Android 真機遊玩、真人首次通關難度與聲音／劍術美感尚待驗收。Mac ad-hoc 未公證，Windows 未簽署，Android debug；沒有宣稱商店已可販售。
+
+
+## iOS 匯出流程準備（2026-09-13）
+
+上一輪音效與三平台產物是實際進度。本輪查本機 Applications、Spotlight 與 Downloads，仍無完整 Xcode 或待安裝 Xcode 檔，選擇路徑仍是 Command Line Tools；可用空間約 45 GiB，未新啟動下載或重試曾卡住的 App Store UI。既有安裝／首次設定請求尚待回覆。
+
+新增 iOS Demo 設定：ARM64、iPhone 與 iPad、最低 iOS 15，依本機 4.7.2 與官方同版來源核對選項。Team ID／Bundle ID 留白，export_project_only=true；不是可安裝包，也沒有用捏造團隊繞過條件。
+
+新增 tools/build_ios.py：唯讀前置檢查、指定 Xcode 的子程序環境、從 Git 乾淨來源匯出、僅填暫存 iOS 設定、拒絕覆蓋舊輸出、檢查真正 Xcode 專案和非空 PCK。共用既有建置工具的零退出碼 ERROR 掃描；只對子程序傳環境，不改全機 xcode-select。產物 manifest 固定說明只是專案、尚未簽署與安裝。
+
+TDD 先確認缺少工作流程，新增 8 個 Python 測試涵蓋 CLT 拒絕、含空白的 Xcode 路徑與環境隔離、識別碼格式／注入、iOS 區段隔離、既有目錄保留、缺 PCK 不報成功、前置不足停止與 ERROR 掃描。路徑測試先遇 macOS /var 與 /private/var 別名差異，改以實際 canonical 路徑比較；沒有更動正確的路徑正規化行為。
+
+完整 tools/check.sh 通過 **1187 項 Godot 斷言及 10 個 Python 測試**，無 ERROR。5 個修改來源與乾淨檢查副本相同。真實本機執行建置入口因缺 Xcode／Team ID 退出 2，確認連輸出目錄都沒有建立；這只證明正確攔截，不能當成 iOS 匯出成功。尚未在完整 Xcode 上端到端驗證新工具。
+
+[實際前置檢查](reports/ios-workflow-v001/host-preflight.json)、[測試與來源](reports/ios-workflow-v001/manifest.json)、[iOS 交付步驟](design/ios-device-delivery.md)、[第三十七課](lessons/37-ios-export.md)。教學只指出 Godot 的 iOS Export 欄位，未宣稱使用者完成。
+
+feature/ios-export-workflow 驗證後按 Gitflow 整合本地 develop，未推送；原有 25 個個人檔案雜湊保持。沒有改玩法／美術／音效，沿用 desktop-audio-20260913／android-audio-20260913，不重複打包相同遊戲內容。
+
+完整目標仍未完成。下一個 iOS 實作門檻是 Xcode 首次設定完成與實際 Team／Bundle，再由產生專案走到簽署、編譯、iPhone 17e／16 Pro Max 安裝與遊玩。Windows／Android 真機、真人難度與聲音／劍術美感亦仍缺證據。此輪有工具與設定的具體進度，並非把缺環境當目標已完成或已持續等待中的工作。

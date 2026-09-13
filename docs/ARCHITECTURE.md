@@ -208,3 +208,7 @@ ExpeditionGuide 共用 CampaignSession 的裂隙前置條件與參與狀態查�
 
 ## 戰役聲音
 CampaignAudioCues 在 presentation 唯讀採樣 session 與特效參考，產生當幀聲音請求。CampaignAudio 管理六個 AudioStreamPlayer、同類限流、增益與停止；bootstrap 串接背景／重開及 HUD。所有觀察紀錄都短暫存在，不寫入戰役存檔。headless 只處理請求，原生播放另以 AudioEffectRecord 驗證；詳見 design/campaign-audio.md。
+
+
+## iOS 建置工具
+tools/build_ios.py 只處理本機前置檢查與 Git 來源匯出，共用 build_desktop.prepare_tree／run_logged；後者新增可選子程序 env，不修改全域環境。iOS 識別碼只填暫存副本，輸出拒絕覆蓋既有目錄。此工具不處理 gameplay、不依賴 Apple 帳號密碼，產物狀態明確區分 project-only 與真機安裝。

@@ -1,0 +1,14 @@
+F
+======================================================================
+FAIL: test_ios_workflow_exists_and_rejects_command_line_tools (__main__.IOSExportTests.test_ios_workflow_exists_and_rejects_command_line_tools)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/ios-workflow-review/tools/test_build_ios.py", line 9, in test_ios_workflow_exists_and_rejects_command_line_tools
+    self.assertTrue(path.exists(), 'iOS preflight and export workflow is missing')
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true : iOS preflight and export workflow is missing
+
+----------------------------------------------------------------------
+Ran 1 test in 0.001s
+
+FAILED (failures=1)
