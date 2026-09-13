@@ -26,3 +26,6 @@ var combo_finisher_damage: float = 1.6
 var attack_movement_locked: bool = false
 var combo_return_step: float = 22.0
 var combo_finisher_step: float = 32.0
+
+var attack_cost: float = 0.0
+var jump_cost: float = 0.0

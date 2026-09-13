@@ -1,7 +1,9 @@
 extends SceneTree
 var assertions := 0
 var failures := 0
-func _initialize() -> void: call_deferred("run_test")
+func _initialize() -> void:
+	ProjectSettings.set_setting("campaign/control_preview",1)
+	call_deferred("run_test")
 func check(value: bool, message: String) -> void:
 	assertions += 1
 	if not value:
@@ -102,6 +104,18 @@ func run_test() -> void:
 		if resource.delivered: break
 	await frames(3)
 	check(resource.delivered and scene.sim.frontier.wood>=3,"resident harvest and physical delivery bank the resource")
+	check(scene.sim.context(resource.x).id!="outpost","one harvested tree does not expose expansion in an uncleared forest")
+	for node in scene.sim.frontier.nodes:
+		if node.region==resource.region and node.kind=="tree" and not node.collected:
+			scene.knight.position=Vector2(node.x,430)
+			await frames(4)
+			await click(scene.hud.interact_button)
+	for tick in range(6000):
+		scene.sim.advance(0.1,resource.x)
+		if scene.sim.frontier.expansion_cleared(resource.region):break
+	check(scene.sim.frontier.expansion_cleared(resource.region),"resident finishes all marked trees before expansion appears")
+	scene.knight.position=Vector2(resource.x,430)
+	await frames(4)
 	for slot in range(3): await click(scene.hud.interact_button)
 	for tick in range(2000):
 		scene.sim.advance(0.1,resource.x)

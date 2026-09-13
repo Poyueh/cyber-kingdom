@@ -216,3 +216,9 @@ tools/build_ios.py 只處理本機前置檢查與 Git 來源匯出，共用 buil
 
 ## 外圍地圖與居民步相
 Campaign Tuning 在新局 economy 注入 outer_regions_per_side；Frontier 先建立相容的六段，再附加外圍內容，不改存檔欄位。Campaign View 使用 presentation/ResidentMotion 依移動距離及遊戲時間選步伐／收步／呼吸格，不反向改寫人物資料；工匠工作仍沿用既有專用圖集。規格見 design/frontier-depth-and-resident-motion.md。
+
+### 清地、外觀及選單
+
+`Frontier.expansion_cleared` 統一定義清地完成，`FrontierDefenses.visible` 與現場互動共用此規則；`CampaignMission.entry_x` 決定兩端入侵出生位置。`Combatant.spend_stamina` 是共用的扣費入口，連技開始時另檢查預約預算。
+
+`FrontierDetails` 以独立 seed 配置純裝飾，`KnightVisual` 用 `knight_equipment.gdshader` 反映裝備級別。`CampaignOptions` 只發出音量與手動存讀檔意圖；`FrontierRoot` 組裝另一份 `CampaignProgress`，使用同一存檔 port／JSON adapter，但路徑獨立。`AudioPreferences` 保存使用者音量，不耦合當局存檔。已知舊 schema 在 `CampaignSnapshot` 的副本上遷移，仍需通過封閉形狀與值域檢查。

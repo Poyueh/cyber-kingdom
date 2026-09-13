@@ -19,7 +19,7 @@ func _init(settlement, map, config: Dictionary={}) -> void:
 		previous[side]=id
 
 func visible(id: String) -> bool:
-	return not plots.has(id) or frontier.regions[plots[id].region].discovered
+	return not plots.has(id) or world.walls[id].level>0 or world.walls[id].pending or frontier.expansion_cleared(plots[id].region)
 
 func prerequisites(id: String) -> Array[Dictionary]:
 	var result: Array[Dictionary]=[]
@@ -30,7 +30,7 @@ func prerequisites(id: String) -> Array[Dictionary]:
 	if world.walls[plot.previous].hp<=0:result.append({"icon":"wall","value":1})
 	var trees:=0
 	for node in frontier.nodes:
-		if node.kind=="tree" and not node.collected and absf(node.x-world.sites[id])<clearance:trees+=1
+		if node.region==plot.region and node.kind in ["tree","crystal","stone","cache"] and not node.collected:trees+=1
 	if trees>0:result.append({"icon":"tree","value":trees})
 	return result
 
@@ -40,12 +40,6 @@ func active_post(side: int) -> String:
 		if plots[id].side==side and world.walls[id].hp>0 and side*world.sites[id]>side*world.sites[result]:
 			result=id
 	return result
-
-func spawn_x(side: int) -> float:
-	var at: float=world.sites.wall if side>0 else world.sites.wall_left
-	for id in plots:
-		if plots[id].side==side and world.walls[id].level>0 and side*world.sites[id]>side*at:at=world.sites[id]
-	return clampf(at+side*480.0,frontier.left_boundary+30,frontier.right_boundary-30)
 
 func shelter(from_x: float, fallback: float) -> float:
 	var left: String=active_post(-1)

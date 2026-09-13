@@ -42,6 +42,9 @@ func _init(config: Dictionary = {}, hero_stats: Stats = null) -> void:
 	economy["settlement_left"]=left_post-200.0
 	resolved["economy"]=economy
 	super(resolved,hero_stats)
+	hero.stats.attack_cost=maxf(0,float(config.get("attack_stamina",12.0)))
+	hero.stats.jump_cost=maxf(0,float(config.get("jump_stamina",18.0)))
+	hero.stats.dash_cost=maxf(0,float(config.get("dash_stamina",30.0)))
 	world.add_wall("wall_left",left_post)
 	mission=Mission.new(config)
 	growth=Growth.new(config,world.shield_value)
@@ -157,6 +160,7 @@ func _interaction_candidates(x: float) -> Array[Dictionary]:
 	for index in range(frontier.regions.size()):
 		var region: Dictionary = frontier.regions[index]
 		if not region.outpost_ready or absf(region.outpost_x-x)>=73.0 or absf(_player_y-430)>42: continue
+		if not (region.outpost_built or region.outpost_pending or frontier.expansion_cleared(index)):continue
 		choice = _choice("outpost",region.outpost_x,"建立拓荒站",prices.outpost,not region.outpost_pending and not region.outpost_built,"工匠施工中" if region.outpost_pending else "拓荒站已建成")
 		choice["region_index"] = index
 		choice.key = "outpost:%d" % index
@@ -479,7 +483,8 @@ func _advance_invasion(seconds: float) -> void:
 			if not mission.side_open(side):continue
 			var enemy:=_spawn_raider()
 			enemy["side"]=side
-			enemy.x=defenses.spawn_x(side)
+			enemy.x=mission.entry_x(side)
+			effects.append({"kind":"portal_spawn","x":enemy.x,"y":430.0,"life":0.6})
 			enemy["exit_x"]=enemy.x+side*70.0
 			enemy["direction"]=-float(side)
 			raiders.append(enemy)

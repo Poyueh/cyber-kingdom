@@ -4,6 +4,10 @@ const MotionFrames=preload("res://data/knight_motion_frames.tres")
 @export var texture_overrides: Dictionary = {}
 @export var moving_attack_atlas: Texture2D
 @export var combo_motion: Resource
+const EquipmentShader=preload("res://presentation/knight_equipment.gdshader")
+var equipment_material: ShaderMaterial
+var weapon_tier:=0
+var armor_tier:=0
 var _gait_time:=0.0
 var _moving_attack: Sprite2D
 var _moving_region:=AtlasTexture.new()
@@ -65,6 +69,7 @@ func present(pose: Dictionary, seconds: float) -> void:
 	elif not striding and not pose.get("dashing",false):
 		_gait_time=0
 	super.present(pose,seconds)
+	if equipment_material!=null:equipment_material.set_shader_parameter("facing",-1.0 if flip_h else 1.0)
 	self_modulate=Color.WHITE
 	_moving_attack.visible=false
 	_combo_attack.visible=false
@@ -126,3 +131,15 @@ func present(pose: Dictionary, seconds: float) -> void:
 		_moving_attack.visible=true
 		self_modulate=Color(1,1,1,0)
 		offset=Vector2.ZERO
+
+func set_equipment(weapon: int, armor: int) -> void:
+	weapon_tier=clampi(weapon,0,3)
+	armor_tier=clampi(armor,0,3)
+	if equipment_material==null:
+		equipment_material=ShaderMaterial.new()
+		equipment_material.shader=EquipmentShader
+		material=equipment_material
+		_combo_attack.material=equipment_material
+		_moving_attack.material=equipment_material
+	equipment_material.set_shader_parameter("weapon_tier",float(weapon_tier))
+	equipment_material.set_shader_parameter("armor_tier",float(armor_tier))

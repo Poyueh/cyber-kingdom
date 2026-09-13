@@ -199,7 +199,7 @@ func choose() -> Dictionary:
 			if d.grace<=0:offer(jobs,{"kind":"drop","index":d.id,"x":d.x,"y":d.y,"priority":145 if sim.pouch.amount<3 else 60,"label":"collect"})
 	for i in range(sim.frontier.regions.size()):
 		var r=sim.frontier.regions[i]
-		if r.outpost_ready and not r.outpost_pending and not r.outpost_built and sim.pouch.amount>=4 and sim.frontier.nodes.any(func(n):return n.region==i and n.marked and not n.delivered):
+		if sim.frontier.expansion_cleared(i) and r.outpost_ready and not r.outpost_pending and not r.outpost_built and sim.pouch.amount>=4 and sim.frontier.nodes.any(func(n):return n.region==i and n.marked and not n.delivered):
 			offer(jobs,{"kind":"outpost","index":i,"x":r.outpost_x,"priority":60,"label":"outpost"})
 		if not r.discovered:offer(jobs,{"kind":"explore","index":i,"x":r.x+r.width*0.5,"priority":55,"label":"explore"})
 	for job in extra_jobs():offer(jobs,job)

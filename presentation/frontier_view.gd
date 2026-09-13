@@ -38,6 +38,7 @@ func _draw() -> void:
 			_prop("deer",Vector2(animal.x,430),0.75)
 	for region in map.regions:
 		if not region.outpost_ready: continue
+		if not _outpost_visible(region):continue
 		var at := Vector2(region.outpost_x,430)
 		_prop("outpost",at,0.8,Color(1,1,1,1.0 if region.outpost_built else 0.35))
 		if region.outpost_pending:
@@ -110,13 +111,17 @@ func _resource(resource) -> void:
 			_prop("cache",Vector2(resource.pickup_x,resource.pickup_y),0.4)
 		return
 	_prop("tree-plain" if resource.kind=="tree" and resource.crystals==0 else resource.kind,at)
-	if resource.marked:
-		draw_line(at+Vector2(-27,0),at+Vector2(-27,-42),Color("d3b476"),2)
-		draw_colored_polygon(PackedVector2Array([at+Vector2(-27,-42),at+Vector2(-9,-36),at+Vector2(-27,-29)]),Color("8fe2d0"))
-		if resource.worker>=0:
-			draw_rect(Rect2(at+Vector2(-20,4),Vector2(40,3)),Color("243940"))
-			draw_rect(Rect2(at+Vector2(-20,4),Vector2(40*(1-resource.remaining_work/75.0),3)),Color("d3dca3"))
+	if resource.marked:_work_marker(resource,at)
 
+func _outpost_visible(_region: Dictionary) -> bool:
+	return true
+
+func _work_marker(resource, at: Vector2) -> void:
+	draw_line(at+Vector2(-27,0),at+Vector2(-27,-42),Color("d3b476"),2)
+	draw_colored_polygon(PackedVector2Array([at+Vector2(-27,-42),at+Vector2(-9,-36),at+Vector2(-27,-29)]),Color("8fe2d0"))
+	if resource.worker>=0:
+		draw_rect(Rect2(at+Vector2(-20,4),Vector2(40,3)),Color("243940"))
+		draw_rect(Rect2(at+Vector2(-20,4),Vector2(40*(1-resource.remaining_work/75.0),3)),Color("d3dca3"))
 func _person(person: Dictionary, protected: bool) -> void:
 	var at := Vector2(person.x,person.get("y",430.0))
 	var direction: float = person.get("direction",1.0)

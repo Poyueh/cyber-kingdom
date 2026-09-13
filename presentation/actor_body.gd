@@ -41,7 +41,7 @@ func advance_motion(direction: float, jump_requested: bool, seconds: float) -> v
 			velocity.x = attack_travel / seconds
 		if model.dash_remaining > 0.0:
 			velocity.x = model.facing * tuning.dash_speed
-		if jump_requested and is_on_floor():
+		if jump_requested and is_on_floor() and model.spend_stamina(model.stats.jump_cost):
 			velocity.y = -tuning.jump_speed
 	else:
 		velocity.x = 0.0

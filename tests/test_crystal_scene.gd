@@ -1,7 +1,9 @@
 extends SceneTree
 var assertions := 0
 var failures := 0
-func _initialize() -> void: call_deferred("run_test")
+func _initialize() -> void:
+	ProjectSettings.set_setting("campaign/control_preview",1)
+	call_deferred("run_test")
 func check(value: bool, message: String) -> void:
 	assertions+=1
 	if not value:

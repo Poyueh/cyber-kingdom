@@ -160,6 +160,8 @@ func test_later_night_damage_reaches_knight_and_wall(t) -> void:
 	sim.advance(0.02,1560)
 	var raider: Dictionary=sim.raiders[0]
 	var hp: int=sim.hero.hp
+	raider.x=1580
+	sim.advance(0.02,1560)
 	sim.advance(0.61,1560)
 	t.equal(sim.hero.hp,hp-21,"day-three windup lands increased damage on the real knight")
 	sim.world.wall.level=1

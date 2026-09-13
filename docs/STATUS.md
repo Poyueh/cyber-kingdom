@@ -701,3 +701,15 @@ TDD 先以雙側未擴張／缺外圈資源及缺收步重現失敗，再實作�
 新版三平台產物位於 builds/desktop-frontier-life-20260913 與 builds/android-frontier-life-20260913，來源 tree 483f49f18c21c2b991e2c35be4e86e431b94e75f。Mac 真正 release 啟動及包內場景回歸通過；ZIP CRC、Mac ad-hoc 簽章、Windows PE、APK v2/v3 簽章與 16 KiB 對齊通過。Windows／Android 這次未做實機遊玩，iOS 尚未產出。完整來源和測試紀錄見 [manifest](reports/frontier-life-v001/manifest.json)。
 
 [實際場景居民錄影](reports/frontier-life-v001/residents.mp4)、[規格](design/frontier-depth-and-resident-motion.md)、[第三十九課](lessons/39-exploration-size.md)。教材未視為已掌握。feature/frontier-depth-resident-motion 驗證後按 Gitflow 整合本地 develop，未推送，原有 25 個個人檔案保持。
+
+## 2026-09-13：清地擴建、雙端入侵與體力選單
+
+本次八項要求已接入：移除場景旗柱與遠處浮動建築標籤；清除區內樹木／礦產後才出現近距離石基和龍晶空格；夜襲從兩端地獄之門湧入；新增十二種種子化景物；裝備三級改變劍刃、鎧甲和光路配色；桌面隱藏觸控戰鬥 UI、手機保留；攻擊／跳躍／衝刺消耗體力，不足不發動；暫停可調音樂、音效並手動存讀檔。手動槽獨立於自動存檔。原創循環配樂已接入。
+
+存檔版本 2 會遷移已知 v1，為舊騎士補上新體力成本；未知版本與壞檔繼續保護。未變更原有個人調整檔案。裝備此次是配色變化，並非新增完整鎧甲輪廓；美術與操作手感仍待使用者評估。
+
+`bash tools/check.sh` 通過：1,400 個 Godot assertions、10 個 Python tests；另有原生圖形／音訊擷取。實際按鍵驗證空體力不攻擊、不衝刺、不起跳，空中重按不重扣。居民場景用真實工作、搬運與付款驗證整片森林清除才可建立拓荒站。音量重開和手動檢查點獨立還原通過。
+
+正常起始資源、自動輸入／實際物理、無資源注入：種子 1 騎士優先 1287.6 秒通關，種子 7 居民優先 999.8 秒通關。這是可完成性測試，不是難度平衡或玩家樂趣的驗證。照片中清地與裝備對比為明確佈置的視覺情境，並非正常經濟遊玩。
+
+[規格](design/kingdom-cycle-overhaul.md)、[第四十課](lessons/40-stamina-and-platform-ui.md)、[驗證與畫面](reports/kingdom-cycle-v001/)。Godot 學習程度尚無新回報，不記為已掌握。

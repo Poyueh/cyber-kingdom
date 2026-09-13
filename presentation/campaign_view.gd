@@ -1,4 +1,6 @@
 extends "res://presentation/frontier_view.gd"
+const Details=preload("res://presentation/frontier_details.gd")
+var _details: Array[Dictionary]=[]
 const RiftVisual=preload("res://presentation/rift_visual.gd")
 const ResidentMotion=preload("res://presentation/resident_motion.gd")
 @export var resident_atlas: Texture2D=preload("res://art/characters/resident-motion-v002/residents.png")
@@ -6,6 +8,11 @@ var _resident_motion:=ResidentMotion.new()
 const Ambient=preload("res://presentation/ambient_motion.gd")
 @export var wanderer_idle: Texture2D=preload("res://art/ambient/v001/wanderer-idle.png")
 @export var chest_open: Texture2D=preload("res://art/ambient/v001/chest-open.png")
+var keyboard_hint:=true
+var interactions_visible:=true
+var _slot_key:=""
+var _slot_paid:=0
+var _slot_changed:=0.0
 var crystal_radius: float = 9.0
 var focus_key := ""
 var _view_player_x := 0.0
@@ -15,14 +22,39 @@ const SITE_ICONS={"shield_charge":"shield","rift":"rift","core_charge":"camp","h
 const EXTRA_ART := {"campfire":preload("res://art/campaign/v001/campfire.png"),"stone":preload("res://art/campaign/v001/stone.png"),"herbs":preload("res://art/campaign/v001/herbs.png"),"plot":preload("res://art/campaign/v001/plot.png")}
 
 func present(sim, player_x: float) -> void:
-	if not is_same(_sim,sim): _resident_motion.clear()
+	if not is_same(_sim,sim):
+		_resident_motion.clear()
+		_details=Details.layout(sim.map_seed,sim.frontier.regions)
 	_sim=sim
 	_view_player_x=player_x
 	_context=sim.context(player_x) if focus_key.is_empty() else sim.context_for_key(player_x,focus_key)
+	if _context.key!=_slot_key or _context.paid!=_slot_paid:
+		_slot_changed=sim.workforce.elapsed
+		_slot_key=_context.key
+		_slot_paid=_context.paid
 	queue_redraw()
 
+func _outpost_visible(region: Dictionary) -> bool:
+	return region.outpost_built or region.outpost_pending or (_sim.frontier.expansion_cleared(_sim.frontier.regions.find(region)) and absf(_view_player_x-region.outpost_x)<180)
+
+func _work_marker(resource, at: Vector2) -> void:
+	# A small paid glow on the resource, never a pole in the landscape.
+	for i in range(3):draw_rect(Rect2(at+Vector2(-9+i*7,-4),Vector2(3,2)),Color("dfc688"))
+	if resource.worker>=0:
+		draw_rect(Rect2(at+Vector2(-16,3),Vector2(32*clampf(1-resource.remaining_work/75.0,0,1),2)),Color("a8d5b3"))
+
 func _prop(name: String, at: Vector2, scale: float = 1.0, tint := Color.WHITE) -> void:
-	var texture: Texture2D=art.props.get(name,EXTRA_ART.get(name))
+	if name=="outpost":
+		var regions=_sim.frontier.regions.filter(func(r):return is_equal_approx(r.outpost_x,at.x))
+		if not regions.is_empty() and not regions[0].outpost_built:name="plot"
+	if name=="plot":
+		if absf(at.x-_view_player_x)<130:
+			for side in [-1,1]:
+				draw_rect(Rect2(at+Vector2(side*22-5,-3),Vector2(10,3)),Color("68736b"))
+				draw_rect(Rect2(at+Vector2(side*18-3,-5),Vector2(6,2)),Color("8b8c72"))
+		return
+	var texture: Texture2D=Details.harvest_texture(name,at.x,_sim.map_seed)
+	if texture==null:texture=art.props.get(name,EXTRA_ART.get(name))
 	Ambient.prop(self,texture,name,at,scale,tint,_sim.workforce.elapsed)
 	var emission: Texture2D=art.emission_masks.get(name)
 	if emission!=null:
@@ -31,6 +63,7 @@ func _prop(name: String, at: Vector2, scale: float = 1.0, tint := Color.WHITE) -
 		draw_texture_rect(emission,Rect2(at-Vector2(size.x*0.5,size.y),size),false,Color(1,1,1,pulse*tint.a))
 
 func _draw_atmosphere(_left: float) -> void:
+	Details.draw_background(self,_details,_sim.frontier.regions)
 	if art.show_river:
 		var inverse := get_viewport().get_canvas_transform().affine_inverse()
 		var top_left := inverse*Vector2.ZERO
@@ -80,7 +113,7 @@ func _draw_structures() -> void:
 	for site in world.sites:
 		var x: float=world.sites[site]
 		if not _sim.defenses.visible(site):continue
-		if site=="hall": continue
+		if site=="hall" or not interactions_visible or absf(x-_view_player_x)>130: continue
 		if not _context.id.is_empty() and absf(_context.x-x)<1:continue
 		_icon("wall" if world.walls.has(site) else SITE_ICONS.get(site,"hand"),Vector2(x,276 if _sim.built.get(site,false) else 343),23)
 	for site in ["workshop","armory","farm_tools","hunt_tools","forge","beacon"]:
@@ -171,6 +204,10 @@ func _draw_activity() -> void:
 			Ambient.crystal(self,visible,crystal_radius,_sim.workforce.elapsed)
 		if pile.amount>1: _number(str(pile.amount),Vector2(pile.x+12,pile.y-29))
 	for effect in _sim.effects:
+		if effect.kind=="portal_spawn":
+			var radius: float=28*(1-effect.life/0.6)
+			draw_arc(Vector2(effect.x,400),radius,0,TAU,16,Color(0.77,0.43,0.93,effect.life/0.6),3)
+			continue
 		if effect.kind not in ["crystal_pickup","chest_burst","recruited"]: continue
 		var duration: float=0.25 if effect.kind=="crystal_pickup" else 0.7
 		var progress:=1.0-float(effect.life)/duration
@@ -187,6 +224,7 @@ func _crystal(at: Vector2, filled: bool, radius: float = 6.0) -> void:
 	draw_polyline(points,Color("b6f6df") if filled else Color("76989e"),1.0)
 
 func _draw_interaction() -> void:
+	if not interactions_visible:return
 	if _context.id.is_empty(): return
 	var requirements: Dictionary=_context.get("requirements",{})
 	var prerequisites: Array=_context.get("prerequisites",[])
@@ -207,14 +245,18 @@ func _draw_interaction() -> void:
 		draw_line(Vector2(_context.x+side*15,ground-3),Vector2(_context.x+side*15,ground+3),marker_color,2)
 	var height:=62.0+(20 if not requirements.is_empty() else 0)+(20 if not prerequisites.is_empty() else 0)+(40 if not upgrade.is_empty() else 0)+(22 if not consequences.is_empty() else 0)
 	var y:=ground-(184 if _context.id=="rift" else 141)-(height-62)
-	draw_style_box(_bubble_style(),Rect2(x-width*0.5,y-20,width,height))
+	# Floating cost sockets stay in the world; no rectangular signboard.
 	var key: String=SITE_ICONS.get(_context.id,"hand")
 	if _context.id=="mark":
 		key={"tree":"tree","crystal":"pickaxe","berries":"food","stone":"stone","herbs":"herbs"}.get(_sim.frontier.nodes[_context.node_index].kind,"hammer")
 	_icon(key,Vector2(x,y),28)
+	if keyboard_hint:_number("E",Vector2(x+22,y+5))
 	if not _context.enabled and not (_context.id=="rift" and _sim.mission.rifts[_context.rift_index].ordered): _icon("lock",Vector2(x+width*0.5-15,y-3),17,Color("d4a994"))
 	for index in range(_context.cost):
 		var slot:=Vector2(x+(index-(_context.cost-1)*0.5)*18,y+27)
+		if index==_context.paid-1:
+			var age: float=clampf((_sim.workforce.elapsed-_slot_changed)/0.18,0,1)
+			slot.y-=14*(1-age)*(1-age)
 		_crystal(slot,index<_context.paid)
 		if index==_context.paid and investment_progress>0:
 			draw_arc(slot,8,-PI*0.5,-PI*0.5+TAU*investment_progress,24,Color("e6f6b4"),2)

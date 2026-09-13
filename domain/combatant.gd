@@ -29,21 +29,20 @@ func is_alive() -> bool:
 
 ## True means the press started a swing or queued exactly one continuation.
 func start_attack() -> bool:
-	if not is_alive() or dash_remaining > 0.0:
+	if not is_alive() or dash_remaining > 0.0 or stamina<stats.attack_cost:
 		return false
 	if stats.combo_enabled and combo_step > 0 and combo_step < 3:
 		if attack_remaining > 0.0:
 			_queued_attack_seconds = stats.combo_buffer_seconds
 			return true
 		if _combo_grace_remaining > 0.0:
-			_begin_attack(combo_step + 1)
-			return true
+			return _begin_attack(combo_step + 1)
 	if attack_remaining > 0.0 or cooldown_remaining > 0.0:
 		return false
-	_begin_attack(1 if stats.combo_enabled else 0)
-	return true
+	return _begin_attack(1 if stats.combo_enabled else 0)
 
-func _begin_attack(step: int) -> void:
+func _begin_attack(step: int) -> bool:
+	if not spend_stamina(stats.attack_cost):return false
 	combo_step = step
 	attack_facing = facing
 	var duration_scale := stats.combo_return_duration if step == 2 else (stats.combo_finisher_duration if step == 3 else 1.0)
@@ -53,6 +52,7 @@ func _begin_attack(step: int) -> void:
 	_queued_attack_seconds = 0.0
 	_combo_grace_remaining = 0.0
 	_hit_targets.clear()
+	return true
 
 ## Pause/focus loss discards intent while preserving the current pose.
 func clear_attack_buffer() -> void:
@@ -116,7 +116,7 @@ func advance(seconds: float) -> void:
 func _advance_attack(seconds: float) -> void:
 	# Split at the handoff so a coarse frame cannot erase or delay a valid press.
 	var handoff := maxf(0.0, attack_remaining - _swing_duration * (1.0 - stats.combo_chain_progress))
-	if stats.combo_enabled and combo_step > 0 and combo_step < 3 and _queued_attack_seconds > 0.0 and _queued_attack_seconds >= handoff and seconds >= handoff:
+	if stats.combo_enabled and combo_step > 0 and combo_step < 3 and _queued_attack_seconds > 0.0 and _queued_attack_seconds >= handoff and seconds >= handoff and stamina>=stats.attack_cost:
 		_accumulate_attack_travel(handoff)
 		_begin_attack(combo_step + 1)
 		_advance_attack(seconds - handoff)
@@ -172,3 +172,8 @@ func _step_fraction(progress: float) -> float:
 	# Ease into and out of the active sword cut; anticipation/recovery stay planted.
 	var phase := clampf((progress - attack_active_start()) / (attack_active_end() - attack_active_start()), 0.0, 1.0)
 	return phase * phase * (3.0 - 2.0 * phase)
+
+func spend_stamina(amount: float) -> bool:
+	if not is_alive() or not is_finite(amount) or amount<0 or stamina<amount:return false
+	stamina-=amount
+	return true

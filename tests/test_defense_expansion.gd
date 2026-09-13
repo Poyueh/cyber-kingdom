@@ -10,7 +10,7 @@ func add_person(sim, role: String, x: float):
 	sim.world.people.append(person)
 	return person
 
-func test_exploration_reveals_wall_plot_but_requires_local_preparation(t):
+func test_clearing_reveals_wall_plot_but_requires_local_preparation(t):
 	var sim=camp()
 	var id: String="frontier_wall:0"
 	t.truth(sim.world.walls.has(id),"map has an outward construction plot per region")
@@ -18,6 +18,9 @@ func test_exploration_reveals_wall_plot_but_requires_local_preparation(t):
 	var x: float=sim.world.sites[id]
 	t.truth(sim.context(x).id.is_empty(),"unexplored plot is hidden")
 	sim.frontier.regions[0].discovered=true
+	t.truth(sim.context(x).id.is_empty(),"discovery alone cannot expose uncleared expansion")
+	for node in sim.frontier.nodes:
+		if node.region==0 and node.kind in ["tree","crystal","stone","cache"]:node.collected=true
 	var choice=sim.context(x)
 	t.equal(choice.id,"wall","revealed expansion uses wall interaction icon")
 	t.truth(not choice.enabled,"unprepared expansion cannot spend")
@@ -48,7 +51,7 @@ func prepared():
 		region.outpost_built=true
 		region.outpost_x=region.x+region.width*0.5
 	for node in sim.frontier.nodes:
-		if node.kind=="tree":node.collected=true
+		if node.kind in ["tree","crystal","stone","cache"]:node.collected=true
 	for id in ["wall","wall_left"]:sim.world.walls[id].merge({"level":1,"hp":40},true)
 	return sim
 
@@ -134,6 +137,6 @@ func test_seeded_expansion_spawns_stay_on_map_and_beyond_both_fronts(t):
 		var sim=Campaign.new({"seed":seed_value})
 		for id in sim.defenses.plots:sim.world.walls[id].merge({"level":1,"hp":40},true)
 		for side in [-1,1]:
-			var x: float=sim.defenses.spawn_x(side)
+			var x: float=sim.mission.entry_x(side)
 			var front: float=sim.world.sites[sim.defenses.active_post(side)]
 			t.truth(side*x>side*front and x>sim.frontier.left_boundary and x<sim.frontier.right_boundary,"spawn remains outside furthest completed wall inside seeded map")
