@@ -715,3 +715,13 @@ TDD 先以雙側未擴張／缺外圈資源及缺收步重現失敗，再實作�
 [規格](design/kingdom-cycle-overhaul.md)、[第四十課](lessons/40-stamina-and-platform-ui.md)、[驗證與畫面](reports/kingdom-cycle-v001/)。Godot 學習程度尚無新回報，不記為已掌握。
 
 交付套件位於 `builds/desktop-kingdom-cycle-20260913/`（macOS／Windows）及 `builds/android-kingdom-cycle-20260913/`（Android debug）。套件源碼為 `de83023`，實際 PCK 新功能 17 assertions 與原有套件回歸通過；Mac 原生應用能啟動，ZIP／簽章／Android 對齊檢查通過。Windows、Android、iPhone 實機遊玩尚未驗證。Mac 強制限幀退出有兩個音訊物件清理警告，正常釋放場景的驗證腳本無此警告，細節保存在報告。按 Gitflow 整合本地 develop，未推送；25 個原有個人檔案保持。
+
+## 2026-09-13：Android 安裝版觸控與冷啟動驗收
+
+既有 de83023 Android debug APK 已在 Android 15 ARM64 模擬器覆蓋安裝與實際觸控驗證。更新保留 v1 原存檔；載入為 v2 並保留地圖、居民、資源與位置。移動、丟晶、衝刺、音量滑桿、手動存檔、冷啟動及手動還原通過：新自動進度 8 晶可恢復，手動讀取回 9 晶，完整戰役快照一致。音量 22／63 在重開後保留。模擬器已關閉，沒有清除原始 AVD 資料。
+
+完整 tools/check.sh 在與 de83023 相符的隔離副本再度通過；初次沙盒匯入因編輯器設定寫入權限失敗，授權後通過。遊戲內容未更動，不重建同一套件。報告只提交摘要、雜湊、真實畫面與日誌，不提交測試存檔。見 [驗證報告](reports/android-cycle-v001/README.md)、[第四十一課](lessons/41-manual-checkpoint.md)。教材未視為已掌握。
+
+Xcode 現已安裝，首次設定檢查與 iPhoneOS SDK 查詢通過，先前條款阻擋解除；仍缺實際 Team ID，沒有偵測到連接 iPhone 或有效簽署身分。尚未產生 iOS 安裝版。Android 實體裝置、多指操作、真人難度及 Windows 實際遊玩仍未驗收；本次模擬器停用音訊，沒有音質或實機 FPS 結論。
+
+本單元使用 feature/android-cycle-device-validation，按 Gitflow 驗證後整合本地 develop，不推送。130 個原有個人與引擎匯入檔案均保留。
