@@ -1,0 +1,51 @@
+{
+  "date": "2026-09-13",
+  "runtime_commit": "de83023",
+  "runtime_tree": "3b561b1f2cd401f3082760c150e8161ae5c7d840",
+  "project": "builds/ios-personal-20260913/CyberKingdomDemo.xcodeproj",
+  "bundle_id": "com.jenpoyueh.cyberkingdom.demo",
+  "team": "User-confirmed Personal Team; actual identifier remains in local exported project",
+  "valid_development_identity_detected": true,
+  "godot": "4.7.2.stable.official.ed1daf0bf",
+  "xcode": "26.6 (17F113)",
+  "sdk": "iPhoneOS 26.5",
+  "runtime_installed": "iOS 26.5 (23F77), arm64",
+  "xcode_export_succeeded": true,
+  "unsigned_device_build_succeeded": true,
+  "target_platform": "iphoneos",
+  "architectures": [
+    "arm64"
+  ],
+  "device_family": [
+    1,
+    2
+  ],
+  "minimum_os": "15.0",
+  "pck_sha256": "b45efb84efff3df2be3c10147e8cf61ac07cf561de96211dfa8cb4efeb579045",
+  "pck_matches_export": true,
+  "executable_sha256": "5c47ff86d8a488311d185ceb9a2ab751bd084a2b5f8e51a3ad7f4fb26aaec027",
+  "signed": false,
+  "installable": false,
+  "physical_devices_detected": 0,
+  "device_playtest": "not performed",
+  "signed_build_attempt": {
+    "exit_code": 65,
+    "reason": "Apple reports team has no devices from which to generate a provisioning profile; no matching development profile"
+  },
+  "full_check": {
+    "passed": true,
+    "log": "full-check.log"
+  },
+  "warnings": [
+    "Godot exporter: application/boot_splash/fullsize property not found",
+    "Godot dummy header uses pragma once in main file",
+    "Empty camera/microphone/photo-library usage descriptions from template",
+    "No AppIntents dependency; metadata extraction skipped"
+  ],
+  "remaining": [
+    "Connect and trust an actual iPhone",
+    "Generate device-specific provisioning and signed build",
+    "Install, launch and play-test on the physical device",
+    "Review export warnings before store submission"
+  ]
+}

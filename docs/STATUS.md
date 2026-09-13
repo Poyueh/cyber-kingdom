@@ -735,3 +735,13 @@ Xcode 現已安裝，首次設定檢查與 iPhoneOS SDK 查詢通過，先前條
 [第四十二課](lessons/42-touch-input-preview.md) 示範 HUD 的 Control Mode，未記為已掌握。依 Gitflow 在 feature/android-multitouch-validation 驗證後整合本地 develop，不推送；原有個人檔案保持。模擬器已確認退出。
 
 iOS 仍需實際 Apple 團隊／簽署與手機連接；Android／iPhone 實體手指舒適度、Windows 實際遊玩、真人難度及美感仍未驗收。本次停用模擬器音訊，不提供音質或效能結論。
+
+## 2026-09-13：Personal Team 確認與首次 iPhone 編譯
+
+使用者已登入 Xcode 並看到 Personal Team。已從團隊設定取得實際識別碼，偵測到有效 Apple Development 身分；真實匯出至 builds/ios-personal-20260913，Bundle ID 為 com.jenpoyueh.cyberkingdom.demo，來源沿用 de83023。Xcode 專案已開啟，未簽署 iphoneos ARM64 App 編譯成功，包內 PCK 與匯出檔一致。
+
+實際建置揭露 SDK 路徑存在但 iOS 平台未安裝，下載官方 arm64 runtime 後仍有 Ready 映像未掛載問題；以 simctl runtime scan-and-mount 修復，之後同一 unsigned 建置成功。自動簽署已真正嘗試，Apple 因團隊尚無測試裝置而無法產生描述檔。沒有連接 iPhone，尚無簽署／可安裝 App 或真機遊玩結果；不能宣稱四平台完成。
+
+完整 tools/check.sh 通過，原有 130 個檔案保持；未改玩法、不重建其他平台。已記錄模板權限空字串等建置警告，待發行前整理。[證據](reports/ios-personal-v001/README.md)、[第四十三課](lessons/43-godot-to-xcode.md)。Personal Team 登入是使用者明確回報；新課內容不視為已掌握。
+
+以 feature/ios-personal-team-build 依 Gitflow 整合本地 develop，不推送。下一步等手機接上後註冊裝置、簽署安裝與實機測試。Windows 實際遊玩及真人難度仍待驗收。

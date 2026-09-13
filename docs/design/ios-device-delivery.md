@@ -1,6 +1,6 @@
 # iPhone／iPad 安裝交付
 
-2026-09-13 最新檢查：Godot 4.7.2 的 ios.zip 模板、完整 Xcode 26.6（17F113）及 iPhoneOS 26.5 SDK 均可用；首次設定檢查成功，先前條款阻擋已解除。實際 Team ID 尚未提供，裝置清單為空、可用程式簽署身分為 0。使用者有 iPhone 17e、iPhone 16 Pro Max，但本次未連接。尚未產生 Xcode 專案或可安裝 iOS 包，不能以其他平台成功推論 iPhone 可用。
+2026-09-13 最新結果：使用者已登入 Personal Team，真實團隊識別碼與有效 Apple Development 憑證均已確認。Godot 已成功匯出 Xcode 專案，iPhone ARM64 App 已完成未簽署編譯。iOS 26.5 runtime 下載及掛載問題已修復。實際自動簽署被 Apple 擋在「團隊尚無測試裝置、無法建立描述檔」；目前沒有連接 iPhone。產物尚不可安裝，詳見 [本次報告](../reports/ios-personal-v001/README.md)。
 
 ## 已準備的流程
 
@@ -26,7 +26,7 @@ export_presets.cfg 新增 iOS Demo，目標 iPhone 與 iPad、ARM64、最低 iOS
 
 8 個 Python 測試涵蓋拒絕把 CLT 當 Xcode、子程序環境隔離、識別碼格式／注入、只更新 iOS 副本區段、保護既有輸出、缺 PCK 不報成功、缺前置條件不開始匯出，以及有自訂環境時 ERROR 掃描仍有效。測試用 Team ID 僅是格式測試資料，沒有用它向 Godot 或 Apple 真正匯出／簽署。
 
-本機真實執行因 Xcode／識別碼不足退出 2，未建立指定輸出目錄。這是前置檢查的成功驗證，絕不是 iOS 交付成功。尚未在完整 Xcode 上執行匯出，後續需要真實端到端驗證，可能仍需依實際 Xcode 輸出調整工具。
+早期前置檢查因環境／識別碼不足退出 2。後續已使用真實帳號完成端到端匯出及未簽署 ARM64 編譯；自動簽署因無裝置描述檔退出 65。匯出工具可用已有實際證據，但簽署與實體手機驗證尚待完成。
 
 ## 一手來源
 

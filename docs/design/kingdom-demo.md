@@ -44,7 +44,7 @@
 ## 裝置與匯出狀態
 使用者已確認：iPhone 17e、iPhone 16 Pro Max。這是可用測試裝置清單，不代表已完成安裝或測試；Android／Windows 實機與 Apple 開發者帳號待確認。
 
-本機 Godot 4.7.2 已核對。Xcode 26.6 與 iPhoneOS 26.5 SDK 已可用，仍缺實際 Team ID／簽署與連接的 iPhone；Android SDK 已安裝並完成模擬器 APK 安裝驗證。Godot 官方相同版本匯出模板已安裝；Mac／Windows 開發測試包已匯出，驗證與限制見 ../BUILDING.md。Android 已交付 debug APK 並驗證模擬器建設／續玩；iOS 尚未交付安裝包，四平台目標未完成。
+本機 Godot 4.7.2 已核對。Xcode 26.6 與 iPhoneOS 26.5 SDK 已可用，Personal Team 與開發憑證已確認，未簽署 iPhone App 已編譯；仍缺裝置描述檔與連接的 iPhone；Android SDK 已安裝並完成模擬器 APK 安裝驗證。Godot 官方相同版本匯出模板已安裝；Mac／Windows 開發測試包已匯出，驗證與限制見 ../BUILDING.md。Android 已交付 debug APK 並驗證模擬器建設／續玩；iOS 尚未交付安裝包，四平台目標未完成。
 - [Godot iOS 匯出](https://docs.godotengine.org/en/stable/tutorials/export/exporting_for_ios.html)：需要 macOS、完整 Xcode、模板與真實團隊／Bundle 設定；後續在 Xcode 建置與裝置部署。
 - [Godot Android 匯出](https://docs.godotengine.org/en/stable/tutorials/export/exporting_for_android.html)：依文件配置 JDK／Android SDK／簽署，再驗證 APK。商店交付另準備正式金鑰與 AAB。
 - 簽署帳號、私鑰不放 Git。未驗證的手機、作業系統或證書不填成完成。
