@@ -34,7 +34,7 @@
 3. 可恢復招募、獵物與草本再生已接通（frontier-renewal.md），有限騎士成長已接通（knight-growth.md）；外擴防線已接通，已完成三個種子／兩條投資路線的原生物理自動通關，見 campaign-playthroughs.md；仍待真人難度與外擴整局效益。
 4. 平行準備匯出環境；完成觸控、存續檔與安全區驗收，再簽署測試包。
 
-現有不足：初始雙側防線及每側三段外擴已接通，尚缺整局拓展成本與時機驗證；招募／獵物／草本已有再生、礦藏與木材仍有限；已加入三階劍術／電容、聚落門檻與封頂充能，已有兩條策略的六組原生物理通關，仍缺真人難度驗收；核心失守與雙裂隙終局已接通，已有預設預算自動通關證據，尚無完整戰役存檔與真人通關回饋。固定守軍測試中的「天亮」不等於勝利；新戰役敵人會朝核心進攻，不再因居民全失就自行離場。
+現有不足：初始雙側防線及每側三段外擴已接通，尚缺整局拓展成本與時機驗證；招募／獵物／草本已有再生、礦藏與木材仍有限；已加入三階劍術／電容、聚落門檻與封頂充能，已有兩條策略的六組原生物理通關，仍缺真人難度驗收；核心失守與雙裂隙終局已接通，已有預設預算自動通關證據，已有完整戰役存檔與多次重開通關測量，仍缺真人通關回饋。固定守軍測試中的「天亮」不等於勝利；新戰役敵人會朝核心進攻，不再因居民全失就自行離場。
 
 ## 平衡驗證方法
 先以固定步長、無騎士介入的守軍測量建立基線，再用完整開局流程測收入和建設時機。分別記錄首晚建設是否趕得上、晶體取得／消耗、居民損失、騎士承傷、各夜防線存量與通關時間。每個種子跑「優先騎士」與「優先居民」；只有自動測試與真人試玩均有證據後才能稱為難度適中。
@@ -44,7 +44,9 @@
 ## 裝置與匯出狀態
 使用者已確認：iPhone 17e、iPhone 16 Pro Max。這是可用測試裝置清單，不代表已完成安裝或測試；Android／Windows 實機與 Apple 開發者帳號待確認。
 
-本機 Godot 4.7.2 已核對。尚缺完整 Xcode（目前僅 Command Line Tools）；預設 Android SDK 位置沒有 SDK。Godot 官方相同版本匯出模板已安裝；Mac／Windows 開發測試包已匯出，驗證與限制見 ../BUILDING.md。iOS／Android 尚未交付安裝包，四平台目標未完成。
+本機 Godot 4.7.2 已核對。尚缺完整 Xcode（目前僅 Command Line Tools）；Android SDK 已安裝並完成模擬器 APK 安裝驗證。Godot 官方相同版本匯出模板已安裝；Mac／Windows 開發測試包已匯出，驗證與限制見 ../BUILDING.md。Android 已交付 debug APK 並驗證模擬器建設／續玩；iOS 尚未交付安裝包，四平台目標未完成。
 - [Godot iOS 匯出](https://docs.godotengine.org/en/stable/tutorials/export/exporting_for_ios.html)：需要 macOS、完整 Xcode、模板與真實團隊／Bundle 設定；後續在 Xcode 建置與裝置部署。
 - [Godot Android 匯出](https://docs.godotengine.org/en/stable/tutorials/export/exporting_for_android.html)：依文件配置 JDK／Android SDK／簽署，再驗證 APK。商店交付另準備正式金鑰與 AAB。
 - 簽署帳號、私鑰不放 Git。未驗證的手機、作業系統或證書不填成完成。
+
+首日圖示引導已接上，見 first-day-guide.md；安全區／多指與 Android 安裝證據見 mobile-controls.md。真人是否能理解純圖示仍未驗證。Xcode 自動介面讀取異常耗時，未完成安裝，已請使用者在官方安裝頁完成安裝及首次設定。

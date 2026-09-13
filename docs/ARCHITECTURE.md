@@ -196,3 +196,7 @@ infrastructure/json_campaign_store.gd 使用暫存檔替換與內容指紋檢查
 presentation/campaign_layout.gd 集中 HUD 區域的座標換算與排版，不管理資源或戰鬥。CampaignHUD 在手機讀取 DisplayServer 安全區，透過 Viewport 的反向螢幕轉換取得邏輯座標；IconDashboard 與控制鈕共用排版結果。桌面 Inspector 可用 Preview Safe Margins 模擬缺口。
 
 保留 Godot 原生 TouchScreenButton 多指行為，以及既有 GUI 投入／拋晶鈕。切背景、暫停與重開時，HUD 同時釋放 action 與 GUI 按鈕的手指捕捉；只清 Input action 不足以解除舊手指的占用。純幾何測試和實際 InputEventScreenTouch 場景測試分開；觸控不進入 domain/application。
+
+
+## 首日建議
+CampaignGuide 是讀取 CampaignSession 的無狀態查詢，不新增存檔欄位，也不執行互動。它回傳語意種類、世界位置、目標 key 與行動建議；CampaignGuideView 負責圖示，CampaignHUD 以真實選定目標及按鈕 enabled 狀態決定提示環。只在已有職業與付款結果成立後切換提示，保持居民自治。

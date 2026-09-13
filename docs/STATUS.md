@@ -578,3 +578,23 @@ Android 安裝環境已建立：官方 SDK、現有 OpenJDK 21、本機測試 ke
 feature/mobile-safe-controls 完成驗證後按 Gitflow 整合本地 develop，未推送。原有 25 個個人設定／編輯器檔案雜湊不變，個人長按 1 秒仍保留。新增 [第三十二課：手機安全區](lessons/32-mobile-safe-area.md)，未將提供教材當成使用者已學會。
 
 完整目標持續進行。下一步首輪圖示引導、Xcode／iOS 簽署安裝及兩支 iPhone 實測；Windows 與 Android 仍缺實體遊玩，外擴整局效益、真人適中難度與斬擊美感尚待驗收。iPhone 17e／iPhone 16 Pro Max 已列測試裝置；既有 Apple Developer Program 問題尚待回覆，未重複追問。
+
+## 首日圖示引導（2026-09-13）
+
+以本局狀態提供營火 → 招募 → 工匠 → 委託伐木 → 防守職業 → 初始雙牆的圖示建議；背包空改找已知資源，日落前三十秒或第一晚提示回營。無自動付款、揭露、贈晶或強制流程。部分付款不跳過營火；已有工匠錘／獵弓／守備武器時等待居民自主領取，不誘導重複購買。已委託採集和已下單的牆不重複訂購，也不建議砍掉最後棲地樹。
+
+application 的無狀態 CampaignGuide 選出語意與 target key；presentation 畫小型圖示面板。只有當前可互動目標確實相同時才點亮投入鈕。暫停、勝敗、熬過首晚或聚落二級隱藏；Inspector 的 First Day Guidance 可關閉。存檔格式、經濟數值和戰鬥美術不變。
+
+TDD 先確認缺少引導的失敗，後續重現已有守備武器仍被建議另買獵弓，再修正。首個隔離副本未匯入素材導致其他美術測試失敗，完成匯入後只剩缺少引導的單一失敗；未拿環境錯誤作為功能成功依據。最終完整 tools/check.sh 通過 **1120 項 Godot 斷言與 2 個 Python 建置測試**（859 行為、261 場景）；新引導 19 行為、7 觸控場景斷言，無 ERROR。
+
+[營火提示](previews/guide-camp-v001.png)、[建成後招募提示](previews/guide-recruit-v001.png) 經原生渲染與目視檢查；營地由實際兩顆付款建成，沒有預建或授予資源。這不是人類新手通關。圖示能否清楚傳達長按、採集與防守仍需真人回饋，後續遠征教學未加入。
+
+三平台新版位於 builds/desktop-guide-20260913 和 builds/android-guide-20260913，來源 ba61b19815f8e2ee39a69d2b684effa4e73557f1；八個修改來源檔與完整測試副本一致。Mac 73.3 MiB、Windows 51.9 MiB，APK 約 43 MiB。簽章完整性、ZIP CRC／SHA-256、Windows 格式與 APK 16 KiB 對齊通過。Mac 真正 release 入口與實際 PCK 建設／居民／成長／存續玩回歸通過。
+
+Android 模擬器以 install -r 更新，原戰役檢查點內容完全保留。恢復後原有拋晶招募居民，提示直接接到工匠器具，沒有重新要求建立營火；[Android 實際畫面](previews/guide-android-v001.png)。仍出現軟體 GLES shader cache 重編譯警告，無腳本錯誤或崩潰，未推論實體手機效能。[完整證據](reports/first-day-guide-v001/manifest.json)、[第三十三課](lessons/33-first-day-guide.md)。
+
+feature/first-day-icon-guide 按 Gitflow 驗證後整合本地 develop，未推送。保留原有 25 個個人檔案雜湊。Mac 仍 ad-hoc 未公證，Windows 未簽署，Android debug；iPhone 17e／16 Pro Max、Windows 和 Android 實體遊玩尚未完成。
+
+Xcode 仍只有 Command Line Tools。App Store 的 CUA getApp 讀取異常耗時約 6.9 小時，並未安裝 Xcode；不要把該期間當開發或有效安裝等待，也不要無界重試同一路徑。已改用系統連結開啟官方 Xcode 安裝頁，發出一次請使用者安裝並完成首次設定的非同步請求；尚未收到完成回覆。官方資料確認實體裝置本機測試可用免費 Apple Account，付費方案不是目前唯一前置條件。
+
+完整目標維持進行。接續需要 Xcode／真實團隊簽署與 iPhone 安裝、外擴防線整局效益測量、遠征圖示引導，以及真人首次遊玩的難度／圖示理解與動作美感驗收。
