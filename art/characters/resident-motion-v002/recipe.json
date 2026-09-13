@@ -1,0 +1,20 @@
+{
+  "roles": [
+    "wanderer",
+    "citizen",
+    "farmer",
+    "hunter",
+    "guard",
+    "engineer"
+  ],
+  "cell": 64,
+  "columns": 8,
+  "rows_per_role": [
+    "walk",
+    "idle"
+  ],
+  "stride_pixels": 32,
+  "process": "Generated costume study; explicit planted-foot inverse-kinematic legs; nearest-neighbor cutout; original retained. Engineer costume from original prosthetic-v001.",
+  "generated_study_limitation": "Repeated poses rejected; only first costume pose used.",
+  "preview": "Animation review, not gameplay footage."
+}

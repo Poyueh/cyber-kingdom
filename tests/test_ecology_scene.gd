@@ -5,6 +5,9 @@ func dawn(scene) -> void:
 	scene._physics_process(0.02)
 func run_scene() -> void:
 	var scene=load("res://scenes/frontier.tscn").instantiate()
+	# Keep this renewal/recruitment fixture below the population ceiling.
+	scene.tuning=scene.tuning.duplicate()
+	scene.tuning.outer_regions_per_side=0
 	root.add_child(scene)
 	await frames(8)
 	scene.set_physics_process(false)

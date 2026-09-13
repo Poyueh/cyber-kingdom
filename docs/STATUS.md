@@ -688,3 +688,16 @@ feature/ios-export-workflow 驗證後按 Gitflow 整合本地 develop，未推�
 feature/slow-start-playthrough-study 按 Gitflow 整合本地 develop，未推送；原有 25 個個人檔案雜湊保留。只增加工具與測量證據，沿用 desktop-audio-20260913／android-audio-20260913；沒有再做相同內容的安裝包。教學僅提供，不等於使用者已學會。
 
 判斷：現有設定對這個特定慢開局情境仍有恢復空間，先不因自動測試而加長首日或削弱敵人。已送出一次「試玩到首晚、回報最容易卡住處」的非同步問題，尚未收到真人回饋。原 Xcode 安裝／首次設定及 Apple 帳號問題保持待回覆，不重複追問。完整目標仍缺 iOS 安裝、實體平台遊玩、真人難度與聲音／騎士動作美感驗收。
+
+
+## 擴大探索與居民步伐（2026-09-13）
+
+回應「地圖不夠大能探索、居民動作僵硬」。新局左右各增加三段外圍，森林／晶脈／遺跡皆有資源；預設種子總寬 6,800 → 11,700，探索區 6 → 12，資源點 24 → 48。原近郊位置及舊存檔尺寸保留；暫停點地圖圖示開新局才使用擴圖。人口上限仍為 24；遠端採集需善用拓荒站和防線來縮短居民回程。
+
+六職業走路改為八格交替支撐、屈膝抬腿，自由義肢反向擺動，0.12 秒收步和錯開呼吸待機。新生成樣稿仍重複姿勢，因此只用造型，依既有明確授權做本機去背及步伐重製，原圖和提示詞保留。工匠施工／搬運／爬梯沿用專用圖，沒有聲稱全職業工作動畫已完成。步相只在 presentation，不改存檔與居民規則。
+
+TDD 先以雙側未擴張／缺外圈資源及缺收步重現失敗，再實作通過。最終完整檢查 **1,322 項 Godot 斷言、10 個 Python 測試**，無 ERROR。種子 1 騎士、7 居民、42 騎士路線皆正常資源雙封印勝利，耗時 885.2／981.4／819.8 秒，失職 0／1／0 次；自動精準閃避不等於真人難度證明。原生動畫播放、暫停像素凍結、外圈地景已查看；仍待使用者認可動作品質。
+
+新版三平台產物位於 builds/desktop-frontier-life-20260913 與 builds/android-frontier-life-20260913，來源 tree 483f49f18c21c2b991e2c35be4e86e431b94e75f。Mac 真正 release 啟動及包內場景回歸通過；ZIP CRC、Mac ad-hoc 簽章、Windows PE、APK v2/v3 簽章與 16 KiB 對齊通過。Windows／Android 這次未做實機遊玩，iOS 尚未產出。完整來源和測試紀錄見 [manifest](reports/frontier-life-v001/manifest.json)。
+
+[實際場景居民錄影](reports/frontier-life-v001/residents.mp4)、[規格](design/frontier-depth-and-resident-motion.md)、[第三十九課](lessons/39-exploration-size.md)。教材未視為已掌握。feature/frontier-depth-resident-motion 驗證後按 Gitflow 整合本地 develop，未推送，原有 25 個個人檔案保持。
