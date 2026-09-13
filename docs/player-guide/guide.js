@@ -1,0 +1,66 @@
+(() => {
+  'use strict';
+  const modeButtons = [...document.querySelectorAll('[data-mode]')];
+  function setMode(mode) {
+    modeButtons.forEach(button => button.setAttribute('aria-pressed', String(button.dataset.mode === mode)));
+    document.querySelectorAll('.key').forEach(key => key.textContent = key.dataset[mode]);
+    document.getElementById('control-grid').classList.toggle('mobile', mode === 'mobile');
+    document.getElementById('control-note').textContent = mode === 'mobile'
+      ? '使用畫面上的觸控圖示；互動按鈕會依目標切換成手掌、龍晶或寶箱。'
+      : '使用鍵盤操作；靠近物件後，看它上方的圖示與龍晶格。';
+  }
+  modeButtons.forEach(button => button.addEventListener('click', () => setMode(button.dataset.mode)));
+  if (matchMedia('(pointer: coarse)').matches || innerWidth < 760) setMode('mobile');
+
+  const projects = {
+    camp: {title:'建立營地', cost:2, done:'營火已成為營地。接著招攬居民、準備器具。'},
+    tools: {title:'提供守備器具', cost:3, done:'器具準備好了，無職居民會自行前來領取。'},
+    rift: {title:'委託裂隙封印', cost:4, done:'委託完成。接著護送工匠，清除附近的敵人。'}
+  };
+  const projectButtons = [...document.querySelectorAll('[data-project]')];
+  const paid = {camp:0, tools:0, rift:0};
+  let active = 'camp', wallet = 12;
+  const invest = document.getElementById('invest');
+  function renderInvestment() {
+    const project = projects[active];
+    const complete = paid[active] === project.cost;
+    document.getElementById('wallet').textContent = wallet;
+    document.getElementById('site-title').textContent = project.title;
+    const selected = projectButtons.find(button => button.dataset.project === active);
+    document.getElementById('site-icon').src = selected.dataset.icon;
+    projectButtons.forEach(button => button.setAttribute('aria-pressed', String(button === selected)));
+    const slots = document.getElementById('gem-slots');
+    slots.replaceChildren(...Array.from({length:project.cost}, (_, index) => {
+      const gem = document.createElement('span');
+      gem.className = 'gem' + (index < paid[active] ? ' filled' : '');
+      gem.setAttribute('aria-hidden', 'true');
+      return gem;
+    }));
+    slots.setAttribute('aria-label', `已投入 ${paid[active]} 顆，共需 ${project.cost} 顆龍晶`);
+    document.getElementById('investment-status').textContent = complete ? project.done : `${paid[active]} / ${project.cost} 顆 · 還差 ${project.cost - paid[active]} 顆龍晶`;
+    invest.disabled = complete || wallet === 0;
+    invest.textContent = complete ? '這筆投入已完成 ✓' : '投入一顆龍晶 ＋';
+  }
+  projectButtons.forEach(button => button.addEventListener('click', () => {
+    active = button.dataset.project;
+    renderInvestment();
+  }));
+  invest.addEventListener('click', () => {
+    if (wallet <= 0 || paid[active] >= projects[active].cost) return;
+    wallet--; paid[active]++; renderInvestment();
+  });
+  document.getElementById('reset-demo').addEventListener('click', () => {
+    wallet = 12; Object.keys(paid).forEach(key => paid[key] = 0); renderInvestment();
+  });
+  renderInvestment();
+
+  const animation = document.getElementById('combo-image');
+  const toggle = document.getElementById('animation-toggle');
+  let playing = false;
+  toggle.addEventListener('click', () => {
+    playing = !playing;
+    animation.src = playing ? animation.dataset.animated : animation.dataset.still;
+    toggle.setAttribute('aria-pressed', String(playing));
+    toggle.textContent = playing ? '■ 停止示範' : '▶ 播放連斬示範';
+  });
+})();
