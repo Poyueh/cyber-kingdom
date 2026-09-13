@@ -1,0 +1,66 @@
+{
+  "source_tree": "69789d5473d8fd48fa3efb699d41b3be44da0a3a",
+  "godot_assertions": 1187,
+  "behavior_assertions": 907,
+  "scene_assertions": 280,
+  "python_tests": 2,
+  "new_behavior_assertions": 22,
+  "new_scene_assertions": 12,
+  "native_audio": {
+    "source": "actual controls with positioned opponent fixture",
+    "packaged_recording": "packaged-feedback.wav",
+    "headless": "observes cue requests without starting playback; no claim of audible headless integration",
+    "metrics": {
+      "seconds": 2.7399546485260773,
+      "peak": 0.1697998046875,
+      "rms": 0.01998277274912203,
+      "clipped_samples": 0
+    },
+    "human_listening": "not yet approved"
+  },
+  "desktop": {
+    "source_tree": "69789d5473d8fd48fa3efb699d41b3be44da0a3a",
+    "engine": "4.7.2.stable.official.ed1daf0bf",
+    "entry": "res://scenes/frontier.tscn",
+    "configuration": "committed settings, release export, prototype content",
+    "macOS_signing": "ad-hoc; not notarized",
+    "Windows_signing": "unsigned",
+    "checksums_sha256": {
+      "Cyber-Kingdom-macOS.zip": "003a7fbc63eb37dffff323d7b371c0e2635935167d0f3f96e74cdc6f3756053f",
+      "Cyber-Kingdom-Windows.zip": "ff2aa4fda530686096c692045eeeeece33a92dbc71eb605ee662af6e2cdec3f8"
+    },
+    "platform_playtest": "must be recorded separately; export alone is not a pass"
+  },
+  "android": {
+    "source_tree": "69789d5473d8fd48fa3efb699d41b3be44da0a3a",
+    "architecture": "arm64-v8a",
+    "package": "org.cyberkingdom.demo",
+    "signing": "local debug certificate; not a store release",
+    "sha256": "ff6abec1ff8c7cb22b4f9c55b2a5e341916e2ba7a1d5d787d0d3d1f87ee5db1e",
+    "runtime_playtest": "record separately; export alone is not validation"
+  },
+  "android_validation": "install -r checkpoint equality and actual pause speaker toggle; emulator deliberately no-audio, not device sound validation; shader cache recompilation warning only",
+  "ios": "Xcode absent (only Command Line Tools), existing setup request pending; user has iPhone 17e and iPhone 16 Pro Max; no signed iOS package",
+  "personal_files_preserved": 25,
+  "limitations": [
+    "Mute is scene-local, not persisted across app restart",
+    "Mac ad-hoc and not notarized",
+    "Windows unsigned and not tested on physical Windows",
+    "Android debug-signed and not tested on physical Android",
+    "No human difficulty or knight-art approval"
+  ],
+  "text_logs": "Trailing whitespace normalized, messages unchanged",
+  "sha256": {
+    "android-runtime.txt": "c53951ad3deb8f826a8ea8a7d4160de75790cd6172b283baa3f5af5607b27748",
+    "check.txt": "30a823ae61e4c19d3ab13615bbc4fd9b719a7cf4c6f6481ca4c18f1811d86180",
+    "mac-runtime.txt": "6c536b7ab6a1ee8e7ac91fdd27709abb484073b092cabb70d205c4f987e47ddd",
+    "missing-observer-red.txt": "13fde04b7f181c54dd9f11cf3fd57cbe0d2063d4d44bbcc49f8fb2b3ff672a43",
+    "native-capture.txt": "2df0a9ed5578fbfa27a6f69f3c0966c78d5f5df039ec6f256ec38a8bde6eb96d",
+    "native-feedback.wav": "6da6dec4ec5b36d9cccd3ab34d92c386bffde56baaf199b71f1348c93caf68fa",
+    "native-metrics.json": "4315ab3a21f017e9a424a1680f3fdee5efeb42b2aeb654445074aa7dda166ed7",
+    "packaged-capture.txt": "2df0a9ed5578fbfa27a6f69f3c0966c78d5f5df039ec6f256ec38a8bde6eb96d",
+    "packaged-feedback.wav": "7d271e877f6926510b51d9020304e2fe35ea99b5f91a9b5f87163809443a1294",
+    "packaged-metrics.json": "f2cd7cfc8ed648af43c97e470849f1a218c895b721ea425bc74a8319b3ae7975",
+    "packaged-review.txt": "8f4c9b2658cf71cf6f6094ae65a5d7d58c79137705a7c42bbc5f76c797c3e51a"
+  }
+}

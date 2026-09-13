@@ -5,6 +5,7 @@ const CampaignProgress=preload("res://application/campaign_progress.gd")
 const CampaignStore=preload("res://infrastructure/json_campaign_store.gd")
 @export var campaign_save_path: String="user://campaign_v1.json"
 @export_range(1.0,60.0,1.0) var autosave_seconds: float=5.0
+@onready var audio=$CampaignAudio
 var progress: RefCounted
 var _campaign_config: Dictionary={}
 var _save_elapsed:=0.0
@@ -18,6 +19,10 @@ var _requested_throw := false
 
 func _ready() -> void:
 	super._ready()
+	hud.audio_toggled.connect(func():
+		audio.enabled=not audio.enabled
+		hud.set_audio_enabled(audio.enabled))
+	hud.set_audio_enabled(audio.enabled)
 	view.crystal_radius=tuning.crystal_radius
 	hud.throw_requested.connect(func(): _requested_throw = true)
 	controls.throw_requested.connect(func(): _requested_throw = true)
@@ -49,6 +54,7 @@ func _ready() -> void:
 		view.present(sim,knight.position.x)
 		hud.present_world(sim,paused,knight.position.x,knight.is_on_floor())
 	_present_save()
+	audio.observe(0,sim,knight.position.x,true)
 
 func restart() -> void:
 	if progress!=null:
@@ -79,6 +85,7 @@ func restart() -> void:
 	hud.cancel_touch_gestures()
 	_build_terrain()
 	if progress!=null:save_campaign()
+	if is_instance_valid(audio):audio.observe(0,sim,knight.position.x,true)
 
 func _physics_process(seconds: float) -> void:
 	if _requested_new_map:
@@ -102,6 +109,7 @@ func _physics_process(seconds: float) -> void:
 	if (paused and not was_paused) or (was_running and not sim.is_running()) or _save_elapsed>=autosave_seconds:
 		save_campaign()
 	_present_save()
+	audio.observe(seconds,sim,knight.position.x,paused)
 
 func _apply_interaction(command: Dictionary, seconds: float) -> void:
 	var held: bool=command.interaction_held or hud.interact_held or _requested_interaction
@@ -117,6 +125,7 @@ func _notification(what: int) -> void:
 	super._notification(what)
 	if what == NOTIFICATION_APPLICATION_FOCUS_OUT or what == NOTIFICATION_APPLICATION_PAUSED:
 		_requested_throw = false
+		if is_instance_valid(audio):audio.stop()
 		if investment!=null: investment.cancel()
 		if is_instance_valid(hud): hud.cancel_touch_gestures()
 		if progress!=null:save_campaign()

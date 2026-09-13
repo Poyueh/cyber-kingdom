@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3]
+[gd_scene load_steps=18 format=3]
 [ext_resource type="PackedScene" path="res://scenes/settlement.tscn" id="base"]
 [ext_resource type="Script" path="res://bootstrap/frontier_root.gd" id="root"]
 [ext_resource type="Resource" path="res://data/campaign.tres" id="tuning"]
@@ -15,6 +15,7 @@
 [ext_resource type="Texture2D" path="res://art/characters/prosthetic-v001/knight-jump.png" id="knight-jump"]
 [ext_resource type="Texture2D" path="res://art/characters/fluid-v001/moving-attack.png" id="moving-attack"]
 [ext_resource type="Resource" path="res://data/knight_combo_motion.tres" id="combo-motion"]
+[ext_resource type="Script" path="res://presentation/campaign_audio.gd" id="audio"]
 [node name="Frontier" instance=ExtResource("base")]
 script = ExtResource("root")
 tuning = ExtResource("tuning")
@@ -39,3 +40,6 @@ texture_overrides = {
 "res://art/characters/knight/motion-v002/run.png": ExtResource("knight-run"),
 "res://art/characters/knight/motion-v002/jump.png": ExtResource("knight-jump")
 }
+
+[node name="CampaignAudio" type="Node" parent="."]
+script = ExtResource("audio")

@@ -10,6 +10,8 @@ const Layout=preload("res://presentation/campaign_layout.gd")
 var _last_safe_rect:=Rect2()
 const Icons=preload("res://presentation/ui_icons.gd")
 const Dashboard=preload("res://presentation/icon_dashboard.gd")
+signal audio_toggled
+var audio_button: Button
 signal save_requested
 var save_button: Button
 var _pause_icon_state:=false
@@ -61,6 +63,11 @@ func _ready() -> void:
 	save_button.add_theme_stylebox_override("disabled",save_button.get_theme_stylebox("normal"))
 	save_button.add_theme_color_override("icon_disabled_color",Color.WHITE)
 	save_button.pressed.connect(func(): save_requested.emit())
+	audio_button=Button.new()
+	audio_button.name="AudioToggle"
+	add_child(audio_button)
+	_skin(audio_button,"sound")
+	audio_button.pressed.connect(func():audio_toggled.emit())
 	get_viewport().size_changed.connect(_layout)
 	_layout()
 	guide_view=GuideView.new()
@@ -110,7 +117,7 @@ func _layout() -> void:
 	var layout:=Layout.arrange(_last_safe_rect)
 	for key in ["move_left","move_right","dash","jump","attack","pause","restart"]:
 		get_node(key).position=layout.buttons[key].position
-	var buttons={"drop":drop_button,"interact":interact_button,"new_map":new_map_button,"refuge":$Refuge,"fullscreen":fullscreen_button,"save":save_button}
+	var buttons={"drop":drop_button,"interact":interact_button,"new_map":new_map_button,"refuge":$Refuge,"fullscreen":fullscreen_button,"save":save_button,"audio":audio_button}
 	for key in buttons:
 		buttons[key].position=layout.buttons[key].position
 		buttons[key].size=layout.buttons[key].size
@@ -130,6 +137,7 @@ func present_world(sim, is_paused: bool, at: float, grounded: bool) -> void:
 	$restart.visible=is_paused or not sim.is_running()
 	new_map_button.visible=is_paused or not sim.is_running()
 	$Refuge.visible=is_paused
+	audio_button.visible=is_paused
 	drop_button.disabled=is_paused or not sim.is_running() or sim.pouch.amount<=0
 	var map=sim.frontier
 	dashboard.values={"hp":sim.hero.hp,"shield":sim.hero.shield,"crystal":"%d/%d" % [sim.pouch.amount,sim.pouch.capacity],"wood":map.wood,"food":map.food,"stone":map.stone,"herbs":map.herbs,"scrap":sim.world.scrap,"day":sim.clock.day,"survived":sim.clock.survived,"full":sim.pouch.amount>=sim.pouch.capacity}
@@ -167,7 +175,7 @@ func present_save(status: String, is_paused: bool) -> void:
 
 func cancel_touch_gestures() -> void:
 	# Release both action buttons' finger ownership and GUI buttons' press capture.
-	var buttons: Array=[interact_button,drop_button,new_map_button,$Refuge,fullscreen_button,save_button]
+	var buttons: Array=[interact_button,drop_button,new_map_button,$Refuge,fullscreen_button,save_button,audio_button]
 	for key in ["move_left","move_right","dash","jump","attack","pause","restart"]:
 		buttons.append(get_node(key))
 	for button in buttons:
@@ -175,3 +183,6 @@ func cancel_touch_gestures() -> void:
 			button.hide()
 			button.show()
 	interact_held=false
+
+func set_audio_enabled(value: bool) -> void:
+	audio_button.icon=Icons.get_icon("sound" if value else "muted")

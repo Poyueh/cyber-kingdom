@@ -7,6 +7,8 @@ const TEXTURES := {
 	"drop":preload("res://art/ui/v001/drop.svg"),
 	"heart":preload("res://art/ui/v001/heart.svg"),
 	"shield":preload("res://art/ui/v001/shield.svg"),
+	"sound":preload("res://art/ui/v001/sound.svg"),
+	"muted":preload("res://art/ui/v001/muted.svg"),
 	"crystal":preload("res://art/ui/v001/crystal.svg"),
 	"wood":preload("res://art/ui/v001/wood.svg"),
 	"food":preload("res://art/ui/v001/food.svg"),
