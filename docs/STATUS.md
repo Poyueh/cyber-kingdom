@@ -745,3 +745,13 @@ iOS 仍需實際 Apple 團隊／簽署與手機連接；Android／iPhone 實體�
 完整 tools/check.sh 通過，原有 130 個檔案保持；未改玩法、不重建其他平台。已記錄模板權限空字串等建置警告，待發行前整理。[證據](reports/ios-personal-v001/README.md)、[第四十三課](lessons/43-godot-to-xcode.md)。Personal Team 登入是使用者明確回報；新課內容不視為已掌握。
 
 以 feature/ios-personal-team-build 依 Gitflow 整合本地 develop，不推送。下一步等手機接上後註冊裝置、簽署安裝與實機測試。Windows 實際遊玩及真人難度仍待驗收。
+
+## 2026-09-14：玩家圖文 HTML 指南
+
+完成可離線分享的單檔玩家指南，涵蓋世界觀、第一天四步、手機／電腦操作切換、逐顆龍晶填格示意、居民職業、資源與清地擴建、連斬播放、體力與裝備、雙裂隙通關及存檔／音量。概念封面與實際遊戲畫面分別標示；圖片沿用專案原始素材，另存壓縮副本。產物位於 builds/player-guide/Cyber-Kingdom-玩家指南.html，約 2.30 MiB。
+
+Chrome 離線實測 1440／768／390／320 寬度，圖片均可解碼且無橫向溢出、JavaScript 錯誤或外部網路請求。平台切換、填格扣晶、各目標部分進度保留、完成停用、重設、動畫播放／停止與 FAQ 展開通過。已目視桌面與手機版面；尚未宣稱 iPhone Safari 實機驗證。
+
+遊戲程式未變動，完整 tools/check.sh 在與 de83023 相符的隔離副本通過，日誌無 SCRIPT ERROR。原有 130 個個人與引擎檔案雜湊保持；不重建相同遊戲安裝包。指南來源與維護說明見 docs/player-guide/README.md，證據見 docs/reports/player-guide-v001/，附第四十四課，學習狀態未記為已掌握。
+
+feature/player-guide-html 依 Gitflow 驗證後整合本地 develop，未推送。下一步待使用者試閱指南、回報玩法理解與實際遊玩感受；iPhone 簽署仍等待連接測試裝置。
