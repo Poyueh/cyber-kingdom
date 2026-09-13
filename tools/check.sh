@@ -34,6 +34,7 @@ run_check ecology --script res://tests/test_ecology_scene.gd
 run_check expansion --script res://tests/test_expansion_scene.gd
 run_check campaign_save --script res://tests/test_campaign_save_scene.gd
 run_check mobile --script res://tests/test_mobile_scene.gd
+run_check guide --script res://tests/test_guide_scene.gd
 run_check traversal --script res://tests/test_traversal.gd
 run_check refuge --script res://tests/test_refuge_scene.gd
 run_check settlement --script res://tests/test_settlement_scene.gd

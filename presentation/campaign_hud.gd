@@ -1,4 +1,8 @@
 extends "res://presentation/frontier_hud.gd"
+const Guide=preload("res://application/campaign_guide.gd")
+const GuideView=preload("res://presentation/campaign_guide_view.gd")
+@export var first_day_guidance:=true
+var guide_view: Node2D
 const Layout=preload("res://presentation/campaign_layout.gd")
 @export var preview_safe_margins:=Vector4.ZERO
 var _last_safe_rect:=Rect2()
@@ -57,6 +61,8 @@ func _ready() -> void:
 	save_button.pressed.connect(func(): save_requested.emit())
 	get_viewport().size_changed.connect(_layout)
 	_layout()
+	guide_view=GuideView.new()
+	add_child(guide_view)
 
 func _button_texture(key: String) -> Texture2D:
 	# SVG drawing remains editable and matches the resource and interaction symbols.
@@ -141,6 +147,9 @@ func present_world(sim, is_paused: bool, at: float, grounded: bool) -> void:
 	dashboard.dead=sim.mission.outcome=="defeat"
 	dashboard.victory=sim.mission.outcome=="victory"
 	dashboard.queue_redraw()
+	var advice: Dictionary=Guide.next(sim,at) if first_day_guidance and not is_paused else {}
+	var ready: bool=not advice.is_empty() and advice.action in ["invest","open"] and advice.key==choice.key and not interact_button.disabled
+	guide_view.present(advice,_last_safe_rect,at,Rect2(interact_button.position,interact_button.size),ready)
 
 func _toggle_fullscreen() -> void:
 	var window:=get_window()
