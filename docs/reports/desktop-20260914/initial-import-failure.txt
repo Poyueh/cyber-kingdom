@@ -1,0 +1,4 @@
+ERROR: Failed decoding WebP image.
+   at: webp_load_image_from_buffer (modules/webp/webp_common.cpp:173)
+ERROR: Error loading image: 'res://docs/player-guide/assets/combo.webp'.
+ERROR: Error importing 'res://docs/player-guide/assets/combo.webp'.

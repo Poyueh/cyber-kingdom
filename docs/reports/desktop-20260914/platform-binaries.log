@@ -1,0 +1,4 @@
+/Users/jenpoyueh/GitHub/cyber-kingdom/builds/desktop-20260914-r2/macOS/Cyber Kingdom Demo.app/Contents/MacOS/Cyber Kingdom Demo: Mach-O universal binary with 2 architectures: [x86_64:Mach-O 64-bit executable x86_64] [arm64]
+/Users/jenpoyueh/GitHub/cyber-kingdom/builds/desktop-20260914-r2/macOS/Cyber Kingdom Demo.app/Contents/MacOS/Cyber Kingdom Demo (for architecture x86_64):	Mach-O 64-bit executable x86_64
+/Users/jenpoyueh/GitHub/cyber-kingdom/builds/desktop-20260914-r2/macOS/Cyber Kingdom Demo.app/Contents/MacOS/Cyber Kingdom Demo (for architecture arm64):	Mach-O 64-bit executable arm64
+/Users/jenpoyueh/GitHub/cyber-kingdom/builds/desktop-20260914-r2/Windows/Cyber Kingdom Demo.exe:                                 PE32+ executable (GUI) x86-64 (stripped to external PDB), for MS Windows

@@ -755,3 +755,11 @@ Chrome 離線實測 1440／768／390／320 寬度，圖片均可解碼且無橫�
 遊戲程式未變動，完整 tools/check.sh 在與 de83023 相符的隔離副本通過，日誌無 SCRIPT ERROR。原有 130 個個人與引擎檔案雜湊保持；不重建相同遊戲安裝包。指南來源與維護說明見 docs/player-guide/README.md，證據見 docs/reports/player-guide-v001/，附第四十四課，學習狀態未記為已掌握。
 
 feature/player-guide-html 依 Gitflow 驗證後整合本地 develop，未推送。下一步待使用者試閱指南、回報玩法理解與實際遊玩感受；iPhone 簽署仍等待連接測試裝置。
+
+## 2026-09-14：重新交付最新 Windows／Mac 預覽包
+
+由最新整合來源製作 release/0.1.0-preview.20260914，遊戲來源 3da141e（規則沿用 de83023）。雙平台新產物 builds/desktop-20260914-r2，ZIP 內附離線圖文指南與啟動說明。Mac universal 約 75.6 MiB，Windows x64 約 54.2 MiB。Mac 為 ad-hoc、未公證；Windows 未簽章。
+
+首次匯入重現新指南動畫 WebP 不被 Godot 圖片匯入器支援；新增指南 .gdignore 後，同一匯入與完整 tools/check.sh 通過。Mac 原生 release 啟動成功；兩平台實際 PCK 新功能各 17 assertions 通過，Mac 套件既有回歸通過。ZIP 完整性、Mac 簽章與二進位架構檢查通過；Windows PCK 在 Mac 測試不等於 Windows 實機驗收。
+
+已保留原有 130 檔雜湊。發行分支回合本地 develop，未推送或上傳外部站台；此為預覽交付，不是 App Store 正式版。證據見 docs/reports/desktop-20260914，附第四十五課，學習程度未視為已掌握。下一步等待 Windows 實機與玩家試玩回饋，iOS 仍待連接手機。
