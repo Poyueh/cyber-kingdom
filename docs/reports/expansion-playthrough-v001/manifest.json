@@ -1,0 +1,38 @@
+{
+  "game_commit": "f858357eca0555db120256d79ce4b3a19f131a08",
+  "engine": "4.7.2.stable.official.ed1daf0bf",
+  "display": "headless",
+  "physics_fps": 60,
+  "route": "residents",
+  "combat_profile": "reactive",
+  "limit_game_seconds": 1800,
+  "grants": false,
+  "teleports": false,
+  "game_rule_changes": false,
+  "strategy": "build first outer wall on each side before starting seals; allow expedition once both have been built, even if one was subsequently destroyed",
+  "source_sha256": {
+    "tools/play_campaign.gd": "2746adfee9195b2345e353878c85a8b724f1e66bf3a8e8ca7e2b59175841f0fb",
+    "tools/play_expansion.gd": "1bdd618357b098e6602cc2bf91d8f5967628f67d70713f04cb8985a82e000fce"
+  },
+  "baseline_check": "All three completion times equal the previous residents route measurements",
+  "assertions": 1120,
+  "python_build_tests": 2,
+  "limits": [
+    "Perfect enemy windup information; not human response",
+    "Return distance difference is straight-line destination comparison at a local shelter choice, not measured extra production or net total travel saving",
+    "Actual total return walking spans runs of different duration and population; no direct causal efficiency claim",
+    "Crystal deltas are per-frame net observations, not gross costs or income",
+    "Wall loss is observed at minute sample points; exact destruction time not recorded",
+    "Successful export/human fun/physical-device tests not established by these runs"
+  ],
+  "checksums_sha256": {
+    "summary.json": "a488fcfc587dfd227195ee502b6a9a49cb4c724f6d738d9152bec49acdbae0f9",
+    "1-baseline.json": "12d2249d55b849c6e99c73d51299e960796049f400020d68de8ecab145fa95e6",
+    "42-baseline.json": "6c6929e148631c7d369412ce453560b3d58e96840e623d2e3c119e0bc83f110f",
+    "7-expand.json": "11ab3d2a4854d0cdbf1fb41625b4019effe3276993f96f837590842b51378155",
+    "7-baseline.json": "e43fdc9c459abe90ad3ff38077868bf8eeb4ff07487eaccfa777deb5bf5f699c",
+    "check.log": "478452259ccb0c4e0f8980b4e5b5cff0da9fed40001d144016d481c943e6d21b",
+    "42-expand.json": "0810cf0c8a413d85958f6aa389138b4f17d87c3d8858d384972360dee3d76c0a",
+    "1-expand.json": "55692843867e0b771b24723dfc80e49c4f2e5fb8e3c18ac46e44ae61b025ac0b"
+  }
+}

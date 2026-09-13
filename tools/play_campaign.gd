@@ -196,10 +196,17 @@ func choose() -> Dictionary:
 		if r.outpost_ready and not r.outpost_pending and not r.outpost_built and sim.pouch.amount>=4 and sim.frontier.nodes.any(func(n):return n.region==i and n.marked and not n.delivered):
 			offer(jobs,{"kind":"outpost","index":i,"x":r.outpost_x,"priority":60,"label":"outpost"})
 		if not r.discovered:offer(jobs,{"kind":"explore","index":i,"x":r.x+r.width*0.5,"priority":55,"label":"explore"})
-	if sim.frontier.city_level>=2 and sim.clock.survived>=1 and count_role("engineer")>0 and (sim.frontier.drill_level>=1 or count_role("guard")>=2):
+	for job in extra_jobs():offer(jobs,job)
+	if allow_rifts() and sim.frontier.city_level>=2 and sim.clock.survived>=1 and count_role("engineer")>0 and (sim.frontier.drill_level>=1 or count_role("guard")>=2):
 		for i in range(sim.mission.rifts.size()):
 			var r=sim.mission.rifts[i]
 			if not r.sealed and (r.ordered or (sim.pouch.amount>=4 and sim.world.barrier>=2)):offer(jobs,{"kind":"rift","index":i,"x":r.x,"priority":110,"label":"rift"})
 	if jobs.is_empty():return {}
 	jobs.sort_custom(func(a,b):return a.priority-absf(a.x-x)/30.0>b.priority-absf(b.x-x)/30.0)
 	return jobs[0]
+
+func extra_jobs() -> Array:
+	return []
+
+func allow_rifts() -> bool:
+	return true

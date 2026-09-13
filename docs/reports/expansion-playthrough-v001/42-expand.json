@@ -1,0 +1,3579 @@
+{
+  "combat_profile": "reactive",
+  "events": [
+    {
+      "action": "hall",
+      "done": true,
+      "seconds": 0.6
+    },
+    {
+      "action": "recruit",
+      "done": true,
+      "seconds": 1.5
+    },
+    {
+      "action": "recruit",
+      "done": true,
+      "seconds": 2.1
+    },
+    {
+      "action": "workshop",
+      "done": true,
+      "seconds": 4.5
+    },
+    {
+      "action": "wall",
+      "done": true,
+      "seconds": 8.4
+    },
+    {
+      "action": "explore",
+      "done": true,
+      "seconds": 11.6
+    },
+    {
+      "action": "tree",
+      "done": true,
+      "seconds": 12.3
+    },
+    {
+      "action": "explore",
+      "done": true,
+      "seconds": 14.3
+    },
+    {
+      "action": "explore",
+      "done": true,
+      "seconds": 16.9
+    },
+    {
+      "action": "cache",
+      "done": true,
+      "seconds": 18.9
+    },
+    {
+      "action": "cache",
+      "done": true,
+      "seconds": 20.1
+    },
+    {
+      "action": "collect",
+      "done": true,
+      "seconds": 20.2
+    },
+    {
+      "action": "collect",
+      "done": true,
+      "seconds": 20.8
+    },
+    {
+      "action": "collect",
+      "done": true,
+      "seconds": 20.9
+    },
+    {
+      "action": "collect",
+      "done": true,
+      "seconds": 21.0
+    },
+    {
+      "action": "tree",
+      "done": true,
+      "seconds": 25.2
+    },
+    {
+      "action": "tree",
+      "done": true,
+      "seconds": 26.1
+    },
+    {
+      "action": "berries",
+      "done": true,
+      "seconds": 26.7
+    },
+    {
+      "action": "recruit",
+      "done": true,
+      "seconds": 27.9
+    },
+    {
+      "action": "collect",
+      "done": true,
+      "seconds": 34.2
+    },
+    {
+      "action": "collect",
+      "done": true,
+      "seconds": 34.3
+    },
+    {
+      "action": "collect",
+      "done": true,
+      "seconds": 34.5
+    },
+    {
+      "action": "collect",
+      "done": true,
+      "seconds": 34.6
+    },
+    {
+      "action": "collect",
+      "done": true,
+      "seconds": 34.8
+    },
+    {
+      "action": "collect",
+      "done": true,
+      "seconds": 35.0
+    },
+    {
+      "action": "stone",
+      "done": true,
+      "seconds": 37.5
+    },
+    {
+      "action": "crystal",
+      "done": true,
+      "seconds": 38.1
+    },
+    {
+      "action": "crystal",
+      "done": true,
+      "seconds": 39.3
+    },
+    {
+      "action": "recruit",
+      "done": true,
+      "seconds": 39.9
+    },
+    {
+      "action": "herbs",
+      "done": true,
+      "seconds": 40.8
+    },
+    {
+      "action": "recruit",
+      "done": true,
+      "seconds": 44.1
+    },
+    {
+      "action": "herbs",
+      "done": true,
+      "seconds": 46.5
+    },
+    {
+      "action": "explore",
+      "done": true,
+      "seconds": 69.9
+    },
+    {
+      "action": "collect",
+      "done": true,
+      "seconds": 76.1
+    },
+    {
+      "action": "farm_tools",
+      "done": true,
+      "seconds": 77.1
+    },
+    {
+      "action": "stone",
+      "done": true,
+      "seconds": 83.4
+    },
+    {
+      "action": "explore",
+      "done": true,
+      "seconds": 84.8
+    },
+    {
+      "action": "cache",
+      "done": true,
+      "seconds": 86.1
+    },
+    {
+      "action": "cache",
+      "done": true,
+      "seconds": 87.9
+    },
+    {
+      "action": "collect",
+      "done": true,
+      "seconds": 88.6
+    },
+    {
+      "action": "collect",
+      "done": true,
+      "seconds": 88.7
+    },
+    {
+      "action": "collect",
+      "done": true,
+      "seconds": 88.8
+    },
+    {
+      "action": "collect",
+      "done": true,
+      "seconds": 89.0
+    },
+    {
+      "action": "collect",
+      "done": true,
+      "seconds": 89.3
+    },
+    {
+      "action": "collect",
+      "done": true,
+      "seconds": 89.7
+    },
+    {
+      "action": "collect",
+      "done": true,
+      "seconds": 89.9
+    },
+    {
+      "action": "collect",
+      "done": true,
+      "seconds": 89.9
+    },
+    {
+      "action": "collect",
+      "done": true,
+      "seconds": 90.3
+    },
+    {
+      "action": "collect",
+      "done": true,
+      "seconds": 90.3
+    },
+    {
+      "action": "recruit",
+      "done": true,
+      "seconds": 91.2
+    },
+    {
+      "action": "tree",
+      "done": true,
+      "seconds": 92.1
+    },
+    {
+      "action": "tree",
+      "done": true,
+      "seconds": 93.0
+    },
+    {
+      "action": "tree",
+      "done": true,
+      "seconds": 93.9
+    },
+    {
+      "action": "berries",
+      "done": true,
+      "seconds": 94.5
+    },
+    {
+      "action": "recruit",
+      "done": true,
+      "seconds": 95.4
+    },
+    {
+      "action": "herbs",
+      "done": true,
+      "seconds": 97.5
+    },
+    {
+      "action": "crystal",
+      "done": true,
+      "seconds": 101.1
+    },
+    {
+      "action": "wall_left",
+      "done": true,
+      "seconds": 104.4
+    },
+    {
+      "action": "collect",
+      "done": true,
+      "seconds": 110.1
+    },
+    {
+      "action": "crystal",
+      "done": true,
+      "seconds": 117.6
+    },
+    {
+      "action": "herbs",
+      "done": true,
+      "seconds": 119.4
+    },
+    {
+      "action": "wall",
+      "done": true,
+      "seconds": 201.3
+    },
+    {
+      "action": "berries",
+      "done": true,
+      "seconds": 245.1
+    },
+    {
+      "action": "collect",
+      "done": true,
+      "seconds": 326.5
+    },
+    {
+      "action": "farm",
+      "done": true,
+      "seconds": 329.7
+    },
+    {
+      "action": "collect",
+      "done": true,
+      "seconds": 366.6
+    },
+    {
+      "action": "trade",
+      "done": true,
+      "seconds": 370.5
+    },
+    {
+      "action": "hunt_tools",
+      "done": true,
+      "seconds": 372.9
+    },
+    {
+      "action": "outpost",
+      "done": true,
+      "seconds": 377.7
+    },
+    {
+      "action": "collect",
+      "done": true,
+      "seconds": 384.5
+    },
+    {
+      "action": "armory",
+      "done": true,
+      "seconds": 390.0
+    },
+    {
+      "action": "wall_left",
+      "done": true,
+      "seconds": 442.2
+    },
+    {
+      "action": "berries",
+      "done": true,
+      "seconds": 496.8
+    },
+    {
+      "action": "trade",
+      "done": true,
+      "seconds": 512.1
+    },
+    {
+      "action": "forge",
+      "done": true,
+      "seconds": 518.1
+    },
+    {
+      "action": "outpost",
+      "done": true,
+      "seconds": 526.8
+    },
+    {
+      "action": "drill",
+      "done": true,
+      "seconds": 530.4
+    },
+    {
+      "action": "trade",
+      "done": true,
+      "seconds": 567.3
+    },
+    {
+      "action": "hall",
+      "done": true,
+      "seconds": 588.6
+    },
+    {
+      "action": "beacon",
+      "done": true,
+      "seconds": 593.7
+    },
+    {
+      "action": "wall",
+      "done": true,
+      "seconds": 682.5
+    },
+    {
+      "action": "collect",
+      "done": true,
+      "seconds": 779.3
+    },
+    {
+      "action": "outpost",
+      "done": true,
+      "seconds": 782.7
+    },
+    {
+      "action": "trade",
+      "done": true,
+      "seconds": 801.3
+    },
+    {
+      "action": "wall_left",
+      "done": true,
+      "seconds": 803.7
+    },
+    {
+      "action": "collect",
+      "done": true,
+      "seconds": 803.7
+    },
+    {
+      "action": "forge",
+      "done": true,
+      "seconds": 812.1
+    },
+    {
+      "action": "collect",
+      "done": true,
+      "seconds": 817.3
+    },
+    {
+      "action": "drill",
+      "done": true,
+      "seconds": 827.7
+    },
+    {
+      "action": "berries",
+      "done": true,
+      "seconds": 832.2
+    },
+    {
+      "action": "collect",
+      "done": true,
+      "seconds": 846.0
+    },
+    {
+      "action": "wall",
+      "done": true,
+      "seconds": 937.5
+    },
+    {
+      "action": "collect",
+      "done": true,
+      "seconds": 942.5
+    },
+    {
+      "action": "wall",
+      "done": true,
+      "seconds": 996.3
+    },
+    {
+      "action": "collect",
+      "done": true,
+      "seconds": 997.4
+    },
+    {
+      "action": "collect",
+      "done": true,
+      "seconds": 997.4
+    },
+    {
+      "action": "collect",
+      "done": true,
+      "seconds": 998.7
+    },
+    {
+      "action": "rift",
+      "done": true,
+      "seconds": 1074.1
+    },
+    {
+      "action": "beacon",
+      "done": true,
+      "seconds": 1094.1
+    }
+  ],
+  "final": {
+    "capacitor": 2,
+    "city": 2,
+    "construction_events": [
+      {
+        "id": "frontier_wall:3",
+        "level": 1,
+        "seconds": 759.6
+      },
+      {
+        "id": "frontier_wall:0",
+        "level": 1,
+        "seconds": 1024.6
+      }
+    ],
+    "context": "",
+    "core": 180,
+    "crystals": 12,
+    "day": 5,
+    "expansion_mode": "expand",
+    "food": 47,
+    "ground": 3,
+    "grounded": true,
+    "herbs": 6,
+    "hp": 100,
+    "night": true,
+    "outposts": 3,
+    "return_walk": 15805.0,
+    "roles": {
+      "engineer": 2,
+      "farmer": 1,
+      "guard": 2,
+      "hunter": 2,
+      "wanderer": 12
+    },
+    "scrap": 61,
+    "sealed": 2,
+    "seconds": 1165.4,
+    "shelter_events": [
+      {
+        "from": -1614.99999999977,
+        "local": false,
+        "person": 4,
+        "seconds": 136.9,
+        "shorter_by": 0.0,
+        "target": 74.0
+      },
+      {
+        "from": -846.0,
+        "local": false,
+        "person": 0,
+        "seconds": 151.2,
+        "shorter_by": 0.0,
+        "target": -14.0
+      },
+      {
+        "from": -615.39999999977,
+        "local": false,
+        "person": 3,
+        "seconds": 153.9,
+        "shorter_by": 0.0,
+        "target": 52.0
+      },
+      {
+        "from": -550.0,
+        "local": false,
+        "person": 1,
+        "seconds": 155.7,
+        "shorter_by": 0.0,
+        "target": 8.0
+      },
+      {
+        "from": -349.0,
+        "local": false,
+        "person": 5,
+        "seconds": 159.4,
+        "shorter_by": 0.0,
+        "target": -14.0
+      },
+      {
+        "from": 106.599999999825,
+        "local": false,
+        "person": 6,
+        "seconds": 163.4,
+        "shorter_by": 0.0,
+        "target": 8.0
+      },
+      {
+        "from": -59.4000000001947,
+        "local": false,
+        "person": 7,
+        "seconds": 163.5,
+        "shorter_by": 0.0,
+        "target": 30.0
+      },
+      {
+        "from": -1185.0,
+        "local": false,
+        "person": 1,
+        "seconds": 385.1,
+        "shorter_by": 0.0,
+        "target": 8.0
+      },
+      {
+        "from": -778.0,
+        "local": false,
+        "person": 0,
+        "seconds": 392.3,
+        "shorter_by": 0.0,
+        "target": -14.0
+      },
+      {
+        "from": -349.0,
+        "local": false,
+        "person": 5,
+        "seconds": 399.4,
+        "shorter_by": 0.0,
+        "target": -14.0
+      },
+      {
+        "from": 363.79999999999,
+        "local": false,
+        "person": 3,
+        "seconds": 399.8,
+        "shorter_by": 0.0,
+        "target": 52.0
+      },
+      {
+        "from": 315.599999999989,
+        "local": false,
+        "person": 6,
+        "seconds": 399.9,
+        "shorter_by": 0.0,
+        "target": 8.0
+      },
+      {
+        "from": 2186.0,
+        "local": false,
+        "person": 1,
+        "seconds": 608.7,
+        "shorter_by": 0.0,
+        "target": 8.0
+      },
+      {
+        "from": 2160.51551866531,
+        "local": false,
+        "person": 0,
+        "seconds": 608.8,
+        "shorter_by": 0.0,
+        "target": -14.0
+      },
+      {
+        "from": -349.0,
+        "local": false,
+        "person": 5,
+        "seconds": 639.4,
+        "shorter_by": 0.0,
+        "target": -14.0
+      },
+      {
+        "from": -1087.0,
+        "local": false,
+        "person": 0,
+        "seconds": 867.2,
+        "shorter_by": 0.0,
+        "target": -14.0
+      },
+      {
+        "from": -865.0,
+        "local": false,
+        "person": 1,
+        "seconds": 870.5,
+        "shorter_by": 0.0,
+        "target": 8.0
+      },
+      {
+        "from": -349.0,
+        "local": false,
+        "person": 5,
+        "seconds": 879.5,
+        "shorter_by": 0.0,
+        "target": -14.0
+      },
+      {
+        "from": 2174.0,
+        "local": false,
+        "person": 1,
+        "seconds": 1089.0,
+        "shorter_by": 0.0,
+        "target": 8.0
+      },
+      {
+        "from": -349.0,
+        "local": false,
+        "person": 5,
+        "seconds": 1119.5,
+        "shorter_by": 0.0,
+        "target": -14.0
+      },
+      {
+        "from": 96.0,
+        "local": false,
+        "person": 0,
+        "seconds": 1123.2,
+        "shorter_by": 0.0,
+        "target": -14.0
+      }
+    ],
+    "shield": 40,
+    "stone": 3,
+    "sword": 2,
+    "walls": {
+      "frontier_wall:0": {
+        "hp": 40,
+        "level": 1
+      },
+      "frontier_wall:3": {
+        "hp": 0,
+        "level": 1
+      },
+      "wall": {
+        "hp": 40,
+        "level": 1
+      },
+      "wall_left": {
+        "hp": 40,
+        "level": 1
+      }
+    },
+    "wood": 2,
+    "x": 3485.0,
+    "y": 430.0
+  },
+  "knight_hp_damage": 0,
+  "native_physics": true,
+  "observed_crystal_decrease": 106,
+  "observed_crystal_increase": 109,
+  "outcome": "victory",
+  "reason": "",
+  "resident_losses": 0,
+  "resource_grants": false,
+  "route": "residents",
+  "samples": [
+    {
+      "capacitor": 0,
+      "city": 0,
+      "construction_events": [],
+      "context": "hall",
+      "core": 180,
+      "crystals": 12,
+      "day": 1,
+      "expansion_mode": "expand",
+      "food": 0,
+      "goal": "",
+      "ground": 0,
+      "grounded": false,
+      "herbs": 0,
+      "hp": 100,
+      "night": false,
+      "outposts": 0,
+      "return_walk": 0.0,
+      "roles": {
+        "wanderer": 8
+      },
+      "scrap": 0,
+      "sealed": 0,
+      "seconds": 0.0,
+      "shelter_events": [],
+      "shield": 0,
+      "stone": 0,
+      "sword": 0,
+      "walls": {},
+      "wood": 0,
+      "x": 30.0,
+      "y": 430.0
+    },
+    {
+      "capacitor": 0,
+      "city": 1,
+      "construction_events": [],
+      "context": "armory",
+      "core": 180,
+      "crystals": 1,
+      "day": 1,
+      "expansion_mode": "expand",
+      "food": 0,
+      "goal": "explore",
+      "ground": 0,
+      "grounded": true,
+      "herbs": 0,
+      "hp": 100,
+      "night": false,
+      "outposts": 0,
+      "return_walk": 0.0,
+      "roles": {
+        "citizen": 3,
+        "engineer": 2,
+        "wanderer": 3
+      },
+      "scrap": 8,
+      "sealed": 0,
+      "seconds": 60.0,
+      "shelter_events": [],
+      "shield": 0,
+      "stone": 0,
+      "sword": 0,
+      "walls": {
+        "wall": {
+          "hp": 40,
+          "level": 1
+        }
+      },
+      "wood": 0,
+      "x": 673.0,
+      "y": 430.0
+    },
+    {
+      "capacitor": 0,
+      "city": 1,
+      "construction_events": [],
+      "context": "mark",
+      "core": 180,
+      "crystals": 1,
+      "day": 1,
+      "expansion_mode": "expand",
+      "food": 0,
+      "goal": "",
+      "ground": 0,
+      "grounded": true,
+      "herbs": 0,
+      "hp": 100,
+      "night": false,
+      "outposts": 0,
+      "return_walk": 0.0,
+      "roles": {
+        "citizen": 4,
+        "engineer": 2,
+        "farmer": 1,
+        "wanderer": 1
+      },
+      "scrap": 16,
+      "sealed": 0,
+      "seconds": 120.0,
+      "shelter_events": [],
+      "shield": 0,
+      "stone": 0,
+      "sword": 0,
+      "walls": {
+        "wall": {
+          "hp": 40,
+          "level": 1
+        },
+        "wall_left": {
+          "hp": 40,
+          "level": 1
+        }
+      },
+      "wood": 8,
+      "x": -1756.0,
+      "y": 430.0
+    },
+    {
+      "capacitor": 0,
+      "city": 1,
+      "construction_events": [],
+      "context": "recruit",
+      "core": 180,
+      "crystals": 1,
+      "day": 1,
+      "expansion_mode": "expand",
+      "food": 2,
+      "goal": "",
+      "ground": 0,
+      "grounded": true,
+      "herbs": 0,
+      "hp": 100,
+      "night": false,
+      "outposts": 0,
+      "return_walk": 4276.0,
+      "roles": {
+        "citizen": 4,
+        "engineer": 2,
+        "farmer": 1,
+        "wanderer": 1
+      },
+      "scrap": 16,
+      "sealed": 0,
+      "seconds": 180.0,
+      "shelter_events": [
+        {
+          "from": -1614.99999999977,
+          "local": false,
+          "person": 4,
+          "seconds": 136.9,
+          "shorter_by": 0.0,
+          "target": 74.0
+        },
+        {
+          "from": -846.0,
+          "local": false,
+          "person": 0,
+          "seconds": 151.2,
+          "shorter_by": 0.0,
+          "target": -14.0
+        },
+        {
+          "from": -615.39999999977,
+          "local": false,
+          "person": 3,
+          "seconds": 153.9,
+          "shorter_by": 0.0,
+          "target": 52.0
+        },
+        {
+          "from": -550.0,
+          "local": false,
+          "person": 1,
+          "seconds": 155.7,
+          "shorter_by": 0.0,
+          "target": 8.0
+        },
+        {
+          "from": -349.0,
+          "local": false,
+          "person": 5,
+          "seconds": 159.4,
+          "shorter_by": 0.0,
+          "target": -14.0
+        },
+        {
+          "from": 106.599999999825,
+          "local": false,
+          "person": 6,
+          "seconds": 163.4,
+          "shorter_by": 0.0,
+          "target": 8.0
+        },
+        {
+          "from": -59.4000000001947,
+          "local": false,
+          "person": 7,
+          "seconds": 163.5,
+          "shorter_by": 0.0,
+          "target": 30.0
+        }
+      ],
+      "shield": 0,
+      "stone": 6,
+      "sword": 0,
+      "walls": {
+        "wall": {
+          "hp": 40,
+          "level": 1
+        },
+        "wall_left": {
+          "hp": 40,
+          "level": 1
+        }
+      },
+      "wood": 8,
+      "x": -1756.0,
+      "y": 430.0
+    },
+    {
+      "capacitor": 0,
+      "city": 1,
+      "construction_events": [],
+      "context": "wall",
+      "core": 180,
+      "crystals": 1,
+      "day": 1,
+      "expansion_mode": "expand",
+      "food": 2,
+      "goal": "",
+      "ground": 0,
+      "grounded": true,
+      "herbs": 0,
+      "hp": 100,
+      "night": true,
+      "outposts": 0,
+      "return_walk": 4276.0,
+      "roles": {
+        "citizen": 4,
+        "engineer": 2,
+        "farmer": 1,
+        "wanderer": 1
+      },
+      "scrap": 20,
+      "sealed": 0,
+      "seconds": 240.0,
+      "shelter_events": [
+        {
+          "from": -1614.99999999977,
+          "local": false,
+          "person": 4,
+          "seconds": 136.9,
+          "shorter_by": 0.0,
+          "target": 74.0
+        },
+        {
+          "from": -846.0,
+          "local": false,
+          "person": 0,
+          "seconds": 151.2,
+          "shorter_by": 0.0,
+          "target": -14.0
+        },
+        {
+          "from": -615.39999999977,
+          "local": false,
+          "person": 3,
+          "seconds": 153.9,
+          "shorter_by": 0.0,
+          "target": 52.0
+        },
+        {
+          "from": -550.0,
+          "local": false,
+          "person": 1,
+          "seconds": 155.7,
+          "shorter_by": 0.0,
+          "target": 8.0
+        },
+        {
+          "from": -349.0,
+          "local": false,
+          "person": 5,
+          "seconds": 159.4,
+          "shorter_by": 0.0,
+          "target": -14.0
+        },
+        {
+          "from": 106.599999999825,
+          "local": false,
+          "person": 6,
+          "seconds": 163.4,
+          "shorter_by": 0.0,
+          "target": 8.0
+        },
+        {
+          "from": -59.4000000001947,
+          "local": false,
+          "person": 7,
+          "seconds": 163.5,
+          "shorter_by": 0.0,
+          "target": 30.0
+        }
+      ],
+      "shield": 0,
+      "stone": 6,
+      "sword": 0,
+      "walls": {
+        "wall": {
+          "hp": 0,
+          "level": 1
+        },
+        "wall_left": {
+          "hp": 40,
+          "level": 1
+        }
+      },
+      "wood": 8,
+      "x": 1097.0,
+      "y": 430.0
+    },
+    {
+      "capacitor": 0,
+      "city": 1,
+      "construction_events": [],
+      "context": "mark",
+      "core": 180,
+      "crystals": 0,
+      "day": 2,
+      "expansion_mode": "expand",
+      "food": 2,
+      "goal": "",
+      "ground": 0,
+      "grounded": true,
+      "herbs": 0,
+      "hp": 100,
+      "night": false,
+      "outposts": 0,
+      "return_walk": 4276.0,
+      "roles": {
+        "citizen": 4,
+        "engineer": 2,
+        "farmer": 1,
+        "wanderer": 7
+      },
+      "scrap": 20,
+      "sealed": 0,
+      "seconds": 300.0,
+      "shelter_events": [
+        {
+          "from": -1614.99999999977,
+          "local": false,
+          "person": 4,
+          "seconds": 136.9,
+          "shorter_by": 0.0,
+          "target": 74.0
+        },
+        {
+          "from": -846.0,
+          "local": false,
+          "person": 0,
+          "seconds": 151.2,
+          "shorter_by": 0.0,
+          "target": -14.0
+        },
+        {
+          "from": -615.39999999977,
+          "local": false,
+          "person": 3,
+          "seconds": 153.9,
+          "shorter_by": 0.0,
+          "target": 52.0
+        },
+        {
+          "from": -550.0,
+          "local": false,
+          "person": 1,
+          "seconds": 155.7,
+          "shorter_by": 0.0,
+          "target": 8.0
+        },
+        {
+          "from": -349.0,
+          "local": false,
+          "person": 5,
+          "seconds": 159.4,
+          "shorter_by": 0.0,
+          "target": -14.0
+        },
+        {
+          "from": 106.599999999825,
+          "local": false,
+          "person": 6,
+          "seconds": 163.4,
+          "shorter_by": 0.0,
+          "target": 8.0
+        },
+        {
+          "from": -59.4000000001947,
+          "local": false,
+          "person": 7,
+          "seconds": 163.5,
+          "shorter_by": 0.0,
+          "target": 30.0
+        }
+      ],
+      "shield": 0,
+      "stone": 6,
+      "sword": 0,
+      "walls": {
+        "wall": {
+          "hp": 40,
+          "level": 1
+        },
+        "wall_left": {
+          "hp": 40,
+          "level": 1
+        }
+      },
+      "wood": 8,
+      "x": 2047.0,
+      "y": 430.0
+    },
+    {
+      "capacitor": 0,
+      "city": 1,
+      "construction_events": [],
+      "context": "farm",
+      "core": 180,
+      "crystals": 0,
+      "day": 2,
+      "expansion_mode": "expand",
+      "food": 7,
+      "goal": "",
+      "ground": 0,
+      "grounded": true,
+      "herbs": 0,
+      "hp": 100,
+      "night": false,
+      "outposts": 0,
+      "return_walk": 4276.0,
+      "roles": {
+        "citizen": 4,
+        "engineer": 2,
+        "farmer": 1,
+        "wanderer": 7
+      },
+      "scrap": 22,
+      "sealed": 0,
+      "seconds": 360.0,
+      "shelter_events": [
+        {
+          "from": -1614.99999999977,
+          "local": false,
+          "person": 4,
+          "seconds": 136.9,
+          "shorter_by": 0.0,
+          "target": 74.0
+        },
+        {
+          "from": -846.0,
+          "local": false,
+          "person": 0,
+          "seconds": 151.2,
+          "shorter_by": 0.0,
+          "target": -14.0
+        },
+        {
+          "from": -615.39999999977,
+          "local": false,
+          "person": 3,
+          "seconds": 153.9,
+          "shorter_by": 0.0,
+          "target": 52.0
+        },
+        {
+          "from": -550.0,
+          "local": false,
+          "person": 1,
+          "seconds": 155.7,
+          "shorter_by": 0.0,
+          "target": 8.0
+        },
+        {
+          "from": -349.0,
+          "local": false,
+          "person": 5,
+          "seconds": 159.4,
+          "shorter_by": 0.0,
+          "target": -14.0
+        },
+        {
+          "from": 106.599999999825,
+          "local": false,
+          "person": 6,
+          "seconds": 163.4,
+          "shorter_by": 0.0,
+          "target": 8.0
+        },
+        {
+          "from": -59.4000000001947,
+          "local": false,
+          "person": 7,
+          "seconds": 163.5,
+          "shorter_by": 0.0,
+          "target": 30.0
+        }
+      ],
+      "shield": 0,
+      "stone": 6,
+      "sword": 0,
+      "walls": {
+        "wall": {
+          "hp": 40,
+          "level": 1
+        },
+        "wall_left": {
+          "hp": 40,
+          "level": 1
+        }
+      },
+      "wood": 10,
+      "x": -347.0,
+      "y": 430.0
+    },
+    {
+      "capacitor": 0,
+      "city": 1,
+      "construction_events": [],
+      "context": "armory",
+      "core": 180,
+      "crystals": 1,
+      "day": 2,
+      "expansion_mode": "expand",
+      "food": 5,
+      "goal": "",
+      "ground": 0,
+      "grounded": true,
+      "herbs": 0,
+      "hp": 100,
+      "night": false,
+      "outposts": 0,
+      "return_walk": 7193.0,
+      "roles": {
+        "citizen": 2,
+        "engineer": 2,
+        "farmer": 1,
+        "hunter": 2,
+        "wanderer": 7
+      },
+      "scrap": 22,
+      "sealed": 0,
+      "seconds": 420.0,
+      "shelter_events": [
+        {
+          "from": -1614.99999999977,
+          "local": false,
+          "person": 4,
+          "seconds": 136.9,
+          "shorter_by": 0.0,
+          "target": 74.0
+        },
+        {
+          "from": -846.0,
+          "local": false,
+          "person": 0,
+          "seconds": 151.2,
+          "shorter_by": 0.0,
+          "target": -14.0
+        },
+        {
+          "from": -615.39999999977,
+          "local": false,
+          "person": 3,
+          "seconds": 153.9,
+          "shorter_by": 0.0,
+          "target": 52.0
+        },
+        {
+          "from": -550.0,
+          "local": false,
+          "person": 1,
+          "seconds": 155.7,
+          "shorter_by": 0.0,
+          "target": 8.0
+        },
+        {
+          "from": -349.0,
+          "local": false,
+          "person": 5,
+          "seconds": 159.4,
+          "shorter_by": 0.0,
+          "target": -14.0
+        },
+        {
+          "from": 106.599999999825,
+          "local": false,
+          "person": 6,
+          "seconds": 163.4,
+          "shorter_by": 0.0,
+          "target": 8.0
+        },
+        {
+          "from": -59.4000000001947,
+          "local": false,
+          "person": 7,
+          "seconds": 163.5,
+          "shorter_by": 0.0,
+          "target": 30.0
+        },
+        {
+          "from": -1185.0,
+          "local": false,
+          "person": 1,
+          "seconds": 385.1,
+          "shorter_by": 0.0,
+          "target": 8.0
+        },
+        {
+          "from": -778.0,
+          "local": false,
+          "person": 0,
+          "seconds": 392.3,
+          "shorter_by": 0.0,
+          "target": -14.0
+        },
+        {
+          "from": -349.0,
+          "local": false,
+          "person": 5,
+          "seconds": 399.4,
+          "shorter_by": 0.0,
+          "target": -14.0
+        },
+        {
+          "from": 363.79999999999,
+          "local": false,
+          "person": 3,
+          "seconds": 399.8,
+          "shorter_by": 0.0,
+          "target": 52.0
+        },
+        {
+          "from": 315.599999999989,
+          "local": false,
+          "person": 6,
+          "seconds": 399.9,
+          "shorter_by": 0.0,
+          "target": 8.0
+        }
+      ],
+      "shield": 0,
+      "stone": 6,
+      "sword": 0,
+      "walls": {
+        "wall": {
+          "hp": 40,
+          "level": 1
+        },
+        "wall_left": {
+          "hp": 40,
+          "level": 1
+        }
+      },
+      "wood": 10,
+      "x": 707.0,
+      "y": 430.0
+    },
+    {
+      "capacitor": 0,
+      "city": 1,
+      "construction_events": [],
+      "context": "wall_left",
+      "core": 180,
+      "crystals": 3,
+      "day": 2,
+      "expansion_mode": "expand",
+      "food": 5,
+      "goal": "",
+      "ground": 0,
+      "grounded": true,
+      "herbs": 0,
+      "hp": 100,
+      "night": true,
+      "outposts": 0,
+      "return_walk": 7193.0,
+      "roles": {
+        "citizen": 2,
+        "engineer": 2,
+        "farmer": 1,
+        "hunter": 2,
+        "wanderer": 7
+      },
+      "scrap": 30,
+      "sealed": 0,
+      "seconds": 480.0,
+      "shelter_events": [
+        {
+          "from": -1614.99999999977,
+          "local": false,
+          "person": 4,
+          "seconds": 136.9,
+          "shorter_by": 0.0,
+          "target": 74.0
+        },
+        {
+          "from": -846.0,
+          "local": false,
+          "person": 0,
+          "seconds": 151.2,
+          "shorter_by": 0.0,
+          "target": -14.0
+        },
+        {
+          "from": -615.39999999977,
+          "local": false,
+          "person": 3,
+          "seconds": 153.9,
+          "shorter_by": 0.0,
+          "target": 52.0
+        },
+        {
+          "from": -550.0,
+          "local": false,
+          "person": 1,
+          "seconds": 155.7,
+          "shorter_by": 0.0,
+          "target": 8.0
+        },
+        {
+          "from": -349.0,
+          "local": false,
+          "person": 5,
+          "seconds": 159.4,
+          "shorter_by": 0.0,
+          "target": -14.0
+        },
+        {
+          "from": 106.599999999825,
+          "local": false,
+          "person": 6,
+          "seconds": 163.4,
+          "shorter_by": 0.0,
+          "target": 8.0
+        },
+        {
+          "from": -59.4000000001947,
+          "local": false,
+          "person": 7,
+          "seconds": 163.5,
+          "shorter_by": 0.0,
+          "target": 30.0
+        },
+        {
+          "from": -1185.0,
+          "local": false,
+          "person": 1,
+          "seconds": 385.1,
+          "shorter_by": 0.0,
+          "target": 8.0
+        },
+        {
+          "from": -778.0,
+          "local": false,
+          "person": 0,
+          "seconds": 392.3,
+          "shorter_by": 0.0,
+          "target": -14.0
+        },
+        {
+          "from": -349.0,
+          "local": false,
+          "person": 5,
+          "seconds": 399.4,
+          "shorter_by": 0.0,
+          "target": -14.0
+        },
+        {
+          "from": 363.79999999999,
+          "local": false,
+          "person": 3,
+          "seconds": 399.8,
+          "shorter_by": 0.0,
+          "target": 52.0
+        },
+        {
+          "from": 315.599999999989,
+          "local": false,
+          "person": 6,
+          "seconds": 399.9,
+          "shorter_by": 0.0,
+          "target": 8.0
+        }
+      ],
+      "shield": 0,
+      "stone": 6,
+      "sword": 0,
+      "walls": {
+        "wall": {
+          "hp": 40,
+          "level": 1
+        },
+        "wall_left": {
+          "hp": 0,
+          "level": 1
+        }
+      },
+      "wood": 10,
+      "x": -1098.0,
+      "y": 430.0
+    },
+    {
+      "capacitor": 1,
+      "city": 1,
+      "construction_events": [],
+      "context": "drill",
+      "core": 180,
+      "crystals": 1,
+      "day": 3,
+      "expansion_mode": "expand",
+      "food": 5,
+      "goal": "",
+      "ground": 0,
+      "grounded": true,
+      "herbs": 3,
+      "hp": 100,
+      "night": false,
+      "outposts": 1,
+      "return_walk": 7193.0,
+      "roles": {
+        "engineer": 2,
+        "farmer": 1,
+        "guard": 2,
+        "hunter": 2,
+        "wanderer": 12
+      },
+      "scrap": 28,
+      "sealed": 0,
+      "seconds": 540.0,
+      "shelter_events": [
+        {
+          "from": -1614.99999999977,
+          "local": false,
+          "person": 4,
+          "seconds": 136.9,
+          "shorter_by": 0.0,
+          "target": 74.0
+        },
+        {
+          "from": -846.0,
+          "local": false,
+          "person": 0,
+          "seconds": 151.2,
+          "shorter_by": 0.0,
+          "target": -14.0
+        },
+        {
+          "from": -615.39999999977,
+          "local": false,
+          "person": 3,
+          "seconds": 153.9,
+          "shorter_by": 0.0,
+          "target": 52.0
+        },
+        {
+          "from": -550.0,
+          "local": false,
+          "person": 1,
+          "seconds": 155.7,
+          "shorter_by": 0.0,
+          "target": 8.0
+        },
+        {
+          "from": -349.0,
+          "local": false,
+          "person": 5,
+          "seconds": 159.4,
+          "shorter_by": 0.0,
+          "target": -14.0
+        },
+        {
+          "from": 106.599999999825,
+          "local": false,
+          "person": 6,
+          "seconds": 163.4,
+          "shorter_by": 0.0,
+          "target": 8.0
+        },
+        {
+          "from": -59.4000000001947,
+          "local": false,
+          "person": 7,
+          "seconds": 163.5,
+          "shorter_by": 0.0,
+          "target": 30.0
+        },
+        {
+          "from": -1185.0,
+          "local": false,
+          "person": 1,
+          "seconds": 385.1,
+          "shorter_by": 0.0,
+          "target": 8.0
+        },
+        {
+          "from": -778.0,
+          "local": false,
+          "person": 0,
+          "seconds": 392.3,
+          "shorter_by": 0.0,
+          "target": -14.0
+        },
+        {
+          "from": -349.0,
+          "local": false,
+          "person": 5,
+          "seconds": 399.4,
+          "shorter_by": 0.0,
+          "target": -14.0
+        },
+        {
+          "from": 363.79999999999,
+          "local": false,
+          "person": 3,
+          "seconds": 399.8,
+          "shorter_by": 0.0,
+          "target": 52.0
+        },
+        {
+          "from": 315.599999999989,
+          "local": false,
+          "person": 6,
+          "seconds": 399.9,
+          "shorter_by": 0.0,
+          "target": 8.0
+        }
+      ],
+      "shield": 20,
+      "stone": 6,
+      "sword": 1,
+      "walls": {
+        "wall": {
+          "hp": 40,
+          "level": 1
+        },
+        "wall_left": {
+          "hp": 40,
+          "level": 1
+        }
+      },
+      "wood": 10,
+      "x": 1233.0,
+      "y": 430.0
+    },
+    {
+      "capacitor": 1,
+      "city": 2,
+      "construction_events": [],
+      "context": "beacon",
+      "core": 180,
+      "crystals": 0,
+      "day": 3,
+      "expansion_mode": "expand",
+      "food": 3,
+      "goal": "",
+      "ground": 0,
+      "grounded": true,
+      "herbs": 3,
+      "hp": 100,
+      "night": false,
+      "outposts": 2,
+      "return_walk": 7193.0,
+      "roles": {
+        "engineer": 2,
+        "farmer": 1,
+        "guard": 2,
+        "hunter": 2,
+        "wanderer": 12
+      },
+      "scrap": 28,
+      "sealed": 0,
+      "seconds": 600.0,
+      "shelter_events": [
+        {
+          "from": -1614.99999999977,
+          "local": false,
+          "person": 4,
+          "seconds": 136.9,
+          "shorter_by": 0.0,
+          "target": 74.0
+        },
+        {
+          "from": -846.0,
+          "local": false,
+          "person": 0,
+          "seconds": 151.2,
+          "shorter_by": 0.0,
+          "target": -14.0
+        },
+        {
+          "from": -615.39999999977,
+          "local": false,
+          "person": 3,
+          "seconds": 153.9,
+          "shorter_by": 0.0,
+          "target": 52.0
+        },
+        {
+          "from": -550.0,
+          "local": false,
+          "person": 1,
+          "seconds": 155.7,
+          "shorter_by": 0.0,
+          "target": 8.0
+        },
+        {
+          "from": -349.0,
+          "local": false,
+          "person": 5,
+          "seconds": 159.4,
+          "shorter_by": 0.0,
+          "target": -14.0
+        },
+        {
+          "from": 106.599999999825,
+          "local": false,
+          "person": 6,
+          "seconds": 163.4,
+          "shorter_by": 0.0,
+          "target": 8.0
+        },
+        {
+          "from": -59.4000000001947,
+          "local": false,
+          "person": 7,
+          "seconds": 163.5,
+          "shorter_by": 0.0,
+          "target": 30.0
+        },
+        {
+          "from": -1185.0,
+          "local": false,
+          "person": 1,
+          "seconds": 385.1,
+          "shorter_by": 0.0,
+          "target": 8.0
+        },
+        {
+          "from": -778.0,
+          "local": false,
+          "person": 0,
+          "seconds": 392.3,
+          "shorter_by": 0.0,
+          "target": -14.0
+        },
+        {
+          "from": -349.0,
+          "local": false,
+          "person": 5,
+          "seconds": 399.4,
+          "shorter_by": 0.0,
+          "target": -14.0
+        },
+        {
+          "from": 363.79999999999,
+          "local": false,
+          "person": 3,
+          "seconds": 399.8,
+          "shorter_by": 0.0,
+          "target": 52.0
+        },
+        {
+          "from": 315.599999999989,
+          "local": false,
+          "person": 6,
+          "seconds": 399.9,
+          "shorter_by": 0.0,
+          "target": 8.0
+        }
+      ],
+      "shield": 20,
+      "stone": 3,
+      "sword": 1,
+      "walls": {
+        "wall": {
+          "hp": 40,
+          "level": 1
+        },
+        "wall_left": {
+          "hp": 40,
+          "level": 1
+        }
+      },
+      "wood": 2,
+      "x": 888.0,
+      "y": 430.0
+    },
+    {
+      "capacitor": 1,
+      "city": 2,
+      "construction_events": [],
+      "context": "beacon",
+      "core": 180,
+      "crystals": 0,
+      "day": 3,
+      "expansion_mode": "expand",
+      "food": 11,
+      "goal": "",
+      "ground": 0,
+      "grounded": true,
+      "herbs": 6,
+      "hp": 100,
+      "night": false,
+      "outposts": 2,
+      "return_walk": 11883.0,
+      "roles": {
+        "engineer": 2,
+        "farmer": 1,
+        "guard": 2,
+        "hunter": 2,
+        "wanderer": 12
+      },
+      "scrap": 28,
+      "sealed": 0,
+      "seconds": 660.0,
+      "shelter_events": [
+        {
+          "from": -1614.99999999977,
+          "local": false,
+          "person": 4,
+          "seconds": 136.9,
+          "shorter_by": 0.0,
+          "target": 74.0
+        },
+        {
+          "from": -846.0,
+          "local": false,
+          "person": 0,
+          "seconds": 151.2,
+          "shorter_by": 0.0,
+          "target": -14.0
+        },
+        {
+          "from": -615.39999999977,
+          "local": false,
+          "person": 3,
+          "seconds": 153.9,
+          "shorter_by": 0.0,
+          "target": 52.0
+        },
+        {
+          "from": -550.0,
+          "local": false,
+          "person": 1,
+          "seconds": 155.7,
+          "shorter_by": 0.0,
+          "target": 8.0
+        },
+        {
+          "from": -349.0,
+          "local": false,
+          "person": 5,
+          "seconds": 159.4,
+          "shorter_by": 0.0,
+          "target": -14.0
+        },
+        {
+          "from": 106.599999999825,
+          "local": false,
+          "person": 6,
+          "seconds": 163.4,
+          "shorter_by": 0.0,
+          "target": 8.0
+        },
+        {
+          "from": -59.4000000001947,
+          "local": false,
+          "person": 7,
+          "seconds": 163.5,
+          "shorter_by": 0.0,
+          "target": 30.0
+        },
+        {
+          "from": -1185.0,
+          "local": false,
+          "person": 1,
+          "seconds": 385.1,
+          "shorter_by": 0.0,
+          "target": 8.0
+        },
+        {
+          "from": -778.0,
+          "local": false,
+          "person": 0,
+          "seconds": 392.3,
+          "shorter_by": 0.0,
+          "target": -14.0
+        },
+        {
+          "from": -349.0,
+          "local": false,
+          "person": 5,
+          "seconds": 399.4,
+          "shorter_by": 0.0,
+          "target": -14.0
+        },
+        {
+          "from": 363.79999999999,
+          "local": false,
+          "person": 3,
+          "seconds": 399.8,
+          "shorter_by": 0.0,
+          "target": 52.0
+        },
+        {
+          "from": 315.599999999989,
+          "local": false,
+          "person": 6,
+          "seconds": 399.9,
+          "shorter_by": 0.0,
+          "target": 8.0
+        },
+        {
+          "from": 2186.0,
+          "local": false,
+          "person": 1,
+          "seconds": 608.7,
+          "shorter_by": 0.0,
+          "target": 8.0
+        },
+        {
+          "from": 2160.51551866531,
+          "local": false,
+          "person": 0,
+          "seconds": 608.8,
+          "shorter_by": 0.0,
+          "target": -14.0
+        },
+        {
+          "from": -349.0,
+          "local": false,
+          "person": 5,
+          "seconds": 639.4,
+          "shorter_by": 0.0,
+          "target": -14.0
+        }
+      ],
+      "shield": 20,
+      "stone": 3,
+      "sword": 1,
+      "walls": {
+        "wall": {
+          "hp": 40,
+          "level": 1
+        },
+        "wall_left": {
+          "hp": 40,
+          "level": 1
+        }
+      },
+      "wood": 2,
+      "x": 888.0,
+      "y": 430.0
+    },
+    {
+      "capacitor": 1,
+      "city": 2,
+      "construction_events": [],
+      "context": "wall",
+      "core": 180,
+      "crystals": 0,
+      "day": 3,
+      "expansion_mode": "expand",
+      "food": 11,
+      "goal": "",
+      "ground": 0,
+      "grounded": true,
+      "herbs": 6,
+      "hp": 100,
+      "night": true,
+      "outposts": 2,
+      "return_walk": 11883.0,
+      "roles": {
+        "engineer": 2,
+        "farmer": 1,
+        "guard": 2,
+        "hunter": 2,
+        "wanderer": 12
+      },
+      "scrap": 34,
+      "sealed": 0,
+      "seconds": 720.0,
+      "shelter_events": [
+        {
+          "from": -1614.99999999977,
+          "local": false,
+          "person": 4,
+          "seconds": 136.9,
+          "shorter_by": 0.0,
+          "target": 74.0
+        },
+        {
+          "from": -846.0,
+          "local": false,
+          "person": 0,
+          "seconds": 151.2,
+          "shorter_by": 0.0,
+          "target": -14.0
+        },
+        {
+          "from": -615.39999999977,
+          "local": false,
+          "person": 3,
+          "seconds": 153.9,
+          "shorter_by": 0.0,
+          "target": 52.0
+        },
+        {
+          "from": -550.0,
+          "local": false,
+          "person": 1,
+          "seconds": 155.7,
+          "shorter_by": 0.0,
+          "target": 8.0
+        },
+        {
+          "from": -349.0,
+          "local": false,
+          "person": 5,
+          "seconds": 159.4,
+          "shorter_by": 0.0,
+          "target": -14.0
+        },
+        {
+          "from": 106.599999999825,
+          "local": false,
+          "person": 6,
+          "seconds": 163.4,
+          "shorter_by": 0.0,
+          "target": 8.0
+        },
+        {
+          "from": -59.4000000001947,
+          "local": false,
+          "person": 7,
+          "seconds": 163.5,
+          "shorter_by": 0.0,
+          "target": 30.0
+        },
+        {
+          "from": -1185.0,
+          "local": false,
+          "person": 1,
+          "seconds": 385.1,
+          "shorter_by": 0.0,
+          "target": 8.0
+        },
+        {
+          "from": -778.0,
+          "local": false,
+          "person": 0,
+          "seconds": 392.3,
+          "shorter_by": 0.0,
+          "target": -14.0
+        },
+        {
+          "from": -349.0,
+          "local": false,
+          "person": 5,
+          "seconds": 399.4,
+          "shorter_by": 0.0,
+          "target": -14.0
+        },
+        {
+          "from": 363.79999999999,
+          "local": false,
+          "person": 3,
+          "seconds": 399.8,
+          "shorter_by": 0.0,
+          "target": 52.0
+        },
+        {
+          "from": 315.599999999989,
+          "local": false,
+          "person": 6,
+          "seconds": 399.9,
+          "shorter_by": 0.0,
+          "target": 8.0
+        },
+        {
+          "from": 2186.0,
+          "local": false,
+          "person": 1,
+          "seconds": 608.7,
+          "shorter_by": 0.0,
+          "target": 8.0
+        },
+        {
+          "from": 2160.51551866531,
+          "local": false,
+          "person": 0,
+          "seconds": 608.8,
+          "shorter_by": 0.0,
+          "target": -14.0
+        },
+        {
+          "from": -349.0,
+          "local": false,
+          "person": 5,
+          "seconds": 639.4,
+          "shorter_by": 0.0,
+          "target": -14.0
+        }
+      ],
+      "shield": 20,
+      "stone": 3,
+      "sword": 1,
+      "walls": {
+        "wall": {
+          "hp": 40,
+          "level": 1
+        },
+        "wall_left": {
+          "hp": 0,
+          "level": 1
+        }
+      },
+      "wood": 2,
+      "x": 2298.0,
+      "y": 430.0
+    },
+    {
+      "capacitor": 1,
+      "city": 2,
+      "construction_events": [
+        {
+          "id": "frontier_wall:3",
+          "level": 1,
+          "seconds": 759.6
+        }
+      ],
+      "context": "mark",
+      "core": 180,
+      "crystals": 6,
+      "day": 4,
+      "expansion_mode": "expand",
+      "food": 25,
+      "goal": "outpost",
+      "ground": 0,
+      "grounded": true,
+      "herbs": 6,
+      "hp": 100,
+      "night": false,
+      "outposts": 2,
+      "return_walk": 11883.0,
+      "roles": {
+        "engineer": 2,
+        "farmer": 1,
+        "guard": 2,
+        "hunter": 2,
+        "wanderer": 12
+      },
+      "scrap": 34,
+      "sealed": 0,
+      "seconds": 780.0,
+      "shelter_events": [
+        {
+          "from": -1614.99999999977,
+          "local": false,
+          "person": 4,
+          "seconds": 136.9,
+          "shorter_by": 0.0,
+          "target": 74.0
+        },
+        {
+          "from": -846.0,
+          "local": false,
+          "person": 0,
+          "seconds": 151.2,
+          "shorter_by": 0.0,
+          "target": -14.0
+        },
+        {
+          "from": -615.39999999977,
+          "local": false,
+          "person": 3,
+          "seconds": 153.9,
+          "shorter_by": 0.0,
+          "target": 52.0
+        },
+        {
+          "from": -550.0,
+          "local": false,
+          "person": 1,
+          "seconds": 155.7,
+          "shorter_by": 0.0,
+          "target": 8.0
+        },
+        {
+          "from": -349.0,
+          "local": false,
+          "person": 5,
+          "seconds": 159.4,
+          "shorter_by": 0.0,
+          "target": -14.0
+        },
+        {
+          "from": 106.599999999825,
+          "local": false,
+          "person": 6,
+          "seconds": 163.4,
+          "shorter_by": 0.0,
+          "target": 8.0
+        },
+        {
+          "from": -59.4000000001947,
+          "local": false,
+          "person": 7,
+          "seconds": 163.5,
+          "shorter_by": 0.0,
+          "target": 30.0
+        },
+        {
+          "from": -1185.0,
+          "local": false,
+          "person": 1,
+          "seconds": 385.1,
+          "shorter_by": 0.0,
+          "target": 8.0
+        },
+        {
+          "from": -778.0,
+          "local": false,
+          "person": 0,
+          "seconds": 392.3,
+          "shorter_by": 0.0,
+          "target": -14.0
+        },
+        {
+          "from": -349.0,
+          "local": false,
+          "person": 5,
+          "seconds": 399.4,
+          "shorter_by": 0.0,
+          "target": -14.0
+        },
+        {
+          "from": 363.79999999999,
+          "local": false,
+          "person": 3,
+          "seconds": 399.8,
+          "shorter_by": 0.0,
+          "target": 52.0
+        },
+        {
+          "from": 315.599999999989,
+          "local": false,
+          "person": 6,
+          "seconds": 399.9,
+          "shorter_by": 0.0,
+          "target": 8.0
+        },
+        {
+          "from": 2186.0,
+          "local": false,
+          "person": 1,
+          "seconds": 608.7,
+          "shorter_by": 0.0,
+          "target": 8.0
+        },
+        {
+          "from": 2160.51551866531,
+          "local": false,
+          "person": 0,
+          "seconds": 608.8,
+          "shorter_by": 0.0,
+          "target": -14.0
+        },
+        {
+          "from": -349.0,
+          "local": false,
+          "person": 5,
+          "seconds": 639.4,
+          "shorter_by": 0.0,
+          "target": -14.0
+        }
+      ],
+      "shield": 20,
+      "stone": 3,
+      "sword": 1,
+      "walls": {
+        "frontier_wall:3": {
+          "hp": 40,
+          "level": 1
+        },
+        "wall": {
+          "hp": 40,
+          "level": 1
+        },
+        "wall_left": {
+          "hp": 0,
+          "level": 1
+        }
+      },
+      "wood": 2,
+      "x": 2057.0,
+      "y": 430.0
+    },
+    {
+      "capacitor": 2,
+      "city": 2,
+      "construction_events": [
+        {
+          "id": "frontier_wall:3",
+          "level": 1,
+          "seconds": 759.6
+        }
+      ],
+      "context": "workshop",
+      "core": 180,
+      "crystals": 8,
+      "day": 4,
+      "expansion_mode": "expand",
+      "food": 7,
+      "goal": "collect",
+      "ground": 8,
+      "grounded": true,
+      "herbs": 6,
+      "hp": 100,
+      "night": false,
+      "outposts": 3,
+      "return_walk": 11883.0,
+      "roles": {
+        "engineer": 2,
+        "farmer": 1,
+        "guard": 2,
+        "hunter": 2,
+        "wanderer": 12
+      },
+      "scrap": 35,
+      "sealed": 0,
+      "seconds": 840.0,
+      "shelter_events": [
+        {
+          "from": -1614.99999999977,
+          "local": false,
+          "person": 4,
+          "seconds": 136.9,
+          "shorter_by": 0.0,
+          "target": 74.0
+        },
+        {
+          "from": -846.0,
+          "local": false,
+          "person": 0,
+          "seconds": 151.2,
+          "shorter_by": 0.0,
+          "target": -14.0
+        },
+        {
+          "from": -615.39999999977,
+          "local": false,
+          "person": 3,
+          "seconds": 153.9,
+          "shorter_by": 0.0,
+          "target": 52.0
+        },
+        {
+          "from": -550.0,
+          "local": false,
+          "person": 1,
+          "seconds": 155.7,
+          "shorter_by": 0.0,
+          "target": 8.0
+        },
+        {
+          "from": -349.0,
+          "local": false,
+          "person": 5,
+          "seconds": 159.4,
+          "shorter_by": 0.0,
+          "target": -14.0
+        },
+        {
+          "from": 106.599999999825,
+          "local": false,
+          "person": 6,
+          "seconds": 163.4,
+          "shorter_by": 0.0,
+          "target": 8.0
+        },
+        {
+          "from": -59.4000000001947,
+          "local": false,
+          "person": 7,
+          "seconds": 163.5,
+          "shorter_by": 0.0,
+          "target": 30.0
+        },
+        {
+          "from": -1185.0,
+          "local": false,
+          "person": 1,
+          "seconds": 385.1,
+          "shorter_by": 0.0,
+          "target": 8.0
+        },
+        {
+          "from": -778.0,
+          "local": false,
+          "person": 0,
+          "seconds": 392.3,
+          "shorter_by": 0.0,
+          "target": -14.0
+        },
+        {
+          "from": -349.0,
+          "local": false,
+          "person": 5,
+          "seconds": 399.4,
+          "shorter_by": 0.0,
+          "target": -14.0
+        },
+        {
+          "from": 363.79999999999,
+          "local": false,
+          "person": 3,
+          "seconds": 399.8,
+          "shorter_by": 0.0,
+          "target": 52.0
+        },
+        {
+          "from": 315.599999999989,
+          "local": false,
+          "person": 6,
+          "seconds": 399.9,
+          "shorter_by": 0.0,
+          "target": 8.0
+        },
+        {
+          "from": 2186.0,
+          "local": false,
+          "person": 1,
+          "seconds": 608.7,
+          "shorter_by": 0.0,
+          "target": 8.0
+        },
+        {
+          "from": 2160.51551866531,
+          "local": false,
+          "person": 0,
+          "seconds": 608.8,
+          "shorter_by": 0.0,
+          "target": -14.0
+        },
+        {
+          "from": -349.0,
+          "local": false,
+          "person": 5,
+          "seconds": 639.4,
+          "shorter_by": 0.0,
+          "target": -14.0
+        }
+      ],
+      "shield": 40,
+      "stone": 3,
+      "sword": 2,
+      "walls": {
+        "frontier_wall:3": {
+          "hp": 40,
+          "level": 1
+        },
+        "wall": {
+          "hp": 40,
+          "level": 1
+        },
+        "wall_left": {
+          "hp": 0,
+          "level": 1
+        }
+      },
+      "wood": 2,
+      "x": 565.0,
+      "y": 430.0
+    },
+    {
+      "capacitor": 2,
+      "city": 2,
+      "construction_events": [
+        {
+          "id": "frontier_wall:3",
+          "level": 1,
+          "seconds": 759.6
+        }
+      ],
+      "context": "hunt_tools",
+      "core": 180,
+      "crystals": 12,
+      "day": 4,
+      "expansion_mode": "expand",
+      "food": 13,
+      "goal": "",
+      "ground": 4,
+      "grounded": true,
+      "herbs": 6,
+      "hp": 100,
+      "night": false,
+      "outposts": 3,
+      "return_walk": 14167.0,
+      "roles": {
+        "engineer": 2,
+        "farmer": 1,
+        "guard": 2,
+        "hunter": 2,
+        "wanderer": 12
+      },
+      "scrap": 35,
+      "sealed": 0,
+      "seconds": 900.0,
+      "shelter_events": [
+        {
+          "from": -1614.99999999977,
+          "local": false,
+          "person": 4,
+          "seconds": 136.9,
+          "shorter_by": 0.0,
+          "target": 74.0
+        },
+        {
+          "from": -846.0,
+          "local": false,
+          "person": 0,
+          "seconds": 151.2,
+          "shorter_by": 0.0,
+          "target": -14.0
+        },
+        {
+          "from": -615.39999999977,
+          "local": false,
+          "person": 3,
+          "seconds": 153.9,
+          "shorter_by": 0.0,
+          "target": 52.0
+        },
+        {
+          "from": -550.0,
+          "local": false,
+          "person": 1,
+          "seconds": 155.7,
+          "shorter_by": 0.0,
+          "target": 8.0
+        },
+        {
+          "from": -349.0,
+          "local": false,
+          "person": 5,
+          "seconds": 159.4,
+          "shorter_by": 0.0,
+          "target": -14.0
+        },
+        {
+          "from": 106.599999999825,
+          "local": false,
+          "person": 6,
+          "seconds": 163.4,
+          "shorter_by": 0.0,
+          "target": 8.0
+        },
+        {
+          "from": -59.4000000001947,
+          "local": false,
+          "person": 7,
+          "seconds": 163.5,
+          "shorter_by": 0.0,
+          "target": 30.0
+        },
+        {
+          "from": -1185.0,
+          "local": false,
+          "person": 1,
+          "seconds": 385.1,
+          "shorter_by": 0.0,
+          "target": 8.0
+        },
+        {
+          "from": -778.0,
+          "local": false,
+          "person": 0,
+          "seconds": 392.3,
+          "shorter_by": 0.0,
+          "target": -14.0
+        },
+        {
+          "from": -349.0,
+          "local": false,
+          "person": 5,
+          "seconds": 399.4,
+          "shorter_by": 0.0,
+          "target": -14.0
+        },
+        {
+          "from": 363.79999999999,
+          "local": false,
+          "person": 3,
+          "seconds": 399.8,
+          "shorter_by": 0.0,
+          "target": 52.0
+        },
+        {
+          "from": 315.599999999989,
+          "local": false,
+          "person": 6,
+          "seconds": 399.9,
+          "shorter_by": 0.0,
+          "target": 8.0
+        },
+        {
+          "from": 2186.0,
+          "local": false,
+          "person": 1,
+          "seconds": 608.7,
+          "shorter_by": 0.0,
+          "target": 8.0
+        },
+        {
+          "from": 2160.51551866531,
+          "local": false,
+          "person": 0,
+          "seconds": 608.8,
+          "shorter_by": 0.0,
+          "target": -14.0
+        },
+        {
+          "from": -349.0,
+          "local": false,
+          "person": 5,
+          "seconds": 639.4,
+          "shorter_by": 0.0,
+          "target": -14.0
+        },
+        {
+          "from": -1087.0,
+          "local": false,
+          "person": 0,
+          "seconds": 867.2,
+          "shorter_by": 0.0,
+          "target": -14.0
+        },
+        {
+          "from": -865.0,
+          "local": false,
+          "person": 1,
+          "seconds": 870.5,
+          "shorter_by": 0.0,
+          "target": 8.0
+        },
+        {
+          "from": -349.0,
+          "local": false,
+          "person": 5,
+          "seconds": 879.5,
+          "shorter_by": 0.0,
+          "target": -14.0
+        }
+      ],
+      "shield": 40,
+      "stone": 3,
+      "sword": 2,
+      "walls": {
+        "frontier_wall:3": {
+          "hp": 40,
+          "level": 1
+        },
+        "wall": {
+          "hp": 40,
+          "level": 1
+        },
+        "wall_left": {
+          "hp": 0,
+          "level": 1
+        }
+      },
+      "wood": 2,
+      "x": -571.0,
+      "y": 430.0
+    },
+    {
+      "capacitor": 2,
+      "city": 2,
+      "construction_events": [
+        {
+          "id": "frontier_wall:3",
+          "level": 1,
+          "seconds": 759.6
+        }
+      ],
+      "context": "",
+      "core": 180,
+      "crystals": 12,
+      "day": 4,
+      "expansion_mode": "expand",
+      "food": 13,
+      "goal": "",
+      "ground": 7,
+      "grounded": true,
+      "herbs": 6,
+      "hp": 100,
+      "night": true,
+      "outposts": 3,
+      "return_walk": 14167.0,
+      "roles": {
+        "engineer": 2,
+        "farmer": 1,
+        "guard": 2,
+        "hunter": 2,
+        "wanderer": 12
+      },
+      "scrap": 45,
+      "sealed": 0,
+      "seconds": 960.0,
+      "shelter_events": [
+        {
+          "from": -1614.99999999977,
+          "local": false,
+          "person": 4,
+          "seconds": 136.9,
+          "shorter_by": 0.0,
+          "target": 74.0
+        },
+        {
+          "from": -846.0,
+          "local": false,
+          "person": 0,
+          "seconds": 151.2,
+          "shorter_by": 0.0,
+          "target": -14.0
+        },
+        {
+          "from": -615.39999999977,
+          "local": false,
+          "person": 3,
+          "seconds": 153.9,
+          "shorter_by": 0.0,
+          "target": 52.0
+        },
+        {
+          "from": -550.0,
+          "local": false,
+          "person": 1,
+          "seconds": 155.7,
+          "shorter_by": 0.0,
+          "target": 8.0
+        },
+        {
+          "from": -349.0,
+          "local": false,
+          "person": 5,
+          "seconds": 159.4,
+          "shorter_by": 0.0,
+          "target": -14.0
+        },
+        {
+          "from": 106.599999999825,
+          "local": false,
+          "person": 6,
+          "seconds": 163.4,
+          "shorter_by": 0.0,
+          "target": 8.0
+        },
+        {
+          "from": -59.4000000001947,
+          "local": false,
+          "person": 7,
+          "seconds": 163.5,
+          "shorter_by": 0.0,
+          "target": 30.0
+        },
+        {
+          "from": -1185.0,
+          "local": false,
+          "person": 1,
+          "seconds": 385.1,
+          "shorter_by": 0.0,
+          "target": 8.0
+        },
+        {
+          "from": -778.0,
+          "local": false,
+          "person": 0,
+          "seconds": 392.3,
+          "shorter_by": 0.0,
+          "target": -14.0
+        },
+        {
+          "from": -349.0,
+          "local": false,
+          "person": 5,
+          "seconds": 399.4,
+          "shorter_by": 0.0,
+          "target": -14.0
+        },
+        {
+          "from": 363.79999999999,
+          "local": false,
+          "person": 3,
+          "seconds": 399.8,
+          "shorter_by": 0.0,
+          "target": 52.0
+        },
+        {
+          "from": 315.599999999989,
+          "local": false,
+          "person": 6,
+          "seconds": 399.9,
+          "shorter_by": 0.0,
+          "target": 8.0
+        },
+        {
+          "from": 2186.0,
+          "local": false,
+          "person": 1,
+          "seconds": 608.7,
+          "shorter_by": 0.0,
+          "target": 8.0
+        },
+        {
+          "from": 2160.51551866531,
+          "local": false,
+          "person": 0,
+          "seconds": 608.8,
+          "shorter_by": 0.0,
+          "target": -14.0
+        },
+        {
+          "from": -349.0,
+          "local": false,
+          "person": 5,
+          "seconds": 639.4,
+          "shorter_by": 0.0,
+          "target": -14.0
+        },
+        {
+          "from": -1087.0,
+          "local": false,
+          "person": 0,
+          "seconds": 867.2,
+          "shorter_by": 0.0,
+          "target": -14.0
+        },
+        {
+          "from": -865.0,
+          "local": false,
+          "person": 1,
+          "seconds": 870.5,
+          "shorter_by": 0.0,
+          "target": 8.0
+        },
+        {
+          "from": -349.0,
+          "local": false,
+          "person": 5,
+          "seconds": 879.5,
+          "shorter_by": 0.0,
+          "target": -14.0
+        }
+      ],
+      "shield": 40,
+      "stone": 3,
+      "sword": 2,
+      "walls": {
+        "frontier_wall:3": {
+          "hp": 0,
+          "level": 1
+        },
+        "wall": {
+          "hp": 40,
+          "level": 1
+        },
+        "wall_left": {
+          "hp": 0,
+          "level": 1
+        }
+      },
+      "wood": 2,
+      "x": 1353.0,
+      "y": 430.0
+    },
+    {
+      "capacitor": 2,
+      "city": 2,
+      "construction_events": [
+        {
+          "id": "frontier_wall:3",
+          "level": 1,
+          "seconds": 759.6
+        }
+      ],
+      "context": "",
+      "core": 180,
+      "crystals": 12,
+      "day": 5,
+      "expansion_mode": "expand",
+      "food": 27,
+      "goal": "",
+      "ground": 4,
+      "grounded": true,
+      "herbs": 6,
+      "hp": 100,
+      "night": false,
+      "outposts": 3,
+      "return_walk": 14167.0,
+      "roles": {
+        "engineer": 2,
+        "farmer": 1,
+        "guard": 2,
+        "hunter": 2,
+        "wanderer": 12
+      },
+      "scrap": 45,
+      "sealed": 0,
+      "seconds": 1020.0,
+      "shelter_events": [
+        {
+          "from": -1614.99999999977,
+          "local": false,
+          "person": 4,
+          "seconds": 136.9,
+          "shorter_by": 0.0,
+          "target": 74.0
+        },
+        {
+          "from": -846.0,
+          "local": false,
+          "person": 0,
+          "seconds": 151.2,
+          "shorter_by": 0.0,
+          "target": -14.0
+        },
+        {
+          "from": -615.39999999977,
+          "local": false,
+          "person": 3,
+          "seconds": 153.9,
+          "shorter_by": 0.0,
+          "target": 52.0
+        },
+        {
+          "from": -550.0,
+          "local": false,
+          "person": 1,
+          "seconds": 155.7,
+          "shorter_by": 0.0,
+          "target": 8.0
+        },
+        {
+          "from": -349.0,
+          "local": false,
+          "person": 5,
+          "seconds": 159.4,
+          "shorter_by": 0.0,
+          "target": -14.0
+        },
+        {
+          "from": 106.599999999825,
+          "local": false,
+          "person": 6,
+          "seconds": 163.4,
+          "shorter_by": 0.0,
+          "target": 8.0
+        },
+        {
+          "from": -59.4000000001947,
+          "local": false,
+          "person": 7,
+          "seconds": 163.5,
+          "shorter_by": 0.0,
+          "target": 30.0
+        },
+        {
+          "from": -1185.0,
+          "local": false,
+          "person": 1,
+          "seconds": 385.1,
+          "shorter_by": 0.0,
+          "target": 8.0
+        },
+        {
+          "from": -778.0,
+          "local": false,
+          "person": 0,
+          "seconds": 392.3,
+          "shorter_by": 0.0,
+          "target": -14.0
+        },
+        {
+          "from": -349.0,
+          "local": false,
+          "person": 5,
+          "seconds": 399.4,
+          "shorter_by": 0.0,
+          "target": -14.0
+        },
+        {
+          "from": 363.79999999999,
+          "local": false,
+          "person": 3,
+          "seconds": 399.8,
+          "shorter_by": 0.0,
+          "target": 52.0
+        },
+        {
+          "from": 315.599999999989,
+          "local": false,
+          "person": 6,
+          "seconds": 399.9,
+          "shorter_by": 0.0,
+          "target": 8.0
+        },
+        {
+          "from": 2186.0,
+          "local": false,
+          "person": 1,
+          "seconds": 608.7,
+          "shorter_by": 0.0,
+          "target": 8.0
+        },
+        {
+          "from": 2160.51551866531,
+          "local": false,
+          "person": 0,
+          "seconds": 608.8,
+          "shorter_by": 0.0,
+          "target": -14.0
+        },
+        {
+          "from": -349.0,
+          "local": false,
+          "person": 5,
+          "seconds": 639.4,
+          "shorter_by": 0.0,
+          "target": -14.0
+        },
+        {
+          "from": -1087.0,
+          "local": false,
+          "person": 0,
+          "seconds": 867.2,
+          "shorter_by": 0.0,
+          "target": -14.0
+        },
+        {
+          "from": -865.0,
+          "local": false,
+          "person": 1,
+          "seconds": 870.5,
+          "shorter_by": 0.0,
+          "target": 8.0
+        },
+        {
+          "from": -349.0,
+          "local": false,
+          "person": 5,
+          "seconds": 879.5,
+          "shorter_by": 0.0,
+          "target": -14.0
+        }
+      ],
+      "shield": 40,
+      "stone": 3,
+      "sword": 2,
+      "walls": {
+        "frontier_wall:3": {
+          "hp": 0,
+          "level": 1
+        },
+        "wall": {
+          "hp": 40,
+          "level": 1
+        },
+        "wall_left": {
+          "hp": 40,
+          "level": 1
+        }
+      },
+      "wood": 2,
+      "x": -1250.0,
+      "y": 430.0
+    },
+    {
+      "capacitor": 2,
+      "city": 2,
+      "construction_events": [
+        {
+          "id": "frontier_wall:3",
+          "level": 1,
+          "seconds": 759.6
+        },
+        {
+          "id": "frontier_wall:0",
+          "level": 1,
+          "seconds": 1024.6
+        }
+      ],
+      "context": "mark",
+      "core": 180,
+      "crystals": 10,
+      "day": 5,
+      "expansion_mode": "expand",
+      "food": 41,
+      "goal": "beacon",
+      "ground": 4,
+      "grounded": true,
+      "herbs": 6,
+      "hp": 100,
+      "night": false,
+      "outposts": 3,
+      "return_walk": 14167.0,
+      "roles": {
+        "engineer": 2,
+        "farmer": 1,
+        "guard": 2,
+        "hunter": 2,
+        "wanderer": 12
+      },
+      "scrap": 49,
+      "sealed": 1,
+      "seconds": 1080.0,
+      "shelter_events": [
+        {
+          "from": -1614.99999999977,
+          "local": false,
+          "person": 4,
+          "seconds": 136.9,
+          "shorter_by": 0.0,
+          "target": 74.0
+        },
+        {
+          "from": -846.0,
+          "local": false,
+          "person": 0,
+          "seconds": 151.2,
+          "shorter_by": 0.0,
+          "target": -14.0
+        },
+        {
+          "from": -615.39999999977,
+          "local": false,
+          "person": 3,
+          "seconds": 153.9,
+          "shorter_by": 0.0,
+          "target": 52.0
+        },
+        {
+          "from": -550.0,
+          "local": false,
+          "person": 1,
+          "seconds": 155.7,
+          "shorter_by": 0.0,
+          "target": 8.0
+        },
+        {
+          "from": -349.0,
+          "local": false,
+          "person": 5,
+          "seconds": 159.4,
+          "shorter_by": 0.0,
+          "target": -14.0
+        },
+        {
+          "from": 106.599999999825,
+          "local": false,
+          "person": 6,
+          "seconds": 163.4,
+          "shorter_by": 0.0,
+          "target": 8.0
+        },
+        {
+          "from": -59.4000000001947,
+          "local": false,
+          "person": 7,
+          "seconds": 163.5,
+          "shorter_by": 0.0,
+          "target": 30.0
+        },
+        {
+          "from": -1185.0,
+          "local": false,
+          "person": 1,
+          "seconds": 385.1,
+          "shorter_by": 0.0,
+          "target": 8.0
+        },
+        {
+          "from": -778.0,
+          "local": false,
+          "person": 0,
+          "seconds": 392.3,
+          "shorter_by": 0.0,
+          "target": -14.0
+        },
+        {
+          "from": -349.0,
+          "local": false,
+          "person": 5,
+          "seconds": 399.4,
+          "shorter_by": 0.0,
+          "target": -14.0
+        },
+        {
+          "from": 363.79999999999,
+          "local": false,
+          "person": 3,
+          "seconds": 399.8,
+          "shorter_by": 0.0,
+          "target": 52.0
+        },
+        {
+          "from": 315.599999999989,
+          "local": false,
+          "person": 6,
+          "seconds": 399.9,
+          "shorter_by": 0.0,
+          "target": 8.0
+        },
+        {
+          "from": 2186.0,
+          "local": false,
+          "person": 1,
+          "seconds": 608.7,
+          "shorter_by": 0.0,
+          "target": 8.0
+        },
+        {
+          "from": 2160.51551866531,
+          "local": false,
+          "person": 0,
+          "seconds": 608.8,
+          "shorter_by": 0.0,
+          "target": -14.0
+        },
+        {
+          "from": -349.0,
+          "local": false,
+          "person": 5,
+          "seconds": 639.4,
+          "shorter_by": 0.0,
+          "target": -14.0
+        },
+        {
+          "from": -1087.0,
+          "local": false,
+          "person": 0,
+          "seconds": 867.2,
+          "shorter_by": 0.0,
+          "target": -14.0
+        },
+        {
+          "from": -865.0,
+          "local": false,
+          "person": 1,
+          "seconds": 870.5,
+          "shorter_by": 0.0,
+          "target": 8.0
+        },
+        {
+          "from": -349.0,
+          "local": false,
+          "person": 5,
+          "seconds": 879.5,
+          "shorter_by": 0.0,
+          "target": -14.0
+        }
+      ],
+      "shield": 40,
+      "stone": 3,
+      "sword": 2,
+      "walls": {
+        "frontier_wall:0": {
+          "hp": 40,
+          "level": 1
+        },
+        "frontier_wall:3": {
+          "hp": 0,
+          "level": 1
+        },
+        "wall": {
+          "hp": 40,
+          "level": 1
+        },
+        "wall_left": {
+          "hp": 40,
+          "level": 1
+        }
+      },
+      "wood": 2,
+      "x": -1760.0,
+      "y": 430.0
+    },
+    {
+      "capacitor": 2,
+      "city": 2,
+      "construction_events": [
+        {
+          "id": "frontier_wall:3",
+          "level": 1,
+          "seconds": 759.6
+        },
+        {
+          "id": "frontier_wall:0",
+          "level": 1,
+          "seconds": 1024.6
+        }
+      ],
+      "context": "rift",
+      "core": 180,
+      "crystals": 8,
+      "day": 5,
+      "expansion_mode": "expand",
+      "food": 47,
+      "goal": "rift",
+      "ground": 2,
+      "grounded": true,
+      "herbs": 6,
+      "hp": 100,
+      "night": false,
+      "outposts": 3,
+      "return_walk": 15805.0,
+      "roles": {
+        "engineer": 2,
+        "farmer": 1,
+        "guard": 2,
+        "hunter": 2,
+        "wanderer": 12
+      },
+      "scrap": 51,
+      "sealed": 1,
+      "seconds": 1140.0,
+      "shelter_events": [
+        {
+          "from": -1614.99999999977,
+          "local": false,
+          "person": 4,
+          "seconds": 136.9,
+          "shorter_by": 0.0,
+          "target": 74.0
+        },
+        {
+          "from": -846.0,
+          "local": false,
+          "person": 0,
+          "seconds": 151.2,
+          "shorter_by": 0.0,
+          "target": -14.0
+        },
+        {
+          "from": -615.39999999977,
+          "local": false,
+          "person": 3,
+          "seconds": 153.9,
+          "shorter_by": 0.0,
+          "target": 52.0
+        },
+        {
+          "from": -550.0,
+          "local": false,
+          "person": 1,
+          "seconds": 155.7,
+          "shorter_by": 0.0,
+          "target": 8.0
+        },
+        {
+          "from": -349.0,
+          "local": false,
+          "person": 5,
+          "seconds": 159.4,
+          "shorter_by": 0.0,
+          "target": -14.0
+        },
+        {
+          "from": 106.599999999825,
+          "local": false,
+          "person": 6,
+          "seconds": 163.4,
+          "shorter_by": 0.0,
+          "target": 8.0
+        },
+        {
+          "from": -59.4000000001947,
+          "local": false,
+          "person": 7,
+          "seconds": 163.5,
+          "shorter_by": 0.0,
+          "target": 30.0
+        },
+        {
+          "from": -1185.0,
+          "local": false,
+          "person": 1,
+          "seconds": 385.1,
+          "shorter_by": 0.0,
+          "target": 8.0
+        },
+        {
+          "from": -778.0,
+          "local": false,
+          "person": 0,
+          "seconds": 392.3,
+          "shorter_by": 0.0,
+          "target": -14.0
+        },
+        {
+          "from": -349.0,
+          "local": false,
+          "person": 5,
+          "seconds": 399.4,
+          "shorter_by": 0.0,
+          "target": -14.0
+        },
+        {
+          "from": 363.79999999999,
+          "local": false,
+          "person": 3,
+          "seconds": 399.8,
+          "shorter_by": 0.0,
+          "target": 52.0
+        },
+        {
+          "from": 315.599999999989,
+          "local": false,
+          "person": 6,
+          "seconds": 399.9,
+          "shorter_by": 0.0,
+          "target": 8.0
+        },
+        {
+          "from": 2186.0,
+          "local": false,
+          "person": 1,
+          "seconds": 608.7,
+          "shorter_by": 0.0,
+          "target": 8.0
+        },
+        {
+          "from": 2160.51551866531,
+          "local": false,
+          "person": 0,
+          "seconds": 608.8,
+          "shorter_by": 0.0,
+          "target": -14.0
+        },
+        {
+          "from": -349.0,
+          "local": false,
+          "person": 5,
+          "seconds": 639.4,
+          "shorter_by": 0.0,
+          "target": -14.0
+        },
+        {
+          "from": -1087.0,
+          "local": false,
+          "person": 0,
+          "seconds": 867.2,
+          "shorter_by": 0.0,
+          "target": -14.0
+        },
+        {
+          "from": -865.0,
+          "local": false,
+          "person": 1,
+          "seconds": 870.5,
+          "shorter_by": 0.0,
+          "target": 8.0
+        },
+        {
+          "from": -349.0,
+          "local": false,
+          "person": 5,
+          "seconds": 879.5,
+          "shorter_by": 0.0,
+          "target": -14.0
+        },
+        {
+          "from": 2174.0,
+          "local": false,
+          "person": 1,
+          "seconds": 1089.0,
+          "shorter_by": 0.0,
+          "target": 8.0
+        },
+        {
+          "from": -349.0,
+          "local": false,
+          "person": 5,
+          "seconds": 1119.5,
+          "shorter_by": 0.0,
+          "target": -14.0
+        },
+        {
+          "from": 96.0,
+          "local": false,
+          "person": 0,
+          "seconds": 1123.2,
+          "shorter_by": 0.0,
+          "target": -14.0
+        }
+      ],
+      "shield": 40,
+      "stone": 3,
+      "sword": 2,
+      "walls": {
+        "frontier_wall:0": {
+          "hp": 40,
+          "level": 1
+        },
+        "frontier_wall:3": {
+          "hp": 0,
+          "level": 1
+        },
+        "wall": {
+          "hp": 40,
+          "level": 1
+        },
+        "wall_left": {
+          "hp": 40,
+          "level": 1
+        }
+      },
+      "wood": 2,
+      "x": 3477.0,
+      "y": 430.0
+    }
+  ],
+  "seed": 42,
+  "shield_absorbed": 0
+}
