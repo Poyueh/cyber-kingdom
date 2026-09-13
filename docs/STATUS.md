@@ -713,3 +713,5 @@ TDD 先以雙側未擴張／缺外圈資源及缺收步重現失敗，再實作�
 正常起始資源、自動輸入／實際物理、無資源注入：種子 1 騎士優先 1287.6 秒通關，種子 7 居民優先 999.8 秒通關。這是可完成性測試，不是難度平衡或玩家樂趣的驗證。照片中清地與裝備對比為明確佈置的視覺情境，並非正常經濟遊玩。
 
 [規格](design/kingdom-cycle-overhaul.md)、[第四十課](lessons/40-stamina-and-platform-ui.md)、[驗證與畫面](reports/kingdom-cycle-v001/)。Godot 學習程度尚無新回報，不記為已掌握。
+
+交付套件位於 `builds/desktop-kingdom-cycle-20260913/`（macOS／Windows）及 `builds/android-kingdom-cycle-20260913/`（Android debug）。套件源碼為 `de83023`，實際 PCK 新功能 17 assertions 與原有套件回歸通過；Mac 原生應用能啟動，ZIP／簽章／Android 對齊檢查通過。Windows、Android、iPhone 實機遊玩尚未驗證。Mac 強制限幀退出有兩個音訊物件清理警告，正常釋放場景的驗證腳本無此警告，細節保存在報告。按 Gitflow 整合本地 develop，未推送；25 個原有個人檔案保持。

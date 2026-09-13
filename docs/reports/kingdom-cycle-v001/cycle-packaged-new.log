@@ -1,0 +1,21 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+OpenGL API 4.1 Metal - 90.5 - Compatibility - Using Device: Apple - Apple M3 Pro
+
+PASS: pause menu supports an independent manual checkpoint
+PASS: pause exposes audio and save controls
+PASS: empty manual slot cannot load
+PASS: packaged map includes varied biome scenery
+PASS: raw art sheet stays outside release package
+PASS: packaged knight uses new action stamina rules
+PASS: save icon writes the manual slot
+PASS: manual load restores checkpoint independently of newer autosave
+PASS: load stays paused and clears held payment
+PASS: both sliders reach the actual audio player
+PASS: background suspends soundtrack
+PASS: foreground restores soundtrack eligibility
+PASS: desktop hides touch action buttons
+PASS: mobile exposes touch action buttons
+PASS: equipment visuals follow actual upgrade state
+PASS: volume preferences survive reopening
+PASS: manual checkpoint survives reopening
+Cycle menu assertions: 17; failures: 0
