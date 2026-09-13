@@ -725,3 +725,13 @@ TDD 先以雙側未擴張／缺外圈資源及缺收步重現失敗，再實作�
 Xcode 現已安裝，首次設定檢查與 iPhoneOS SDK 查詢通過，先前條款阻擋解除；仍缺實際 Team ID，沒有偵測到連接 iPhone 或有效簽署身分。尚未產生 iOS 安裝版。Android 實體裝置、多指操作、真人難度及 Windows 實際遊玩仍未驗收；本次模擬器停用音訊，沒有音質或實機 FPS 結論。
 
 本單元使用 feature/android-cycle-device-validation，按 Gitflow 驗證後整合本地 develop，不推送。130 個原有個人與引擎匯入檔案均保留。
+
+## 2026-09-13：Android 真正重疊多指輸入
+
+沿用 de83023 APK，外部測試器經 Android 系統送出兩個同時按住的 pointer，第三指暫停：移動加跳躍、移動加衝刺、移動加第一刀均有實際物理／體力結果。第一刀維持水平鎖定；暫停、放開全指、繼續後無殘留移動，新手勢仍有效。不是只測 InputMap 或單指 adb tap。
+
+新增外部 tools/android/MultiTouch.java 與 [報告](reports/android-multitouch-v001/README.md)。最初測試器重複取消已結束的手勢，Android 拒絕後終止；依系統日誌修正正常完成清理，三組重新通過，未修改遊戲。原始存檔不提交。完整 tools/check.sh 在隔離來源副本通過，使用相同 APK 不重建。
+
+[第四十二課](lessons/42-touch-input-preview.md) 示範 HUD 的 Control Mode，未記為已掌握。依 Gitflow 在 feature/android-multitouch-validation 驗證後整合本地 develop，不推送；原有個人檔案保持。模擬器已確認退出。
+
+iOS 仍需實際 Apple 團隊／簽署與手機連接；Android／iPhone 實體手指舒適度、Windows 實際遊玩、真人難度及美感仍未驗收。本次停用模擬器音訊，不提供音質或效能結論。

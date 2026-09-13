@@ -44,12 +44,12 @@
 ## 裝置與匯出狀態
 使用者已確認：iPhone 17e、iPhone 16 Pro Max。這是可用測試裝置清單，不代表已完成安裝或測試；Android／Windows 實機與 Apple 開發者帳號待確認。
 
-本機 Godot 4.7.2 已核對。尚缺完整 Xcode（目前僅 Command Line Tools）；Android SDK 已安裝並完成模擬器 APK 安裝驗證。Godot 官方相同版本匯出模板已安裝；Mac／Windows 開發測試包已匯出，驗證與限制見 ../BUILDING.md。Android 已交付 debug APK 並驗證模擬器建設／續玩；iOS 尚未交付安裝包，四平台目標未完成。
+本機 Godot 4.7.2 已核對。Xcode 26.6 與 iPhoneOS 26.5 SDK 已可用，仍缺實際 Team ID／簽署與連接的 iPhone；Android SDK 已安裝並完成模擬器 APK 安裝驗證。Godot 官方相同版本匯出模板已安裝；Mac／Windows 開發測試包已匯出，驗證與限制見 ../BUILDING.md。Android 已交付 debug APK 並驗證模擬器建設／續玩；iOS 尚未交付安裝包，四平台目標未完成。
 - [Godot iOS 匯出](https://docs.godotengine.org/en/stable/tutorials/export/exporting_for_ios.html)：需要 macOS、完整 Xcode、模板與真實團隊／Bundle 設定；後續在 Xcode 建置與裝置部署。
 - [Godot Android 匯出](https://docs.godotengine.org/en/stable/tutorials/export/exporting_for_android.html)：依文件配置 JDK／Android SDK／簽署，再驗證 APK。商店交付另準備正式金鑰與 AAB。
 - 簽署帳號、私鑰不放 Git。未驗證的手機、作業系統或證書不填成完成。
 
-首日圖示引導已接上，見 first-day-guide.md；安全區／多指與 Android 安裝證據見 mobile-controls.md。真人是否能理解純圖示仍未驗證。Xcode 自動介面讀取異常耗時，未完成安裝，已請使用者在官方安裝頁完成安裝及首次設定。
+首日圖示引導已接上，見 first-day-guide.md；安全區／多指與 Android 安裝證據見 mobile-controls.md。真人是否能理解純圖示仍未驗證。Xcode 與首次設定已在後續確認完成；簽署與裝置安裝進度以 ios-device-delivery.md 為準。
 
 外擴完整開局對照已完成：三圖兩路線皆通關，擴張增加 2–5.5 分鐘；僅兩圖出現就近拓荒站回防。詳見 expansion-playthroughs.md，不把單次回程差當成整局獲益或真人有趣的證明。
 

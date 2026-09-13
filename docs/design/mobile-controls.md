@@ -28,3 +28,7 @@ iPhone 17e／iPhone 16 Pro Max 仍未安裝；iPad、Android 實體手機、Wind
 - [TouchScreenButton 多指行為](https://docs.godotengine.org/en/stable/classes/class_touchscreenbutton.html)
 - [Android 匯出](https://docs.godotengine.org/en/stable/tutorials/export/exporting_for_android.html)
 - [iOS 匯出需求](https://docs.godotengine.org/en/stable/tutorials/export/exporting_for_ios.html)
+
+## 最新 APK 多指補驗（2026-09-13）
+
+已用 Android 15 系統 MotionEvent 向 de83023 APK 注入真正重疊的雙指，驗證移動＋跳躍／衝刺／第一刀，以及第三指暫停、全指放開後無殘留移動、新手勢可用。見 [證據](../reports/android-multitouch-v001/README.md)。這是模擬器系統輸入，不是實體手機手感驗收。
