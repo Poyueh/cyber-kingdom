@@ -204,3 +204,7 @@ CampaignGuide 是讀取 CampaignSession 的無狀態查詢，不新增存檔欄�
 
 ## 出征建議
 ExpeditionGuide 共用 CampaignSession 的裂隙前置條件與參與狀態查詢，以及 CampaignGuide 的職業／資金建議。CampaignSession 在守門者生成後重新讀取敵人阻擋狀態，再累積封印；引導本身沒有副作用。GuideView 用動作、目標、輔助圖示與封印進度呈現，戰鬥／守住位置優先於近距離移動箭頭。詳見 design/expedition-guide.md。
+
+
+## 戰役聲音
+CampaignAudioCues 在 presentation 唯讀採樣 session 與特效參考，產生當幀聲音請求。CampaignAudio 管理六個 AudioStreamPlayer、同類限流、增益與停止；bootstrap 串接背景／重開及 HUD。所有觀察紀錄都短暫存在，不寫入戰役存檔。headless 只處理請求，原生播放另以 AudioEffectRecord 驗證；詳見 design/campaign-audio.md。

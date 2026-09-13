@@ -1,6 +1,6 @@
 # 製作進度
 
-目前試玩：Godot 打開 scenes/frontier.tscn 按 F6，或使用 builds/desktop-expedition-guide-20260913 的桌面程式直接進入營火戰役。最新進度見本文最後一節；前段保留歷次開發紀錄。美術沿用大致認可的 v002 營地基準與 v004 騎士劍術提案。
+目前試玩：Godot 打開 scenes/frontier.tscn 按 F6，或使用 builds/desktop-audio-20260913 的桌面程式直接進入營火戰役。最新進度見本文最後一節；前段保留歷次開發紀錄。美術沿用大致認可的 v002 營地基準與 v004 騎士劍術提案。
 
 ## 方向與時程
 
@@ -630,3 +630,25 @@ Android 隔離模擬器更新後完整檢查點相同，恢復可見既有居民
 feature/expedition-icon-guide 驗證後按 Gitflow 整合本地 develop，未推送；原有 25 個個人檔案雜湊不變。[第三十五課](lessons/35-expedition-guide.md) 說明 Inspector 的出征提示開關，未將教材當成已學會。
 
 使用者已確認有 iPhone 17e／iPhone 16 Pro Max。iOS 尚未交付，既有請完成 Xcode 安裝／首次設定的請求尚待回覆，不重試曾卡住的 App Store 工具。Mac ad-hoc 未公證、Windows 未簽署、Android debug 仍屬測試產物。完整目標尚在進行；下一步 iOS 簽署與兩機安裝、真人首局圖示理解／難度測試，以及 Windows／Android 真機遊玩。美感仍未獲認可，不宣稱完成。
+
+## 戰役操作音效（2026-09-13）
+
+此前出征引導是實際進度；本輪檢查本機仍只有 Command Line Tools，完整 Xcode 未安裝，既有安裝／首次設定請求尚待回覆。持續推進 Demo 的操作回饋，沒有把等待外部環境當成功。
+
+加入 16 個原創合成音：三段揮擊、普通／重擊命中、騎士與護盾承傷、衝刺、付款、入袋、開箱、招募、聚落升級、夜襲、封印、勝敗。無付費音源或第三方錄音，音效及匯入設定不到 0.4 MB。揮擊依有效攻擊段播放，不用按鍵次數冒充劍實際揮出；戰鬥站定／踏進、數值、美術與存檔格式均未改。
+
+音效觀察器只讀當前模型和特效；Dictionary 身分去重，避免每幀重播或誤吞相同位置的不同晶體。近距離才發聲、同類合併與短冷卻、六個播放槽限制疊音。暫停喇叭能立即靜音；背景、重開、換圖與離場停止播放，恢復不補播。靜音保留在目前場景重開／換圖，尚未跨 App 保存。
+
+TDD 先重現缺少音效觀察器，再測付款／暫停與歷史事件不重播；新增 22 行為與 12 實際觸控場景斷言。最終完整 tools/check.sh 通過 **1187 項 Godot 斷言與 2 個 Python 測試**（907 行為／280 場景），無 ERROR。原連斬場景、圖示安全區、經濟與存續玩回歸保持通過。
+
+測試初版連斬輸入缺少真實物理影格間隔，修正測試節奏後三段聲音皆觸發；沒有改遊戲連招來配合測試。音訊在無畫面 Dummy 模式快速退出時留有播放資源，不能視為通過；場景離場停止並釋放串流，headless 改為只驗證音效請求，不啟動播放，原生發聲另驗。
+
+原生 AudioServer 實際錄下付款、三段連斬、普通／重擊命中與衝刺；最終打包 PCK 在專案外重跑，錄音約 2.74 秒、峰值 0.170、零削波。這是實際引擎混音訊號，不是人工拼接，音色仍未獲使用者認可。預覽的敵人位置／生命是測試情境，不冒充正常資源通關。[原生試聽](reports/campaign-audio-v001/packaged-feedback.wav)、[規格](design/campaign-audio.md)、[完整證據](reports/campaign-audio-v001/manifest.json)。
+
+三平台新版 builds/desktop-audio-20260913／android-audio-20260913，來源 tree 69789d5473d8fd48fa3efb699d41b3be44da0a3a；50 個程式／音效來源檔與完整測試副本一致。Mac 約 73.34 MiB、Windows 51.95 MiB，APK 約 43 MiB。SHA-256／ZIP CRC、Mac 簽章、Windows PE、Android v2/v3 簽章與 16 KiB 對齊通過。真正 Mac release 入口啟動，實際 PCK 建設／居民／成長／出征引導／續玩回歸通過。
+
+Android install -r 保留完整舊檢查點，冷啟動先暫停，實際點喇叭可切換靜音圖示。[Android 畫面](previews/campaign-audio-android-v001.png)。本次模擬器以 no-audio 啟動，只核對安裝／畫面／控制，不冒充 Android 音色測試；仍有軟體 shader cache 重編譯警告，無 SCRIPT ERROR／崩潰。
+
+feature/campaign-sound-feedback 驗證後按 Gitflow 整合本地 develop，未推送，原有 25 個個人檔案雜湊保留。[第三十六課](lessons/36-campaign-audio.md) 說明 CampaignAudio 的 Volume Db／Enabled，未將教材視為已學會。
+
+完整目標仍未完成：iOS 簽署安裝與兩支 iPhone 實測、Windows／Android 真機遊玩、真人首次通關難度與聲音／劍術美感尚待驗收。Mac ad-hoc 未公證，Windows 未簽署，Android debug；沒有宣稱商店已可販售。
