@@ -1,0 +1,83 @@
+{
+  "date": "2026-09-13",
+  "runtime_commit": "de83023",
+  "runtime_tree": "3b561b1f2cd401f3082760c150e8161ae5c7d840",
+  "apk": "builds/android-kingdom-cycle-20260913/Cyber-Kingdom-Android-debug.apk",
+  "apk_sha256": "caf0120c9ac51d2a250c80d9ce8051153c74cfa881c50df1ac1ad80dd2a894f1",
+  "platform": {
+    "type": "Android emulator, not physical phone",
+    "avd": "cyber_kingdom_test",
+    "android": "15",
+    "api": 35,
+    "abi": "arm64-v8a",
+    "screen": [
+      2400,
+      1080
+    ],
+    "renderer": "SwiftShader / ANGLE / OpenGL ES",
+    "read_only_avd": true,
+    "audio_output_disabled": true
+  },
+  "checks": {
+    "install_update_preserved_save_bytes": true,
+    "old_version": 1,
+    "migrated_version": 2,
+    "migration_preserved_world_frontier_body": true,
+    "migrated_attack_cost": 12.0,
+    "migrated_jump_cost": 18.0,
+    "manual_checkpoint_unmodified_by_play": true,
+    "touch_movement": {
+      "before_x": 156.66667175293,
+      "after_x": 368.500457763672
+    },
+    "touch_drop": {
+      "before_crystals": 9,
+      "after_crystals": 8
+    },
+    "touch_dash": {
+      "stamina": 72.5,
+      "dash_remaining": 0.1
+    },
+    "cold_restart_restores_entire_autosave": true,
+    "cold_restart_crystals": 8,
+    "cold_restart_x": 292.833709716797,
+    "manual_load_restores_entire_checkpoint": true,
+    "restored_crystals": 9,
+    "restored_x": 156.66667175293,
+    "audio_preferences_after_restart": {
+      "music": 22,
+      "effects": 63,
+      "evidence": "Visible sliders in cold-restart.png and manual-restored.png"
+    }
+  },
+  "snapshot_hashes": {
+    "before": "b3efb4793094187e090e718605d423a0588e0cd686914fc3d0dad6adbc07a8f6",
+    "after-install": "b3efb4793094187e090e718605d423a0588e0cd686914fc3d0dad6adbc07a8f6",
+    "manual": "ace0788ec0de06e4e5e4be128b9d5324ebf1078faa87147618048984d41f2071",
+    "manual-after-play": "ace0788ec0de06e4e5e4be128b9d5324ebf1078faa87147618048984d41f2071",
+    "changed": "d22ca9c82af6b9235deb50411acc6378dc925bc3730b241b21d348bed4aa2008",
+    "restart-before": "bf5aea27d32a97be09c1fbf0347453a1577b995a4dba1e97232f10dcb416169b",
+    "cold-ready": "bf5aea27d32a97be09c1fbf0347453a1577b995a4dba1e97232f10dcb416169b",
+    "manual-restore-verified": "ace0788ec0de06e4e5e4be128b9d5324ebf1078faa87147618048984d41f2071"
+  },
+  "limitations": [
+    "No physical Android/iPhone gameplay",
+    "No multi-touch, audio quality, frame-rate or complete campaign validation in this emulator session",
+    "Windows executable has not been played on Windows",
+    "Human difficulty and animation quality still await player feedback"
+  ],
+  "log_observations": [
+    "No SCRIPT ERROR or AndroidRuntime fatal observed in captured application log",
+    "Cached shader failed to load and was recompiled; game subsequently rendered"
+  ],
+  "screenshots": {
+    "touch-play.png": "fa8bf6a0e3cda22422028c18322c4009c348b160a6efeecab5d3084a31d1bb08",
+    "cold-restart.png": "263d4c2064ad5b24ea722abfc288a4ff5a4d059154e9e104da99c0541ddf3c65",
+    "manual-restored.png": "ad38f483a3939bc7ed1fe89185b641ff2395b0bb6e441acb9d4304d544a42c63"
+  },
+  "full_check": {
+    "exit_code": 0,
+    "source_comparison": "All tracked gd/py/tres/tscn/godot/cfg/sh files match de83023 in isolated check copy",
+    "log": "full-check.log"
+  }
+}

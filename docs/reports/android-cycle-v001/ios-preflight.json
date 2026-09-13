@@ -1,0 +1,12 @@
+{
+  "ready_for_export": false,
+  "installable": false,
+  "issues": [
+    "請提供你實際帳號的 10 碼 Team ID；不可用顯示名稱或留白。"
+  ],
+  "godot": "4.7.2.stable.official.ed1daf0bf",
+  "ios_template": "/Users/jenpoyueh/Library/Application Support/Godot/export_templates/4.7.2.stable/ios.zip",
+  "developer_dir": "/Applications/Xcode.app/Contents/Developer",
+  "xcode": "Xcode 26.6\nBuild version 17F113",
+  "iphoneos_sdk": "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.5.sdk"
+}

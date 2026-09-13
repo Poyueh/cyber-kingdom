@@ -1,6 +1,6 @@
 # iPhone／iPad 安裝交付
 
-目前已有 Godot 4.7.2 的 ios.zip 模板，但本機只有 Command Line Tools，未安裝完整 Xcode；使用者已確認 iPhone 17e、iPhone 16 Pro Max。尚未產生 Xcode 專案或可安裝 iOS 包，不能以其他平台成功推論 iPhone 可用。
+2026-09-13 最新檢查：Godot 4.7.2 的 ios.zip 模板、完整 Xcode 26.6（17F113）及 iPhoneOS 26.5 SDK 均可用；首次設定檢查成功，先前條款阻擋已解除。實際 Team ID 尚未提供，裝置清單為空、可用程式簽署身分為 0。使用者有 iPhone 17e、iPhone 16 Pro Max，但本次未連接。尚未產生 Xcode 專案或可安裝 iOS 包，不能以其他平台成功推論 iPhone 可用。
 
 ## 已準備的流程
 
