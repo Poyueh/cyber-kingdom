@@ -1,0 +1,43 @@
+{
+  "base_commit": "236b205",
+  "source_tree": "0af176fb48ac160c01c37402e79888cd91ae776b",
+  "gameplay_changed": false,
+  "godot_assertions": 1187,
+  "python_tests": 10,
+  "runs": 12,
+  "modified_tools": {
+    "tools/play_campaign.gd": "66798fc8e359e729e8f4b4bfcab59a40d18fa429812e0d5116e6f10fb75f2302",
+    "tools/play_slow_start.gd": "245f8d84c9b1ac4ff15aff3e875f13c5745938c203ec882a42c88d0f3d9d1859"
+  },
+  "personal_files_preserved": 25,
+  "operator": "Real Node physics and normal input/button commands; only map seed differs at initialization. No teleport, no resources granted, no pause, no clock edits. First input at 60 seconds verified for all delayed runs.",
+  "scope_limit": "Automated, not physical-device or human difficulty acceptance. No claim of iOS completion.",
+  "sha256": {
+    "check.txt": "617955a4336a7bb05d6daeb7cc0cf593c70f7be050d18122d1b38f6e6aeaae99",
+    "immediate-1-knight.json": "3402a7043f6c4c6316dfb29cba29313b6d241facfbc599b29f4e78f5aff95e8f",
+    "immediate-1-knight.txt": "9fbb2e8ec7b220d69c169558a73b34144a0b318d8ed6baa29aaeee0731e015ff",
+    "immediate-1-residents.json": "23573c162786a24aba95a37c17228db7a8ba5d24c62589791bf6eb5fe7dbaa66",
+    "immediate-1-residents.txt": "2d157faf7717742460076d6571b3caa5bbb3b6a9034eeff620b546e9060bece2",
+    "immediate-42-knight.json": "42dff147960ff2b89a8161888b6fc18c69505dfb8cbc39f8e475d9ab48b64a67",
+    "immediate-42-knight.txt": "b429a5ccb06f816b7117e55458cf9e89b71393d7b19b1ed4c5aee067325dd556",
+    "immediate-42-residents.json": "c14a0ecbf58afa2b71783ca9158508667f1d08b73a056418d475d763b0d5544d",
+    "immediate-42-residents.txt": "93f5d01044f63ba115c4417e081ab3955fefbaf7a6e493aca578dfd21979386f",
+    "immediate-7-knight.json": "4abbb2498cbccda56c552b2df2369dfc72ae084bcddc846f15433ca8ffd8934c",
+    "immediate-7-knight.txt": "67b7b889a6a2acade6af02fa2a4b3c847a59257411ee7521d3dafb7f1275c348",
+    "immediate-7-residents.json": "30a69814b3df15128aafc2cfabcdcf2abc7adde32db5fbbd6a5d457d960ae499",
+    "immediate-7-residents.txt": "564a12952d577977e8f7d9c940325aa32fc12f49bf7384b768c9edb6a954125f",
+    "slow-1-knight.json": "96df8de366b5d04a46c22b4b9a9cadf6f4da36258be8bee98ca8e40eae1bac91",
+    "slow-1-knight.txt": "6572d8c727a245c55816c619725471f9b59cfbcb85bcc52c1d5a196883b6806b",
+    "slow-1-residents.json": "f0462d3ac74f60169c56cfb38b59baf53d8a4b226adfbff01157f7dfa0b1ed62",
+    "slow-1-residents.txt": "2de452cf6070d9e9edde8edf8e5c7d9b499dcf43c9b4244358f68ddee5f4b228",
+    "slow-42-knight.json": "431ec5093bb70b0e49f6878ba16d764f5a0ce5f86f343392d461db760631249d",
+    "slow-42-knight.txt": "deacd0a433c4652439c5375c318d7f8f72a4084cecdb88c0062ebfb6c1138de8",
+    "slow-42-residents.json": "db36afa2fe62ad1c7c8a08b668f4e876cd79a6598a8c14b626d874d6ebd4da49",
+    "slow-42-residents.txt": "495838bb9b48d87effeb3a34d6c6b72031e9512117f8c0e384d2f8b2fae3f5c4",
+    "slow-7-knight.json": "7f9db7201729d9a1cb929a7b0d35262883ce355e6eec5f408b300f837d902f7c",
+    "slow-7-knight.txt": "d77f8c7ba592eb44af4cd0be1bea0568f3913024014f7cae68c73d84b694551d",
+    "slow-7-residents.json": "e51ba07af28a24b9083574b66fa6d9d5015c72fe39fa3ba154c73a668425b3eb",
+    "slow-7-residents.txt": "79f31d70dfeafe5f70620b8fb449fc2c795479a745ce8896018a297272b7bc6b",
+    "summary.json": "a0e94f682fcc00b554d4dafd70dae5a52eb6f46e3e55c8fc30f68100920054f8"
+  }
+}

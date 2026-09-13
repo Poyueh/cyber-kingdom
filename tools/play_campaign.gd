@@ -17,6 +17,7 @@ var last_total:=12
 var generated:=0
 var spent:=0
 var received_damage:=0
+var minimum_core_hp:=0
 var previous_hp:=100
 var previous_roles: Array=[]
 var losses:=0
@@ -36,6 +37,7 @@ func start() -> void:
 	scene.tuning=scene.tuning.duplicate()
 	scene.tuning.map_seed=run_seed
 	root.add_child(scene)
+	minimum_core_hp=scene.sim.mission.core_hp
 	physics_frame.connect(tick)
 func snapshot() -> Dictionary:
 	var sim=scene.sim
@@ -54,6 +56,7 @@ func tick() -> void:
 	Input.action_release("attack");Input.action_release("dash");Input.action_release("jump")
 	Input.action_release("move_left");Input.action_release("move_right")
 	scene.hud.interact_button.button_up.emit()
+	minimum_core_hp=mini(minimum_core_hp,sim.mission.core_hp)
 	var total: int=sim.pouch.amount+sim.pouch.ground_total()
 	if total>last_total:generated+=total-last_total
 	elif total<last_total:spent+=last_total-total
@@ -71,12 +74,15 @@ func tick() -> void:
 		next_sample+=60
 	if not sim.is_running() or elapsed>=limit:
 		var result={"seed":run_seed,"route":route,"combat_profile":combat_profile,"shield_absorbed":sim.hero.shield_absorbed,"native_physics":true,"resource_grants":false,"outcome":sim.mission.outcome,"reason":sim.mission.defeat_reason,"final":snapshot(),
-			"observed_crystal_increase":generated,"observed_crystal_decrease":spent,"knight_hp_damage":received_damage,"resident_losses":losses,"events":events,"samples":samples}
+			"observed_crystal_increase":generated,"observed_crystal_decrease":spent,"knight_hp_damage":received_damage,"minimum_core_hp":minimum_core_hp,"resident_losses":losses,"events":events,"samples":samples}
+		var experiment:=experiment_report()
+		if not experiment.is_empty():result["experiment"]=experiment
 		var file=FileAccess.open(output,FileAccess.WRITE)
 		file.store_string(JSON.stringify(result,"  "))
 		print("RESULT ",JSON.stringify(result.final)," outcome=",result.outcome)
 		quit()
 		return
+	if not input_ready():return
 	# Immediate threat interrupts errands, using normal move, slash and dodge inputs.
 	var enemy: Dictionary={}
 	var nearest:=INF
@@ -210,3 +216,9 @@ func extra_jobs() -> Array:
 
 func allow_rifts() -> bool:
 	return true
+
+func input_ready() -> bool:
+	return true
+
+func experiment_report() -> Dictionary:
+	return {}
