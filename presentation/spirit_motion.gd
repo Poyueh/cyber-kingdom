@@ -21,4 +21,4 @@ func sample(hint: Dictionary, hero: Vector2, world_x: float, safe: Rect2, time: 
   _position=goal+(_position-goal).limit_length(34)
  _last_time=time
  return {"visible":true,"position":(_position+Vector2(0,sin(time*2.8)*3)).round(),
-  "direction":_direction,"near":absf(distance)<=73,"phase":time}
+  "direction":(-1.0 if distance-_direction*follow_distance<0 else 1.0),"near":absf(distance)<=73,"phase":time}

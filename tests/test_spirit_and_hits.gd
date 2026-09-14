@@ -75,3 +75,7 @@ func test_residents_and_enemies_react_to_real_damage_only(t):
  var next=load("res://application/campaign_session.gd").new()
  feedback.present(next)
  t.truth(not feedback.resident_pose(0).active,"new run clears all old injury memory")
+func test_spirit_points_back_at_a_reached_target(t):
+ var motion=load("res://presentation/spirit_motion.gd").new()
+ var pose=motion.sample({"x":30.0,"y":430.0},Vector2(300,420),30,Rect2(0,0,960,540),0)
+ t.truth(pose.position.x>300 and pose.direction<0,"at camp the hovering spirit points back to camp, not beyond it")
