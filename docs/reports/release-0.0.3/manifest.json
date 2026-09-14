@@ -1,0 +1,30 @@
+{
+  "source_tree": "9913ff0a6f007bddca8bd9f34c8e740dbd12eff3",
+  "entry": "index.html",
+  "threads": false,
+  "persistence": "browser IndexedDB; separate per origin/profile",
+  "sha256": "614140d2bc5914087683f125da4f00682f9a539d5af1d56e657548a271d96fe9",
+  "files": {
+    "index.apple-touch-icon.png": 1322,
+    "index.wasm": 39514754,
+    "index.icon.png": 2744,
+    "guide-reader.css": 1750,
+    "FONT-LICENSE.txt": 4301,
+    "index.html": 5542,
+    "guide.html": 2413796,
+    "index.png": 21443,
+    "index.audio.worklet.js": 7298,
+    "index.js": 279815,
+    "index.audio.position.worklet.js": 2973,
+    "README.txt": 915,
+    "index.pck": 22681372,
+    "guide-reader.js": 2266
+  },
+  "browser_playtest": "record separately; successful export is not a playtest",
+  "release": "v0.0.3",
+  "artifact": "Cyber-Kingdom-Web-0.0.3.zip",
+  "gameplay_source": "2c9b7d8",
+  "integrated_source": "d503399",
+  "validation": "../spirit-hit-v001/verification.json",
+  "publication": "pending"
+}
