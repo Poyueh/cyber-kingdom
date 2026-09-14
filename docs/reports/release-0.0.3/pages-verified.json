@@ -1,0 +1,102 @@
+{
+  "url": "https://poyueh.github.io/cyber-kingdom/",
+  "release": "v0.0.3",
+  "all_match": true,
+  "files": [
+    {
+      "file": "index.apple-touch-icon.png",
+      "bytes": 1322,
+      "sha256": "e897c283312c594efcc72737fd3652971a914651b0c1980b61998155d1e16afb",
+      "matches": true
+    },
+    {
+      "file": "index.wasm",
+      "bytes": 39514754,
+      "sha256": "fc74679e3b97f76878947fcd4fbe1268cbfa6188182a2e33bbc3f5dc9bfa57d0",
+      "matches": true
+    },
+    {
+      "file": "index.icon.png",
+      "bytes": 2744,
+      "sha256": "156c0c98a2f251765922f2835f8c386239914f05f7e57b25f49c77727c292618",
+      "matches": true
+    },
+    {
+      "file": "guide-reader.css",
+      "bytes": 1750,
+      "sha256": "ef1b454dda28e6ddc8752566f1db78b5f305859365dad63f8c427d0f886d0056",
+      "matches": true
+    },
+    {
+      "file": "FONT-LICENSE.txt",
+      "bytes": 4301,
+      "sha256": "6a73f9541c2de74158c0e7cf6b0a58ef774f5a780bf191f2d7ec9cc53efe2bf2",
+      "matches": true
+    },
+    {
+      "file": "index.html",
+      "bytes": 5542,
+      "sha256": "79bfc3dd465e9f47a0d6c487e5fd5317977d3afe46dfb11937d36cbf63f8769d",
+      "matches": true
+    },
+    {
+      "file": "guide.html",
+      "bytes": 2413796,
+      "sha256": "c1499cb4045b029090c018ee7a7a147193beb157ae92d7f01b0989d1068ff220",
+      "matches": true
+    },
+    {
+      "file": "index.png",
+      "bytes": 21443,
+      "sha256": "3cb4495c0b98dfbe4b663cbf2b6836473572339beb66d902367893162a70be0e",
+      "matches": true
+    },
+    {
+      "file": "index.audio.worklet.js",
+      "bytes": 7298,
+      "sha256": "5b476a9c9ce642c0ee4256436d1bc31d9c38f868aca0f9a8e2a57c18d2dec2a3",
+      "matches": true
+    },
+    {
+      "file": "index.js",
+      "bytes": 279815,
+      "sha256": "33c94cb3175f3333b82e2a3be5e8e86f77986f0aa2042b1631f6367a4e5bb6ba",
+      "matches": true
+    },
+    {
+      "file": "index.audio.position.worklet.js",
+      "bytes": 2973,
+      "sha256": "be33985bc7160d6bf9646f259cd86b259cd67b02ccb297ee5c44f8ac84327bc8",
+      "matches": true
+    },
+    {
+      "file": "README.txt",
+      "bytes": 915,
+      "sha256": "353ecfe252e1d1e728714250847dc759b07bfc45ed0b6ee2c907c47f066997cb",
+      "matches": true
+    },
+    {
+      "file": "index.pck",
+      "bytes": 22681372,
+      "sha256": "c4082190f22005e9df8f65c5c75d1a28afbbe54dbb249b9a31859cac30d8ecd7",
+      "matches": true
+    },
+    {
+      "file": "guide-reader.js",
+      "bytes": 2266,
+      "sha256": "7f5bb79c499d34a57b95f4180373f2a886371fe7ba68bdc378f98e1e7289a374",
+      "matches": true
+    }
+  ],
+  "browser_validation": {
+    "origin": "https://poyueh.github.io/cyber-kingdom/",
+    "viewport": "1280x720",
+    "title_menu_chinese": true,
+    "existing_journey_listed": true,
+    "legacy_journey_loaded": true,
+    "companion_visible_after_resume": true,
+    "save_and_return_to_title": true,
+    "new_console_errors": 0,
+    "physical_iphone_tested": false
+  }
+}
