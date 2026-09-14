@@ -1,0 +1,16 @@
+{
+  "images": {
+    "hero.webp": "art/concepts/kingdom-quality-v002/camp-study.png",
+    "camp.webp": "docs/reports/kingdom-cycle-v001/desktop-start.png",
+    "forest.webp": "docs/reports/kingdom-cycle-v001/forest.png",
+    "slots.webp": "docs/reports/kingdom-cycle-v001/crystal-slot.png",
+    "cleared.webp": "docs/reports/kingdom-cycle-v001/cleared.png",
+    "equipment.webp": "docs/reports/kingdom-cycle-v001/equipment-tiers.png",
+    "gate.webp": "docs/reports/kingdom-cycle-v001/gate-spawn.png",
+    "menu.webp": "docs/reports/android-cycle-v001/manual-restored.png"
+  },
+  "animation": "docs/previews/combo-v004-closeup.gif",
+  "characters": "art/characters/resident-motion-v002/residents.png; idle frame 0, row = role * 2 + 1, 64 x 64",
+  "icons": "art/ui/v001/*.svg",
+  "notes": "All original project assets. Hero is approved concept art; gameplay images labeled separately. Selected screenshots cropped for explanation; originals untouched."
+}

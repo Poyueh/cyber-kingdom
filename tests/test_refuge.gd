@@ -1,0 +1,73 @@
+extends RefCounted
+const Refuge = preload("res://application/refuge_session.gd")
+const Stats = preload("res://domain/combat_stats.gd")
+const Memory = preload("res://infrastructure/memory_progress_store.gd")
+
+func make_round():
+	return Refuge.new(Stats.new(), Stats.new(), Memory.new(), 3, 20, 3)
+
+func test_allocation_conserves_crystals_and_locks_on_departure(t) -> void:
+	var run = make_round()
+	t.truth(run.allocate(2), "two crystals may power the knight")
+	t.equal(run.preview().refuge_crystals, 1, "one crystal remains for the refuge")
+	t.equal(run.preview().knight_shield, 40, "two crystals provide forty shield")
+	t.equal(run.allocate(4), false, "overspending rejected")
+	t.equal(run.allocate(-1), false, "negative allocation rejected")
+	t.equal(run.preview().knight_crystals, 2, "invalid requests preserve choice")
+	t.truth(run.depart(), "valid allocation begins expedition")
+	t.equal(run.battle.hero.shield, 40, "actual combat hero receives allocated shield")
+	t.equal(run.allocate(0), false, "cannot reallocate while away")
+	t.equal(run.depart(), false, "double departure cannot duplicate shield")
+	t.equal(run.restart(), false, "cannot reset an expedition without settling residents")
+
+func test_return_resolves_residents_once_and_keeps_a_stable_report(t) -> void:
+	var run = make_round()
+	t.equal(run.finish(), {}, "cannot settle before departure")
+	run.allocate(2)
+	run.depart()
+	run.battle.hero.take_damage(50)
+	var report = run.finish()
+	t.equal(report.outcome, "retreat", "leaving a living enemy counts as retreat")
+	t.equal(report.hero_hp, 90, "report uses actual combat health")
+	t.equal(report.absorbed, 40, "report includes shield protection actually used")
+	t.equal(report.protected, 1, "one resident is protected")
+	t.equal(report.wounded, 2, "two unprotected residents are injured by the announced wave")
+	t.equal(report.recovered, 0, "retreat grants no victory salvage")
+	report.wounded = 99
+	t.equal(run.finish().wounded, 2, "repeated settlement returns an unmodified snapshot")
+	t.equal(run.allocate(0), false, "cannot rewrite allocation after outcome")
+	run.restart()
+	t.equal(run.phase, Refuge.Phase.ALLOCATION, "retry returns to planning")
+	t.equal(run.preview().knight_crystals, 0, "retry restores the original reserve split")
+	t.truth(run.battle == null, "retry discards combat state")
+	run.depart()
+	t.equal(run.battle.hero.shield_absorbed, 0, "retry starts without previous damage totals")
+
+func test_extreme_choices_victory_and_defeat_have_visible_consequences(t) -> void:
+	var safe = make_round()
+	safe.depart()
+	safe.battle.hero.stats.damage = 200
+	safe.battle.hero.start_attack()
+	safe.battle.advance(0.18)
+	safe.battle.resolve_sword(20,0)
+	var victory = safe.finish()
+	t.equal(victory.outcome, "victory", "defeating sentinel completes the expedition")
+	t.equal(victory.recovered, 20, "victory reports salvage earned this expedition")
+	t.equal(victory.wounded, 0, "all-refuge allocation protects everyone")
+	t.equal(victory.shield_remaining, 0, "all-refuge knight has no bonus shield")
+	var selfish = make_round()
+	selfish.allocate(3)
+	selfish.depart()
+	selfish.battle.hero.take_damage(999)
+	var defeat = selfish.finish()
+	t.equal(defeat.outcome, "defeat", "fallen knight gets a defeat result")
+	t.equal(defeat.wounded, 3, "defeat still resolves unprotected residents")
+	t.equal(defeat.absorbed, 60, "all-knight shield was used before health")
+	t.equal(defeat.recovered, 0, "defeat creates no salvage")
+
+func test_tuning_changes_the_tradeoff_without_changing_combat_code(t) -> void:
+	var run = Refuge.new(Stats.new(), Stats.new(), Memory.new(), 2, 15, 4)
+	run.allocate(1)
+	run.depart()
+	t.equal(run.battle.hero.shield, 15, "configured crystal value reaches combat")
+	t.equal(run.finish().wounded, 3, "protection follows configured reserve and population")

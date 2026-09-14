@@ -1,0 +1,12 @@
+{
+  "ready_for_export": false,
+  "installable": false,
+  "issues": [
+    "需要完整 Xcode 與 iOS 平台；目前路徑不是可用的完整 Xcode：/Library/Developer/CommandLineTools",
+    "請提供你實際帳號的 10 碼 Team ID；不可用顯示名稱或留白。"
+  ],
+  "godot": "4.7.2.stable.official.ed1daf0bf",
+  "ios_template": "/Users/jenpoyueh/Library/Application Support/Godot/export_templates/4.7.2.stable/ios.zip",
+  "observed_exit_code": 2,
+  "output_directory_created": false
+}

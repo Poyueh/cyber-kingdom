@@ -1,0 +1,18 @@
+{
+  "source_tree": "92892d340ddf49ad27d15ededbd84181115371c7",
+  "godot_assertions": 1061,
+  "python_build_tests": 2,
+  "mac_release_startup_frames": 120,
+  "mac_release_exit": 0,
+  "packaged_resource_checks": "native: campaign checkpoint reopen/payment/crystal, existing demo flows, resource exclusions; exit 0",
+  "windows": "export, format and ZIP integrity only; no Windows playtest",
+  "mobile": "not installed",
+  "mac_signing": "ad-hoc, not notarized",
+  "checksums_sha256": {
+    "Cyber-Kingdom-macOS.zip": "4aa49dc0ec97e9763e0c9456842964b31853a08b5e0a34344cbb24cf74ac3961",
+    "Cyber-Kingdom-Windows.zip": "675f4e10058757cb4d00a8d52e6a7cc883b5cc05a0c3eb2eaef2788f818bced1"
+  },
+  "save-release-check.log_sha256": "913adb59de7781936a74741f1f76387d78b13ab6cafb88c0c92cf729b66c9df8",
+  "save-mac-release.log_sha256": "260d59b83120c3eef2e89e219ce426375d447e0dc3e4d0bef35d4cee65f48208",
+  "save-packaged-review-native.log_sha256": "58827c956066f33693e3d265a6cff2f44ac6586d267f13b3e7243ab54b93ed9c"
+}

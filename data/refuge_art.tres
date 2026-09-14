@@ -1,0 +1,66 @@
+[gd_resource type="Resource" load_steps=30 format=3]
+[ext_resource type="Script" path="res://data/frontier_art.gd" id="script"]
+[ext_resource type="Texture2D" path="res://art/refuge/v001/skyline.png" id="skyline"]
+[ext_resource type="Texture2D" path="res://art/refuge/v001/ground.png" id="ground"]
+[ext_resource type="Texture2D" path="res://art/characters/prosthetic-v001/engineer-atlas.png" id="engineer-atlas"]
+[ext_resource type="Texture2D" path="res://art/characters/prosthetic-v001/citizens-atlas.png" id="citizens-atlas"]
+[ext_resource type="Texture2D" path="res://art/refuge/v001/tree.png" id="tree"]
+[ext_resource type="Texture2D" path="res://art/refuge/v001/tree-plain.png" id="tree-plain"]
+[ext_resource type="Texture2D" path="res://art/refuge/v001/crystal.png" id="crystal"]
+[ext_resource type="Texture2D" path="res://art/refuge/v001/berries.png" id="berries"]
+[ext_resource type="Texture2D" path="res://art/refuge/v001/cache.png" id="cache"]
+[ext_resource type="Texture2D" path="res://art/refuge/v001/outpost.png" id="outpost"]
+[ext_resource type="Texture2D" path="res://art/refuge/v001/crops.png" id="crops"]
+[ext_resource type="Texture2D" path="res://art/refuge/v001/stump.png" id="stump"]
+[ext_resource type="Texture2D" path="res://art/refuge/v001/deer.png" id="deer"]
+[ext_resource type="Texture2D" path="res://art/refuge/v001/hall-1.png" id="hall-1"]
+[ext_resource type="Texture2D" path="res://art/refuge/v001/hall-2.png" id="hall-2"]
+[ext_resource type="Texture2D" path="res://art/refuge/v001/hall-3.png" id="hall-3"]
+[ext_resource type="Texture2D" path="res://art/refuge/v001/workshop.png" id="workshop"]
+[ext_resource type="Texture2D" path="res://art/refuge/v001/armory.png" id="armory"]
+[ext_resource type="Texture2D" path="res://art/refuge/v001/forge.png" id="forge"]
+[ext_resource type="Texture2D" path="res://art/refuge/v001/beacon.png" id="beacon"]
+[ext_resource type="Texture2D" path="res://art/refuge/v001/wall.png" id="wall"]
+[ext_resource type="Texture2D" path="res://art/refuge/v001/campfire.png" id="campfire"]
+[ext_resource type="Texture2D" path="res://art/refuge/v001/plot.png" id="plot"]
+[ext_resource type="Texture2D" path="res://art/refuge/v001/relay.png" id="relay"]
+[ext_resource type="Texture2D" path="res://art/refuge/v001/chest-open.png" id="chest-open"]
+[ext_resource type="Texture2D" path="res://art/refuge/v001/stone.png" id="stone"]
+[ext_resource type="Texture2D" path="res://art/refuge/v001/herbs.png" id="herbs"]
+
+[ext_resource type="Texture2D" path="res://art/refuge/v001/forest.png" id="forest"]
+
+[resource]
+script = ExtResource("script")
+woodland = ExtResource("skyline")
+ground = ExtResource("ground")
+engineer_atlas = ExtResource("engineer-atlas")
+citizens_atlas = ExtResource("citizens-atlas")
+show_power_grid = true
+forest_layer = ExtResource("forest")
+show_river = true
+props = {
+"tree": ExtResource("tree"),
+"tree-plain": ExtResource("tree-plain"),
+"crystal": ExtResource("crystal"),
+"berries": ExtResource("berries"),
+"cache": ExtResource("cache"),
+"outpost": ExtResource("outpost"),
+"crops": ExtResource("crops"),
+"stump": ExtResource("stump"),
+"deer": ExtResource("deer"),
+"hall-1": ExtResource("hall-1"),
+"hall-2": ExtResource("hall-2"),
+"hall-3": ExtResource("hall-3"),
+"workshop": ExtResource("workshop"),
+"armory": ExtResource("armory"),
+"forge": ExtResource("forge"),
+"beacon": ExtResource("beacon"),
+"wall": ExtResource("wall"),
+"campfire": ExtResource("campfire"),
+"plot": ExtResource("plot"),
+"relay": ExtResource("relay"),
+"chest-open": ExtResource("chest-open"),
+"stone": ExtResource("stone"),
+"herbs": ExtResource("herbs")
+}

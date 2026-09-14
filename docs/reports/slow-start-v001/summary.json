@@ -1,0 +1,150 @@
+{
+  "scenario": "One minute of no operator input while the unpaused world advances, then unchanged automated investment/combat policy",
+  "pairs": [
+    {
+      "seed": 1,
+      "route": "knight",
+      "immediate": {
+        "seconds": 881.6,
+        "survived_day": 4,
+        "role_losses": 0,
+        "minimum_core_hp": 180,
+        "knight_hp_damage": 0,
+        "final_hp": 100,
+        "final_shield": 40
+      },
+      "slow": {
+        "seconds": 1253.3,
+        "survived_day": 6,
+        "role_losses": 2,
+        "minimum_core_hp": 180,
+        "knight_hp_damage": 0,
+        "final_hp": 100,
+        "final_shield": 40
+      },
+      "difference_seconds": 371.7
+    },
+    {
+      "seed": 1,
+      "route": "residents",
+      "immediate": {
+        "seconds": 1305.5,
+        "survived_day": 6,
+        "role_losses": 3,
+        "minimum_core_hp": 180,
+        "knight_hp_damage": 0,
+        "final_hp": 100,
+        "final_shield": 20
+      },
+      "slow": {
+        "seconds": 1548.5,
+        "survived_day": 7,
+        "role_losses": 3,
+        "minimum_core_hp": 180,
+        "knight_hp_damage": 0,
+        "final_hp": 100,
+        "final_shield": 20
+      },
+      "difference_seconds": 243.0
+    },
+    {
+      "seed": 7,
+      "route": "knight",
+      "immediate": {
+        "seconds": 1115.8,
+        "survived_day": 5,
+        "role_losses": 0,
+        "minimum_core_hp": 180,
+        "knight_hp_damage": 0,
+        "final_hp": 100,
+        "final_shield": 40
+      },
+      "slow": {
+        "seconds": 970.8,
+        "survived_day": 5,
+        "role_losses": 2,
+        "minimum_core_hp": 180,
+        "knight_hp_damage": 0,
+        "final_hp": 100,
+        "final_shield": 40
+      },
+      "difference_seconds": -145.0
+    },
+    {
+      "seed": 7,
+      "route": "residents",
+      "immediate": {
+        "seconds": 865.6,
+        "survived_day": 4,
+        "role_losses": 0,
+        "minimum_core_hp": 180,
+        "knight_hp_damage": 0,
+        "final_hp": 100,
+        "final_shield": 40
+      },
+      "slow": {
+        "seconds": 1069.8,
+        "survived_day": 5,
+        "role_losses": 1,
+        "minimum_core_hp": 180,
+        "knight_hp_damage": 0,
+        "final_hp": 100,
+        "final_shield": 40
+      },
+      "difference_seconds": 204.2
+    },
+    {
+      "seed": 42,
+      "route": "knight",
+      "immediate": {
+        "seconds": 779.8,
+        "survived_day": 4,
+        "role_losses": 0,
+        "minimum_core_hp": 180,
+        "knight_hp_damage": 0,
+        "final_hp": 100,
+        "final_shield": 40
+      },
+      "slow": {
+        "seconds": 1125.0,
+        "survived_day": 5,
+        "role_losses": 0,
+        "minimum_core_hp": 180,
+        "knight_hp_damage": 0,
+        "final_hp": 100,
+        "final_shield": 40
+      },
+      "difference_seconds": 345.2
+    },
+    {
+      "seed": 42,
+      "route": "residents",
+      "immediate": {
+        "seconds": 886.9,
+        "survived_day": 4,
+        "role_losses": 0,
+        "minimum_core_hp": 180,
+        "knight_hp_damage": 0,
+        "final_hp": 100,
+        "final_shield": 40
+      },
+      "slow": {
+        "seconds": 755.5,
+        "survived_day": 4,
+        "role_losses": 0,
+        "minimum_core_hp": 180,
+        "knight_hp_damage": 0,
+        "final_hp": 100,
+        "final_shield": 40
+      },
+      "difference_seconds": -131.4
+    }
+  ],
+  "all_twelve_completed": true,
+  "delay_victories": 6,
+  "delay_slower_pairs": 4,
+  "mean_difference_seconds": 147.9,
+  "baseline_role_losses": 3,
+  "delayed_role_losses": 8,
+  "interpretation": "Specific recoverability evidence; expert automated planning and exact enemy-timing dodge are not a model of human beginners."
+}

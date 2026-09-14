@@ -1,0 +1,56 @@
+{
+  "source_tree": "e9031dd9db2d6104127bcc986126bfcbbac80e21",
+  "godot_assertions": 1153,
+  "behavior": 885,
+  "scene_assertions": 268,
+  "python_tests": 2,
+  "result": "pass",
+  "normal_budget_playthrough": {
+    "seed": 7,
+    "route": "residents",
+    "seconds": 865.6,
+    "outcome": "victory",
+    "resources_granted": false,
+    "combat": "automated exact telegraph reaction; not human difficulty proof"
+  },
+  "native_visuals": "controlled fixtures, not normal-budget run",
+  "mac": "actual release startup and packaged resource integration passed; ad-hoc, not notarized",
+  "windows": "export, PE format, ZIP CRC/SHA verified; not played on physical Windows",
+  "android": "debug v2/v3 signature, 16 KiB alignment, simulator update checkpoint equality and resume passed; not a mobile endgame playthrough; software shader cache warning",
+  "ios": "not delivered; full Xcode setup and signing pending; user devices iPhone 17e and iPhone 16 Pro Max",
+  "desktop": {
+    "source_tree": "e9031dd9db2d6104127bcc986126bfcbbac80e21",
+    "engine": "4.7.2.stable.official.ed1daf0bf",
+    "entry": "res://scenes/frontier.tscn",
+    "configuration": "committed settings, release export, prototype content",
+    "macOS_signing": "ad-hoc; not notarized",
+    "Windows_signing": "unsigned",
+    "checksums_sha256": {
+      "Cyber-Kingdom-macOS.zip": "0b9b06130c2a0aac23dd22daf17746eb606195862337594034c75ee255c172ef",
+      "Cyber-Kingdom-Windows.zip": "890cb7ecd5581f7485de04309a704184e32744741ec21f923bb0c6b5e083c09b"
+    },
+    "platform_playtest": "must be recorded separately; export alone is not a pass"
+  },
+  "android_build": {
+    "source_tree": "e9031dd9db2d6104127bcc986126bfcbbac80e21",
+    "architecture": "arm64-v8a",
+    "package": "org.cyberkingdom.demo",
+    "signing": "local debug certificate; not a store release",
+    "sha256": "87e53ee7339de81a94caede26f471d7297a88ae12001aec990752e37215ca0c4",
+    "runtime_playtest": "record separately; export alone is not validation"
+  },
+  "personal_files_preserved": 25,
+  "tdd_notes": "Initial restricted runner could not write test saves; reran with permitted test storage and observed exactly two recovery behavior failures, then fixed. Earlier red/green also covered wardens and worker loss.",
+  "sha256": {
+    "android-runtime.txt": "3b50ba5a6eb6c95199fb63c3786d7b8daca182d2c3b1b956e8cca129d233f9b5",
+    "apk-signature.txt": "c53d26a5f68368268a17e2e5ed4bc88ed271a301aebc094bfad59d648824eb89",
+    "check.txt": "129be41a23e0e822347e800c0b4a79556d491522b4db0594dd303ecb2fb7e714",
+    "mac-runtime.txt": "6c536b7ab6a1ee8e7ac91fdd27709abb484073b092cabb70d205c4f987e47ddd",
+    "native-visual.txt": "20eaba48f2b74a0a9677dd27ae377a6f43a04ec284e3c07aae7489a5ea117e8d",
+    "packaged-review.txt": "8f4c9b2658cf71cf6f6094ae65a5d7d58c79137705a7c42bbc5f76c797c3e51a",
+    "playthrough.json": "763bc4070da2145510fa990be35b33c89688b023f0849aba37d5229d803eb3a6",
+    "playthrough.txt": "564a12952d577977e8f7d9c940325aa32fc12f49bf7384b768c9edb6a954125f",
+    "recovery-red.txt": "92b8781f43ade86f16d13b67167ab5dea05a838ee98e6cbf39b6808573db541c"
+  },
+  "text_logs": "Trailing whitespace normalized for version control; log messages unchanged"
+}

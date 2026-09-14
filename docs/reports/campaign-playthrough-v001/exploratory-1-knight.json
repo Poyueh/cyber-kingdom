@@ -1,0 +1,3151 @@
+{
+  "crystals_generated": 160,
+  "crystals_spent": 121,
+  "events": [
+    {
+      "action": "hall",
+      "done": true,
+      "seconds": 0.6
+    },
+    {
+      "action": "recruit",
+      "done": true,
+      "seconds": 1.5
+    },
+    {
+      "action": "recruit",
+      "done": true,
+      "seconds": 2.1
+    },
+    {
+      "action": "workshop",
+      "done": true,
+      "seconds": 3.9
+    },
+    {
+      "action": "wall",
+      "done": true,
+      "seconds": 7.8
+    },
+    {
+      "action": "armory",
+      "done": true,
+      "seconds": 10.5
+    },
+    {
+      "action": "explore",
+      "done": true,
+      "seconds": 15.7
+    },
+    {
+      "action": "explore",
+      "done": true,
+      "seconds": 17.8
+    },
+    {
+      "action": "cache",
+      "done": true,
+      "seconds": 19.8
+    },
+    {
+      "action": "cache",
+      "done": true,
+      "seconds": 21.3
+    },
+    {
+      "action": "collect",
+      "done": true,
+      "seconds": 21.7
+    },
+    {
+      "action": "collect",
+      "done": true,
+      "seconds": 22.2
+    },
+    {
+      "action": "collect",
+      "done": true,
+      "seconds": 22.3
+    },
+    {
+      "action": "collect",
+      "done": true,
+      "seconds": 22.4
+    },
+    {
+      "action": "collect",
+      "done": true,
+      "seconds": 22.5
+    },
+    {
+      "action": "collect",
+      "done": true,
+      "seconds": 22.9
+    },
+    {
+      "action": "collect",
+      "done": true,
+      "seconds": 23.2
+    },
+    {
+      "action": "collect",
+      "done": true,
+      "seconds": 23.3
+    },
+    {
+      "action": "collect",
+      "done": true,
+      "seconds": 23.5
+    },
+    {
+      "action": "collect",
+      "done": true,
+      "seconds": 23.7
+    },
+    {
+      "action": "collect",
+      "done": true,
+      "seconds": 25.2
+    },
+    {
+      "action": "tree",
+      "done": true,
+      "seconds": 26.4
+    },
+    {
+      "action": "tree",
+      "done": true,
+      "seconds": 27.0
+    },
+    {
+      "action": "tree",
+      "done": true,
+      "seconds": 27.6
+    },
+    {
+      "action": "berries",
+      "done": true,
+      "seconds": 27.9
+    },
+    {
+      "action": "recruit",
+      "done": true,
+      "seconds": 29.1
+    },
+    {
+      "action": "forge",
+      "done": true,
+      "seconds": 37.2
+    },
+    {
+      "action": "armory",
+      "done": true,
+      "seconds": 39.9
+    },
+    {
+      "action": "farm_tools",
+      "done": true,
+      "seconds": 44.7
+    },
+    {
+      "action": "explore",
+      "done": true,
+      "seconds": 50.3
+    },
+    {
+      "action": "explore",
+      "done": true,
+      "seconds": 53.4
+    },
+    {
+      "action": "explore",
+      "done": true,
+      "seconds": 55.5
+    },
+    {
+      "action": "cache",
+      "done": true,
+      "seconds": 56.7
+    },
+    {
+      "action": "cache",
+      "done": true,
+      "seconds": 58.5
+    },
+    {
+      "action": "collect",
+      "done": true,
+      "seconds": 59.2
+    },
+    {
+      "action": "collect",
+      "done": true,
+      "seconds": 59.2
+    },
+    {
+      "action": "collect",
+      "done": true,
+      "seconds": 59.3
+    },
+    {
+      "action": "collect",
+      "done": true,
+      "seconds": 59.4
+    },
+    {
+      "action": "collect",
+      "done": true,
+      "seconds": 59.8
+    },
+    {
+      "action": "collect",
+      "done": true,
+      "seconds": 59.9
+    },
+    {
+      "action": "collect",
+      "done": true,
+      "seconds": 60.0
+    },
+    {
+      "action": "collect",
+      "done": true,
+      "seconds": 60.3
+    },
+    {
+      "action": "collect",
+      "done": true,
+      "seconds": 60.4
+    },
+    {
+      "action": "collect",
+      "done": true,
+      "seconds": 60.5
+    },
+    {
+      "action": "hunt_tools",
+      "done": true,
+      "seconds": 192.9
+    },
+    {
+      "action": "wall_left",
+      "done": true,
+      "seconds": 196.5
+    },
+    {
+      "action": "tree",
+      "done": true,
+      "seconds": 198.0
+    },
+    {
+      "action": "tree",
+      "done": true,
+      "seconds": 199.2
+    },
+    {
+      "action": "tree",
+      "done": true,
+      "seconds": 200.1
+    },
+    {
+      "action": "berries",
+      "done": true,
+      "seconds": 200.7
+    },
+    {
+      "action": "collect",
+      "done": true,
+      "seconds": 209.0
+    },
+    {
+      "action": "stone",
+      "done": true,
+      "seconds": 219.3
+    },
+    {
+      "action": "crystal",
+      "done": true,
+      "seconds": 219.9
+    },
+    {
+      "action": "crystal",
+      "done": true,
+      "seconds": 220.8
+    },
+    {
+      "action": "recruit",
+      "done": true,
+      "seconds": 221.1
+    },
+    {
+      "action": "recruit",
+      "done": true,
+      "seconds": 223.5
+    },
+    {
+      "action": "herbs",
+      "done": true,
+      "seconds": 225.9
+    },
+    {
+      "action": "explore",
+      "done": true,
+      "seconds": 247.4
+    },
+    {
+      "action": "crystal",
+      "done": true,
+      "seconds": 248.7
+    },
+    {
+      "action": "stone",
+      "done": true,
+      "seconds": 250.2
+    },
+    {
+      "action": "collect",
+      "done": true,
+      "seconds": 310.9
+    },
+    {
+      "action": "drill",
+      "done": true,
+      "seconds": 317.4
+    },
+    {
+      "action": "wall_left",
+      "done": true,
+      "seconds": 441.6
+    },
+    {
+      "action": "herbs",
+      "done": true,
+      "seconds": 458.7
+    },
+    {
+      "action": "collect",
+      "done": true,
+      "seconds": 546.1
+    },
+    {
+      "action": "trade",
+      "done": true,
+      "seconds": 550.5
+    },
+    {
+      "action": "farm",
+      "done": true,
+      "seconds": 553.2
+    },
+    {
+      "action": "herbs",
+      "done": true,
+      "seconds": 558.6
+    },
+    {
+      "action": "crystal",
+      "done": true,
+      "seconds": 582.0
+    },
+    {
+      "action": "herbs",
+      "done": true,
+      "seconds": 584.1
+    },
+    {
+      "action": "trade",
+      "done": true,
+      "seconds": 603.0
+    },
+    {
+      "action": "trade",
+      "done": true,
+      "seconds": 637.8
+    },
+    {
+      "action": "wall",
+      "done": true,
+      "seconds": 684.6
+    },
+    {
+      "action": "collect",
+      "done": true,
+      "seconds": 684.7
+    },
+    {
+      "action": "recruit",
+      "done": true,
+      "seconds": 685.2
+    },
+    {
+      "action": "collect",
+      "done": true,
+      "seconds": 686.2
+    },
+    {
+      "action": "armory",
+      "done": true,
+      "seconds": 687.6
+    },
+    {
+      "action": "collect",
+      "done": true,
+      "seconds": 697.4
+    },
+    {
+      "action": "berries",
+      "done": true,
+      "seconds": 722.4
+    },
+    {
+      "action": "wall",
+      "done": true,
+      "seconds": 929.4
+    },
+    {
+      "action": "collect",
+      "done": true,
+      "seconds": 929.4
+    },
+    {
+      "action": "recruit",
+      "done": true,
+      "seconds": 929.7
+    },
+    {
+      "action": "collect",
+      "done": true,
+      "seconds": 932.2
+    },
+    {
+      "action": "armory",
+      "done": true,
+      "seconds": 933.6
+    },
+    {
+      "action": "collect",
+      "done": true,
+      "seconds": 1038.8
+    },
+    {
+      "action": "collect",
+      "done": true,
+      "seconds": 1099.4
+    },
+    {
+      "action": "wall_left",
+      "done": true,
+      "seconds": 1175.7
+    },
+    {
+      "action": "recruit",
+      "done": true,
+      "seconds": 1176.0
+    },
+    {
+      "action": "collect",
+      "done": true,
+      "seconds": 1179.1
+    },
+    {
+      "action": "collect",
+      "done": true,
+      "seconds": 1180.1
+    },
+    {
+      "action": "armory",
+      "done": true,
+      "seconds": 1185.9
+    },
+    {
+      "action": "collect",
+      "done": true,
+      "seconds": 1188.1
+    },
+    {
+      "action": "collect",
+      "done": true,
+      "seconds": 1189.2
+    },
+    {
+      "action": "collect",
+      "done": true,
+      "seconds": 1189.4
+    },
+    {
+      "action": "hall",
+      "done": true,
+      "seconds": 1283.1
+    },
+    {
+      "action": "trade",
+      "done": true,
+      "seconds": 1293.3
+    },
+    {
+      "action": "forge",
+      "done": true,
+      "seconds": 1299.6
+    },
+    {
+      "action": "collect",
+      "done": true,
+      "seconds": 1304.8
+    },
+    {
+      "action": "drill",
+      "done": true,
+      "seconds": 1418.4
+    },
+    {
+      "action": "wall",
+      "done": true,
+      "seconds": 1419.6
+    },
+    {
+      "action": "trade",
+      "done": true,
+      "seconds": 1429.5
+    },
+    {
+      "action": "recruit",
+      "done": true,
+      "seconds": 1445.1
+    },
+    {
+      "action": "recruit",
+      "done": true,
+      "seconds": 1445.4
+    },
+    {
+      "action": "recruit",
+      "done": true,
+      "seconds": 1446.3
+    },
+    {
+      "action": "berries",
+      "done": true,
+      "seconds": 1452.9
+    },
+    {
+      "action": "collect",
+      "done": true,
+      "seconds": 1457.3
+    },
+    {
+      "action": "workshop",
+      "done": true,
+      "seconds": 1464.6
+    },
+    {
+      "action": "collect",
+      "done": true,
+      "seconds": 1466.5
+    },
+    {
+      "action": "farm_tools",
+      "done": true,
+      "seconds": 1468.5
+    },
+    {
+      "action": "collect",
+      "done": true,
+      "seconds": 1469.7
+    },
+    {
+      "action": "armory",
+      "done": true,
+      "seconds": 1473.6
+    },
+    {
+      "action": "collect",
+      "done": true,
+      "seconds": 1476.5
+    },
+    {
+      "action": "collect",
+      "done": true,
+      "seconds": 1480.3
+    },
+    {
+      "action": "collect",
+      "done": true,
+      "seconds": 1480.3
+    },
+    {
+      "action": "berries",
+      "done": true,
+      "seconds": 1494.0
+    },
+    {
+      "action": "collect",
+      "done": true,
+      "seconds": 1496.5
+    },
+    {
+      "action": "recruit",
+      "done": true,
+      "seconds": 1671.0
+    },
+    {
+      "action": "recruit",
+      "done": true,
+      "seconds": 1671.9
+    },
+    {
+      "action": "recruit",
+      "done": true,
+      "seconds": 1674.0
+    },
+    {
+      "action": "trade",
+      "done": true,
+      "seconds": 1683.6
+    },
+    {
+      "action": "workshop",
+      "done": true,
+      "seconds": 1690.5
+    },
+    {
+      "action": "collect",
+      "done": true,
+      "seconds": 1690.8
+    },
+    {
+      "action": "armory",
+      "done": true,
+      "seconds": 1693.2
+    },
+    {
+      "action": "collect",
+      "done": true,
+      "seconds": 1698.3
+    },
+    {
+      "action": "collect",
+      "done": true,
+      "seconds": 1699.6
+    },
+    {
+      "action": "collect",
+      "done": true,
+      "seconds": 1699.6
+    },
+    {
+      "action": "wall_left",
+      "done": true,
+      "seconds": 1703.1
+    },
+    {
+      "action": "collect",
+      "done": true,
+      "seconds": 1704.8
+    },
+    {
+      "action": "rift",
+      "done": true,
+      "seconds": 1779.2
+    },
+    {
+      "action": "collect",
+      "done": true,
+      "seconds": 1790.0
+    }
+  ],
+  "final": {
+    "capacitor": 2,
+    "city": 2,
+    "context": "recruit",
+    "core": 180,
+    "crystals": 12,
+    "day": 8,
+    "food": 27,
+    "ground": 39,
+    "grounded": true,
+    "herbs": 6,
+    "hp": 100,
+    "night": false,
+    "roles": {
+      "citizen": 2,
+      "engineer": 1,
+      "farmer": 1,
+      "guard": 2,
+      "hunter": 1,
+      "wanderer": 13
+    },
+    "scrap": 99,
+    "sealed": 1,
+    "seconds": 1800.0,
+    "shield": 40,
+    "stone": 3,
+    "sword": 2,
+    "walls": {
+      "wall": {
+        "hp": 0,
+        "level": 1
+      },
+      "wall_left": {
+        "hp": 0,
+        "level": 1
+      }
+    },
+    "wood": 14,
+    "x": 1073.0,
+    "y": 430.0
+  },
+  "knight_hp_damage": 0,
+  "native_physics": true,
+  "outcome": "active",
+  "reason": "",
+  "resident_losses": 9,
+  "resource_grants": false,
+  "route": "knight",
+  "samples": [
+    {
+      "capacitor": 0,
+      "city": 0,
+      "context": "hall",
+      "core": 180,
+      "crystals": 12,
+      "day": 1,
+      "food": 0,
+      "goal": "",
+      "ground": 0,
+      "grounded": false,
+      "herbs": 0,
+      "hp": 100,
+      "night": false,
+      "roles": {
+        "wanderer": 8
+      },
+      "scrap": 0,
+      "sealed": 0,
+      "seconds": 0.0,
+      "shield": 0,
+      "stone": 0,
+      "sword": 0,
+      "walls": {},
+      "wood": 0,
+      "x": 30.0,
+      "y": 430.0
+    },
+    {
+      "capacitor": 0,
+      "city": 1,
+      "context": "",
+      "core": 180,
+      "crystals": 7,
+      "day": 1,
+      "food": 0,
+      "goal": "forge",
+      "ground": 0,
+      "grounded": true,
+      "herbs": 0,
+      "hp": 100,
+      "night": false,
+      "roles": {
+        "citizen": 1,
+        "engineer": 1,
+        "guard": 1,
+        "wanderer": 5
+      },
+      "scrap": 8,
+      "sealed": 0,
+      "seconds": 30.0,
+      "shield": 0,
+      "stone": 0,
+      "sword": 0,
+      "walls": {
+        "wall": {
+          "hp": 40,
+          "level": 1
+        }
+      },
+      "wood": 0,
+      "x": 1635.0,
+      "y": 430.0
+    },
+    {
+      "capacitor": 1,
+      "city": 1,
+      "context": "",
+      "core": 180,
+      "crystals": 8,
+      "day": 1,
+      "food": 0,
+      "goal": "collect",
+      "ground": 3,
+      "grounded": false,
+      "herbs": 0,
+      "hp": 100,
+      "night": false,
+      "roles": {
+        "engineer": 1,
+        "guard": 2,
+        "wanderer": 5
+      },
+      "scrap": 14,
+      "sealed": 0,
+      "seconds": 60.0,
+      "shield": 20,
+      "stone": 0,
+      "sword": 0,
+      "walls": {
+        "wall": {
+          "hp": 40,
+          "level": 1
+        }
+      },
+      "wood": 0,
+      "x": -2459.0,
+      "y": 312.0
+    },
+    {
+      "capacitor": 1,
+      "city": 1,
+      "context": "",
+      "core": 180,
+      "crystals": 11,
+      "day": 1,
+      "food": 0,
+      "goal": "recruit",
+      "ground": 2,
+      "grounded": true,
+      "herbs": 0,
+      "hp": 100,
+      "night": false,
+      "roles": {
+        "engineer": 1,
+        "guard": 2,
+        "wanderer": 5
+      },
+      "scrap": 14,
+      "sealed": 0,
+      "seconds": 90.0,
+      "shield": 20,
+      "stone": 0,
+      "sword": 0,
+      "walls": {
+        "wall": {
+          "hp": 40,
+          "level": 1
+        }
+      },
+      "wood": 4,
+      "x": -2611.0,
+      "y": 366.0
+    },
+    {
+      "capacitor": 1,
+      "city": 1,
+      "context": "",
+      "core": 180,
+      "crystals": 11,
+      "day": 1,
+      "food": 0,
+      "goal": "recruit",
+      "ground": 2,
+      "grounded": true,
+      "herbs": 0,
+      "hp": 100,
+      "night": false,
+      "roles": {
+        "engineer": 1,
+        "guard": 2,
+        "wanderer": 5
+      },
+      "scrap": 14,
+      "sealed": 0,
+      "seconds": 120.0,
+      "shield": 20,
+      "stone": 0,
+      "sword": 0,
+      "walls": {
+        "wall": {
+          "hp": 40,
+          "level": 1
+        }
+      },
+      "wood": 4,
+      "x": -2611.0,
+      "y": 366.0
+    },
+    {
+      "capacitor": 1,
+      "city": 1,
+      "context": "",
+      "core": 180,
+      "crystals": 11,
+      "day": 1,
+      "food": 0,
+      "goal": "recruit",
+      "ground": 2,
+      "grounded": true,
+      "herbs": 0,
+      "hp": 100,
+      "night": false,
+      "roles": {
+        "engineer": 1,
+        "guard": 2,
+        "wanderer": 5
+      },
+      "scrap": 14,
+      "sealed": 0,
+      "seconds": 150.0,
+      "shield": 20,
+      "stone": 0,
+      "sword": 0,
+      "walls": {
+        "wall": {
+          "hp": 40,
+          "level": 1
+        }
+      },
+      "wood": 4,
+      "x": -2608.0,
+      "y": 366.0
+    },
+    {
+      "capacitor": 1,
+      "city": 1,
+      "context": "",
+      "core": 180,
+      "crystals": 11,
+      "day": 1,
+      "food": 0,
+      "goal": "recruit",
+      "ground": 4,
+      "grounded": true,
+      "herbs": 0,
+      "hp": 100,
+      "night": false,
+      "roles": {
+        "engineer": 1,
+        "guard": 2,
+        "wanderer": 5
+      },
+      "scrap": 14,
+      "sealed": 0,
+      "seconds": 180.0,
+      "shield": 20,
+      "stone": 0,
+      "sword": 0,
+      "walls": {
+        "wall": {
+          "hp": 40,
+          "level": 1
+        }
+      },
+      "wood": 8,
+      "x": -2608.0,
+      "y": 366.0
+    },
+    {
+      "capacitor": 1,
+      "city": 1,
+      "context": "farm_tools",
+      "core": 180,
+      "crystals": 6,
+      "day": 1,
+      "food": 0,
+      "goal": "stone",
+      "ground": 0,
+      "grounded": true,
+      "herbs": 0,
+      "hp": 100,
+      "night": true,
+      "roles": {
+        "engineer": 1,
+        "guard": 2,
+        "wanderer": 5
+      },
+      "scrap": 16,
+      "sealed": 0,
+      "seconds": 210.0,
+      "shield": 20,
+      "stone": 0,
+      "sword": 0,
+      "walls": {
+        "wall": {
+          "hp": 40,
+          "level": 1
+        }
+      },
+      "wood": 8,
+      "x": -214.0,
+      "y": 430.0
+    },
+    {
+      "capacitor": 1,
+      "city": 1,
+      "context": "drill",
+      "core": 180,
+      "crystals": 2,
+      "day": 1,
+      "food": 0,
+      "goal": "explore",
+      "ground": 0,
+      "grounded": true,
+      "herbs": 0,
+      "hp": 100,
+      "night": true,
+      "roles": {
+        "citizen": 2,
+        "engineer": 1,
+        "guard": 2,
+        "wanderer": 3
+      },
+      "scrap": 20,
+      "sealed": 0,
+      "seconds": 240.0,
+      "shield": 20,
+      "stone": 0,
+      "sword": 0,
+      "walls": {
+        "wall": {
+          "hp": 40,
+          "level": 1
+        }
+      },
+      "wood": 8,
+      "x": 1300.0,
+      "y": 430.0
+    },
+    {
+      "capacitor": 1,
+      "city": 1,
+      "context": "mark",
+      "core": 180,
+      "crystals": 0,
+      "day": 2,
+      "food": 4,
+      "goal": "",
+      "ground": 0,
+      "grounded": true,
+      "herbs": 0,
+      "hp": 100,
+      "night": false,
+      "roles": {
+        "engineer": 1,
+        "farmer": 1,
+        "guard": 2,
+        "hunter": 1,
+        "wanderer": 9
+      },
+      "scrap": 20,
+      "sealed": 0,
+      "seconds": 270.0,
+      "shield": 20,
+      "stone": 0,
+      "sword": 0,
+      "walls": {
+        "wall": {
+          "hp": 40,
+          "level": 1
+        },
+        "wall_left": {
+          "hp": 40,
+          "level": 1
+        }
+      },
+      "wood": 8,
+      "x": 3149.0,
+      "y": 430.0
+    },
+    {
+      "capacitor": 1,
+      "city": 1,
+      "context": "mark",
+      "core": 180,
+      "crystals": 0,
+      "day": 2,
+      "food": 4,
+      "goal": "collect",
+      "ground": 2,
+      "grounded": true,
+      "herbs": 0,
+      "hp": 100,
+      "night": false,
+      "roles": {
+        "engineer": 1,
+        "farmer": 1,
+        "guard": 2,
+        "hunter": 1,
+        "wanderer": 9
+      },
+      "scrap": 20,
+      "sealed": 0,
+      "seconds": 300.0,
+      "shield": 20,
+      "stone": 0,
+      "sword": 0,
+      "walls": {
+        "wall": {
+          "hp": 40,
+          "level": 1
+        },
+        "wall_left": {
+          "hp": 40,
+          "level": 1
+        }
+      },
+      "wood": 12,
+      "x": 2158.0,
+      "y": 430.0
+    },
+    {
+      "capacitor": 1,
+      "city": 1,
+      "context": "drill",
+      "core": 180,
+      "crystals": 0,
+      "day": 2,
+      "food": 6,
+      "goal": "",
+      "ground": 0,
+      "grounded": true,
+      "herbs": 0,
+      "hp": 100,
+      "night": false,
+      "roles": {
+        "engineer": 1,
+        "farmer": 1,
+        "guard": 2,
+        "hunter": 1,
+        "wanderer": 9
+      },
+      "scrap": 20,
+      "sealed": 0,
+      "seconds": 330.0,
+      "shield": 20,
+      "stone": 0,
+      "sword": 1,
+      "walls": {
+        "wall": {
+          "hp": 40,
+          "level": 1
+        },
+        "wall_left": {
+          "hp": 40,
+          "level": 1
+        }
+      },
+      "wood": 12,
+      "x": 1227.0,
+      "y": 430.0
+    },
+    {
+      "capacitor": 1,
+      "city": 1,
+      "context": "drill",
+      "core": 180,
+      "crystals": 0,
+      "day": 2,
+      "food": 6,
+      "goal": "",
+      "ground": 0,
+      "grounded": true,
+      "herbs": 3,
+      "hp": 100,
+      "night": false,
+      "roles": {
+        "engineer": 1,
+        "farmer": 1,
+        "guard": 2,
+        "hunter": 1,
+        "wanderer": 9
+      },
+      "scrap": 20,
+      "sealed": 0,
+      "seconds": 360.0,
+      "shield": 20,
+      "stone": 0,
+      "sword": 1,
+      "walls": {
+        "wall": {
+          "hp": 40,
+          "level": 1
+        },
+        "wall_left": {
+          "hp": 40,
+          "level": 1
+        }
+      },
+      "wood": 12,
+      "x": 1227.0,
+      "y": 430.0
+    },
+    {
+      "capacitor": 1,
+      "city": 1,
+      "context": "drill",
+      "core": 180,
+      "crystals": 0,
+      "day": 2,
+      "food": 6,
+      "goal": "",
+      "ground": 0,
+      "grounded": true,
+      "herbs": 3,
+      "hp": 100,
+      "night": false,
+      "roles": {
+        "engineer": 1,
+        "farmer": 1,
+        "guard": 2,
+        "hunter": 1,
+        "wanderer": 9
+      },
+      "scrap": 20,
+      "sealed": 0,
+      "seconds": 390.0,
+      "shield": 20,
+      "stone": 0,
+      "sword": 1,
+      "walls": {
+        "wall": {
+          "hp": 40,
+          "level": 1
+        },
+        "wall_left": {
+          "hp": 40,
+          "level": 1
+        }
+      },
+      "wood": 12,
+      "x": 1227.0,
+      "y": 430.0
+    },
+    {
+      "capacitor": 1,
+      "city": 1,
+      "context": "drill",
+      "core": 180,
+      "crystals": 0,
+      "day": 2,
+      "food": 6,
+      "goal": "",
+      "ground": 0,
+      "grounded": true,
+      "herbs": 3,
+      "hp": 100,
+      "night": false,
+      "roles": {
+        "engineer": 1,
+        "farmer": 1,
+        "guard": 2,
+        "hunter": 1,
+        "wanderer": 9
+      },
+      "scrap": 20,
+      "sealed": 0,
+      "seconds": 420.0,
+      "shield": 20,
+      "stone": 0,
+      "sword": 1,
+      "walls": {
+        "wall": {
+          "hp": 40,
+          "level": 1
+        },
+        "wall_left": {
+          "hp": 40,
+          "level": 1
+        }
+      },
+      "wood": 12,
+      "x": 1227.0,
+      "y": 430.0
+    },
+    {
+      "capacitor": 1,
+      "city": 1,
+      "context": "workshop",
+      "core": 180,
+      "crystals": 1,
+      "day": 2,
+      "food": 6,
+      "goal": "herbs",
+      "ground": 0,
+      "grounded": true,
+      "herbs": 3,
+      "hp": 100,
+      "night": true,
+      "roles": {
+        "engineer": 1,
+        "farmer": 1,
+        "guard": 2,
+        "hunter": 1,
+        "wanderer": 9
+      },
+      "scrap": 26,
+      "sealed": 0,
+      "seconds": 450.0,
+      "shield": 20,
+      "stone": 0,
+      "sword": 1,
+      "walls": {
+        "wall": {
+          "hp": 40,
+          "level": 1
+        },
+        "wall_left": {
+          "hp": 0,
+          "level": 1
+        }
+      },
+      "wood": 12,
+      "x": 499.0,
+      "y": 430.0
+    },
+    {
+      "capacitor": 1,
+      "city": 1,
+      "context": "mark",
+      "core": 180,
+      "crystals": 0,
+      "day": 2,
+      "food": 6,
+      "goal": "",
+      "ground": 0,
+      "grounded": true,
+      "herbs": 3,
+      "hp": 100,
+      "night": true,
+      "roles": {
+        "engineer": 1,
+        "farmer": 1,
+        "guard": 2,
+        "hunter": 1,
+        "wanderer": 9
+      },
+      "scrap": 26,
+      "sealed": 0,
+      "seconds": 480.0,
+      "shield": 20,
+      "stone": 0,
+      "sword": 1,
+      "walls": {
+        "wall": {
+          "hp": 40,
+          "level": 1
+        },
+        "wall_left": {
+          "hp": 0,
+          "level": 1
+        }
+      },
+      "wood": 12,
+      "x": 2149.0,
+      "y": 430.0
+    },
+    {
+      "capacitor": 1,
+      "city": 1,
+      "context": "mark",
+      "core": 180,
+      "crystals": 0,
+      "day": 3,
+      "food": 10,
+      "goal": "",
+      "ground": 0,
+      "grounded": true,
+      "herbs": 3,
+      "hp": 100,
+      "night": false,
+      "roles": {
+        "engineer": 1,
+        "farmer": 1,
+        "guard": 2,
+        "hunter": 1,
+        "wanderer": 12
+      },
+      "scrap": 26,
+      "sealed": 0,
+      "seconds": 510.0,
+      "shield": 20,
+      "stone": 0,
+      "sword": 1,
+      "walls": {
+        "wall": {
+          "hp": 40,
+          "level": 1
+        },
+        "wall_left": {
+          "hp": 40,
+          "level": 1
+        }
+      },
+      "wood": 12,
+      "x": 2149.0,
+      "y": 430.0
+    },
+    {
+      "capacitor": 1,
+      "city": 1,
+      "context": "drill",
+      "core": 180,
+      "crystals": 0,
+      "day": 3,
+      "food": 10,
+      "goal": "collect",
+      "ground": 2,
+      "grounded": true,
+      "herbs": 3,
+      "hp": 100,
+      "night": false,
+      "roles": {
+        "engineer": 1,
+        "farmer": 1,
+        "guard": 2,
+        "hunter": 1,
+        "wanderer": 12
+      },
+      "scrap": 26,
+      "sealed": 0,
+      "seconds": 540.0,
+      "shield": 20,
+      "stone": 0,
+      "sword": 1,
+      "walls": {
+        "wall": {
+          "hp": 40,
+          "level": 1
+        },
+        "wall_left": {
+          "hp": 40,
+          "level": 1
+        }
+      },
+      "wood": 16,
+      "x": 1240.0,
+      "y": 430.0
+    },
+    {
+      "capacitor": 1,
+      "city": 1,
+      "context": "",
+      "core": 180,
+      "crystals": 3,
+      "day": 3,
+      "food": 7,
+      "goal": "crystal",
+      "ground": 0,
+      "grounded": true,
+      "herbs": 3,
+      "hp": 100,
+      "night": false,
+      "roles": {
+        "engineer": 1,
+        "farmer": 1,
+        "guard": 2,
+        "hunter": 1,
+        "wanderer": 12
+      },
+      "scrap": 28,
+      "sealed": 0,
+      "seconds": 570.0,
+      "shield": 20,
+      "stone": 0,
+      "sword": 1,
+      "walls": {
+        "wall": {
+          "hp": 40,
+          "level": 1
+        },
+        "wall_left": {
+          "hp": 40,
+          "level": 1
+        }
+      },
+      "wood": 14,
+      "x": 797.0,
+      "y": 430.0
+    },
+    {
+      "capacitor": 1,
+      "city": 1,
+      "context": "farm",
+      "core": 180,
+      "crystals": 1,
+      "day": 3,
+      "food": 13,
+      "goal": "trade",
+      "ground": 0,
+      "grounded": true,
+      "herbs": 3,
+      "hp": 100,
+      "night": false,
+      "roles": {
+        "engineer": 1,
+        "farmer": 1,
+        "guard": 2,
+        "hunter": 1,
+        "wanderer": 12
+      },
+      "scrap": 28,
+      "sealed": 0,
+      "seconds": 600.0,
+      "shield": 20,
+      "stone": 0,
+      "sword": 1,
+      "walls": {
+        "wall": {
+          "hp": 40,
+          "level": 1
+        },
+        "wall_left": {
+          "hp": 40,
+          "level": 1
+        }
+      },
+      "wood": 14,
+      "x": -289.0,
+      "y": 430.0
+    },
+    {
+      "capacitor": 1,
+      "city": 1,
+      "context": "trade",
+      "core": 180,
+      "crystals": 7,
+      "day": 3,
+      "food": 7,
+      "goal": "",
+      "ground": 0,
+      "grounded": true,
+      "herbs": 3,
+      "hp": 100,
+      "night": false,
+      "roles": {
+        "engineer": 1,
+        "farmer": 1,
+        "guard": 2,
+        "hunter": 1,
+        "wanderer": 12
+      },
+      "scrap": 28,
+      "sealed": 0,
+      "seconds": 630.0,
+      "shield": 20,
+      "stone": 0,
+      "sword": 1,
+      "walls": {
+        "wall": {
+          "hp": 40,
+          "level": 1
+        },
+        "wall_left": {
+          "hp": 40,
+          "level": 1
+        }
+      },
+      "wood": 14,
+      "x": -698.0,
+      "y": 430.0
+    },
+    {
+      "capacitor": 1,
+      "city": 1,
+      "context": "trade",
+      "core": 180,
+      "crystals": 11,
+      "day": 3,
+      "food": 1,
+      "goal": "",
+      "ground": 0,
+      "grounded": true,
+      "herbs": 6,
+      "hp": 100,
+      "night": false,
+      "roles": {
+        "engineer": 1,
+        "farmer": 1,
+        "guard": 2,
+        "hunter": 1,
+        "wanderer": 12
+      },
+      "scrap": 28,
+      "sealed": 0,
+      "seconds": 660.0,
+      "shield": 20,
+      "stone": 0,
+      "sword": 1,
+      "walls": {
+        "wall": {
+          "hp": 40,
+          "level": 1
+        },
+        "wall_left": {
+          "hp": 40,
+          "level": 1
+        }
+      },
+      "wood": 14,
+      "x": -698.0,
+      "y": 430.0
+    },
+    {
+      "capacitor": 1,
+      "city": 1,
+      "context": "",
+      "core": 180,
+      "crystals": 9,
+      "day": 3,
+      "food": 1,
+      "goal": "collect",
+      "ground": 1,
+      "grounded": true,
+      "herbs": 6,
+      "hp": 100,
+      "night": true,
+      "roles": {
+        "citizen": 1,
+        "engineer": 1,
+        "farmer": 1,
+        "guard": 1,
+        "hunter": 1,
+        "wanderer": 12
+      },
+      "scrap": 38,
+      "sealed": 0,
+      "seconds": 690.0,
+      "shield": 20,
+      "stone": 0,
+      "sword": 1,
+      "walls": {
+        "wall": {
+          "hp": 0,
+          "level": 1
+        },
+        "wall_left": {
+          "hp": 40,
+          "level": 1
+        }
+      },
+      "wood": 14,
+      "x": 258.0,
+      "y": 430.0
+    },
+    {
+      "capacitor": 1,
+      "city": 1,
+      "context": "wall_left",
+      "core": 180,
+      "crystals": 10,
+      "day": 3,
+      "food": 1,
+      "goal": "",
+      "ground": 0,
+      "grounded": true,
+      "herbs": 6,
+      "hp": 100,
+      "night": true,
+      "roles": {
+        "citizen": 1,
+        "engineer": 1,
+        "farmer": 1,
+        "guard": 1,
+        "hunter": 1,
+        "wanderer": 12
+      },
+      "scrap": 38,
+      "sealed": 0,
+      "seconds": 720.0,
+      "shield": 20,
+      "stone": 0,
+      "sword": 1,
+      "walls": {
+        "wall": {
+          "hp": 0,
+          "level": 1
+        },
+        "wall_left": {
+          "hp": 40,
+          "level": 1
+        }
+      },
+      "wood": 14,
+      "x": -1151.0,
+      "y": 430.0
+    },
+    {
+      "capacitor": 1,
+      "city": 1,
+      "context": "mark",
+      "core": 180,
+      "crystals": 9,
+      "day": 4,
+      "food": 7,
+      "goal": "",
+      "ground": 0,
+      "grounded": true,
+      "herbs": 6,
+      "hp": 100,
+      "night": false,
+      "roles": {
+        "engineer": 1,
+        "farmer": 1,
+        "guard": 2,
+        "hunter": 1,
+        "wanderer": 12
+      },
+      "scrap": 38,
+      "sealed": 0,
+      "seconds": 750.0,
+      "shield": 20,
+      "stone": 0,
+      "sword": 1,
+      "walls": {
+        "wall": {
+          "hp": 40,
+          "level": 1
+        },
+        "wall_left": {
+          "hp": 40,
+          "level": 1
+        }
+      },
+      "wood": 14,
+      "x": -1597.0,
+      "y": 430.0
+    },
+    {
+      "capacitor": 1,
+      "city": 1,
+      "context": "mark",
+      "core": 180,
+      "crystals": 9,
+      "day": 4,
+      "food": 13,
+      "goal": "",
+      "ground": 0,
+      "grounded": true,
+      "herbs": 6,
+      "hp": 100,
+      "night": false,
+      "roles": {
+        "engineer": 1,
+        "farmer": 1,
+        "guard": 2,
+        "hunter": 1,
+        "wanderer": 12
+      },
+      "scrap": 38,
+      "sealed": 0,
+      "seconds": 780.0,
+      "shield": 20,
+      "stone": 0,
+      "sword": 1,
+      "walls": {
+        "wall": {
+          "hp": 40,
+          "level": 1
+        },
+        "wall_left": {
+          "hp": 40,
+          "level": 1
+        }
+      },
+      "wood": 14,
+      "x": -1597.0,
+      "y": 430.0
+    },
+    {
+      "capacitor": 1,
+      "city": 1,
+      "context": "mark",
+      "core": 180,
+      "crystals": 9,
+      "day": 4,
+      "food": 21,
+      "goal": "",
+      "ground": 0,
+      "grounded": true,
+      "herbs": 6,
+      "hp": 100,
+      "night": false,
+      "roles": {
+        "engineer": 1,
+        "farmer": 1,
+        "guard": 2,
+        "hunter": 1,
+        "wanderer": 12
+      },
+      "scrap": 38,
+      "sealed": 0,
+      "seconds": 810.0,
+      "shield": 20,
+      "stone": 0,
+      "sword": 1,
+      "walls": {
+        "wall": {
+          "hp": 40,
+          "level": 1
+        },
+        "wall_left": {
+          "hp": 40,
+          "level": 1
+        }
+      },
+      "wood": 14,
+      "x": -1597.0,
+      "y": 430.0
+    },
+    {
+      "capacitor": 1,
+      "city": 1,
+      "context": "",
+      "core": 180,
+      "crystals": 9,
+      "day": 4,
+      "food": 29,
+      "goal": "",
+      "ground": 0,
+      "grounded": true,
+      "herbs": 6,
+      "hp": 100,
+      "night": false,
+      "roles": {
+        "engineer": 1,
+        "farmer": 1,
+        "guard": 2,
+        "hunter": 1,
+        "wanderer": 12
+      },
+      "scrap": 38,
+      "sealed": 0,
+      "seconds": 840.0,
+      "shield": 20,
+      "stone": 0,
+      "sword": 1,
+      "walls": {
+        "wall": {
+          "hp": 40,
+          "level": 1
+        },
+        "wall_left": {
+          "hp": 40,
+          "level": 1
+        }
+      },
+      "wood": 14,
+      "x": -1597.0,
+      "y": 430.0
+    },
+    {
+      "capacitor": 1,
+      "city": 1,
+      "context": "",
+      "core": 180,
+      "crystals": 9,
+      "day": 4,
+      "food": 37,
+      "goal": "",
+      "ground": 0,
+      "grounded": true,
+      "herbs": 6,
+      "hp": 100,
+      "night": false,
+      "roles": {
+        "engineer": 1,
+        "farmer": 1,
+        "guard": 2,
+        "hunter": 1,
+        "wanderer": 12
+      },
+      "scrap": 38,
+      "sealed": 0,
+      "seconds": 870.0,
+      "shield": 20,
+      "stone": 0,
+      "sword": 1,
+      "walls": {
+        "wall": {
+          "hp": 40,
+          "level": 1
+        },
+        "wall_left": {
+          "hp": 40,
+          "level": 1
+        }
+      },
+      "wood": 14,
+      "x": -1597.0,
+      "y": 430.0
+    },
+    {
+      "capacitor": 1,
+      "city": 1,
+      "context": "",
+      "core": 180,
+      "crystals": 9,
+      "day": 4,
+      "food": 37,
+      "goal": "",
+      "ground": 0,
+      "grounded": true,
+      "herbs": 6,
+      "hp": 100,
+      "night": false,
+      "roles": {
+        "engineer": 1,
+        "farmer": 1,
+        "guard": 2,
+        "hunter": 1,
+        "wanderer": 12
+      },
+      "scrap": 38,
+      "sealed": 0,
+      "seconds": 900.0,
+      "shield": 20,
+      "stone": 0,
+      "sword": 1,
+      "walls": {
+        "wall": {
+          "hp": 40,
+          "level": 1
+        },
+        "wall_left": {
+          "hp": 40,
+          "level": 1
+        }
+      },
+      "wood": 14,
+      "x": -1597.0,
+      "y": 430.0
+    },
+    {
+      "capacitor": 1,
+      "city": 1,
+      "context": "wall",
+      "core": 180,
+      "crystals": 11,
+      "day": 4,
+      "food": 37,
+      "goal": "collect",
+      "ground": 1,
+      "grounded": true,
+      "herbs": 6,
+      "hp": 100,
+      "night": true,
+      "roles": {
+        "citizen": 1,
+        "engineer": 1,
+        "farmer": 1,
+        "guard": 1,
+        "hunter": 1,
+        "wanderer": 12
+      },
+      "scrap": 50,
+      "sealed": 0,
+      "seconds": 930.0,
+      "shield": 20,
+      "stone": 0,
+      "sword": 1,
+      "walls": {
+        "wall": {
+          "hp": 0,
+          "level": 1
+        },
+        "wall_left": {
+          "hp": 40,
+          "level": 1
+        }
+      },
+      "wood": 14,
+      "x": 1034.0,
+      "y": 430.0
+    },
+    {
+      "capacitor": 1,
+      "city": 1,
+      "context": "armory",
+      "core": 180,
+      "crystals": 9,
+      "day": 4,
+      "food": 37,
+      "goal": "",
+      "ground": 0,
+      "grounded": true,
+      "herbs": 6,
+      "hp": 100,
+      "night": true,
+      "roles": {
+        "citizen": 1,
+        "engineer": 1,
+        "farmer": 1,
+        "guard": 1,
+        "hunter": 1,
+        "wanderer": 12
+      },
+      "scrap": 50,
+      "sealed": 0,
+      "seconds": 960.0,
+      "shield": 20,
+      "stone": 0,
+      "sword": 1,
+      "walls": {
+        "wall": {
+          "hp": 0,
+          "level": 1
+        },
+        "wall_left": {
+          "hp": 40,
+          "level": 1
+        }
+      },
+      "wood": 14,
+      "x": 708.0,
+      "y": 430.0
+    },
+    {
+      "capacitor": 1,
+      "city": 1,
+      "context": "armory",
+      "core": 180,
+      "crystals": 9,
+      "day": 5,
+      "food": 45,
+      "goal": "",
+      "ground": 0,
+      "grounded": true,
+      "herbs": 6,
+      "hp": 100,
+      "night": false,
+      "roles": {
+        "engineer": 1,
+        "farmer": 1,
+        "guard": 2,
+        "hunter": 1,
+        "wanderer": 12
+      },
+      "scrap": 50,
+      "sealed": 0,
+      "seconds": 990.0,
+      "shield": 20,
+      "stone": 0,
+      "sword": 1,
+      "walls": {
+        "wall": {
+          "hp": 40,
+          "level": 1
+        },
+        "wall_left": {
+          "hp": 40,
+          "level": 1
+        }
+      },
+      "wood": 14,
+      "x": 708.0,
+      "y": 430.0
+    },
+    {
+      "capacitor": 1,
+      "city": 1,
+      "context": "armory",
+      "core": 180,
+      "crystals": 9,
+      "day": 5,
+      "food": 51,
+      "goal": "",
+      "ground": 0,
+      "grounded": true,
+      "herbs": 6,
+      "hp": 100,
+      "night": false,
+      "roles": {
+        "engineer": 1,
+        "farmer": 1,
+        "guard": 2,
+        "hunter": 1,
+        "wanderer": 12
+      },
+      "scrap": 50,
+      "sealed": 0,
+      "seconds": 1020.0,
+      "shield": 20,
+      "stone": 0,
+      "sword": 1,
+      "walls": {
+        "wall": {
+          "hp": 40,
+          "level": 1
+        },
+        "wall_left": {
+          "hp": 40,
+          "level": 1
+        }
+      },
+      "wood": 14,
+      "x": 708.0,
+      "y": 430.0
+    },
+    {
+      "capacitor": 1,
+      "city": 1,
+      "context": "",
+      "core": 180,
+      "crystals": 11,
+      "day": 5,
+      "food": 55,
+      "goal": "",
+      "ground": 0,
+      "grounded": true,
+      "herbs": 6,
+      "hp": 100,
+      "night": false,
+      "roles": {
+        "engineer": 1,
+        "farmer": 1,
+        "guard": 2,
+        "hunter": 1,
+        "wanderer": 12
+      },
+      "scrap": 50,
+      "sealed": 0,
+      "seconds": 1050.0,
+      "shield": 20,
+      "stone": 0,
+      "sword": 1,
+      "walls": {
+        "wall": {
+          "hp": 40,
+          "level": 1
+        },
+        "wall_left": {
+          "hp": 40,
+          "level": 1
+        }
+      },
+      "wood": 18,
+      "x": 110.0,
+      "y": 430.0
+    },
+    {
+      "capacitor": 1,
+      "city": 1,
+      "context": "",
+      "core": 180,
+      "crystals": 11,
+      "day": 5,
+      "food": 65,
+      "goal": "",
+      "ground": 0,
+      "grounded": true,
+      "herbs": 6,
+      "hp": 100,
+      "night": false,
+      "roles": {
+        "engineer": 1,
+        "farmer": 1,
+        "guard": 2,
+        "hunter": 1,
+        "wanderer": 12
+      },
+      "scrap": 50,
+      "sealed": 0,
+      "seconds": 1080.0,
+      "shield": 20,
+      "stone": 0,
+      "sword": 1,
+      "walls": {
+        "wall": {
+          "hp": 40,
+          "level": 1
+        },
+        "wall_left": {
+          "hp": 40,
+          "level": 1
+        }
+      },
+      "wood": 18,
+      "x": 110.0,
+      "y": 430.0
+    },
+    {
+      "capacitor": 1,
+      "city": 1,
+      "context": "hall",
+      "core": 180,
+      "crystals": 12,
+      "day": 5,
+      "food": 69,
+      "goal": "",
+      "ground": 1,
+      "grounded": true,
+      "herbs": 6,
+      "hp": 100,
+      "night": false,
+      "roles": {
+        "engineer": 1,
+        "farmer": 1,
+        "guard": 2,
+        "hunter": 1,
+        "wanderer": 12
+      },
+      "scrap": 50,
+      "sealed": 0,
+      "seconds": 1110.0,
+      "shield": 20,
+      "stone": 0,
+      "sword": 1,
+      "walls": {
+        "wall": {
+          "hp": 40,
+          "level": 1
+        },
+        "wall_left": {
+          "hp": 40,
+          "level": 1
+        }
+      },
+      "wood": 22,
+      "x": 78.0,
+      "y": 430.0
+    },
+    {
+      "capacitor": 1,
+      "city": 1,
+      "context": "hall",
+      "core": 180,
+      "crystals": 12,
+      "day": 5,
+      "food": 71,
+      "goal": "",
+      "ground": 1,
+      "grounded": true,
+      "herbs": 6,
+      "hp": 100,
+      "night": false,
+      "roles": {
+        "engineer": 1,
+        "farmer": 1,
+        "guard": 2,
+        "hunter": 1,
+        "wanderer": 12
+      },
+      "scrap": 50,
+      "sealed": 0,
+      "seconds": 1140.0,
+      "shield": 20,
+      "stone": 0,
+      "sword": 1,
+      "walls": {
+        "wall": {
+          "hp": 40,
+          "level": 1
+        },
+        "wall_left": {
+          "hp": 40,
+          "level": 1
+        }
+      },
+      "wood": 22,
+      "x": 78.0,
+      "y": 430.0
+    },
+    {
+      "capacitor": 1,
+      "city": 1,
+      "context": "",
+      "core": 180,
+      "crystals": 12,
+      "day": 5,
+      "food": 71,
+      "goal": "",
+      "ground": 6,
+      "grounded": true,
+      "herbs": 6,
+      "hp": 100,
+      "night": true,
+      "roles": {
+        "engineer": 1,
+        "farmer": 1,
+        "guard": 1,
+        "hunter": 1,
+        "wanderer": 13
+      },
+      "scrap": 60,
+      "sealed": 0,
+      "seconds": 1170.0,
+      "shield": 20,
+      "stone": 0,
+      "sword": 1,
+      "walls": {
+        "wall": {
+          "hp": 40,
+          "level": 1
+        },
+        "wall_left": {
+          "hp": 0,
+          "level": 1
+        }
+      },
+      "wood": 22,
+      "x": -439.0,
+      "y": 430.0
+    },
+    {
+      "capacitor": 1,
+      "city": 1,
+      "context": "",
+      "core": 180,
+      "crystals": 12,
+      "day": 5,
+      "food": 71,
+      "goal": "",
+      "ground": 2,
+      "grounded": true,
+      "herbs": 6,
+      "hp": 100,
+      "night": true,
+      "roles": {
+        "citizen": 1,
+        "engineer": 1,
+        "farmer": 1,
+        "guard": 1,
+        "hunter": 1,
+        "wanderer": 12
+      },
+      "scrap": 64,
+      "sealed": 0,
+      "seconds": 1200.0,
+      "shield": 20,
+      "stone": 0,
+      "sword": 1,
+      "walls": {
+        "wall": {
+          "hp": 40,
+          "level": 1
+        },
+        "wall_left": {
+          "hp": 0,
+          "level": 1
+        }
+      },
+      "wood": 22,
+      "x": 1364.0,
+      "y": 430.0
+    },
+    {
+      "capacitor": 1,
+      "city": 1,
+      "context": "",
+      "core": 180,
+      "crystals": 12,
+      "day": 6,
+      "food": 79,
+      "goal": "",
+      "ground": 2,
+      "grounded": true,
+      "herbs": 6,
+      "hp": 100,
+      "night": false,
+      "roles": {
+        "engineer": 1,
+        "farmer": 1,
+        "guard": 2,
+        "hunter": 1,
+        "wanderer": 12
+      },
+      "scrap": 64,
+      "sealed": 0,
+      "seconds": 1230.0,
+      "shield": 20,
+      "stone": 0,
+      "sword": 1,
+      "walls": {
+        "wall": {
+          "hp": 40,
+          "level": 1
+        },
+        "wall_left": {
+          "hp": 40,
+          "level": 1
+        }
+      },
+      "wood": 22,
+      "x": 1364.0,
+      "y": 430.0
+    },
+    {
+      "capacitor": 1,
+      "city": 1,
+      "context": "",
+      "core": 180,
+      "crystals": 12,
+      "day": 6,
+      "food": 83,
+      "goal": "",
+      "ground": 2,
+      "grounded": true,
+      "herbs": 6,
+      "hp": 100,
+      "night": false,
+      "roles": {
+        "engineer": 1,
+        "farmer": 1,
+        "guard": 2,
+        "hunter": 1,
+        "wanderer": 12
+      },
+      "scrap": 64,
+      "sealed": 0,
+      "seconds": 1260.0,
+      "shield": 20,
+      "stone": 0,
+      "sword": 1,
+      "walls": {
+        "wall": {
+          "hp": 40,
+          "level": 1
+        },
+        "wall_left": {
+          "hp": 40,
+          "level": 1
+        }
+      },
+      "wood": 22,
+      "x": 1364.0,
+      "y": 430.0
+    },
+    {
+      "capacitor": 1,
+      "city": 2,
+      "context": "trade",
+      "core": 180,
+      "crystals": 12,
+      "day": 6,
+      "food": 45,
+      "goal": "trade",
+      "ground": 19,
+      "grounded": true,
+      "herbs": 6,
+      "hp": 100,
+      "night": false,
+      "roles": {
+        "engineer": 1,
+        "farmer": 1,
+        "guard": 2,
+        "hunter": 1,
+        "wanderer": 12
+      },
+      "scrap": 64,
+      "sealed": 0,
+      "seconds": 1290.0,
+      "shield": 20,
+      "stone": 3,
+      "sword": 1,
+      "walls": {
+        "wall": {
+          "hp": 40,
+          "level": 1
+        },
+        "wall_left": {
+          "hp": 40,
+          "level": 1
+        }
+      },
+      "wood": 14,
+      "x": -698.0,
+      "y": 430.0
+    },
+    {
+      "capacitor": 2,
+      "city": 2,
+      "context": "rift",
+      "core": 180,
+      "crystals": 8,
+      "day": 6,
+      "food": 5,
+      "goal": "rift",
+      "ground": 38,
+      "grounded": true,
+      "herbs": 6,
+      "hp": 100,
+      "night": false,
+      "roles": {
+        "engineer": 1,
+        "farmer": 1,
+        "guard": 2,
+        "hunter": 1,
+        "wanderer": 12
+      },
+      "scrap": 61,
+      "sealed": 0,
+      "seconds": 1320.0,
+      "shield": 40,
+      "stone": 3,
+      "sword": 1,
+      "walls": {
+        "wall": {
+          "hp": 40,
+          "level": 1
+        },
+        "wall_left": {
+          "hp": 40,
+          "level": 1
+        }
+      },
+      "wood": 14,
+      "x": -2876.0,
+      "y": 430.0
+    },
+    {
+      "capacitor": 2,
+      "city": 2,
+      "context": "rift",
+      "core": 180,
+      "crystals": 8,
+      "day": 6,
+      "food": 11,
+      "goal": "rift",
+      "ground": 44,
+      "grounded": true,
+      "herbs": 6,
+      "hp": 100,
+      "night": false,
+      "roles": {
+        "engineer": 1,
+        "farmer": 1,
+        "guard": 2,
+        "hunter": 1,
+        "wanderer": 12
+      },
+      "scrap": 61,
+      "sealed": 0,
+      "seconds": 1350.0,
+      "shield": 40,
+      "stone": 3,
+      "sword": 1,
+      "walls": {
+        "wall": {
+          "hp": 40,
+          "level": 1
+        },
+        "wall_left": {
+          "hp": 40,
+          "level": 1
+        }
+      },
+      "wood": 14,
+      "x": -2876.0,
+      "y": 430.0
+    },
+    {
+      "capacitor": 2,
+      "city": 2,
+      "context": "rift",
+      "core": 180,
+      "crystals": 8,
+      "day": 6,
+      "food": 13,
+      "goal": "rift",
+      "ground": 44,
+      "grounded": true,
+      "herbs": 6,
+      "hp": 100,
+      "night": false,
+      "roles": {
+        "engineer": 1,
+        "farmer": 1,
+        "guard": 2,
+        "hunter": 1,
+        "wanderer": 12
+      },
+      "scrap": 61,
+      "sealed": 0,
+      "seconds": 1380.0,
+      "shield": 40,
+      "stone": 3,
+      "sword": 1,
+      "walls": {
+        "wall": {
+          "hp": 40,
+          "level": 1
+        },
+        "wall_left": {
+          "hp": 40,
+          "level": 1
+        }
+      },
+      "wood": 14,
+      "x": -2876.0,
+      "y": 430.0
+    },
+    {
+      "capacitor": 2,
+      "city": 2,
+      "context": "",
+      "core": 180,
+      "crystals": 12,
+      "day": 6,
+      "food": 13,
+      "goal": "",
+      "ground": 45,
+      "grounded": true,
+      "herbs": 6,
+      "hp": 100,
+      "night": true,
+      "roles": {
+        "engineer": 1,
+        "guard": 1,
+        "hunter": 1,
+        "wanderer": 14
+      },
+      "scrap": 71,
+      "sealed": 0,
+      "seconds": 1410.0,
+      "shield": 40,
+      "stone": 3,
+      "sword": 1,
+      "walls": {
+        "wall": {
+          "hp": 0,
+          "level": 1
+        },
+        "wall_left": {
+          "hp": 40,
+          "level": 1
+        }
+      },
+      "wood": 14,
+      "x": 157.0,
+      "y": 430.0
+    },
+    {
+      "capacitor": 2,
+      "city": 2,
+      "context": "recruit",
+      "core": 180,
+      "crystals": 12,
+      "day": 6,
+      "food": 1,
+      "goal": "rift",
+      "ground": 47,
+      "grounded": true,
+      "herbs": 6,
+      "hp": 100,
+      "night": true,
+      "roles": {
+        "engineer": 1,
+        "guard": 1,
+        "hunter": 1,
+        "wanderer": 14
+      },
+      "scrap": 77,
+      "sealed": 0,
+      "seconds": 1440.0,
+      "shield": 40,
+      "stone": 3,
+      "sword": 2,
+      "walls": {
+        "wall": {
+          "hp": 0,
+          "level": 1
+        },
+        "wall_left": {
+          "hp": 40,
+          "level": 1
+        }
+      },
+      "wood": 14,
+      "x": -2690.0,
+      "y": 430.0
+    },
+    {
+      "capacitor": 2,
+      "city": 2,
+      "context": "",
+      "core": 180,
+      "crystals": 12,
+      "day": 7,
+      "food": 5,
+      "goal": "armory",
+      "ground": 41,
+      "grounded": true,
+      "herbs": 6,
+      "hp": 100,
+      "night": false,
+      "roles": {
+        "citizen": 3,
+        "guard": 1,
+        "hunter": 1,
+        "wanderer": 12
+      },
+      "scrap": 81,
+      "sealed": 0,
+      "seconds": 1470.0,
+      "shield": 40,
+      "stone": 3,
+      "sword": 2,
+      "walls": {
+        "wall": {
+          "hp": 0,
+          "level": 1
+        },
+        "wall_left": {
+          "hp": 40,
+          "level": 1
+        }
+      },
+      "wood": 14,
+      "x": 138.0,
+      "y": 430.0
+    },
+    {
+      "capacitor": 2,
+      "city": 2,
+      "context": "",
+      "core": 180,
+      "crystals": 12,
+      "day": 7,
+      "food": 5,
+      "goal": "",
+      "ground": 37,
+      "grounded": true,
+      "herbs": 6,
+      "hp": 100,
+      "night": false,
+      "roles": {
+        "citizen": 2,
+        "farmer": 1,
+        "guard": 1,
+        "hunter": 1,
+        "wanderer": 12
+      },
+      "scrap": 81,
+      "sealed": 0,
+      "seconds": 1500.0,
+      "shield": 40,
+      "stone": 3,
+      "sword": 2,
+      "walls": {
+        "wall": {
+          "hp": 0,
+          "level": 1
+        },
+        "wall_left": {
+          "hp": 40,
+          "level": 1
+        }
+      },
+      "wood": 14,
+      "x": 1525.0,
+      "y": 430.0
+    },
+    {
+      "capacitor": 2,
+      "city": 2,
+      "context": "rift",
+      "core": 180,
+      "crystals": 8,
+      "day": 7,
+      "food": 9,
+      "goal": "rift",
+      "ground": 37,
+      "grounded": true,
+      "herbs": 6,
+      "hp": 100,
+      "night": false,
+      "roles": {
+        "engineer": 1,
+        "farmer": 1,
+        "guard": 2,
+        "hunter": 1,
+        "wanderer": 12
+      },
+      "scrap": 81,
+      "sealed": 0,
+      "seconds": 1530.0,
+      "shield": 40,
+      "stone": 3,
+      "sword": 2,
+      "walls": {
+        "wall": {
+          "hp": 0,
+          "level": 1
+        },
+        "wall_left": {
+          "hp": 40,
+          "level": 1
+        }
+      },
+      "wood": 14,
+      "x": 3377.0,
+      "y": 430.0
+    },
+    {
+      "capacitor": 2,
+      "city": 2,
+      "context": "rift",
+      "core": 180,
+      "crystals": 8,
+      "day": 7,
+      "food": 17,
+      "goal": "rift",
+      "ground": 37,
+      "grounded": true,
+      "herbs": 6,
+      "hp": 100,
+      "night": false,
+      "roles": {
+        "engineer": 1,
+        "farmer": 1,
+        "guard": 2,
+        "hunter": 1,
+        "wanderer": 12
+      },
+      "scrap": 81,
+      "sealed": 0,
+      "seconds": 1560.0,
+      "shield": 40,
+      "stone": 3,
+      "sword": 2,
+      "walls": {
+        "wall": {
+          "hp": 0,
+          "level": 1
+        },
+        "wall_left": {
+          "hp": 40,
+          "level": 1
+        }
+      },
+      "wood": 14,
+      "x": 3377.0,
+      "y": 430.0
+    },
+    {
+      "capacitor": 2,
+      "city": 2,
+      "context": "rift",
+      "core": 180,
+      "crystals": 8,
+      "day": 7,
+      "food": 23,
+      "goal": "rift",
+      "ground": 37,
+      "grounded": true,
+      "herbs": 6,
+      "hp": 100,
+      "night": false,
+      "roles": {
+        "engineer": 1,
+        "farmer": 1,
+        "guard": 2,
+        "hunter": 1,
+        "wanderer": 12
+      },
+      "scrap": 81,
+      "sealed": 0,
+      "seconds": 1590.0,
+      "shield": 40,
+      "stone": 3,
+      "sword": 2,
+      "walls": {
+        "wall": {
+          "hp": 0,
+          "level": 1
+        },
+        "wall_left": {
+          "hp": 40,
+          "level": 1
+        }
+      },
+      "wood": 14,
+      "x": 3377.0,
+      "y": 430.0
+    },
+    {
+      "capacitor": 2,
+      "city": 2,
+      "context": "rift",
+      "core": 180,
+      "crystals": 8,
+      "day": 7,
+      "food": 25,
+      "goal": "rift",
+      "ground": 37,
+      "grounded": true,
+      "herbs": 6,
+      "hp": 100,
+      "night": false,
+      "roles": {
+        "engineer": 1,
+        "farmer": 1,
+        "guard": 2,
+        "hunter": 1,
+        "wanderer": 12
+      },
+      "scrap": 81,
+      "sealed": 0,
+      "seconds": 1620.0,
+      "shield": 40,
+      "stone": 3,
+      "sword": 2,
+      "walls": {
+        "wall": {
+          "hp": 0,
+          "level": 1
+        },
+        "wall_left": {
+          "hp": 40,
+          "level": 1
+        }
+      },
+      "wood": 14,
+      "x": 3377.0,
+      "y": 430.0
+    },
+    {
+      "capacitor": 2,
+      "city": 2,
+      "context": "",
+      "core": 180,
+      "crystals": 12,
+      "day": 7,
+      "food": 25,
+      "goal": "",
+      "ground": 38,
+      "grounded": true,
+      "herbs": 6,
+      "hp": 100,
+      "night": true,
+      "roles": {
+        "engineer": 1,
+        "farmer": 1,
+        "hunter": 1,
+        "wanderer": 14
+      },
+      "scrap": 91,
+      "sealed": 0,
+      "seconds": 1650.0,
+      "shield": 40,
+      "stone": 3,
+      "sword": 2,
+      "walls": {
+        "wall": {
+          "hp": 0,
+          "level": 1
+        },
+        "wall_left": {
+          "hp": 0,
+          "level": 1
+        }
+      },
+      "wood": 14,
+      "x": 154.0,
+      "y": 430.0
+    },
+    {
+      "capacitor": 2,
+      "city": 2,
+      "context": "wall_left",
+      "core": 180,
+      "crystals": 10,
+      "day": 7,
+      "food": 25,
+      "goal": "trade",
+      "ground": 40,
+      "grounded": true,
+      "herbs": 6,
+      "hp": 100,
+      "night": true,
+      "roles": {
+        "citizen": 4,
+        "farmer": 1,
+        "hunter": 1,
+        "wanderer": 11
+      },
+      "scrap": 99,
+      "sealed": 0,
+      "seconds": 1680.0,
+      "shield": 40,
+      "stone": 3,
+      "sword": 2,
+      "walls": {
+        "wall": {
+          "hp": 0,
+          "level": 1
+        },
+        "wall_left": {
+          "hp": 0,
+          "level": 1
+        }
+      },
+      "wood": 14,
+      "x": -1100.0,
+      "y": 430.0
+    },
+    {
+      "capacitor": 2,
+      "city": 2,
+      "context": "trade",
+      "core": 180,
+      "crystals": 12,
+      "day": 8,
+      "food": 7,
+      "goal": "",
+      "ground": 40,
+      "grounded": true,
+      "herbs": 6,
+      "hp": 100,
+      "night": false,
+      "roles": {
+        "citizen": 4,
+        "farmer": 1,
+        "hunter": 1,
+        "wanderer": 14
+      },
+      "scrap": 99,
+      "sealed": 0,
+      "seconds": 1710.0,
+      "shield": 40,
+      "stone": 3,
+      "sword": 2,
+      "walls": {
+        "wall": {
+          "hp": 0,
+          "level": 1
+        },
+        "wall_left": {
+          "hp": 0,
+          "level": 1
+        }
+      },
+      "wood": 14,
+      "x": -767.0,
+      "y": 430.0
+    },
+    {
+      "capacitor": 2,
+      "city": 2,
+      "context": "rift",
+      "core": 180,
+      "crystals": 11,
+      "day": 8,
+      "food": 13,
+      "goal": "rift",
+      "ground": 40,
+      "grounded": true,
+      "herbs": 6,
+      "hp": 100,
+      "night": false,
+      "roles": {
+        "citizen": 2,
+        "engineer": 1,
+        "farmer": 1,
+        "guard": 2,
+        "hunter": 1,
+        "wanderer": 13
+      },
+      "scrap": 99,
+      "sealed": 0,
+      "seconds": 1740.0,
+      "shield": 40,
+      "stone": 3,
+      "sword": 2,
+      "walls": {
+        "wall": {
+          "hp": 0,
+          "level": 1
+        },
+        "wall_left": {
+          "hp": 0,
+          "level": 1
+        }
+      },
+      "wood": 14,
+      "x": -2876.0,
+      "y": 430.0
+    },
+    {
+      "capacitor": 2,
+      "city": 2,
+      "context": "rift",
+      "core": 180,
+      "crystals": 11,
+      "day": 8,
+      "food": 19,
+      "goal": "rift",
+      "ground": 40,
+      "grounded": true,
+      "herbs": 6,
+      "hp": 100,
+      "night": false,
+      "roles": {
+        "citizen": 2,
+        "engineer": 1,
+        "farmer": 1,
+        "guard": 2,
+        "hunter": 1,
+        "wanderer": 13
+      },
+      "scrap": 99,
+      "sealed": 0,
+      "seconds": 1770.0,
+      "shield": 40,
+      "stone": 3,
+      "sword": 2,
+      "walls": {
+        "wall": {
+          "hp": 0,
+          "level": 1
+        },
+        "wall_left": {
+          "hp": 0,
+          "level": 1
+        }
+      },
+      "wood": 14,
+      "x": -2876.0,
+      "y": 430.0
+    },
+    {
+      "capacitor": 2,
+      "city": 2,
+      "context": "recruit",
+      "core": 180,
+      "crystals": 12,
+      "day": 8,
+      "food": 27,
+      "goal": "rift",
+      "ground": 39,
+      "grounded": true,
+      "herbs": 6,
+      "hp": 100,
+      "night": false,
+      "roles": {
+        "citizen": 2,
+        "engineer": 1,
+        "farmer": 1,
+        "guard": 2,
+        "hunter": 1,
+        "wanderer": 13
+      },
+      "scrap": 99,
+      "sealed": 1,
+      "seconds": 1800.0,
+      "shield": 40,
+      "stone": 3,
+      "sword": 2,
+      "walls": {
+        "wall": {
+          "hp": 0,
+          "level": 1
+        },
+        "wall_left": {
+          "hp": 0,
+          "level": 1
+        }
+      },
+      "wood": 14,
+      "x": 1073.0,
+      "y": 430.0
+    }
+  ],
+  "seed": 1
+}

@@ -1,0 +1,3 @@
+/Users/jenpoyueh/GitHub/cyber-kingdom/builds/ios-personal-20260913/CyberKingdomDemo.xcodeproj: error: Communication with Apple failed: Your team has no devices from which to generate a provisioning profile. Connect a device to use or manually add device IDs in Certificates, Identifiers & Profiles. https://developer.apple.com/account/ (in target 'CyberKingdomDemo' from project 'CyberKingdomDemo')
+/Users/jenpoyueh/GitHub/cyber-kingdom/builds/ios-personal-20260913/CyberKingdomDemo.xcodeproj: error: No profiles for 'com.jenpoyueh.cyberkingdom.demo' were found: Xcode couldn't find any iOS App Development provisioning profiles matching 'com.jenpoyueh.cyberkingdom.demo'. (in target 'CyberKingdomDemo' from project 'CyberKingdomDemo')
+** BUILD FAILED **

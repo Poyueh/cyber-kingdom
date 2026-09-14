@@ -1,0 +1,9 @@
+# Ambient v001
+
+Generated using the built-in imagegen tool. Original outputs are retained in sources/; local alpha cleanup and nearest-neighbour frame alignment were explicitly authorized by the user. Run tools/prepare_ambient_art.py with Pillow to reproduce runtime assets.
+
+## Wanderer prompt
+Use case: identity-preserve. Game asset: six-frame idle animation sprite sheet on genuinely transparent background, 3 equal columns x 2 equal rows, no labels, no grid. Reference image is the existing citizen atlas: use ONLY the hooded brown wanderer in its FIRST COLUMN as identity reference. Same brown hood, shadowed face, ragged cloak, mechanical shin armor, restrained cyan accents, empty hands. Six successive subtle idle poses: neutral, inhale shoulders rise, look slightly right, settle, glance slightly left, exhale back toward neutral. All facing right side view, same proportions, full body and feet at consistent baselines, grounded stance without walking. Crisp low-resolution pixel-art intended for 64x64 frames, no smooth painting, no ground shadow, no background scenery. Large clear separation and padding between all six figures. Preserve identity, small character silhouette and palette of reference.
+
+## Open chest prompt
+Use case: precise-object-edit. Game sprite for Cyber Kingdom. Reference is our closed wooden treasure chest sprite. Make the exact same chest fully OPEN, lid hinged upward toward rear, interior filled with a subtle cyan glow from dragon crystals. Preserve same base shape, wood planks, dark steel bands, cyan latch, side-view with slight view of right side, crisp pixel art. One isolated chest, no text, no floor, no shadow outside chest, no other objects, genuinely transparent background. Match low-resolution sprite detail, compact enough for 52x50 game pixels. Keep the chest base and silhouette recognizable from reference.

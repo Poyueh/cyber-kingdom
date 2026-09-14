@@ -1,0 +1,45 @@
+[gd_scene load_steps=18 format=3]
+[ext_resource type="PackedScene" path="res://scenes/settlement.tscn" id="base"]
+[ext_resource type="Script" path="res://bootstrap/frontier_root.gd" id="root"]
+[ext_resource type="Resource" path="res://data/campaign.tres" id="tuning"]
+[ext_resource type="Script" path="res://presentation/campaign_view.gd" id="view"]
+[ext_resource type="Script" path="res://presentation/frontier_controls.gd" id="controls"]
+[ext_resource type="Script" path="res://presentation/campaign_hud.gd" id="hud"]
+[ext_resource type="Resource" path="res://data/refuge_art.tres" id="cyber-art"]
+[ext_resource type="Texture2D" path="res://art/characters/prosthetic-v001/wanderer-idle.png" id="wanderer"]
+[ext_resource type="Texture2D" path="res://art/characters/fluid-v001/attack.png" id="knight-attack"]
+[ext_resource type="Texture2D" path="res://art/characters/prosthetic-v001/knight-dash.png" id="knight-dash"]
+[ext_resource type="Texture2D" path="res://art/characters/prosthetic-v001/knight-idle.png" id="knight-idle"]
+[ext_resource type="Texture2D" path="res://art/characters/prosthetic-v001/knight-run-old.png" id="knight-run-old"]
+[ext_resource type="Texture2D" path="res://art/characters/fluid-v001/run.png" id="knight-run"]
+[ext_resource type="Texture2D" path="res://art/characters/prosthetic-v001/knight-jump.png" id="knight-jump"]
+[ext_resource type="Texture2D" path="res://art/characters/fluid-v001/moving-attack.png" id="moving-attack"]
+[ext_resource type="Resource" path="res://data/knight_combo_motion.tres" id="combo-motion"]
+[ext_resource type="Script" path="res://presentation/campaign_audio.gd" id="audio"]
+[node name="Frontier" instance=ExtResource("base")]
+script = ExtResource("root")
+tuning = ExtResource("tuning")
+[node name="WorldView" parent="." index="5"]
+script = ExtResource("view")
+art = ExtResource("cyber-art")
+wanderer_idle = ExtResource("wanderer")
+[node name="InputAdapter" parent="." index="6"]
+script = ExtResource("controls")
+[node name="HUD" parent="." index="7"]
+script = ExtResource("hud")
+[node name="Knight" parent="."]
+procedural_slash = false
+[node name="KnightVisual" parent="Knight"]
+combo_motion = ExtResource("combo-motion")
+moving_attack_atlas = ExtResource("moving-attack")
+texture_overrides = {
+"res://art/characters/knight/processed/attack-v003.png": ExtResource("knight-attack"),
+"res://art/characters/knight/processed/dash-v001.png": ExtResource("knight-dash"),
+"res://art/characters/knight/processed/idle-v001.png": ExtResource("knight-idle"),
+"res://art/characters/knight/processed/run-v001.png": ExtResource("knight-run-old"),
+"res://art/characters/knight/motion-v002/run.png": ExtResource("knight-run"),
+"res://art/characters/knight/motion-v002/jump.png": ExtResource("knight-jump")
+}
+
+[node name="CampaignAudio" type="Node" parent="."]
+script = ExtResource("audio")

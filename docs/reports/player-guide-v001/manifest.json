@@ -1,0 +1,69 @@
+{
+  "offline": true,
+  "errors": [],
+  "networkRequests": [],
+  "viewports": [
+    {
+      "viewport": 1440,
+      "scroll": 1440,
+      "broken": [],
+      "h1": 1
+    },
+    {
+      "viewport": 768,
+      "scroll": 768,
+      "broken": [],
+      "h1": 1
+    },
+    {
+      "viewport": 390,
+      "scroll": 390,
+      "broken": [],
+      "h1": 1
+    },
+    {
+      "viewport": 320,
+      "scroll": 320,
+      "broken": [],
+      "h1": 1
+    }
+  ],
+  "checks": [
+    "platform switch",
+    "wallet deduction",
+    "partial progress per target",
+    "transaction completion",
+    "reset",
+    "animation start/stop",
+    "FAQ expand",
+    "images decode",
+    "no horizontal overflow"
+  ],
+  "date": "2026-09-14",
+  "gameplay_source": "de83023",
+  "scope": "Offline player guide; gameplay unchanged",
+  "output": "builds/player-guide/Cyber-Kingdom-玩家指南.html",
+  "output_bytes": 2412830,
+  "output_sha256": "01969b3bb3f0cec0301f3de7aaeb8361fd60edf3e8f411802788bcf52741f886",
+  "game_check": {
+    "command": "bash tools/check.sh",
+    "cwd": "/tmp/kingdom-cycle-review",
+    "exit_code": 0,
+    "script_errors": false,
+    "log": "full-check.log"
+  },
+  "preserved_existing_files": 130,
+  "visual_review": [
+    "desktop hero",
+    "desktop investment",
+    "resident portraits",
+    "combat",
+    "mobile hero",
+    "mobile investment"
+  ],
+  "limitations": [
+    "Chrome desktop with emulated viewport widths; no physical iPhone Safari test",
+    "Guide demo does not implement the full game",
+    "Concept hero labelled; equipment screenshot is staged visual comparison"
+  ]
+}

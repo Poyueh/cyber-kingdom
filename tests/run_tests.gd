@@ -1,0 +1,37 @@
+extends SceneTree
+
+var failures: Array[String] = []
+var assertions := 0
+
+func _initialize() -> void:
+	call_deferred("_run")
+
+func _run() -> void:
+	var suites := ["res://tests/test_frontier_details.gd", "res://tests/test_audio_preferences.gd", "res://tests/test_action_stamina.gd", "res://tests/test_kingdom_cycle.gd", "res://tests/test_resident_motion.gd", "res://tests/test_frontier_depth.gd", "res://tests/test_campaign_audio.gd", "res://tests/test_expedition_guide.gd", "res://tests/test_campaign_guide.gd", "res://tests/test_hud_layout.gd", "res://tests/test_campaign_store.gd", "res://tests/test_campaign_snapshot.gd", "res://tests/test_defense_expansion.gd", "res://tests/test_frontier_ecology.gd", "res://tests/test_knight_growth.gd", "res://tests/test_combat.gd", "res://tests/test_campaign_objective.gd", "res://tests/test_bilateral_defense.gd", "res://tests/test_resident_schedule.gd", "res://tests/test_session.gd", "res://tests/test_file_store.gd", "res://tests/test_knight_visual.gd", "res://tests/test_impact_view.gd", "res://tests/test_refuge.gd", "res://tests/test_settlement.gd", "res://tests/test_frontier.gd", "res://tests/test_frontier_workforce.gd", "res://tests/test_campaign.gd", "res://tests/test_icon_presentation.gd", "res://tests/test_crystal_flow.gd", "res://tests/test_context_investment.gd"]
+	for suite_path in suites:
+		var script = load(suite_path)
+		if script == null or not script.can_instantiate():
+			failures.append("Cannot load test suite: " + suite_path)
+			continue
+		var suite = script.new()
+		for method in suite.get_method_list():
+			if str(method.name).begins_with("test_"):
+				var before := assertions
+				var previous := failures.size()
+				suite.call(method.name, self)
+				if before == assertions:
+					failures.append(str(method.name) + ": no assertions (possible script error)")
+				print(("PASS " if previous == failures.size() else "FAIL ") + str(method.name))
+	if not failures.is_empty():
+		for failure in failures:
+			printerr(failure)
+	print("Assertions: %d; failures: %d" % [assertions, failures.size()])
+	quit(0 if failures.is_empty() else 1)
+
+func equal(actual: Variant, expected: Variant, message: String) -> void:
+	assertions += 1
+	if actual != expected:
+		failures.append("%s: expected %s, got %s" % [message, str(expected), str(actual)])
+
+func truth(value: bool, message: String) -> void:
+	equal(value, true, message)

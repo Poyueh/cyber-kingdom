@@ -1,0 +1,56 @@
+{
+  "source_tree": "ba61b19815f8e2ee39a69d2b684effa4e73557f1",
+  "godot_assertions": 1120,
+  "behavior_assertions": 859,
+  "scene_assertions": 261,
+  "python_build_tests": 2,
+  "new_guide_assertions": 19,
+  "new_scene_assertions": 7,
+  "visuals": "Native desktop rendering. Camp built with two actual payments; no extra resources or time skip. Not a human playthrough.",
+  "evidence_sha256": {
+    "android-runtime.log": "88e14252d2ee715ea1df4af745cc0d3898630aee9108b10a159fa5dadf628185",
+    "stocked-weapon-red.log": "cdea7a904f051cab542d86e077eda895346d6fd4a50062676ef3ec3cfe477ee8",
+    "packaged-mac.log": "58827c956066f33693e3d265a6cff2f44ac6586d267f13b3e7243ab54b93ed9c",
+    "release-mac.log": "6c536b7ab6a1ee8e7ac91fdd27709abb484073b092cabb70d205c4f987e47ddd",
+    "check.log": "0583245454af978b3aae1de0d4d2fcc88f045aeb6d28a05414e66a481fd84df5",
+    "missing-guide-red.log": "019fbc2de1c7bd274cae9ff4f56f638968491bedcb24a939ba0b2a9981ef00ce"
+  },
+  "limitations": [
+    "Human icon comprehension and difficulty unverified",
+    "iOS Xcode/signing/device install incomplete",
+    "Android and Windows physical-device playtests incomplete"
+  ],
+  "desktop_build": {
+    "source_tree": "ba61b19815f8e2ee39a69d2b684effa4e73557f1",
+    "engine": "4.7.2.stable.official.ed1daf0bf",
+    "entry": "res://scenes/frontier.tscn",
+    "configuration": "committed settings, release export, prototype content",
+    "macOS_signing": "ad-hoc; not notarized",
+    "Windows_signing": "unsigned",
+    "checksums_sha256": {
+      "Cyber-Kingdom-macOS.zip": "6aec14b100dc361820fbf562b4b571e15fe1259ead51804883a7c1c9066bb8ec",
+      "Cyber-Kingdom-Windows.zip": "69393bc2074ad591acd5a329b82a66b3f9f9cd863c8341df58e88bdfa7b31ed4"
+    },
+    "platform_playtest": "must be recorded separately; export alone is not a pass"
+  },
+  "android_build": {
+    "source_tree": "ba61b19815f8e2ee39a69d2b684effa4e73557f1",
+    "architecture": "arm64-v8a",
+    "package": "org.cyberkingdom.demo",
+    "signing": "local debug certificate; not a store release",
+    "sha256": "910a2c02c0cb131f5c2220054110e3f96c6fe6da2f9db45166710e2348648ab6",
+    "runtime_playtest": "record separately; export alone is not validation"
+  },
+  "verification": [
+    "Desktop ZIP CRC and SHA-256",
+    "Mac codesign strict/deep",
+    "Windows x86-64 PE",
+    "APK v2/v3 signing and 16KiB zipalign",
+    "actual Mac release 120 frames",
+    "packaged PCK full existing scenario review",
+    "Android install -r preserves prior complete checkpoint",
+    "Android resumed run shows hammer guidance after retained thrown crystal recruits a resident"
+  ],
+  "android_warning": "Software GLES shader cache recompiled; no SCRIPT ERROR or crash.",
+  "source_comparison": "All 8 changed source files match the fully tested isolated archive copy."
+}
