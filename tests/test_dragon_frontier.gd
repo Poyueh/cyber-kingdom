@@ -60,11 +60,12 @@ func test_concurrent_resident_volley_is_not_discarded(t):
 func test_v3_completed_run_remains_completed_and_active_run_gets_boss(t):
  var codec=Codec.new()
  for won in [false,true]:
-  var sim=Campaign.new({"seed":7,"flat_frontier":0})
+  var sim=Campaign.new({"seed":7,"flat_frontier":0,"fortifications":0})
   for r in sim.mission.rifts:r.sealed=true
   sim.mission.outcome="victory" if won else "active"
   var packet=codec.capture(sim,{"seed":7},{"x":30.0,"y":430.0,"vx":0.0,"vy":0.0})
   packet.session.erase("barracks_level")
+  for field in ["buildings","build_seconds","tower_damage","tower_range"]:packet.session.erase(field)
   packet.version=3
   for field in ["dragon_summoned","dragon_defeated","dragon_day","dragon_rules"]:packet.mission.erase(field)
   var original=packet.duplicate(true)

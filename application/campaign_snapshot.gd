@@ -2,7 +2,7 @@ extends RefCounted
 ## Closed, versioned state graph. No script paths or object construction come from a save.
 const Campaign=preload("res://application/campaign_session.gd")
 const Rules=preload("res://application/campaign_checkpoint_rules.gd")
-const VERSION:=5
+const VERSION:=6
 const SESSION_SKIP=["raiders","effects","opened_chests"]
 const FIGHTER_SKIP=["_hit_targets","_queued_attack_seconds","_pending_attack_travel"]
 var last_error:=""
@@ -116,6 +116,7 @@ func restore(raw) -> Dictionary:
 	if data.version==1 and not _upgrade_v1(data):return _invalid()
 	if data.version==3 and not _upgrade_v3(data):return _invalid()
 	if data.version==4 and not _upgrade_v4(data):return _invalid()
+	if data.version==5 and not _upgrade_v5(data):return _invalid()
 	if data.version!=VERSION or not data.config is Dictionary or not data.body is Dictionary:return _invalid()
 	if not Rules.config_valid(data.config):return _invalid()
 	for key in ["x","y","vx","vy"]:
@@ -190,9 +191,11 @@ func _upgrade_v4(data: Dictionary) -> bool:
 	if not data.session is Dictionary or data.session.has("barracks_level"):return false
 	var legacy_config: Dictionary=data.config.duplicate(true)
 	legacy_config.flat_frontier=0
+	legacy_config.fortifications=0
 	var legacy=Campaign.new(legacy_config)
 	var base:=capture(legacy,legacy_config,data.body)
 	base.session.erase("barracks_level")
+	for field in ["buildings","build_seconds","tower_damage","tower_range"]:base.session.erase(field)
 	if not Rules.valid(data,base):return false
 	data.session.barracks_level=0
 	data.config.flat_frontier=1
@@ -212,5 +215,26 @@ func _upgrade_v4(data: Dictionary) -> bool:
 	if data.session.investments.has("armory"):
 		data.session.investments["armory:0"]=data.session.investments.armory
 		data.session.investments.erase("armory")
+	data.version=5
+	return true
+
+func _upgrade_v5(data: Dictionary) -> bool:
+	if not data.config is Dictionary or not Rules.config_valid(data.config):return false
+	if not data.session is Dictionary or data.session.has("buildings"):return false
+	var config: Dictionary=data.config.duplicate(true);config.fortifications=0
+	var base:=capture(Campaign.new(config),config,data.body)
+	for field in ["buildings","build_seconds","tower_damage","tower_range"]:base.session.erase(field)
+	if not Rules.valid(data,base):return false
+	for wall in data.world.walls.values():
+		if wall.level>2:return false
+	config.fortifications=1
+	var current:=capture(Campaign.new(config),config,data.body)
+	data.config=config
+	for field in ["buildings","build_seconds","tower_damage","tower_range"]:data.session[field]=current.session[field]
+	for id in current.world.sites:
+		if not data.world.sites.has(id):data.world.sites[id]=current.world.sites[id]
+	for id in current.world.walls:
+		if not data.world.walls.has(id):data.world.walls[id]=current.world.walls[id]
+	if data.session.built.get("beacon",false):data.session.buildings.beacon.level=1
 	data.version=VERSION
 	return true

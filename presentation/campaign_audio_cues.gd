@@ -1,6 +1,6 @@
 extends RefCounted
 ## Ephemeral presentation observer. No sound history enters campaign saves.
-const EFFECTS={"pay":"pay","chest_burst":"chest","recruited":"recruit","crystal_pickup":"pickup","hit":"hit"}
+const EFFECTS={"tower_arrow":"slash1","tower_laser":"dash","construction_done":"build","pay":"pay","chest_burst":"chest","recruited":"recruit","crystal_pickup":"pickup","hit":"hit"}
 var _session: RefCounted
 var _seen: Array=[]
 var _active:=false

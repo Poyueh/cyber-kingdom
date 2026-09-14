@@ -744,5 +744,29 @@ const ROWS=[
   "需要更高級聚落，或兵營已滿級",
   "需要更高级聚落，或兵营已满级",
   "Requires a higher settlement tier, or barracks are fully upgraded"
+ ],
+ [
+  "守護塔",
+  "守護塔",
+  "守护塔",
+  "Defense tower"
+ ],
+ [
+  "升級守護塔",
+  "升級守護塔",
+  "升级守护塔",
+  "Upgrade defense tower"
+ ],
+ [
+  "升級堡壘",
+  "升級堡壘",
+  "升级堡垒",
+  "Upgrade fortress"
+ ],
+ [
+  "等待工匠施工，或先升級聚落",
+  "等待工匠施工，或先升級聚落",
+  "等待工匠施工，或先升级聚落",
+  "Await construction, or upgrade the settlement first"
  ]
 ]

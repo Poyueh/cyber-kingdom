@@ -123,8 +123,9 @@ func run_test() -> void:
 		scene.sim.advance(0.1,resource.x)
 		if scene.sim.frontier.expansion_cleared(resource.region):break
 	check(scene.sim.frontier.expansion_cleared(resource.region),"resident finishes all marked trees before expansion appears")
-	scene.knight.position=Vector2(resource.x,430)
+	scene.knight.position=Vector2(scene.sim.frontier.regions[resource.region].outpost_x,430)
 	await frames(4)
+	check(scene.sim.context(scene.knight.position.x).id=="outpost","depot has its own reachable investment location")
 	for slot in range(3): await click(scene.hud.interact_button)
 	for tick in range(2000):
 		scene.sim.advance(0.1,resource.x)

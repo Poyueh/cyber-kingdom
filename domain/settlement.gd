@@ -64,11 +64,11 @@ func add_wall(id: String, x: float) -> void:
 
 func wall_cost(id: String = "wall") -> int:
 	var defense: Dictionary=walls[id]
-	return 2 if defense.level>0 and defense.hp<defense.level*40 else (3 if defense.level==0 else 4)
+	return 2 if defense.level>0 and defense.hp<wall_max_hp(defense.level) else (3 if defense.level==0 else 4)
 
 func order_wall(id: String = "wall") -> bool:
 	var defense: Dictionary=walls[id]
-	var repair: bool=defense.level>0 and defense.hp<defense.level*40
+	var repair: bool=defense.level>0 and defense.hp<wall_max_hp(defense.level)
 	if defense.pending or (defense.level>=2 and not repair) or scrap<wall_cost(id): return false
 	scrap-=wall_cost(id)
 	defense.merge({"pending":true,"repair":repair,"progress":0.0},true)
@@ -82,7 +82,7 @@ func work_wall(index: int, seconds: float, id: String = "wall") -> bool:
 	defense.progress+=seconds
 	if defense.progress>=3.0:
 		if not defense.repair: defense.level+=1
-		defense.hp=defense.level*40
+		defense.hp=wall_max_hp(defense.level)
 		defense.pending=false
 	return true
 
@@ -118,3 +118,6 @@ func hit_wall(amount: int, id: String = "wall") -> bool:
 
 func tool_location(kind: String) -> float:
 	return sites[tool_sites[kind]]
+
+func wall_max_hp(level: int) -> int:
+	return preload("res://domain/building_sites.gd").wall_health(level)

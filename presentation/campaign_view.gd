@@ -22,8 +22,8 @@ var focus_key := ""
 var _view_player_x := 0.0
 var investment_progress := 0.0
 const Icons=preload("res://presentation/ui_icons.gd")
-const SITE_ICONS={"shield_charge":"shield","rift":"rift","core_charge":"camp","hall":"camp","workshop":"hammer","armory":"bow","farm_tools":"hoe","hunt_tools":"bow","forge":"gear","beacon":"shield","wall":"wall","wall_left":"wall","farm":"food","drill":"sword","trade":"trade","heal":"heal","outpost":"outpost","recruit":"person","chest":"chest","mark":"hammer"}
-const EXTRA_ART := {"campfire":preload("res://art/campaign/v001/campfire.png"),"stone":preload("res://art/campaign/v001/stone.png"),"herbs":preload("res://art/campaign/v001/herbs.png"),"plot":preload("res://art/campaign/v001/plot.png")}
+const SITE_ICONS={"shield_charge":"shield","rift":"rift","core_charge":"camp","hall":"camp","workshop":"hammer","armory":"bow","farm_tools":"hoe","hunt_tools":"bow","forge":"gear","beacon":"tower","tower":"tower","field":"hoe","wall":"wall","wall_left":"wall","farm":"food","drill":"sword","trade":"trade","heal":"heal","outpost":"outpost","recruit":"person","chest":"chest","mark":"hammer"}
+const EXTRA_ART := {"tower-1":preload("res://art/structures/fortifications-v001/tower-1.png"),"tower-2":preload("res://art/structures/fortifications-v001/tower-2.png"),"tower-3":preload("res://art/structures/fortifications-v001/tower-3.png"),"wall-1":preload("res://art/structures/fortifications-v001/wall-1.png"),"wall-2":preload("res://art/structures/fortifications-v001/wall-2.png"),"wall-3":preload("res://art/structures/fortifications-v001/wall-3.png"),"campfire":preload("res://art/campaign/v001/campfire.png"),"stone":preload("res://art/campaign/v001/stone.png"),"herbs":preload("res://art/campaign/v001/herbs.png"),"plot":preload("res://art/campaign/v001/plot.png")}
 
 func present(sim, player_x: float) -> void:
 	if not is_same(_sim,sim):
@@ -128,7 +128,7 @@ func _draw_structures() -> void:
 		if site=="hall" or not interactions_visible or absf(x-_view_player_x)>130: continue
 		if not _context.id.is_empty() and absf(_context.x-x)<1:continue
 		_icon("wall" if world.walls.has(site) else SITE_ICONS.get(site,"hand"),Vector2(x,276 if _sim.built.get(site,false) else 343),23)
-	for site in ["workshop","armory","farm_tools","hunt_tools","forge","beacon"]:
+	for site in ["workshop","armory","farm_tools","hunt_tools","forge"]:
 		var at := Vector2(world.sites[site],430)
 		var asset: String = {"farm_tools":"workshop","hunt_tools":"armory"}.get(site,site)
 		if _sim.built.get(site,false):
@@ -146,9 +146,9 @@ func _draw_structures() -> void:
 		var wall_x: float=world.sites[id]
 		var defense: Dictionary=world.walls[id]
 		if defense.level>0:
-			_prop("wall",Vector2(wall_x,430),1.0,Color.WHITE if defense.hp>0 else Color(0.4,0.35,0.38))
+			_prop("wall-%d"%defense.level,Vector2(wall_x,430),1.0,Color.WHITE if defense.hp>0 else Color(0.4,0.35,0.38))
 			draw_rect(Rect2(wall_x-28,316,56,4),Color("263940"))
-			draw_rect(Rect2(wall_x-28,316,56.0*defense.hp/(defense.level*40),4),Color("8fdbbe"))
+			draw_rect(Rect2(wall_x-28,316,56.0*defense.hp/_sim.world.wall_max_hp(defense.level),4),Color("8fdbbe"))
 		else: _prop("plot",Vector2(wall_x,430))
 		if defense.pending:
 			_icon("hammer",Vector2(wall_x,307),18)
@@ -159,6 +159,25 @@ func _draw_structures() -> void:
 		_text(_sim.NAMES[site],at.x,345,Color("d0d9b8"),13)
 		if site=="farm" and map.farm_active:
 			draw_rect(Rect2(at.x-40,355,80*map.farm_progress/map.farm_cycle,3),Color("d8dd9f"))
+
+	_draw_buildings()
+
+func _draw_buildings() -> void:
+	for id in _sim.buildings:
+		var site: Dictionary=_sim.buildings[id]
+		if site.kind=="wall" or not _sim.building_visible(id):continue
+		_world_alpha=1.0 if site.region<0 else _region_reveal(site.region)
+		var at:=Vector2(site.x,430)
+		if site.level>0:_prop("tower-%d"%site.level if site.kind=="tower" else "crops",at)
+		else:_prop("plot",at)
+		if absf(site.x-_view_player_x)<130 and _context.get("building_id","")!=id:
+			_icon("tower" if site.kind=="tower" else "hoe",at+Vector2(0,-195 if site.level>0 and site.kind=="tower" else -60),24)
+		if site.pending:
+			for side in [-1,1]:draw_line(at+Vector2(side*35,0),at+Vector2(side*35,-72),Color("977e58"),3)
+			draw_line(at+Vector2(-35,-56),at+Vector2(35,-56),Color("977e58"),3)
+			_icon("hammer",at+Vector2(0,-83),20)
+			draw_rect(Rect2(at+Vector2(-28,-68),Vector2(56*site.progress/_sim.build_seconds,4)),Color("94dfc7"))
+	_world_alpha=1.0
 
 func _draw_recruitment_camps() -> void:
 	for i in range(_sim.frontier.regions.size()):
@@ -253,6 +272,21 @@ func _draw_activity() -> void:
 			Ambient.crystal(self,visible,crystal_radius*1.35,_sim.workforce.elapsed)
 		if pile.amount>1: _number(str(pile.amount),Vector2(pile.x+12,pile.y-29))
 	for effect in _sim.effects:
+		if effect.kind in ["tower_arrow","tower_laser"]:
+			var origin:=Vector2(effect.x,430-[0,118,134,132][effect.tier])
+			var target:=Vector2(effect.to,403)
+			var alpha: float=clampf(effect.life/0.28,0,1)
+			if effect.kind=="tower_laser":
+				draw_line(origin,target,Color(0.1,0.9,1,alpha*0.25),10)
+				draw_line(origin,target,Color(0.55,1,1,alpha),4)
+				draw_line(origin,target,Color(1,1,1,alpha),1)
+				draw_circle(target,6*alpha,Color(0.6,1,1,alpha))
+			else:
+				var tip:=origin.lerp(target,1-alpha)
+				var direction: Vector2=(target-origin).normalized()
+				draw_line(tip-direction*20,tip,Color("eee1a3"),2)
+				draw_line(tip-direction*5+Vector2(0,-3),tip,Color("a9e8ce"),2)
+			continue
 		if effect.kind=="dragon_fire":
 			for i in range(28):
 				var progress: float=i/27.0
@@ -300,6 +334,8 @@ func _draw_interaction() -> void:
 		draw_line(Vector2(_context.x+side*15,ground-3),Vector2(_context.x+side*15,ground+3),marker_color,2)
 	var height:=62.0+(20 if not requirements.is_empty() else 0)+(20 if not prerequisites.is_empty() else 0)+(40 if not upgrade.is_empty() else 0)+(22 if not consequences.is_empty() else 0)
 	var y:=ground-(184 if _context.id=="rift" else 141)-(height-62)
+	if _context.id=="tower":y-=90
+	elif _context.has("wall_id"):y-=50
 	# Floating cost sockets stay in the world; no rectangular signboard.
 	var key: String=SITE_ICONS.get(_context.id,"hand")
 	if _context.id=="mark":
@@ -337,9 +373,9 @@ func _draw_interaction() -> void:
 	if not prerequisites.is_empty():row_y+=20
 	if not upgrade.is_empty():
 		_icon(upgrade.icon,Vector2(x-46,row_y),20,Color("a6e6d3"))
-		_number(str(upgrade.value),Vector2(x-27,row_y+5))
+		_number(str(upgrade.value)+upgrade.get("suffix",""),Vector2(x-27,row_y+5))
 		_icon("right",Vector2(x+4,row_y),16,Color("b9c8b4"))
-		_number(str(upgrade.next),Vector2(x+20,row_y+5))
+		_number(str(upgrade.next)+upgrade.get("suffix",""),Vector2(x+20,row_y+5))
 		for i in range(upgrade.limit):
 			draw_rect(Rect2(x+(i-(upgrade.limit-1)*0.5)*14-4,row_y+15,8,5),Color("9fdbbf") if i<upgrade.level else Color("435660"))
 
@@ -371,6 +407,10 @@ func _text(value: String, x: float, y: float, _color:=Color.WHITE, _size: int=15
 	if value=="!": _icon("sword",Vector2(x,y-8),18,Color("ffbd7f"))
 
 func _resource(resource) -> void:
+	var building_id: String="cleared:%d"%_sim.frontier.nodes.find(resource)
+	if _sim.buildings.has(building_id):
+		var site: Dictionary=_sim.buildings[building_id]
+		if site.level>0 or (site.kind=="wall" and _sim.world.walls[building_id].level>0):return
 	if resource.kind=="cache" and resource.delivered:
 		var index: int=_sim.frontier.nodes.find(resource)
 		var elapsed: float=_sim.workforce.elapsed-_sim.opened_chests.get(index,0.0)
