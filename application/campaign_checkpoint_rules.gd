@@ -73,7 +73,7 @@ static func valid(data: Dictionary, base: Dictionary) -> bool:
 				if typeof(actual)!=typeof(expected):return false
 			elif not shape(actual,expected):return false
 	var mutable={
-		"session":["loot","wave","time_to_raid","_spawn_remaining","_spawn_timer","_hero_x","_night_spawn_index","_player_y","investments","built"],
+		"session":["loot","wave","time_to_raid","_spawn_remaining","_spawn_timer","_hero_x","_night_spawn_index","_player_y","investments","built","barracks_level"],
 		"world":["people","supplies","tools","walls","scrap","crystals","barrier"],
 		"frontier":["regions","animals","wood","food","stone","herbs","city_level","farm_active","farm_progress","drill_level"],
 		"clock":["day","survived","is_night","remaining"],"mission":["core_hp","outcome","defeat_reason","rifts","dragon_summoned","dragon_defeated","dragon_day"],
@@ -81,6 +81,7 @@ static func valid(data: Dictionary, base: Dictionary) -> bool:
 	for section in mutable:
 		for key in base[section]:
 			if key not in mutable[section] and not same(data[section][key],base[section][key]):return false
+	if not in_range(data.session.get("barracks_level",0),0,3):return false
 	var world: Dictionary=data.world
 	var map: Dictionary=data.frontier
 	var people: Array=world.people

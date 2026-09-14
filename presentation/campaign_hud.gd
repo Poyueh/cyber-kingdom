@@ -158,7 +158,7 @@ func present_world(sim, is_paused: bool, at: float, grounded: bool) -> void:
 	interact_button.icon=Icons.get_icon("chest" if choice.id=="chest" else "crystal" if choice.cost>0 else "hand")
 	var touch:=uses_touch_controls()
 	for action in ["move_left","move_right","jump","dash","attack"]:
-		get_node(action).visible=touch and action not in ["move_left","move_right"] and not is_paused and sim.is_running()
+		get_node(action).visible=touch and action=="attack" and not is_paused and sim.is_running()
 	interact_button.visible=false
 	drop_button.visible=false
 	_gesture_can_invest=not interact_button.disabled

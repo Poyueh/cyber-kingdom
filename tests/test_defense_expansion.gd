@@ -71,8 +71,9 @@ func test_expansion_is_sequential_and_trees_must_be_actually_cleared(t):
 
 func test_guards_advance_only_after_completion_and_fall_back_without_switching_sides(t):
 	var sim=prepared()
-	var right=add_person(sim,"guard",1035)
-	var left=add_person(sim,"guard",-1035)
+	sim.clock.is_night=true;sim.clock.remaining=1000
+	var right=add_person(sim,"hunter",1035)
+	var left=add_person(sim,"hunter",-1035)
 	sim.advance(0.01,30)
 	sim.world.walls["frontier_wall:0"].pending=true
 	sim.advance(0.1,30)
@@ -80,7 +81,7 @@ func test_guards_advance_only_after_completion_and_fall_back_without_switching_s
 	sim.world.walls["frontier_wall:0"].merge({"level":1,"hp":40,"pending":false},true)
 	for i in range(600):sim.advance(1.0/60,30)
 	t.truth(left.x< -1500,"left guard walks to newly completed frontier")
-	t.truth(right.x>1000 and right.x<1100,"other side assignment stays put")
+	t.truth(right.x>950 and right.x<1100,"other side assignment stays put")
 	var previous: float=left.x
 	sim.world.walls["frontier_wall:0"].hp=0
 	sim.advance(0.2,30)
@@ -102,7 +103,7 @@ func test_safe_outpost_shortens_worker_return_but_lost_wall_forces_core_retreat(
 	var worker=add_person(sim,"engineer",home)
 	sim.clock.is_night=true;sim.clock.remaining=50
 	sim.advance(0.1,30)
-	t.truth(absf(worker.x-home)<0.1,"worker shelters at protected outpost instead of crossing the whole island")
+	t.truth(worker.x>sim.world.sites["frontier_wall:0"] and worker.x<sim.world.sites.wall,"worker roams inside protected expanded territory")
 	sim.world.walls["frontier_wall:0"].hp=0
 	sim.advance(0.1,30)
 	t.truth(worker.x>home,"loss of protection makes worker retreat inward")

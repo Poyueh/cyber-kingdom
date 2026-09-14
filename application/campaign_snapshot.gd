@@ -2,7 +2,7 @@ extends RefCounted
 ## Closed, versioned state graph. No script paths or object construction come from a save.
 const Campaign=preload("res://application/campaign_session.gd")
 const Rules=preload("res://application/campaign_checkpoint_rules.gd")
-const VERSION:=4
+const VERSION:=5
 const SESSION_SKIP=["raiders","effects","opened_chests"]
 const FIGHTER_SKIP=["_hit_targets","_queued_attack_seconds","_pending_attack_travel"]
 var last_error:=""
@@ -115,6 +115,7 @@ func restore(raw) -> Dictionary:
 	if data.version==2:data.version=3
 	if data.version==1 and not _upgrade_v1(data):return _invalid()
 	if data.version==3 and not _upgrade_v3(data):return _invalid()
+	if data.version==4 and not _upgrade_v4(data):return _invalid()
 	if data.version!=VERSION or not data.config is Dictionary or not data.body is Dictionary:return _invalid()
 	if not Rules.config_valid(data.config):return _invalid()
 	for key in ["x","y","vx","vy"]:
@@ -180,5 +181,36 @@ func _upgrade_v3(data: Dictionary) -> bool:
 	# A previously completed run keeps its earned victory. Active runs face the dragon.
 	if data.mission.get("outcome","")=="victory":
 		data.mission.dragon_summoned=true;data.mission.dragon_defeated=true;data.mission.dragon_day=int(data.clock.get("day",1))
+	data.version=4
+	return true
+
+func _upgrade_v4(data: Dictionary) -> bool:
+	# Validate against the known old geography and tool mappings BEFORE changing them.
+	if not data.config is Dictionary or not Rules.config_valid(data.config):return false
+	if not data.session is Dictionary or data.session.has("barracks_level"):return false
+	var legacy_config: Dictionary=data.config.duplicate(true)
+	legacy_config.flat_frontier=0
+	var legacy=Campaign.new(legacy_config)
+	var base:=capture(legacy,legacy_config,data.body)
+	base.session.erase("barracks_level")
+	if not Rules.valid(data,base):return false
+	data.session.barracks_level=0
+	data.config.flat_frontier=1
+	for node in data.nodes:
+		node.y=430.0;node.pickup_y=430.0
+	data.pouch.platforms=[]
+	data.body.y=430.0;data.body.vy=0.0
+	data.session._player_y=430.0
+	data.hero.state.dash_remaining=0.0
+	data.world.tool_roles.blade="hunter"
+	data.world.tool_sites.blade="hunt_tools"
+	for person in data.world.people:
+		if person.role=="guard":person.role="hunter"
+		if person.get("roam_role","")=="guard":person.roam_role="hunter"
+		if person.has("y"):person.y=430.0
+	# Preserve partial sword-rack payments as progress toward the new barracks.
+	if data.session.investments.has("armory"):
+		data.session.investments["armory:0"]=data.session.investments.armory
+		data.session.investments.erase("armory")
 	data.version=VERSION
 	return true

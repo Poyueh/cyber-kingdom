@@ -35,7 +35,7 @@ static func job_hint(sim,x: float,tool: String,site: String,stage: int) -> Dicti
     people.append(_hint("recruit",person.x,"recruit:%d"%i,"invest",stage))
   return _nearest(people,x) if not people.is_empty() else _explore(sim,x,stage)
  if tool=="bow" and sim.world.tools.blade>0:
-  return _hint("guard",sim.world.sites.armory,"armory","wait",stage)
+  return _hint("hunter",sim.world.sites.hunt_tools,"hunt_tools","wait",stage)
  var hint=_hint("tool" if tool=="hammer" else "hunter",sim.world.sites[site],site,"invest",stage+1 if stage==2 else stage)
  if sim.world.tools[tool]>0:hint.action="wait"
  return hint

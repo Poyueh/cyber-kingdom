@@ -22,7 +22,7 @@ var focus_key := ""
 var _view_player_x := 0.0
 var investment_progress := 0.0
 const Icons=preload("res://presentation/ui_icons.gd")
-const SITE_ICONS={"shield_charge":"shield","rift":"rift","core_charge":"camp","hall":"camp","workshop":"hammer","armory":"sword","farm_tools":"hoe","hunt_tools":"bow","forge":"gear","beacon":"shield","wall":"wall","wall_left":"wall","farm":"food","drill":"sword","trade":"trade","heal":"heal","outpost":"outpost","recruit":"person","chest":"chest","mark":"hammer"}
+const SITE_ICONS={"shield_charge":"shield","rift":"rift","core_charge":"camp","hall":"camp","workshop":"hammer","armory":"bow","farm_tools":"hoe","hunt_tools":"bow","forge":"gear","beacon":"shield","wall":"wall","wall_left":"wall","farm":"food","drill":"sword","trade":"trade","heal":"heal","outpost":"outpost","recruit":"person","chest":"chest","mark":"hammer"}
 const EXTRA_ART := {"campfire":preload("res://art/campaign/v001/campfire.png"),"stone":preload("res://art/campaign/v001/stone.png"),"herbs":preload("res://art/campaign/v001/herbs.png"),"plot":preload("res://art/campaign/v001/plot.png")}
 
 func present(sim, player_x: float) -> void:
@@ -72,7 +72,7 @@ func _prop(name: String, at: Vector2, scale: float = 1.0, tint := Color.WHITE) -
 	if emission!=null:
 		var size:=texture.get_size()*scale
 		var pulse: float=0.20+0.16*sin(_sim.workforce.elapsed*2.4+at.x*0.013)
-		draw_texture_rect(emission,Rect2(at-Vector2(size.x*0.5,size.y),size),false,Color(1,1,1,pulse*tint.a))
+		draw_texture_rect(emission,Rect2(preload("res://presentation/grounded_art.gd").anchor(texture,at,scale)-Vector2(size.x*0.5,size.y),size),false,Color(1,1,1,pulse*tint.a))
 
 func _draw_atmosphere(_left: float) -> void:
 	Details.draw_background(self,_details,_sim.frontier.regions)
@@ -138,6 +138,8 @@ func _draw_structures() -> void:
 		if _sim.TOOL_KINDS.has(site):
 			var kind: String = _sim.TOOL_KINDS[site]
 			for index in range(world.tools[kind]): _tool(at+Vector2(-20+index*20,-22),kind)
+		elif site=="armory":
+			for tier in range(_sim.barracks_level):_icon("bow",at+Vector2(-22+tier*22,-90),16,Color("9cf5d8"))
 		elif site=="beacon" and world.barrier>0: _text(tr("防護 ×%d") % world.barrier,at.x,310,Color("8ce2dc"),13)
 	for id in world.walls:
 		if not _sim.defenses.visible(id):continue
