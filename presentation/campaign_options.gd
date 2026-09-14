@@ -23,6 +23,11 @@ func _ready() -> void:
 	save_button=_button(row,"save");load_button=_button(row,"restore")
 	save_button.pressed.connect(func():save_checkpoint_requested.emit())
 	load_button.pressed.connect(func():load_checkpoint_requested.emit())
+	if OS.has_feature("web"):
+		var guide_button:=_button(row,"book")
+		guide_button.name="PlayerGuide"
+		guide_button.tooltip_text="玩家圖文指南"
+		guide_button.pressed.connect(preload("res://presentation/web_player_guide.gd").open)
 	music.value_changed.connect(_volume_changed)
 	effects.value_changed.connect(_volume_changed)
 	set_levels(0.4,0.8)
