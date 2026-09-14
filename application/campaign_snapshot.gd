@@ -2,7 +2,7 @@ extends RefCounted
 ## Closed, versioned state graph. No script paths or object construction come from a save.
 const Campaign=preload("res://application/campaign_session.gd")
 const Rules=preload("res://application/campaign_checkpoint_rules.gd")
-const VERSION:=2
+const VERSION:=3
 const SESSION_SKIP=["raiders","effects","opened_chests"]
 const FIGHTER_SKIP=["_hit_targets","_queued_attack_seconds","_pending_attack_travel"]
 var last_error:=""
@@ -111,6 +111,8 @@ func restore(raw) -> Dictionary:
 	var data: Dictionary=_normalize(raw)
 	var keys=["version","config","body","session","world","frontier","nodes","clock","mission","growth","ecology","pouch","workforce","hero","raiders","hero_hits","opened"]
 	if data.size()!=keys.size() or not keys.all(func(k):return data.has(k)):return _invalid()
+	var legacy_economy: bool=data.version in [1,2]
+	if data.version==2:data.version=VERSION
 	if data.version==1 and not _upgrade_v1(data):return _invalid()
 	if data.version!=VERSION or not data.config is Dictionary or not data.body is Dictionary:return _invalid()
 	if not Rules.config_valid(data.config):return _invalid()
@@ -148,6 +150,7 @@ func restore(raw) -> Dictionary:
 		sim.opened_chests[int(key)]=data.opened[key]
 	if not sim.world.walls.has("wall"):return _invalid()
 	sim.world.wall=sim.world.walls.wall
+	if legacy_economy:sim.convert_legacy_resources()
 	return {"session":sim,"config":data.config,"body":data.body}
 
 func _upgrade_v1(data: Dictionary) -> bool:

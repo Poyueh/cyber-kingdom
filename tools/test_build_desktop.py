@@ -21,7 +21,7 @@ class DesktopBuildTests(unittest.TestCase):
             with patch("build_desktop.git", side_effect=[b"source-tree", archive_bytes.getvalue()]):
                 prepare_tree("HEAD", stage)
             project = (stage / "project.godot").read_text()
-            self.assertIn('run/main_scene="res://scenes/frontier.tscn"', project)
+            self.assertIn('run/main_scene="res://scenes/start_menu.tscn"', project)
             self.assertIn("textures/vram_compression/import_etc2_astc=true", project)
             self.assertIn('config/icon="res://art/ui/app-icon.svg"', project)
             self.assertEqual((ROOT / "project.godot").read_bytes(), before)

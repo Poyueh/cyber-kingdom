@@ -4,6 +4,7 @@ const Icons=preload("res://presentation/ui_icons.gd")
 signal volume_changed(music: float,effects: float)
 signal save_checkpoint_requested
 signal load_checkpoint_requested
+signal title_requested
 var music: HSlider
 var effects: HSlider
 var save_button: Button
@@ -19,10 +20,12 @@ func _ready() -> void:
 	var box:=VBoxContainer.new();box.add_theme_constant_override("separation",10);add_child(box)
 	music=_volume_row(box,"music")
 	effects=_volume_row(box,"sound")
-	var row:=HBoxContainer.new();row.alignment=BoxContainer.ALIGNMENT_CENTER;row.add_theme_constant_override("separation",32);box.add_child(row)
+	var row:=HBoxContainer.new();row.alignment=BoxContainer.ALIGNMENT_CENTER;row.add_theme_constant_override("separation",10);box.add_child(row)
 	save_button=_button(row,"save");load_button=_button(row,"restore")
 	save_button.pressed.connect(func():save_checkpoint_requested.emit())
 	load_button.pressed.connect(func():load_checkpoint_requested.emit())
+	var home=_button(row,"camp");home.tooltip_text="保存並回起始頁"
+	home.pressed.connect(func():title_requested.emit())
 	if OS.has_feature("web"):
 		var guide_button:=_button(row,"book")
 		guide_button.name="PlayerGuide"
@@ -38,7 +41,7 @@ func _volume_row(box: VBoxContainer, key: String) -> HSlider:
 	var number:=Label.new();number.custom_minimum_size=Vector2(42,48);number.vertical_alignment=VERTICAL_ALIGNMENT_CENTER;row.add_child(number);_numbers.append(number)
 	return slider
 func _button(row: HBoxContainer,key: String) -> Button:
-	var button:=Button.new();button.icon=Icons.get_icon(key);button.expand_icon=true;button.add_theme_constant_override("icon_max_width",28);button.custom_minimum_size=Vector2(72,52);button.focus_mode=Control.FOCUS_NONE;row.add_child(button)
+	var button:=Button.new();button.icon=Icons.get_icon(key);button.expand_icon=true;button.add_theme_constant_override("icon_max_width",28);button.custom_minimum_size=Vector2(64,52);button.focus_mode=Control.FOCUS_NONE;row.add_child(button)
 	return button
 func _volume_changed(_value: float) -> void:
 	_numbers[0].text=str(int(music.value));_numbers[1].text=str(int(effects.value))

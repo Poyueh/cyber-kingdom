@@ -96,11 +96,12 @@ func test_free_interactions_and_tool_orders_never_repeat_while_held(t) -> void:
 	if hold==null: return
 	var sim=Campaign.new()
 	sim.frontier.city_level=1
-	sim.frontier.food=20
-	var at: float=sim.world.sites.trade
+	var chest=sim.frontier.nodes.filter(func(n):return n.kind=="cache" and n.y==430)[0]
+	sim.frontier.regions[chest.region].discovered=true
+	var at: float=chest.x
 	hold.step(0.01,true,true,sim,at)
 	for tick in range(20): hold.step(0.2,true,true,sim,at)
-	t.equal(sim.frontier.food,16,"free trade executes once per press")
+	t.equal(sim.pouch.ground_total(),chest.crystals,"free chest opens once per press without repeated payout")
 	hold.step(0.01,false,true,sim,at)
 	at=sim.world.sites.workshop
 	for tick in range(20): hold.step(0.2,true,true,sim,at)

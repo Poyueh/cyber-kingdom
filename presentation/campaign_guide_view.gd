@@ -8,49 +8,81 @@ var active_button:=Rect2()
 var can_invest:=false
 var touch_hint:=true
 var pulse:=0.0
-var _style: StyleBoxFlat
+const Motion=preload("res://presentation/spirit_motion.gd")
+@export_range(40.0,100.0,2.0) var spirit_distance:=68.0
+@export_range(80.0,150.0,2.0) var spirit_height:=104.0
+var spirit_pose: Dictionary={"visible":false}
+var _motion:=Motion.new()
+# Original pixel silhouette: broken mechanical halo, hood, crystal heart and trailing cloak.
+const GHOST=[
+ ".....gg...gg.....",
+ "....g.......g....",
+ "......aaaa.......",
+ "....aaabbbaa.....",
+ "...aabbbbbbaa....",
+ "...abdddddbba....",
+ "..abbdeeeddba....",
+ "..abbdeeedbba....",
+ "...abbdddbbaa....",
+ "....abbbbbaa.....",
+ "...aaaccccaaa....",
+ "..aabccggccbaa...",
+ "..abbccggccbba...",
+ "..abbccccccbba...",
+ "...abbccccbba....",
+ "...aabbbbbbaa....",
+ "....aabbbbaa.....",
+ "....aabbbba......",
+ ".....aabba.......",
+ ".....aabba.......",
+ "......aab........",
+ ".......aa........"]
+const PALETTE={"a":Color("306b78"),"b":Color("5ab5b3"),"c":Color("9cdfca"),"d":Color("16333e"),"e":Color("d9fff0"),"g":Color("e5c997")}
 func present(advice: Dictionary,area: Rect2,x: float,button: Rect2,ready: bool) -> void:
- hint=advice
- safe=area
- player_x=x
- active_button=button
- can_invest=ready
+ hint=advice;safe=area;player_x=x;active_button=button;can_invest=ready
  visible=not hint.is_empty()
  queue_redraw()
-func _process(seconds: float) -> void:
- if not visible:return
- pulse=fmod(pulse+seconds,2.0)
+func track(hero_screen: Vector2, game_time: float) -> void:
+ _motion.follow_distance=spirit_distance;_motion.follow_height=spirit_height
+ spirit_pose=_motion.sample(hint,hero_screen,player_x,safe,game_time)
+ pulse=fposmod(game_time,2)
  queue_redraw()
-func _icon(key: String,at: Vector2,size: float=28,tint:=Color("dce9dc")) -> void:
+func _icon(key: String,at: Vector2,size: float=24,tint:=Color("dce9dc")) -> void:
  draw_texture_rect(Icons.get_icon(key),Rect2(at-Vector2.ONE*size/2,Vector2.ONE*size),false,tint)
 func _draw() -> void:
- if hint.is_empty():return
- var origin:=safe.position+Vector2(safe.size.x*0.5-112,138 if safe.size.x>=832 else 178)
- var area:=Rect2(origin,Vector2(224,54))
- if _style==null:
-  _style=StyleBoxFlat.new()
-  _style.bg_color=Color(0.03,0.08,0.11,0.86)
-  _style.set_corner_radius_all(9)
- draw_style_box(_style,area)
- var center:=origin+Vector2(112,24)
- var distance: float=hint.x-player_x
- var operation: String="hand" if can_invest else "sword" if hint.action=="fight" else "shield" if hint.action=="stay" else "left" if distance < -40 else "right" if distance>40 else "person" if hint.action=="follow" else "gear" if hint.action=="wait" else "shield" if hint.kind=="defend" else "map"
- _icon(operation,center-Vector2(65,0))
- _icon("right",center-Vector2(21,0),18)
- _icon(SYMBOLS.get(hint.kind,"map"),center+Vector2(18,0),30,Color("8fe2d4"))
- if hint.has("detail"):_icon(hint.detail,center+Vector2(69,0),20)
- elif hint.kind=="harvest":_icon("hammer",center+Vector2(69,0),20)
- elif hint.action=="invest":_icon("crystal",center+Vector2(69,0),20)
- elif hint.action=="wait":_icon("person",center+Vector2(69,0),20)
- elif hint.kind=="defend":_icon("moon",center+Vector2(69,0),20)
+ if hint.is_empty() or not spirit_pose.visible:return
+ var at: Vector2=spirit_pose.position
+ var direction: float=spirit_pose.direction
+ var phase: float=spirit_pose.phase
+ # Distant motes drift back toward the knight; no collision or interaction target.
+ for i in range(4):
+  var travel:=fposmod(phase*0.6+i*0.25,1.0)
+  var point:=at+Vector2(-direction*(12+travel*21),12+travel*23)
+  draw_rect(Rect2(point.round(),Vector2(2,2)),Color(0.42,0.86,0.83,(1-travel)*0.65))
+ draw_set_transform(at,0,Vector2(direction,1))
+ for y in range(GHOST.size()):
+  var sway: float=roundf(sin(phase*3-y*0.25)*maxf(0,y-12)*0.2)
+  for x in range(GHOST[y].length()):
+   var ink: String=GHOST[y][x]
+   if PALETTE.has(ink):
+    var color: Color=PALETTE[ink];color.a=0.90 if y<15 else 0.76
+    draw_rect(Rect2(Vector2(x*2-17+sway,y*2-29),Vector2(2,2)),color)
+ # Shoulder, extended forearm, open pointing hand.
+ draw_rect(Rect2(9,-7,6,5),Color("5ab5b3"))
+ draw_rect(Rect2(14,-9,11,4),Color("9cdfca"))
+ draw_rect(Rect2(24,-11,6,4),Color("d9fff0"))
+ draw_rect(Rect2(29,-12,5,2),Color("d9fff0"))
+ if not spirit_pose.near:
+  for i in range(2):
+   var x:=39+i*9
+   var color:=Color(0.68,0.94,0.85,0.4+0.4*sin(phase*4-i))
+   draw_line(Vector2(x,-12),Vector2(x+4,-8),color,2)
+   draw_line(Vector2(x+4,-8),Vector2(x,-4),color,2)
+ draw_set_transform(Vector2.ZERO)
+ _icon(SYMBOLS.get(hint.kind,"map"),at+Vector2(0,-46),22,Color("abe6d3"))
+ if can_invest:_icon("crystal",at+Vector2(25,-43),15)
  if hint.has("seal_progress"):
-  draw_rect(Rect2(origin+Vector2(48,44),Vector2(128,4)),Color("3c5258"))
-  draw_rect(Rect2(origin+Vector2(48,44),Vector2(128*clampf(hint.seal_progress,0,1),4)),Color("80d7c5"))
- elif hint.stage>0 and hint.stage<=6:
-  for i in range(6):draw_circle(origin+Vector2(82+i*12,46),2,Color("80d7c5") if i<hint.stage else Color("3c5258"))
- if hint.has("requirement_count"):
-  draw_string(ThemeDB.fallback_font,origin+Vector2(198,37),str(hint.requirement_count),HORIZONTAL_ALIGNMENT_LEFT,-1,13,Color("dce9dc"))
+  draw_rect(Rect2(at+Vector2(-18,26),Vector2(36,3)),Color("294650"))
+  draw_rect(Rect2(at+Vector2(-18,26),Vector2(36*clampf(hint.seal_progress,0,1),3)),Color("9cdfca"))
  if can_invest and touch_hint:
-  var alpha:=0.35+0.35*sin(pulse*PI)
-  draw_arc(active_button.get_center(),36,-PI/2,TAU-PI/2,40,Color(0.50,0.94,0.82,alpha),2)
-  _icon("hand",active_button.position+Vector2(32,-19),24,Color(0.76,0.96,0.86,0.65+0.25*sin(pulse*PI)))
+  draw_arc(active_button.get_center(),36,-PI/2,TAU-PI/2,32,Color(0.50,0.94,0.82,0.35+0.25*sin(pulse*PI)),2)

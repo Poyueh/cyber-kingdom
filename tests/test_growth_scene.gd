@@ -17,8 +17,6 @@ func run_scene() -> void:
 	pay(scene);pay(scene)
 	var sim=scene.sim
 	sim.world.people.clear()
-	sim.world.scrap=8
-	sim.frontier.food=8
 	await place(scene,350)
 	pay(scene);pay(scene)
 	check(sim.hero.shield==20,"touch investment installs first capacitor")
@@ -28,7 +26,7 @@ func run_scene() -> void:
 	scene._physics_process(1.0/60)
 	check(not scene.hud.interact_button.disabled and scene.view._context.id=="shield_charge","damage changes forge to touch recharge")
 	pay(scene)
-	check(sim.hero.shield==20 and sim.world.scrap==5,"touch recharge restores actual energy with one scrap")
+	check(sim.hero.shield==20 and sim.world.scrap==0,"touch recharge restores energy using only crystals")
 	sim.frontier.city_level=2
 	scene._physics_process(1.0/60)
 	pay(scene);pay(scene);pay(scene)
@@ -36,7 +34,7 @@ func run_scene() -> void:
 	check(scene.hud.dashboard.values.get("shield_capacity",-1)==40,"HUD updates actual upgraded capacity")
 	await place(scene,1230)
 	pay(scene);pay(scene)
-	check(sim.hero.stats.damage==30 and sim.frontier.food==6,"touch training changes real damage and food")
+	check(sim.hero.stats.damage==30 and sim.frontier.food==0,"touch training changes real damage without food")
 	check(scene.hud.dashboard.values.get("damage",-1)==30,"HUD shows trained sword power")
 	var wallet: int=sim.pouch.amount
 	scene.paused=true

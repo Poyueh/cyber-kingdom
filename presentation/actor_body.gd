@@ -63,7 +63,7 @@ func refresh_visual(seconds: float) -> void:
 		visual.present({"alive": model.is_alive(), "facing": action_facing(),
 			"moving": absf(velocity.x) > 0.1 and not (model.stats.attack_movement_locked and model.attack_remaining > 0.0), "locomotion_rate": velocity.x*action_facing()/maxf(1,tuning.move_speed), "grounded": is_on_floor(), "vertical_speed":velocity.y,
 			"telegraph": telegraph, "dashing": model.dash_remaining > 0.0, "dash_progress": model.dash_progress(), "attack_progress": model.attack_progress(), "combo_step": model.combo_step,
-			"invulnerable": model.invulnerability_remaining > 0.0}, seconds)
+			"hp":model.hp,"shield":model.shield,"invulnerable": model.invulnerability_remaining > 0.0}, seconds)
 		if model.dash_remaining > 0.0 and model.is_alive():
 			if _trail_interval <= 0.0:
 				_dash_trail.append({"origin": visual.global_position + visual.offset,

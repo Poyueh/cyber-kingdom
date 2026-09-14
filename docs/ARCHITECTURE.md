@@ -222,3 +222,16 @@ Campaign Tuning 在新局 economy 注入 outer_regions_per_side；Frontier 先�
 `Frontier.expansion_cleared` 統一定義清地完成，`FrontierDefenses.visible` 與現場互動共用此規則；`CampaignMission.entry_x` 決定兩端入侵出生位置。`Combatant.spend_stamina` 是共用的扣費入口，連技開始時另檢查預約預算。
 
 `FrontierDetails` 以独立 seed 配置純裝飾，`KnightVisual` 用 `knight_equipment.gdshader` 反映裝備級別。`CampaignOptions` 只發出音量與手動存讀檔意圖；`FrontierRoot` 組裝另一份 `CampaignProgress`，使用同一存檔 port／JSON adapter，但路徑獨立。`AudioPreferences` 保存使用者音量，不耦合當局存檔。已知舊 schema 在 `CampaignSnapshot` 的副本上遷移，仍需通過封閉形狀與值域檢查。
+
+
+## 單一龍晶與起始頁
+
+CampaignSession 覆寫採集／狩獵／農作產出，沿用實體 CrystalPouch 與背包容量。舊 Frontier 原型的材料欄位僅保留相容用途；CampaignSnapshot v3 對已驗證 v1/v2 狀態轉換一次，包含已採收植物的下次收益。
+
+CampaignRecord 透過既有 store port 讀取已驗證的紀錄摘要；CampaignCatalog 在 infrastructure 管理檔名、目錄與唯一旅程路徑。StartMenu 只顯示與發出意圖；StartMenuRoot 組裝列表、驗證選擇、另存手動檢查點並傳遞啟動路徑。FrontierRoot 消費啟動資料；返回起始頁前必須保存成功。起始頁中文字型隨包附 OFL 授權，避免 Web 缺字。
+
+## 引導殘影與受擊動畫
+
+CampaignGuide／ExpeditionGuide 保留原本只讀的建議規則；CampaignGuideView 使用 SpiritMotion 把騎士世界座標轉成安全區內的跟隨位置，以遊戲時間漂浮，指向目標而非限制玩家。原固定引導卡片已移除。
+
+HitReaction 在 presentation 觀察生命／護盾差值，輸出短促後仰、壓縮、閃光與回穩。ActorBody 傳遞模型數值；FighterVisual／KnightVisual 套用姿態，衝刺無敵不觸發受傷。CampaignHitFeedback 觀察居民 hurt 和敵人，保存短暫原職業剪影與倒下殘影；隨新 session 清除，沒有新存檔欄位。人物、敵人與碰撞位置仍以原模型為準。

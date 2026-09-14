@@ -1,0 +1,32 @@
+{
+  "site": "https://poyueh.github.io/cyber-kingdom/",
+  "release_run": "https://github.com/Poyueh/cyber-kingdom/actions/runs/34803635161",
+  "pages_run": "https://github.com/Poyueh/cyber-kingdom/actions/runs/34803639640",
+  "files": [
+    {
+      "file": "index.html",
+      "status": 200,
+      "sha256": "13f8d9007e7bae824581de3e146331a9cdb7a6df2d11059872d45edd46ea82af"
+    },
+    {
+      "file": "index.pck",
+      "status": 200,
+      "sha256": "72274da4a16e0688f35f7196b850a15ff1c29fe8b18c3120a000b53e7ca43a92"
+    },
+    {
+      "file": "guide-reader.js",
+      "status": 200,
+      "sha256": "a46a32f505bfab4b20d07bb940c32fa78aec2d28ed9aecff099af726fb0fc465"
+    },
+    {
+      "file": "guide-reader.css",
+      "status": 200,
+      "sha256": "ef1b454dda28e6ddc8752566f1db78b5f305859365dad63f8c427d0f886d0056"
+    },
+    {
+      "file": "guide.html",
+      "status": 200,
+      "sha256": "01969b3bb3f0cec0301f3de7aaeb8361fd60edf3e8f411802788bcf52741f886"
+    }
+  ]
+}

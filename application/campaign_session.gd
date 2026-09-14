@@ -33,7 +33,7 @@ var warden_damage: int
 var enemy_health_growth: int
 var enemy_damage_growth: int
 const TOOL_KINDS := {"workshop":"hammer","armory":"blade","farm_tools":"hoe","hunt_tools":"bow"}
-const NAMES := {"hall":"營火","workshop":"工匠器具","armory":"守備器具","farm_tools":"農具","hunt_tools":"獵弓","forge":"義肢爐","beacon":"護民塔","wall":"右防線","wall_left":"左防線","farm":"農田","drill":"劍術訓練","trade":"食物交易","heal":"藥草治療"}
+const NAMES := {"hall":"營火","workshop":"工匠器具","armory":"守備器具","farm_tools":"農具","hunt_tools":"獵弓","forge":"義肢爐","beacon":"護民塔","wall":"右防線","wall_left":"左防線","farm":"農田","drill":"劍術訓練","heal":"龍晶治療"}
 
 func _init(config: Dictionary = {}, hero_stats: Stats = null) -> void:
 	var resolved:=config.duplicate(true)
@@ -93,11 +93,11 @@ func _init(config: Dictionary = {}, hero_stats: Stats = null) -> void:
 		else: node.herbs=3
 		frontier.nodes.append(node)
 	for node in frontier.nodes:
-		if node.kind=="cache": node.crystals=6
-		elif node.kind=="crystal": node.crystals=6
-		elif node.kind=="tree":
-			node.crystals=2
-			node.wood=maxi(1,int(config.get("tree_timber",4)))
+		var yield_key: String={"tree":"tree_crystals","crystal":"mineral_crystals","cache":"chest_crystals","berries":"plant_crystals","stone":"mineral_crystals","herbs":"plant_crystals"}[node.kind]
+		var default_yield: int={"tree":4,"crystal":6,"cache":6,"berries":3,"stone":6,"herbs":3}[node.kind]
+		node.crystals=clampi(int(config.get(yield_key,default_yield)),1,12)
+		node.wood=0;node.food=0;node.stone=0;node.herbs=0;node.scrap=0
+
 	ecology=Ecology.new(frontier,config)
 	defenses=Defenses.new(world,frontier,config)
 	time_to_raid = clock.remaining
@@ -140,6 +140,7 @@ func _interaction_candidates(x: float) -> Array[Dictionary]:
 		candidates.append(choice)
 	if absf(_player_y-430)<=42:
 		for site in world.sites:
+			if site=="trade":continue # Retained in legacy snapshots only.
 			if not defenses.visible(site):continue
 			if frontier.city_level==0 and site!="hall": continue
 			if absf(world.sites[site]-x)>=73.0: continue
@@ -149,7 +150,7 @@ func _interaction_candidates(x: float) -> Array[Dictionary]:
 		var node = frontier.nodes[index]
 		if node.collected or not frontier.regions[node.region].discovered or absf(node.x-x)>=73.0 or absf(node.y-_player_y)>42: continue
 		if node.kind=="cache":
-			choice = _choice("chest",node.x,"開啟寶箱 · %d 龍晶 / %d 廢料" % [node.crystals,node.scrap])
+			choice = _choice("chest",node.x,"開啟寶箱 · %d 龍晶" % node.crystals)
 		else:
 			var label: String = {"tree":"伐木","crystal":"採晶","berries":"採果","stone":"採石","herbs":"採藥"}[node.kind]
 			choice = _choice("mark",node.x,"委託工匠"+label,prices.mark,not node.marked,"已下令 · 等待工匠採集搬運")
@@ -181,7 +182,7 @@ func _interaction_candidates(x: float) -> Array[Dictionary]:
 		candidate.paid = int(investments.get(candidate.key,0))
 		if candidate.enabled and candidate.cost>0 and pouch.amount<=0:
 			candidate.enabled = false
-			candidate.reason = "背包沒有龍晶 · 尋找寶箱、收貨點或交易食物"
+			candidate.reason = "背包沒有龍晶 · 尋找寶箱、收貨點或農田"
 	return candidates
 
 func _campaign_site(site: String) -> Dictionary:
@@ -191,12 +192,12 @@ func _campaign_site(site: String) -> Dictionary:
 		if frontier.city_level>0 and mission.core_hp<mission.core_max_hp:
 			return _choice("core_charge",at,"核心充能",prices.core_charge)
 		if frontier.city_level==0: return _choice("hall",at,"營火 · 建立第一座營地",prices.camp)
-		var materials := frontier.city_cost()
-		choice.text = "升級聚落 · %d 木 / %d 糧 / %d 石" % [materials.wood,materials.food,frontier.city_level*3]
+		choice.text = "升級聚落"
 		choice.key = "hall:%d" % frontier.city_level
-		choice["requirements"]={"wood":materials.wood,"food":materials.food,"stone":frontier.city_level*3}
-		choice.enabled = frontier.city_level<3 and frontier.wood>=materials.wood and frontier.food>=materials.food and frontier.stone>=frontier.city_level*3
-		choice.reason = "先讓居民採木、採石與生產食物" if frontier.city_level<3 else "王城已完成 · 繼續守住居民"
+		choice.cost = mini(12,prices.hall+2*(frontier.city_level-1))
+		choice.enabled = frontier.city_level<3
+		choice.reason = "王城已完成 · 繼續守住居民"
+
 		return choice
 	if frontier.city_level==0:
 		choice.enabled=false
@@ -213,21 +214,18 @@ func _campaign_site(site: String) -> Dictionary:
 		if defenses.plots.has(site):choice.id="wall"
 		var repair: bool = defense.level>0 and defense.hp<defense.level*40
 		choice.cost = prices.repair if repair else (prices.wall if defense.level==0 else prices.wall_upgrade)
-		if not repair and defense.level>0: choice["requirements"]={"stone":3}
-		choice.text = "修復防線" if repair else ("建立木防線" if defense.level==0 else "升級石防線 · 3 石材")
+		choice.text = "修復防線" if repair else ("建立木防線" if defense.level==0 else "升級石防線")
 		choice.key = "%s:%d:%s" % [site,defense.level,repair]
-		choice.enabled = not defense.pending and (repair or defense.level<2) and (repair or defense.level==0 or frontier.stone>=3)
+		choice.enabled = not defense.pending and (repair or defense.level<2)
 		choice["prerequisites"]=defenses.prerequisites(site)
 		choice.enabled=choice.enabled and choice.prerequisites.is_empty()
-		choice.reason = "需要聚落、前哨、內側防線與清地；或施工中／石材不足"
+		choice.reason = "需要聚落、前哨、內側防線與清地；或施工中／已達上限"
 	elif site=="forge":
 		var charging:=hero.shield<growth.capacity()
 		choice.id="shield_charge" if charging else "forge"
 		choice.key="shield_charge" if charging else "forge:%d" % growth.capacitor_level
 		choice.cost=growth.charge_cost if charging else growth.crystal_cost(prices.forge,growth.capacitor_level)
-		var scrap: int=growth.charge_scrap if charging else growth.capacitor_scrap()
-		choice["requirements"]={"scrap":scrap}
-		choice.enabled=world.scrap>=scrap and (charging or growth.can_install(frontier.city_level))
+		choice.enabled=charging or growth.can_install(frontier.city_level)
 		choice["prerequisites"]=[]
 		if not charging and growth.capacitor_level<growth.capacitor_limit and frontier.city_level<=growth.capacitor_level:
 			choice.prerequisites.append({"icon":"camp","value":growth.capacitor_level+1})
@@ -238,18 +236,15 @@ func _campaign_site(site: String) -> Dictionary:
 			choice.cost=0
 			choice.requirements={}
 		choice.text="護盾充能" if charging else "擴充義肢電容"
-		choice.reason="先升級聚落、取得廢料，或電容已滿階"
+		choice.reason="先升級聚落，或電容已滿階"
 	elif site=="farm":
-		choice["requirements"]={"wood":2,"food":1}
-		choice.text = "開墾農田 · 2 木材 / 1 食物"
-		choice.enabled = not frontier.farm_active and frontier.wood>=2 and frontier.food>=1
-		choice.reason = "已播種，或缺少木材與種子食物"
+		choice.text = "開墾晶蕾農田"
+		choice.enabled = not frontier.farm_active
+		choice.reason = "已播種 · 農夫持續培育龍晶"
 	elif site=="drill":
 		var limit:=mini(3,frontier.training_limit)
-		var food: int=growth.lesson_food(frontier.training_food,frontier.drill_level)
 		choice.key="drill:%d" % frontier.drill_level
 		choice.cost=growth.crystal_cost(prices.drill,frontier.drill_level)
-		choice["requirements"]={"food":food}
 		choice["prerequisites"]=[]
 		if frontier.drill_level<limit and frontier.city_level<=frontier.drill_level:
 			choice.prerequisites.append({"icon":"camp","value":frontier.drill_level+1})
@@ -259,18 +254,14 @@ func _campaign_site(site: String) -> Dictionary:
 			choice.cost=0
 			choice.requirements={}
 		choice.text="劍術訓練"
-		choice.enabled=frontier.food>=food and frontier.drill_level<limit and frontier.drill_level<frontier.city_level
-		choice.reason="先升級聚落、儲備食物，或劍術已滿階"
-	elif site=="trade":
-		choice["requirements"]={"food":4}
-		choice.text = "交易 · 4 食物換 2 龍晶"
-		choice.enabled = frontier.food>=4
-		choice.reason = "需要 4 食物 · 農夫可持續留種生產"
+		choice.enabled=frontier.drill_level<limit and frontier.drill_level<frontier.city_level
+		choice.reason="先升級聚落，或劍術已滿階"
 	elif site=="heal":
-		choice["requirements"]={"herbs":2}
-		choice.text = "治療 · 2 藥草回復 30 生命"
-		choice.enabled = frontier.herbs>=2 and hero.hp<hero.stats.max_hp
-		choice.reason = "需要 2 藥草，或目前生命已滿"
+		choice.cost=int(prices.get("heal",2))
+		choice.text = "龍晶治療 · 回復 30 生命"
+		choice.enabled = hero.hp<hero.stats.max_hp
+		choice.reason = "目前生命已滿"
+
 	return choice
 
 func interact(x: float, target_key: String = "") -> bool:
@@ -295,42 +286,30 @@ func _execute(choice: Dictionary) -> void:
 			var node = frontier.nodes[choice.node_index]
 			node.collected=true
 			node.delivered=true
-			world.scrap+=node.scrap
 			pouch.burst(node.crystals,node.x,node.y)
 			opened_chests[choice.node_index]=workforce.elapsed
 			effects.append({"kind":"chest_burst","x":node.x,"y":node.y,"life":0.7})
 		"mark": frontier.mark(frontier.nodes[choice.node_index])
-		"hall":
-			if frontier.city_level>0:
-				var materials := frontier.city_cost()
-				frontier.wood-=materials.wood
-				frontier.food-=materials.food
-				frontier.stone-=frontier.city_level*3
-			frontier.city_level+=1
+		"hall": frontier.city_level+=1
 		"workshop","armory","farm_tools","hunt_tools":
 			world.tools[TOOL_KINDS[choice.id]]+=1
 			built[choice.id]=true
 		"wall","wall_left":
 			var defense: Dictionary=world.walls[choice.get("wall_id",choice.id)]
 			var repair: bool=defense.level>0 and defense.hp<defense.level*40
-			if not repair and defense.level>0: frontier.stone-=3
 			defense.merge({"pending":true,"repair":repair,"progress":0.0},true)
 		"outpost": frontier.regions[choice.region_index].outpost_pending=true
-		"farm": frontier.plant()
+		"farm": frontier.farm_active=true
 		"forge":
-			world.scrap-=growth.capacitor_scrap()
 			hero.shield=growth.install(frontier.city_level)
 			built.forge=true
 		"shield_charge":
-			world.scrap-=growth.charge_scrap
 			hero.shield=growth.recharge(hero.shield)
 		"beacon": world.barrier+=1; built.beacon=true
 		"drill":
-			frontier.food-=growth.lesson_food(frontier.training_food,frontier.drill_level)
 			frontier.drill_level+=1
 			hero.stats.damage+=frontier.training_damage
-		"trade": frontier.food-=4; pouch.receive(2,choice.x)
-		"heal": frontier.herbs-=2; hero.hp=mini(hero.stats.max_hp,hero.hp+30)
+		"heal": hero.hp=mini(hero.stats.max_hp,hero.hp+30)
 
 func advance(seconds: float, hero_x: float, hero_y: float = 430.0) -> void:
 	if seconds<=0 or not is_finite(seconds):return
@@ -538,7 +517,6 @@ func _advance_expeditions(seconds: float, hero_x: float, hero_y: float) -> void:
 		mission.advance_seal(index,seconds,ready,knight_near,contested)
 
 func _collect_loot(drop: Dictionary) -> void:
-	super._collect_loot(drop)
 	pouch.receive(1,drop.x)
 
 func kingdom_established() -> bool:
@@ -548,3 +526,24 @@ func kingdom_established() -> bool:
 	return hero.is_alive() and clock.survived>=3 and frontier.city_level>=3 and [-1,1].all(func(side):
 		var w: Dictionary=world.walls[defenses.active_post(side)]
 		return w.level>=2 and w.hp>0) and citizens>=3
+
+func _receive_hunt(at: float) -> void:
+	pouch.drop(2,at)
+
+func _advance_farm(seconds: float, farmers: int) -> void:
+	var before: int=frontier.food
+	frontier.advance_farm(seconds,farmers)
+	var produced: int=frontier.food-before
+	frontier.food=before
+	pouch.drop(produced,world.sites.farm)
+
+func convert_legacy_resources() -> void:
+	# Called only after validating an old checkpoint, before its first v3 save.
+	var stored: int=frontier.wood+frontier.food+frontier.stone+frontier.herbs+world.scrap+world.crystals
+	pouch.drop(stored,world.sites.hall)
+	frontier.wood=0;frontier.food=0;frontier.stone=0;frontier.herbs=0
+	world.scrap=0;world.crystals=0
+	for node in frontier.nodes:
+		# Yield belongs to the node, including plants already awaiting dawn renewal.
+		node.crystals+=node.wood+node.food+node.stone+node.herbs+node.scrap
+		node.wood=0;node.food=0;node.stone=0;node.herbs=0;node.scrap=0

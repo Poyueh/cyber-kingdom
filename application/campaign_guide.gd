@@ -8,7 +8,7 @@ static func next(sim, x: float) -> Dictionary:
  if sim.frontier.city_level==0:return _hint("camp",sim.world.sites.hall,"hall","invest",1)
  var engineers=sim.world.people.filter(func(p):return p.role=="engineer")
  if engineers.is_empty():return job_hint(sim,x,"hammer","workshop",2)
- var harvesting: bool=sim.frontier.wood>0 or sim.frontier.nodes.any(func(n):return n.kind=="tree" and (n.marked or n.collected))
+ var harvesting: bool=sim.frontier.nodes.any(func(n):return n.kind=="tree" and (n.marked or n.collected))
  if not harvesting:
   var trees: Array=[]
   for i in range(sim.frontier.nodes.size()):
@@ -50,9 +50,7 @@ static func funding_hint(sim,x: float) -> Dictionary:
    var hint=_hint("chest",node.x,"node:%d"%i,"open",0)
    hint["y"]=node.y
    options.append(hint)
- if sim.frontier.city_level>0:
-  var trade: Dictionary=sim.context_for_key(sim.world.sites.trade,"trade")
-  if trade.enabled:options.append(_hint("trade",sim.world.sites.trade,"trade","invest",0))
+
  return _nearest(options,x) if not options.is_empty() else _explore(sim,x,0)
 
 static func _explore(sim,x: float,stage: int) -> Dictionary:

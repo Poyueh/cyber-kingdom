@@ -7,3 +7,5 @@
 1280×720、844×390、390×844 目視通過，手機尺寸關閉按鈕固定且無頁面橫向溢出；指南能獨立捲動與使用既有章節連結。console error 為空。尺寸模擬不等於 iPhone Safari 真機觸控驗收。Windows／macOS 成品未重建、未替換；只有 Web preset 增加頁面載入與 Web-only 選單分支。
 
 使用者確認同步更新現有 Pages，預計發行 v0.0.2（H5 更新），原有 v0.0.1 三平台附件保持。線上驗收結果另記 STATUS。
+
+公開驗收完成：Release 自動派發與 Pages 部署皆成功，五個網頁成品檔案雜湊一致。正式站書本入口、iframe 內容與關閉回暫停選單實際通過，console error 為空。published-release.json 保留附件驗證，pages-verified.json 保留部署連結與檔案雜湊。
