@@ -1,0 +1,19 @@
+{
+  "url": "https://github.com/Poyueh/cyber-kingdom/releases/tag/v0.0.2",
+  "tag": "v0.0.2",
+  "assets": [
+    {
+      "name": "Cyber-Kingdom-Web-0.0.2.zip",
+      "size": 29063059,
+      "digest": "sha256:befa94868a63590c47cdbb78075cd5fcaa9b4b738062b222359542b41a7d9963",
+      "browser_download_url": "https://github.com/Poyueh/cyber-kingdom/releases/download/v0.0.2/Cyber-Kingdom-Web-0.0.2.zip"
+    },
+    {
+      "name": "SHA256SUMS.txt",
+      "size": 94,
+      "digest": "sha256:3ada70fb84bf19fc25cefc90797397decd1aaaef82906b3cd661538ab0f815fc",
+      "browser_download_url": "https://github.com/Poyueh/cyber-kingdom/releases/download/v0.0.2/SHA256SUMS.txt"
+    }
+  ],
+  "v0.0.1_unchanged": true
+}

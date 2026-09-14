@@ -793,3 +793,5 @@ GitHub Release v0.0.1 已公開，Windows、macOS、Web 與 SHA256SUMS 四附件
 feature/web-player-guide 新增 Web-only 書本入口與同站 iframe 閱讀器；開啟／關閉皆保持暫停，Esc 可從指南內關閉，焦點回到遊戲。原生選單不顯示，Windows／Mac 包不重建。以來源 536d676 完成 Web 匯出與完整 tools/check.sh；瀏覽器開關、示意互動隔離及三種尺寸檢查通過，console error 為空。
 
 證據 docs/reports/web-guide-v001，教學第四十八課，未視為已掌握。使用者要求直接更新 Pages，接續按 Gitflow 發行 v0.0.2 H5 更新；v0.0.1 桌面附件保留。
+
+H5 v0.0.2 已公開：https://github.com/Poyueh/cyber-kingdom/releases/tag/v0.0.2 。Release 事件 run 34803635161 自動派發 main，Pages run 34803639640 成功，驗證了上一輪修補的自動流程。五個公開檔案與驗收成品雜湊一致；公開站實際點書本，iframe 載入完整指南、關閉返回暫停選單，console error 為空。兩個 0.0.2 附件核對通過，0.0.1 全部附件雜湊保持；原工作目錄 130 檔保持。線上證據已加入報告，下一步為使用者 iPhone Safari 真機閱讀與操作回饋。
