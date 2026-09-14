@@ -1,0 +1,7 @@
+# Mounted knight v001
+
+Generated using the built-in image generation tool on 2026-09-14; character reference was this project's art/characters/knight/idle-v001.png. Original result preserved as source.png. Runtime mounted.png contains six 160 × 128 frames; tools/prepare_mount_art.py removes the generated neutral checkerboard, reduces colours and aligns hooves to y=122. Local processing was previously authorized by the user. No third-party game sprites used.
+
+Prompt: Create an original transparent pixel-art sprite sheet for Cyber Kingdom. Preserve the reference knight's silver full helmet with cyan visor, steel armour, gold joints, red cloak, cyan mechanical forearm and steel sword. Show the normally proportioned knight seated in a saddle on a dark charcoal warhorse with brass cybernetic barding and a cyan dragon-crystal chest light, facing right. Readable medium-coarse pixel art. Exactly six complete equal-scale sprites in a 3×2 grid: standing, gallop extended, gallop gathered; mounted sword preparation, forward-down slash, low follow-through. Bent legs in stirrups in every frame, aligned hooves, complete tails and swords, generous transparent gaps, no shadows/floor/text/checkerboard. Intended for low-resolution game frames.
+
+The tool generated an opaque checkerboard despite the transparency request; the retained source documents this. The processed runtime asset has transparency. This is the initial six-pose mounted set, not a complete final cavalry animation pack.

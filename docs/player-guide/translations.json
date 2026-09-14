@@ -926,5 +926,9 @@
   "左右空白處都能橫滑移動、下滑給晶。快滑放手給一顆；靠近目標下滑按住會繼續填格。攻擊、跳躍、衝刺保留按鍵。": {
     "zh_CN": "左右空白处都能横滑移动、下滑给晶。快滑放手给一颗；靠近目标下滑按住会继续填格。攻击、跳跃、冲刺保留按键。",
     "en": "Swipe horizontally to move or down to offer on either side. A quick swipe gives one crystal; swipe down and hold near a target to fill its slots. Attack, jump and dash keep their buttons."
+  },
+  "劍術與義肢電容都升到最高階後，自動騎上龍晶機械戰馬；移動更快，第一刀仍需站定。讀取既有滿級紀錄也會恢復騎乘。": {
+    "zh_CN": "剑术与义肢电容都升到最高阶后，自动骑上龙晶机械战马；移动更快，第一刀仍需站定。读取既有满级记录也会恢复骑乘。",
+    "en": "Max out both sword training and the prosthetic capacitor to automatically ride a dragon-crystal warhorse. Travel is faster, but the first slash still stops movement. Loading an existing fully upgraded journey restores the mount."
   }
 }

@@ -14,11 +14,8 @@ func _draw() -> void:
 	# Frame the complete skyline above the real floor, independently of camera zoom.
 	draw_texture_rect(art.woodland,_background_rect(),false)
 	Scenery.forest(self,art.forest_layer,_background_rect(),art.forest_scroll)
-	var tile_x: float = map.left_boundary
-	while tile_x<map.right_boundary:
-		var width := minf(768,map.right_boundary-tile_x)
-		draw_texture_rect_region(art.ground,Rect2(tile_x,430,width,111),Rect2(0,0,width,111))
-		tile_x += width
+	# Draw beyond both viewport edges, even during camera smoothing at world limits.
+	preload("res://presentation/scenery_tiles.gd").draw(self,art.ground,_background_rect(),430)
 	_draw_atmosphere(left)
 	for region in map.regions:
 		if not region.discovered:
@@ -27,12 +24,12 @@ func _draw() -> void:
 			var name: String = {"forest":tr("龍晶林 · 標記居民伐木"),"quarry":tr("晶脈 · 標記居民採礦"),"ruins":tr("舊王朝遺跡 · 回收廢料")}[region.kind]
 			_text(name,region.x+region.width*0.5,143,Color("d6d6b5"),16)
 	for resource in map.nodes:
-		if map.regions[resource.region].discovered: _resource(resource)
-		elif resource.kind in ["tree","crystal","stone"]:
-			_prop(resource.kind,Vector2(resource.x,resource.y),1.0,Color(0.42,0.58,0.61,0.30))
+		_world_alpha=_region_reveal(resource.region)
+		if _world_alpha>0:_resource(resource)
 	for animal in map.animals:
-		if animal.alive and map.regions[animal.region].discovered:
-			_prop("deer",Vector2(animal.x,430),0.75)
+		_world_alpha=_region_reveal(animal.region)
+		if animal.alive and _world_alpha>0:_prop("deer",Vector2(animal.x,430),0.75)
+	_world_alpha=1.0
 	for region in map.regions:
 		if not region.outpost_ready: continue
 		if not _outpost_visible(region):continue
@@ -44,6 +41,10 @@ func _draw() -> void:
 			_text(tr("施工 %d%%") % int(100*region.outpost_progress/map.outpost_seconds),at.x,315,Color("edd19d"),13)
 		else: _text(tr("拓荒站") if region.outpost_built else tr("已清理 · 可拓建"),at.x,312,Color("b6dfd0"),13)
 	super._draw()
+
+var _world_alpha:=1.0
+func _region_reveal(index: int) -> float:
+	return 1.0 if index<0 or _sim.frontier.regions[index].discovered else 0.0
 
 func _background_rect() -> Rect2:
 	var inverse:=get_viewport().get_canvas_transform().affine_inverse()
@@ -100,8 +101,8 @@ func _resource(resource) -> void:
 	var at := Vector2(resource.x,resource.y)
 	if resource.y<430:
 		var ladder_x: float = resource.x-22
-		for side in [-5,5]: draw_line(Vector2(ladder_x+side,430),Vector2(ladder_x+side,resource.y),Color("a99770"),2)
-		for y in range(int(resource.y),430,9): draw_line(Vector2(ladder_x-5,y),Vector2(ladder_x+5,y),Color("b8a580"),2)
+		for side in [-5,5]: draw_line(Vector2(ladder_x+side,430),Vector2(ladder_x+side,resource.y),Color(Color("a99770"),_world_alpha),2)
+		for y in range(int(resource.y),430,9): draw_line(Vector2(ladder_x-5,y),Vector2(ladder_x+5,y),Color(Color("b8a580"),_world_alpha),2)
 	if resource.collected:
 		if resource.kind=="tree": _prop("stump",at)
 		if not resource.carried and not resource.delivered:
@@ -141,7 +142,7 @@ func _person(person: Dictionary, protected: bool) -> void:
 		source=Rect2(column*64,frame*64,64,64)
 		texture=art.citizens_atlas
 	draw_set_transform(at,0,Vector2(direction,1))
-	draw_texture_rect_region(texture,Rect2(-32,-62,64,64),source,Color(1,0.65,0.65) if person.hurt>0 else Color.WHITE)
+	_draw_person_texture(texture,source,Color(1,0.65,0.65) if person.hurt>0 else Color.WHITE)
 	draw_set_transform(Vector2.ZERO)
 	if protected and person.role!="wanderer": draw_arc(at+Vector2(0,-24),29,PI,TAU,16,Color("81ddda"),1)
 	var label: String={"wanderer":tr("流浪者"),"citizen":tr("居民"),"engineer":tr("工匠"),"farmer":tr("農夫"),"hunter":tr("獵人"),"guard":tr("守備兵")}[person.role]
@@ -154,3 +155,6 @@ func _draw_atmosphere(_left: float) -> void:
 
 func _draw_unexplored(_region: Dictionary) -> void:
 	pass
+
+func _draw_person_texture(texture: Texture2D, source: Rect2, tint: Color) -> void:
+	draw_texture_rect_region(texture,Rect2(-32,-62,64,64),source,tint)

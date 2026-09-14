@@ -1,7 +1,6 @@
 extends RefCounted
 ## Soft overlapping cloud particles fade on discovery and share the paused world clock.
 var _cloud: GradientTexture2D
-var _revealed: Dictionary={}
 func draw(view: Node2D, regions: Array, time: float, player_x: float, area: Rect2) -> void:
  if _cloud==null:
   _cloud=GradientTexture2D.new();_cloud.width=128;_cloud.height=64
@@ -13,8 +12,7 @@ func draw(view: Node2D, regions: Array, time: float, player_x: float, area: Rect
   _cloud.gradient=gradient
  for i in range(regions.size()):
   var r: Dictionary=regions[i]
-  if r.discovered and not _revealed.has(i):_revealed[i]=time
-  var fade: float=maxf(0,1-(time-float(_revealed.get(i,time)))/2.2) if r.discovered else 1.0
+  var fade: float=1.0-view._region_reveal(i)
   if fade<=0 or r.x>area.end.x+250 or r.x+r.width<area.position.x-250:continue
   for layer in range(3):
    for n in range(ceili(r.width/90.0)+2):

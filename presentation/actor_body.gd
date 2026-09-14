@@ -14,6 +14,11 @@ const PALETTE := {"s": Color("101523"), "H": Color("829eab"), "h": Color("d5e3dd
 var model: Fighter
 var tuning: Resource
 var telegraph: bool = false
+var mounted:=false
+func set_mounted(value: bool) -> void:
+	if mounted!=value:_dash_trail.clear()
+	mounted=value
+	if visual!=null and visual.has_method("set_mounted"):visual.set_mounted(value)
 var _dash_trail: Array[Dictionary] = []
 var _trail_interval: float = 0.0
 @onready var visual: AnimatedSprite2D = get_node_or_null("SentinelVisual" if is_enemy else "KnightVisual")
@@ -36,11 +41,11 @@ func advance_motion(direction: float, jump_requested: bool, seconds: float) -> v
 		return
 	var attack_travel := model.consume_attack_travel()
 	if model.is_alive():
-		velocity.x = direction * tuning.move_speed
+		velocity.x = direction * tuning.move_speed * (1.25 if mounted else 1.0)
 		if (model.stats.attack_movement_locked and model.attack_remaining > 0.0) or not is_zero_approx(attack_travel):
 			velocity.x = attack_travel / seconds
 		if model.dash_remaining > 0.0:
-			velocity.x = model.facing * tuning.dash_speed
+			velocity.x = model.facing * tuning.dash_speed * (1.15 if mounted else 1.0)
 		if jump_requested and is_on_floor() and model.spend_stamina(model.stats.jump_cost):
 			velocity.y = -tuning.jump_speed
 	else:
@@ -64,7 +69,7 @@ func refresh_visual(seconds: float) -> void:
 			"moving": absf(velocity.x) > 0.1 and not (model.stats.attack_movement_locked and model.attack_remaining > 0.0), "locomotion_rate": velocity.x*action_facing()/maxf(1,tuning.move_speed), "grounded": is_on_floor(), "vertical_speed":velocity.y,
 			"telegraph": telegraph, "dashing": model.dash_remaining > 0.0, "dash_progress": model.dash_progress(), "attack_progress": model.attack_progress(), "combo_step": model.combo_step,
 			"hp":model.hp,"shield":model.shield,"invulnerable": model.invulnerability_remaining > 0.0}, seconds)
-		if model.dash_remaining > 0.0 and model.is_alive():
+		if model.dash_remaining > 0.0 and model.is_alive() and not mounted:
 			if _trail_interval <= 0.0:
 				_dash_trail.append({"origin": visual.global_position + visual.offset,
 					"texture": visual.sprite_frames.get_frame_texture(visual.animation, visual.frame),

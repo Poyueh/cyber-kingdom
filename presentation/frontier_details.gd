@@ -20,7 +20,8 @@ static func draw_background(view: Node2D,details: Array,regions: Array) -> void:
 	for detail in details:
 		var texture: Texture2D=TEXTURES[detail.kind]
 		var size: Vector2=texture.get_size()*detail.scale
-		var tint:=Color("a3b2bc") if regions[detail.region].discovered else Color(0.31,0.43,0.48,0.35)
+		var tint:=Color("a3b2bc")
+		tint.a=view._region_reveal(detail.region)
 		view.draw_set_transform(Vector2(detail.x,430),0,Vector2(-1 if detail.flip else 1,1))
 		view.draw_texture_rect(texture,Rect2(Vector2(-size.x/2,-size.y),size),false,tint)
 	view.draw_set_transform(Vector2.ZERO)
