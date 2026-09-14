@@ -52,12 +52,14 @@ func _physics_process(seconds: float) -> void:
 			if command.attack: sim.hero.start_attack()
 			if command.dash: sim.hero.start_dash()
 			_apply_interaction(command,seconds)
-			knight.advance_motion(command.direction,command.jump,seconds)
+			knight.advance_motion(_travel_axis(command.direction,seconds),command.jump,seconds)
 			sim.strike_from(knight.position.x,knight.position.y)
 		knight.refresh_visual(seconds)
 	_requested_interaction = false
 	view.present(sim,knight.position.x)
 	hud.present_world(sim,paused,knight.position.x,knight.is_on_floor())
+
+func _travel_axis(direction: float, _seconds: float) -> float:return direction
 
 func _apply_interaction(command: Dictionary, _seconds: float) -> void:
 	if (command.interact or _requested_interaction) and knight.is_on_floor():

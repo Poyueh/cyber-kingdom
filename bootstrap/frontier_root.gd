@@ -15,7 +15,6 @@ var progress: RefCounted
 var _campaign_config: Dictionary={}
 var _save_elapsed:=0.0
 var investment: RefCounted
-const Platform = preload("res://scenes/platform.tscn")
 var _map_seed: int
 var _seed_initialized := false
 var _requested_new_map := false
@@ -142,6 +141,8 @@ func _physics_process(seconds: float) -> void:
 	_sync_knight_equipment()
 	audio.observe(seconds,sim,knight.position.x,paused)
 
+func _travel_axis(direction: float, seconds: float) -> float:return sim.travel_axis(direction,seconds)
+
 func _apply_interaction(command: Dictionary, seconds: float) -> void:
 	# Keep a completed swipe until physics consumes it; each new swipe releases the previous order.
 	if _requested_interaction:investment.step(seconds,false,true,sim,knight.position.x)
@@ -244,13 +245,6 @@ func _build_terrain() -> void:
 	_terrain = Node2D.new()
 	_terrain.name = "GeneratedTerrain"
 	add_child(_terrain)
-	for resource in map.nodes:
-		if resource.y >= 430: continue
-		var platform = Platform.instantiate()
-		platform.position = Vector2(resource.x,resource.y+7)
-		platform.width = 140
-		platform.z_index = 1
-		_terrain.add_child(platform)
 
 func _sync_knight_equipment() -> void:
 	knight.visual.set_equipment(sim.frontier.drill_level,sim.growth.capacitor_level)

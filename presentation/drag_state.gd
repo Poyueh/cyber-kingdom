@@ -17,10 +17,12 @@ func drag(id: int, at: Vector2) -> bool:
   finger.movement=false;finger.offered=true;offer_finger=id
   return true
  if move_finger==id:
-  axis=0.0 if absf(delta.x)<14 else clampf(delta.x/48,-1,1)
+  axis=0.0 if absf(delta.x)<14 else _tier(delta.x)
  elif move_finger<0 and absf(delta.x)>=14 and absf(delta.x)>absf(delta.y)*1.25:
-  move_finger=id;finger.movement=true;axis=clampf(delta.x/48,-1,1)
+  move_finger=id;finger.movement=true;axis=_tier(delta.x)
  return false
+func _tier(distance: float) -> float:
+ return signf(distance)*(1.0 if absf(distance)>=84 else 0.65)
 func finish(id: int) -> void:
  fingers.erase(id)
  if move_finger==id:move_finger=-1;axis=0

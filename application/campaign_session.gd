@@ -32,16 +32,23 @@ var warden_health: int
 var warden_damage: int
 var enemy_health_growth: int
 var enemy_damage_growth: int
-const TOOL_KINDS := {"workshop":"hammer","armory":"blade","farm_tools":"hoe","hunt_tools":"bow"}
-const NAMES := {"hall":"營火","workshop":"工匠器具","armory":"守備器具","farm_tools":"農具","hunt_tools":"獵弓","forge":"義肢爐","beacon":"護民塔","wall":"右防線","wall_left":"左防線","farm":"農田","drill":"劍術訓練","heal":"龍晶治療"}
+var barracks_level:=0
+var travel=preload("res://application/campaign_travel.gd").new()
+const TOOL_KINDS := {"workshop":"hammer","farm_tools":"hoe","hunt_tools":"bow"}
+const NAMES := {"hall":"營火","workshop":"工匠器具","armory":"兵營","farm_tools":"農具","hunt_tools":"獵弓","forge":"義肢爐","beacon":"護民塔","wall":"右防線","wall_left":"左防線","farm":"農田","drill":"劍術訓練","heal":"龍晶治療"}
 
 func _init(config: Dictionary = {}, hero_stats: Stats = null) -> void:
 	var resolved:=config.duplicate(true)
 	var economy: Dictionary=config.get("economy",{}).duplicate(true)
 	var left_post:=minf(-950.0,float(config.get("left_defense_x",-1100.0)))
 	economy["settlement_left"]=left_post-200.0
+	economy["flat_ground"]=int(config.get("flat_frontier",1))
 	resolved["economy"]=economy
 	super(resolved,hero_stats)
+	if config.get("flat_frontier",1):
+		world.tool_roles.blade="hunter";world.tool_sites.blade="hunt_tools"
+	travel.fast_multiplier=clampf(config.get("fast_run_multiplier",1.65),1.1,2.0)
+	travel.drain_per_second=clampf(config.get("fast_run_drain",18.0),5,40)
 	hero.stats.attack_cost=maxf(0,float(config.get("attack_stamina",12.0)))
 	hero.stats.jump_cost=maxf(0,float(config.get("jump_stamina",18.0)))
 	hero.stats.dash_cost=maxf(0,float(config.get("dash_stamina",30.0)))
@@ -203,6 +210,15 @@ func _campaign_site(site: String) -> Dictionary:
 		choice.enabled=false
 		choice.reason="先回營火投入 2 顆龍晶建立營地"
 		return choice
+	if site=="armory":
+		choice.key="armory:%d"%barracks_level
+		choice.cost=mini(12,prices.armory+barracks_level*2)
+		choice.enabled=barracks_level<3 and frontier.city_level>barracks_level
+		choice.reason="需要更高級聚落，或兵營已滿級"
+		choice["upgrade"]={"icon":"bow","level":barracks_level,"limit":3,"value":archer_damage(),"next":hunter_damage+mini(3,barracks_level+1)*6}
+		choice["prerequisites"]=[]
+		if barracks_level<3 and frontier.city_level<=barracks_level:choice.prerequisites.append({"icon":"camp","value":barracks_level+1})
+		return choice
 	if TOOL_KINDS.has(site):
 		var kind: String = TOOL_KINDS[site]
 		choice.text += " · 庫存 %d/3" % world.tools[kind]
@@ -291,7 +307,9 @@ func _execute(choice: Dictionary) -> void:
 			effects.append({"kind":"chest_burst","x":node.x,"y":node.y,"life":0.7})
 		"mark": frontier.mark(frontier.nodes[choice.node_index])
 		"hall": frontier.city_level+=1
-		"workshop","armory","farm_tools","hunt_tools":
+		"armory":
+			barracks_level+=1;built.armory=true
+		"workshop","farm_tools","hunt_tools":
 			world.tools[TOOL_KINDS[choice.id]]+=1
 			built[choice.id]=true
 		"wall","wall_left":
@@ -377,17 +395,12 @@ func _override_resident_target(index: int, seconds: float) -> float:
 	var person: Dictionary = world.people[index]
 	var expedition_target:=expedition.target(index,seconds)
 	if is_finite(expedition_target):return expedition_target
-	if person.role=="guard":
-		_shoot_nearest_raider(person,190.0,20,0.85)
-		person["direction"]=1.0 if person.defense_post=="wall" else -1.0
-		var post:=_defense_position(index,65.0)
-		if not clock.is_night and raiders.is_empty():
-			return Roaming.destination(person,index,post,38,seconds,post-38,post+38)
-		return post
 	if person.role not in ["citizen","engineer","farmer","hunter"]: return NAN
 	var home: float = defenses.shelter(person.x,world.sites.hall + (index%5-2)*22.0)
 	if person.role=="hunter" and world.walls[defenses.active_post(1 if person.defense_post=="wall" else -1)].hp>0:
 		home = _defense_position(index,90.0)
+	if person.role=="hunter":
+		_shoot_nearest_raider(person,hunter_range,archer_damage(),hunter_interval)
 	if not Schedule.should_return(clock.is_night,clock.remaining,person.x,home,_person_speed,return_margin):
 		return NAN
 	person["sheltering"] = true
@@ -401,13 +414,33 @@ func _override_resident_target(index: int, seconds: float) -> float:
 			person["y"] = move_toward(person.get("y",430.0),430.0,70.0*seconds)
 			person.work_state = "climb"
 			return person.x
-	if person.role=="hunter":
-		_shoot_nearest_raider(person,hunter_range,hunter_damage,hunter_interval)
+	if person.role!="hunter":
+		var left: float=world.sites[defenses.active_post(-1)]+120
+		var right: float=world.sites[defenses.active_post(1)]-120
+		if world.walls[defenses.active_post(-1)].hp<=0:left=maxf(left,world.sites.hall-260)
+		if world.walls[defenses.active_post(1)].hp<=0:right=minf(right,world.sites.hall+260)
+		# Separate lanes and pauses distribute residents; emergency boundaries clamp instantly.
+		var count:=0
+		var rank:=0
+		for i in range(world.people.size()):
+			if world.people[i].role in ["citizen","engineer","farmer"]:
+				if i<index:rank+=1
+				count+=1
+		var width: float=maxf(0,right-left)/maxi(1,count)
+		var center: float=left+(rank+0.5)*width
+		var radius: float=minf(110,width*0.35)
+		return Roaming.destination(person,index,center,radius,seconds,center-radius,center+radius)
 	return home
+
+func travel_axis(request: float, seconds: float) -> float:
+	return travel.axis(hero,request,seconds)
+
+func archer_damage() -> int:return hunter_damage+barracks_level*6
 
 func _assign_defense_posts() -> void:
 	var counts: Dictionary={"wall":0,"wall_left":0}
 	for person in world.people:
+		if person.role=="guard":person.role="hunter"
 		if person.role not in ["guard","hunter"]:
 			person.erase("defense_post")
 		elif person.has("defense_post"):

@@ -31,8 +31,9 @@ func test_queued_swing_rechecks_budget_at_execution(t) -> void:
 	t.equal(hero.stamina,3.0,"cancelled followup does not overspend")
 
 func test_legacy_save_migrates_with_current_action_costs(t) -> void:
-	var codec=Codec.new();var sim=Campaign.new({"seed":42})
+	var codec=Codec.new();var sim=Campaign.new({"seed":42,"flat_frontier":0})
 	var old=codec.capture(sim,{"seed":42},{"x":30.0,"y":430.0,"vx":0.0,"vy":0.0})
+	old.session.erase("barracks_level")
 	old.version=1;old.hero.stats.erase("attack_cost");old.hero.stats.erase("jump_cost")
 	for key in ["dragon_summoned","dragon_defeated","dragon_day","dragon_rules"]:old.mission.erase(key)
 	var copy=old.duplicate(true)

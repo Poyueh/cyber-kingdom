@@ -104,7 +104,7 @@ func _draw() -> void:
 				var x := column if facing > 0 else 15 - column
 				draw_rect(Rect2(x * 2 - 16, row * 2 - 38, 2, 2), shade)
 		draw_line(Vector2(facing * 12, -20), Vector2(facing * reach, -26), Color("d8d6b1"), 3.0)
-	if model.is_attack_active() and procedural_slash:
+	if model.is_attack_active() and (procedural_slash or mounted):
 		_draw_slash(reach, facing)
 	if telegraph:
 		draw_rect(Rect2(-3, -62, 6, 13), Color("f4b26b"))
@@ -118,7 +118,7 @@ func _draw_slash(reach: float, facing: int) -> void:
 	var rising := model.combo_step == 2
 	var heavy := model.combo_step == 3
 	var leading_angle := lerpf(0.1, 0.8, progress)
-	var origin := Vector2(0, -27)
+	var origin := Vector2(12*facing, -65) if mounted else Vector2(0, -27)
 	var points := PackedVector2Array()
 	# A tapered crescent travels downward; mirroring preserves sword direction.
 	for index in range(9):

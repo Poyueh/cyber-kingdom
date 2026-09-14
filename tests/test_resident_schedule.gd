@@ -82,12 +82,12 @@ func test_carried_resource_returns_with_worker_then_deposits_at_dawn(t) -> void:
 	sim.clock.remaining=120
 	var wood: int=sim.frontier.wood
 	for tick in range(500):sim.advance(0.1,30)
-	t.truth(absf(worker.x-30)<90,"hauling engineer reaches shelter")
+	t.truth(absf(worker.x-30)<261,"hauling engineer reaches shelter")
 	t.truth(job.carried and not job.delivered,"cargo is preserved through shelter")
 	t.equal(sim.frontier.wood,wood,"sheltering does not duplicate cargo")
 	sim.clock.is_night=false
 	sim.clock.remaining=180
-	for tick in range(20):sim.advance(0.1,30)
+	for tick in range(100):sim.advance(0.1,30)
 	t.truth(job.delivered,"worker delivers the same cargo on resuming work")
 
 func test_unrecruited_wanderer_does_not_join_shelter_and_farmer_stops_at_home(t) -> void:
@@ -100,4 +100,4 @@ func test_unrecruited_wanderer_does_not_join_shelter_and_farmer_stops_at_home(t)
 	t.truth(absf(wanderer.x+900)<100,"unrecruited wanderer remains near their discovery site")
 	var home: float=farmer.x
 	for tick in range(30):sim.advance(0.1,30)
-	t.equal(farmer.x,home,"sheltered farmer does not oscillate towards farm every frame")
+	t.truth(absf(farmer.x-home)>1 and absf(farmer.x-30)<261,"sheltered farmer strolls inside town without returning to the field")

@@ -16,11 +16,13 @@ func run_scene() -> void:
  scene._physics_process(1.0/60)
  check(not hud.get_node("move_left").visible and not hud.get_node("move_right").visible,"movement buttons replaced with drag surface")
  touch(0,Vector2(100,300),true);drag(0,Vector2(160,300))
- check(hud.movement_axis()>0.9,"left thumb drags right to move")
+ check(is_equal_approx(hud.movement_axis(),0.65),"left thumb drags right to move")
+ drag(0,Vector2(210,300));check(hud.movement_axis()==1,"longer drag engages second travel tier")
+ drag(0,Vector2(160,300))
  touch(1,Vector2(650,200),true);drag(1,Vector2(650,255))
  scene._physics_process(1.0/60)
  check(scene.sim.pouch.amount==11,"right downward drag invests one crystal near camp")
- check(hud.movement_axis()>0.9,"payment finger preserves movement finger")
+ check(is_equal_approx(hud.movement_axis(),0.65),"payment finger preserves movement finger")
  touch(1,Vector2(650,255),false)
  touch(0,Vector2(160,300),false)
  scene.knight.position.x=-600;scene._physics_process(1.0/60)
@@ -32,7 +34,7 @@ func run_scene() -> void:
  check(hud.movement_axis()==0 and not hud.interact_held,"focus loss cancels every gesture")
  scene.paused=false;scene._physics_process(1.0/60)
  touch(4,Vector2(100,300),true);drag(4,Vector2(160,300))
- check(hud.movement_axis()>0.9,"new finger works without old release after background")
+ check(is_equal_approx(hud.movement_axis(),0.65),"new finger works without old release after background")
  await process_frame
  touch(5,center(hud.get_node("attack")),true)
  var before: float=scene.knight.position.x
@@ -40,7 +42,8 @@ func run_scene() -> void:
  check(scene.sim.hero.attack_remaining>0 and absf(scene.knight.position.x-before)<0.01,"attack button works while dragging and roots first cut")
  touch(5,center(hud.get_node("attack")),false);touch(4,Vector2(160,300),false)
  hud.preview_safe_margins=Vector4(90,18,30,32);hud._layout()
- for key in ["attack","jump","dash"]:
+ check(not hud.get_node("jump").visible and not hud.get_node("dash").visible,"removed skills have no visible buttons")
+ for key in ["attack"]:
   var button=hud.get_node(key)
   check(hud.safe_rect().encloses(Rect2(button.position,Vector2(64,64))),"combat button stays within safe area")
  scene.restart();scene.knight.position.x=30

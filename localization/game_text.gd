@@ -732,5 +732,17 @@ const ROWS=[
   "重試",
   "重试",
   "RESTART"
+ ],
+ [
+  "兵營",
+  "兵營",
+  "兵营",
+  "Barracks"
+ ],
+ [
+  "需要更高級聚落，或兵營已滿級",
+  "需要更高級聚落，或兵營已滿級",
+  "需要更高级聚落，或兵营已满级",
+  "Requires a higher settlement tier, or barracks are fully upgraded"
  ]
 ]

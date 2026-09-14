@@ -60,8 +60,9 @@ func test_defenders_split_posts_and_keep_their_assignments(t):
 		return
 	sim.world.wall.merge({"level":1,"hp":40},true)
 	sim.world.walls.wall_left.merge({"level":1,"hp":40},true)
-	var first=add_person(sim,"guard",710)
-	var second=add_person(sim,"guard",710)
+	sim.clock.is_night=true;sim.clock.remaining=1000
+	var first=add_person(sim,"hunter",710)
+	var second=add_person(sim,"hunter",710)
 	for i in range(2000):sim.advance(1.0/60,30)
 	t.truth(first.x>500 and second.x< -500,"two guards autonomously cover separate sides")
 	var first_post: float=first.x
