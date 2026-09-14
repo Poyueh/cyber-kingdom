@@ -787,3 +787,9 @@ GitHub Release v0.0.1 已公開，Windows、macOS、Web 與 SHA256SUMS 四附件
 首次 Pages run 34802288415 因既有 github-pages 環境只允許 main，拒絕標籤部署，工作步驟尚未執行。hotfix/pages-release-deployment 保留保護規則，改由 Release 事件發出 main 的 workflow_dispatch，部署工作只接受 main。分開事件的 concurrency 群組避免派發等待互鎖；本次既有版本以 main 手動派發，實際線上結果待記錄。遊戲與發布附件未改動，沿用本單元已通過的完整檢查。
 
 公開驗收完成：main 的 Pages run 34802636219 成功。https://poyueh.github.io/cyber-kingdom/ 實際顯示遊戲，五個核心公開檔案 HTTP 200 且雜湊一致，WASM MIME 正確；瀏覽器暫停與恢復可操作，無 console error。公開下載與線上證據見 docs/reports/release-0.0.1/{published-release,pages-verified}.json。原有 130 檔雜湊保持，hotfix 按 Gitflow 回合 main、develop 並推送；v0.0.1 保持不變。下一步收集玩家試玩回饋與實體 iPhone Safari／Windows 驗收，未宣稱真機驗收完成。
+
+## 2026-09-14：H5 暫停選單內嵌圖文指南
+
+feature/web-player-guide 新增 Web-only 書本入口與同站 iframe 閱讀器；開啟／關閉皆保持暫停，Esc 可從指南內關閉，焦點回到遊戲。原生選單不顯示，Windows／Mac 包不重建。以來源 536d676 完成 Web 匯出與完整 tools/check.sh；瀏覽器開關、示意互動隔離及三種尺寸檢查通過，console error 為空。
+
+證據 docs/reports/web-guide-v001，教學第四十八課，未視為已掌握。使用者要求直接更新 Pages，接續按 Gitflow 發行 v0.0.2 H5 更新；v0.0.1 桌面附件保留。
