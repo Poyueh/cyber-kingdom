@@ -806,3 +806,5 @@ H5 v0.0.2 已公開：https://github.com/Poyueh/cyber-kingdom/releases/tag/v0.0.
 完整 tools/check.sh 通過：1,146 項規則 assertions、全部場景與 13 項 Python 建置測試，無 SCRIPT ERROR。實際 SceneTree 流程 15 assertions，包括保存失敗留在遊戲、手動另存、紀錄被外部改壞後重新驗證。真實 v0.0.2 存檔 fixture 通過材料、部分付款與植物轉換。
 
 H5 1280×720 與 844×390 檢查起始頁／列表；真實瀏覽器建立兩段旅程、第一局花 2 晶建營地、手動保存、返回、重載後三筆紀錄仍存在。指南同步改為龍晶與新起始頁流程。功能整合 develop，交付本機預覽；本輪未建立新 GitHub Release、未更新 Pages 或重建 Win/Mac 包。驗證見 docs/reports/crystal-start-v001，教學第四十九課；尚未宣稱使用者已掌握或 iPhone Safari 實機驗收。下一步收集新經濟的節奏與紀錄選擇回饋。
+
+本機最終包來源 022391e，位於 builds/crystal-start-20260914，預覽 http://127.0.0.1:8793/ 。ZIP CRC／SHA-256 通過；指南戰鬥動畫、全部章節連結、遊戲內開關後回到紀錄列表通過，最終指南無 console error。原本 129 檔位元組不變，project.godot 僅將 Main Scene 改為起始頁，其餘個人內容保留。
