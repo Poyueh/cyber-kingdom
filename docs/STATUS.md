@@ -928,3 +928,11 @@ GitHub Actions 發行觸發34832664197、Pages 部署34832670799 均成功。附
 ## H5 v0.0.5 發行準備（2026-09-14）
 
 使用者授權僅發布 H5。沿用已驗證 74976ec 包，release/0.0.5 依 Gitflow 整合 main、tag v0.0.5 並回合 develop；附件在 builds/release-0.0.5。Windows／Mac 保持 v0.0.1。公開部署結果完成後補記。
+
+## H5 v0.0.5 已公開（2026-09-14）
+
+Release https://github.com/Poyueh/cyber-kingdom/releases/tag/v0.0.5 已發布，tag 指向477e3c1。main／develop／release/0.0.5 與標籤已推送。公開試玩 https://poyueh.github.io/cyber-kingdom/ 已更新，Windows／Mac 維持 v0.0.1。
+
+GitHub Actions 發行觸發34850331851與 Pages 部署34850341179均成功。H5 ZIP與校驗附件 digest 相符，公開站14個檔案逐一 SHA256 與實測包一致；瀏覽器起始頁、既有旅程列表、12/12 背包讀檔、恢復與再次暫停通過，警告／錯誤為空。130個個人修改檔仍保留。詳見 docs/reports/release-0.0.5/verification.json。
+
+本輪僅發布已驗證包，沒有改動玩法；Godot 數值教學續用第57課。
