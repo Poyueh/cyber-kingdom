@@ -95,11 +95,9 @@ func test_last_tree_order_warns_about_habitat_loss(t):
 	t.truth(sim.interact(node.x,key),"player may still deliberately clear the last tree")
 	t.truth(node.marked,"knight orders work instead of cutting with sword")
 
-func test_preserving_one_tree_per_forest_still_funds_city_and_farm_timber(t):
+func test_preserving_one_tree_per_forest_still_allows_city_and_farm(t):
 	var sim=Campaign.new({"capacity":20,"starting_crystals":20})
 	sim.frontier.city_level=1
-	sim.frontier.food=11
-	sim.frontier.stone=9
 	for index in range(sim.frontier.regions.size()):
 		if sim.frontier.regions[index].kind!="forest":continue
 		sim.frontier.regions[index].discovered=true
@@ -111,9 +109,11 @@ func test_preserving_one_tree_per_forest_still_funds_city_and_farm_timber(t):
 			sim.frontier.deposit(node)
 	for i in range(3):sim.interact(-350)
 	for level in range(2):
-		for i in range(5):sim.interact(30)
-	t.truth(sim.frontier.farm_active and sim.frontier.city_level==3,"six trees support farm and full city without forcing both habitats to be cleared")
-	t.equal(sim.frontier.wood,2,"preserved-forest plan retains two spare timber")
+		var cost: int=sim.context(30).cost
+		for i in range(cost):sim.interact(30)
+	t.truth(sim.frontier.farm_active and sim.frontier.city_level==3,"crystals build farm and full city without requiring habitat destruction")
+	t.equal(sim.frontier.wood,0,"harvest never introduces timber inventory")
+	t.equal(sim.pouch.amount,5,"farm and two town upgrades cost fifteen crystals")
 
 func test_cleared_ground_still_supports_delivered_berry_and_herb_patches(t):
 	var sim=setup(t)

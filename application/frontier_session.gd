@@ -145,12 +145,12 @@ func _advance_people(seconds: float) -> void:
 				if absf(person.x-prey.x)<45 and person.cooldown<=0:
 					prey.alive = false
 					person.cooldown = 3.0
-					frontier.food += 2
+					_receive_hunt(prey.x)
 					effects.append({"kind":"bolt","x":person.x,"to":prey.x,"life":0.18})
 		if person.role in ["farmer","hunter"]:
 			person["moving"] = absf(person.x-before)>0.01
 			if person.moving: person["direction"] = signf(person.x-before)
-	frontier.advance_farm(seconds,farmers)
+	_advance_farm(seconds,farmers)
 
 func _engineer_target(index: int, seconds: float) -> float:
 	return workforce.advance_engineer(index,seconds)
@@ -163,3 +163,9 @@ func kingdom_established() -> bool:
 
 func _receive_delivery(delivery: Dictionary) -> void:
 	effects.append({"kind":"pay","x":delivery.x,"to":delivery.x,"life":0.45})
+
+func _receive_hunt(_at: float) -> void:
+	frontier.food+=2
+
+func _advance_farm(seconds: float, farmers: int) -> void:
+	frontier.advance_farm(seconds,farmers)

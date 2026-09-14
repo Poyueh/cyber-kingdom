@@ -50,9 +50,9 @@ func test_hunter_hunts_by_day_and_defends_at_night(t) -> void:
 	var prey: Dictionary=sim.frontier.animals[0]
 	sim.frontier.regions[prey.region].discovered=true
 	var hunter=person(sim,"hunter",prey.x)
-	var before_food: int=sim.frontier.food
+	var before_crystals: int=sim.pouch.ground_total()
 	sim.advance(0.1,30)
-	t.truth(not prey.alive and sim.frontier.food==before_food+2,"bow earns food during daytime")
+	t.truth(not prey.alive and sim.pouch.ground_total()==before_crystals+2,"hunter leaves dragon crystals at prey during daytime")
 	prey.alive=true
 	hunter.cooldown=0.0
 	sim.clock.is_night=true

@@ -38,7 +38,7 @@ func test_guidance_does_not_reveal_loot_or_keep_spending_stocked_tools(t):
  sim.frontier.city_level=1
  sim.world.people[0].role="engineer"
  sim.world.people[1].role="citizen"
- sim.frontier.wood=4
+ sim.frontier.nodes.filter(func(n):return n.kind=="tree")[0].marked=true
  sim.world.tools.bow=1
  t.equal(guide.next(sim,30.0).action,"wait","hunter takes stocked bow without repeat buying")
  sim.world.tools.bow=0

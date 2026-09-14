@@ -38,26 +38,16 @@ func run_scene() -> void:
 	prey.alive=true
 	var hunter: Dictionary={"role":"hunter","x":prey.x,"y":430.0,"hurt":0.0,"cooldown":0.0,"region":-1}
 	sim.world.people.append(hunter)
+	var initial: int=sim.pouch.amount+sim.pouch.ground_total()
 	scene._physics_process(0.02)
-	check(not prey.alive and sim.frontier.food==2,"actual hunter converts prey into food")
+	check(not prey.alive and sim.frontier.food==0 and sim.pouch.amount+sim.pouch.ground_total()==initial+2,"actual hunter drops two crystals")
 	dawn(scene)
 	check(prey.alive,"next dawn restores hunted prey slot")
 	for tick in range(190):
 		await physics_frame
 		scene._physics_process(1.0/60)
-	check(sim.frontier.food>=4,"hunter earns fresh food from renewable animals")
-	sim.frontier.city_level=1
-	scene.knight.position=Vector2(-700,430)
-	await frames(2)
-	scene._physics_process(1.0/60)
-	var crystals: int=sim.pouch.amount+sim.pouch.ground_total()
-	var food: int=sim.frontier.food
-	scene.hud.interact_button.button_down.emit()
-	scene._physics_process(1.0/60)
-	scene.hud.interact_button.button_up.emit()
-	scene._physics_process(1.0/60)
-	check(sim.frontier.food==food-4,"touch trade consumes actual renewable food")
-	check(sim.pouch.amount+sim.pouch.ground_total()==crystals+2,"trade turns hunting income into conserved spendable crystals")
+	check(sim.pouch.amount+sim.pouch.ground_total()>=initial+4,"renewable prey supplies further crystals")
+	check(sim.frontier.food==0,"hunting never accumulates a second currency")
 	scene.restart()
 	check(scene.sim.world.people.size()==8 and scene.sim.ecology.last_dawn==1,"restart restores initial camps and renewal clock")
 	scene.queue_free()

@@ -35,6 +35,7 @@ run_check growth --script res://tests/test_growth_scene.gd
 run_check ecology --script res://tests/test_ecology_scene.gd
 run_check expansion --script res://tests/test_expansion_scene.gd
 run_check stamina --script res://tests/test_stamina_scene.gd
+run_check start_menu --script res://tests/test_start_menu_scene.gd
 run_check cycle_menu --script res://tests/test_cycle_menu_scene.gd
 run_check campaign_save --script res://tests/test_campaign_save_scene.gd
 run_check mobile --script res://tests/test_mobile_scene.gd

@@ -23,6 +23,13 @@ var _terrain: Node2D
 var _requested_throw := false
 
 func _ready() -> void:
+	if get_tree().has_meta("campaign_launch"):
+		var launch: Dictionary=get_tree().get_meta("campaign_launch")
+		get_tree().remove_meta("campaign_launch")
+		campaign_save_path=launch.path
+		if launch.seed>=0:
+			tuning=tuning.duplicate()
+			tuning.map_seed=launch.seed
 	super._ready()
 	hud.audio_toggled.connect(func():
 		audio.enabled=not audio.enabled
@@ -66,6 +73,7 @@ func _ready() -> void:
 		if preferences!=null:preferences.write(music,effects))
 	hud.options_menu.save_checkpoint_requested.connect(save_manual_campaign)
 	hud.options_menu.load_checkpoint_requested.connect(load_manual_campaign)
+	hud.options_menu.title_requested.connect(return_to_title)
 	view.interactions_visible=not paused
 	view.keyboard_hint=not hud.uses_touch_controls()
 	_present_save()
@@ -205,6 +213,12 @@ func _present_save() -> void:
 
 func _exit_tree() -> void:
 	if progress!=null and is_instance_valid(knight):save_campaign()
+
+func return_to_title() -> void:
+	if not save_campaign():return
+	controls.release_all()
+	hud.cancel_touch_gestures()
+	get_tree().call_deferred("change_scene_to_file","res://scenes/start_menu.tscn")
 
 
 func _build_terrain() -> void:
