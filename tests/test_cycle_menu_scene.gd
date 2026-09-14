@@ -13,6 +13,7 @@ func run_scene() -> void:
 	game.paused=true
 	game.hud.present_world(game.sim,true,game.knight.position.x,true)
 	check(game.hud.options_menu.visible,"pause exposes audio and save controls")
+	check(game.hud.options_menu.find_child("PlayerGuide",true,false)==null,"native desktop menu does not expose the Web-only iframe reader")
 	check(game.hud.options_menu.load_button.disabled,"empty manual slot cannot load")
 	game.sim.interact(30)
 	game.hud.options_menu.save_button.pressed.emit()

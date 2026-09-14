@@ -10,6 +10,11 @@ import sys
 from build_desktop import prepare_tree, run_logged
 
 
+def install_guide_reader(stage: Path, web: Path) -> None:
+    for name in ('guide-reader.js', 'guide-reader.css'):
+        shutil.copyfile(stage / 'web' / name, web / name)
+
+
 def validate_export(web: Path) -> None:
     for name in ('index.html', 'index.js', 'index.wasm', 'index.pck'):
         path = web / name
@@ -32,6 +37,7 @@ def export_project(ref: str, output: Path, godot: str) -> Path:
         run_logged(engine + ['--editor', '--import'], output / 'import.log')
         run_logged(engine + ['--export-release', 'Web Demo', str(web / 'index.html')], output / 'export.log')
         run_logged([sys.executable, str(stage / 'tools/build_player_guide.py'), '--output', str(web / 'guide.html')], output / 'guide.log')
+        install_guide_reader(stage, web)
     validate_export(web)
     (web / 'README.txt').write_text(
         'Cyber Kingdom — 瀏覽器預覽版\n\n'
@@ -41,7 +47,8 @@ def export_project(ref: str, output: Path, godot: str) -> Path:
         'guide.html 是可離線閱讀的玩家圖文指南。\n\n'
         '先點一下遊戲畫面，以便瀏覽器啟用聲音與鍵盤。\n'
         'A/D 移動；J 連斬；Space 跳躍；L 衝刺；E 互動；Q 丟晶；Esc 暫停。\n'
-        '暫停選單可調整音量與手動存讀檔。\n'
+        '暫停選單可調整音量與手動存讀檔；書本圖示會在遊戲內開啟玩家圖文指南。\n'
+        '閱讀時遊戲保持暫停，按 × 或 Esc 關閉指南，再按播放繼續。\n'
         '存檔保存在此網址對應的瀏覽器資料，與桌面版分開；清除網站資料會移除進度。\n'
         '需要支援 WebGL 2 與 WebAssembly 的瀏覽器，首次載入需下載遊戲資源。\n', encoding='utf-8')
     archive = Path(shutil.make_archive(str(output / 'Cyber-Kingdom-Web'), 'zip', web))
