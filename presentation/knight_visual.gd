@@ -83,7 +83,7 @@ func present(pose: Dictionary, seconds: float) -> void:
 	_moving_attack.visible=false
 	_combo_attack.visible=false
 	_moving_attack.offset=Vector2.ZERO
-	if mounted:
+	if mounted and pose.alive:
 		_present_mount(pose,seconds)
 		return
 	_mount.visible=false
