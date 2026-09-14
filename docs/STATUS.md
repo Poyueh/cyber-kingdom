@@ -779,3 +779,9 @@ feature/player-guide-html 依 Gitflow 驗證後整合本地 develop，未推送�
 使用者授權發布第一版 0.0.1 到 Poyueh/cyber-kingdom 並使用既有 Pages。統一各平台版本號，來源 b882769 重新建置 Windows x64／macOS universal／Web，附件位於 builds/release-0.0.1，內附指南與 SHA256SUMS。完整檢查、Mac 實際啟動、17 項包內回歸、簽章與 ZIP 完整性皆通過。
 
 新增 Release 驅動的 Pages workflow；原 main 根目錄發布改為 GitHub Actions。部署腳本已驗證正常附件與拒絕錯誤雜湊／逃逸路徑。此時已具備發布條件，接續上傳及公開網址驗收後再記錄實際結果。參考 docs/reports/release-0.0.1 與第四十七課；未把教材視為已掌握。
+
+## 2026-09-14：0.0.1 公開與 Pages 部署修補
+
+GitHub Release v0.0.1 已公開，Windows、macOS、Web 與 SHA256SUMS 四附件皆 uploaded，GitHub 回傳 SHA-256 與本機一致。main、develop、release/0.0.1 與 v0.0.1 已推送，標籤指向 bbf5dd3。
+
+首次 Pages run 34802288415 因既有 github-pages 環境只允許 main，拒絕標籤部署，工作步驟尚未執行。hotfix/pages-release-deployment 保留保護規則，改由 Release 事件發出 main 的 workflow_dispatch，部署工作只接受 main。分開事件的 concurrency 群組避免派發等待互鎖；本次既有版本以 main 手動派發，實際線上結果待記錄。遊戲與發布附件未改動，沿用本單元已通過的完整檢查。
