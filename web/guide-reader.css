@@ -1,0 +1,47 @@
+#player-guide {
+  box-sizing: border-box;
+  width: min(1180px, calc(100vw - 32px));
+  height: calc(100vh - 32px);
+  height: calc(100dvh - 32px);
+  max-width: none;
+  max-height: none;
+  margin: auto;
+  padding: 0;
+  color: #eee8d9;
+  background: #09131c;
+  border: 1px solid #527d7a;
+  border-radius: 12px;
+  box-shadow: 0 20px 80px #000a;
+  overflow: hidden;
+  font: 16px/1.4 -apple-system, BlinkMacSystemFont, "PingFang TC", sans-serif;
+}
+#player-guide[open] { display: flex; flex-direction: column; }
+#player-guide::backdrop { background: #020a13cc; }
+#player-guide .guide-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex: 0 0 auto;
+  min-height: 56px;
+  padding: 4px 8px 4px 20px;
+  border-bottom: 1px solid #29414a;
+  background: #10212b;
+}
+#player-guide .guide-close {
+  display: grid; place-items: center;
+  width: 48px; height: 48px;
+  border: 1px solid #527d7a; border-radius: 8px;
+  background: #193339; color: #b6e2cd; cursor: pointer;
+}
+#player-guide .guide-close:hover { background: #285050; }
+#player-guide .guide-close:focus-visible { outline: 2px solid #79e0d1; outline-offset: 2px; }
+#player-guide .guide-close svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 2; }
+#player-guide iframe { width: 100%; flex: 1 1 auto; min-height: 0; border: 0; background: #09131c; }
+#player-guide .guide-loading { position: absolute; top: 80px; left: 20px; pointer-events: none; }
+@media (max-width: 700px), (max-height: 500px) {
+  #player-guide {
+    width: 100vw; height: 100vh; height: 100dvh;
+    border: 0; border-radius: 0;
+    padding: env(safe-area-inset-top, 0px) env(safe-area-inset-right, 0px) env(safe-area-inset-bottom, 0px) env(safe-area-inset-left, 0px);
+  }
+}
