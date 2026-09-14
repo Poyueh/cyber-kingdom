@@ -74,7 +74,7 @@ func _ready() -> void:
 	hud.options_menu.save_checkpoint_requested.connect(save_manual_campaign)
 	hud.options_menu.load_checkpoint_requested.connect(load_manual_campaign)
 	hud.options_menu.title_requested.connect(return_to_title)
-	view.interactions_visible=not paused
+	view.interactions_visible=not paused and sim.is_running()
 	view.keyboard_hint=not hud.uses_touch_controls()
 	_present_save()
 	_sync_knight_equipment()
@@ -134,7 +134,10 @@ func _physics_process(seconds: float) -> void:
 	if (paused and not was_paused) or (was_running and not sim.is_running()) or _save_elapsed>=autosave_seconds:
 		save_campaign()
 	_present_save()
-	view.interactions_visible=not paused
+	if not paused and not sim.is_running():
+		view.hit_feedback.advance_terminal(seconds)
+		view.queue_redraw()
+	view.interactions_visible=not paused and sim.is_running()
 	view.keyboard_hint=not hud.uses_touch_controls()
 	_sync_knight_equipment()
 	audio.observe(seconds,sim,knight.position.x,paused)

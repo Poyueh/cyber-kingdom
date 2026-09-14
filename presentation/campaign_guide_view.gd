@@ -1,6 +1,7 @@
 extends Node2D
 const Icons=preload("res://presentation/ui_icons.gd")
 const SYMBOLS={"dragon":"dragon","upgrade":"camp","core":"camp","delivery":"hammer","escort":"hammer","join":"rift","fight":"rift","seal":"rift","clear_enemies":"sword","rift":"rift","camp":"camp","recruit":"person","tool":"hammer","harvest":"tree","hunter":"bow","guard":"sword","wall":"wall","defend":"shield","chest":"chest","trade":"trade","collect":"crystal","explore":"map"}
+@export_range(28.0,60.0,2.0) var guidance_icon_size:=42.0
 var hint: Dictionary={}
 var safe:=Rect2()
 var player_x:=0.0
@@ -83,13 +84,16 @@ func _draw() -> void:
    draw_line(Vector2(x,-12),Vector2(x+4,-8),color,2)
    draw_line(Vector2(x+4,-8),Vector2(x,-4),color,2)
  draw_set_transform(Vector2.ZERO)
- _icon(SYMBOLS.get(hint.kind,"map"),at+Vector2(0,-46),22,Color("abe6d3"))
- if can_invest:_icon("crystal",at+Vector2(25,-43),15)
+ var badge:=at+Vector2(0,-65)
+ draw_circle(badge,guidance_icon_size*0.67,Color(0.025,0.10,0.14,0.88))
+ draw_arc(badge,guidance_icon_size*0.67,0,TAU,24,Color(0.55,0.92,0.8,0.6+sin(phase*3)*0.15),2)
+ _icon(SYMBOLS.get(hint.kind,"map"),badge,guidance_icon_size,Color("c7ffe2"))
+ if can_invest:_icon("crystal",at+Vector2(40,-58),26)
  if hint.has("seal_progress"):
   draw_rect(Rect2(at+Vector2(-18,26),Vector2(36,3)),Color("294650"))
   draw_rect(Rect2(at+Vector2(-18,26),Vector2(36*clampf(hint.seal_progress,0,1),3)),Color("9cdfca"))
  if can_invest and touch_hint:
-  var from:=at+Vector2(25,-30+sin(phase*4)*3)
+  var from:=at+Vector2(40,-36+sin(phase*4)*3)
   draw_line(from,from+Vector2(0,10),Color("abe6d3"),2)
   draw_line(from+Vector2(-4,6),from+Vector2(0,10),Color("abe6d3"),2)
   draw_line(from+Vector2(4,6),from+Vector2(0,10),Color("abe6d3"),2)

@@ -70,7 +70,7 @@ func test_residents_and_enemies_react_to_real_damage_only(t):
  enemy.fighter.invulnerability_remaining=0;enemy.fighter.take_damage(999)
  sim.raiders.clear();feedback.present(sim)
  t.equal(feedback.fallen.size(),1,"fatal hit retains a brief falling silhouette")
- sim.workforce.elapsed+=0.6;feedback.present(sim)
+ sim.workforce.elapsed+=1.5;feedback.present(sim)
  t.equal(feedback.fallen.size(),0,"defeated silhouettes expire")
  var next=load("res://application/campaign_session.gd").new()
  feedback.present(next)

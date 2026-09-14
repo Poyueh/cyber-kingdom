@@ -212,7 +212,28 @@ func _person(person: Dictionary, protected: bool) -> void:
 	var key: String={"wanderer":"person","citizen":"person","engineer":"hammer","farmer":"hoe","hunter":"bow","guard":"sword"}[person.role]
 	_icon(key,Vector2(person.x,person.get("y",430)-50),17,Color("b4e7df") if person.role!="wanderer" else Color("d4c3a7"))
 
+	if hit.demoted:_draw_demotion(person,hit)
 	_world_alpha=1.0
+
+func _draw_demotion(person: Dictionary, hit: Dictionary) -> void:
+	var progress: float=hit.demotion_progress
+	var at:=Vector2(person.x,person.get("y",430))
+	var alpha:=1.0-smoothstep(0.65,1.0,progress)
+	var ink:=Color(1.0,0.65,0.39,alpha)
+	var key: String={"engineer":"hammer","guard":"sword","farmer":"hoe","hunter":"bow"}.get(hit.lost_role,"shield")
+	var tool_at:=at+Vector2(hit.direction*(12+progress*38),-42-sin(progress*PI)*40)
+	draw_set_transform(tool_at,hit.direction*progress*2.5)
+	_icon(key,Vector2.ZERO,25,ink)
+	draw_set_transform(Vector2.ZERO)
+	# Split occupation marker and hollow person badge describe the lost identity.
+	var badge:=at+Vector2(0,-83-progress*9)
+	draw_circle(badge,21,Color(0.09,0.08,0.12,alpha*0.9))
+	_icon("person",badge,27,ink)
+	for side in [-1,1]:
+		draw_line(badge+Vector2(side*24,-10),badge+Vector2(side*31,-17),ink,3)
+	for i in range(5):
+		var mote:=at+Vector2((i-2)*10*progress,-20-sin(progress*PI)*25+i*3)
+		draw_rect(Rect2(mote,Vector2(3,3)),ink)
 
 func _draw_person_texture(texture: Texture2D, source: Rect2, tint: Color) -> void:
 	tint.a*=_world_alpha
@@ -377,13 +398,16 @@ func _raider(enemy: Dictionary) -> void:
 func _draw_fallen() -> void:
 	var texture: Texture2D=EnemyFrames.get_frame_texture("idle",0)
 	for body in hit_feedback.fallen:
-		var progress: float=clampf(body.age/0.42,0,1)
+		var progress: float=clampf(body.age/HitFeedback.FALL_SECONDS,0,1)
 		if body.get("kind","")=="dragon":
 			preload("res://presentation/dragon_visual.gd").draw_fallen(self,body,progress)
 			continue
-		draw_set_transform(Vector2(body.x-body.direction*progress*12,430),-body.direction*progress*0.85,Vector2(body.direction,1-progress*0.5))
-		preload("res://presentation/compact_people.gd").draw(self,texture,Rect2(Vector2.ZERO,texture.get_size()),Color(1.3,0.9,0.85,1-progress),41,80)
+		draw_set_transform(Vector2(body.x-body.direction*progress*12,430),-body.direction*smoothstep(0.0,0.55,progress)*1.5,Vector2(body.direction,1-progress*0.5))
+		preload("res://presentation/compact_people.gd").draw(self,texture,Rect2(Vector2.ZERO,texture.get_size()),Color(1.3,0.9,0.85,1-smoothstep(0.45,1.0,progress)),41,80)
 		draw_set_transform(Vector2.ZERO)
+		for i in range(6):
+			var mote:=Vector2(body.x+(i-2.5)*22*progress,423-sin(progress*PI)*(18+i*5))
+			draw_rect(Rect2(mote,Vector2(4,4)),Color(0.9,0.53,0.65,1-progress))
 
 func _draw() -> void:
 	super._draw()
