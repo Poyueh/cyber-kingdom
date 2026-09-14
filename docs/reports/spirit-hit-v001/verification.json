@@ -1,0 +1,31 @@
+{
+  "source": "2c9b7d8",
+  "engine": "Godot 4.7.2",
+  "full_check": "passed",
+  "rule_assertions": 1178,
+  "scene_flow_assertions": 11,
+  "web_zip_sha256": "614140d2bc5914087683f125da4f00682f9a539d5af1d56e657548a271d96fe9",
+  "native_animation_frames": 48,
+  "scope": "presentation only; no checkpoint schema change",
+  "browser_preview": "http://127.0.0.1:8793/",
+  "physical_iphone_tested": false,
+  "browser": {
+    "desktop_viewport": [
+      1280,
+      720
+    ],
+    "landscape_viewport": [
+      844,
+      390
+    ],
+    "verified": [
+      "new journey companion",
+      "ignored guidance and reverse walking",
+      "pause hides companion",
+      "existing checkpoint reload",
+      "final companion avoids target markers",
+      "no console errors"
+    ],
+    "errors": 0
+  }
+}

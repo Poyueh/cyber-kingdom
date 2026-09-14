@@ -74,7 +74,7 @@ func present(pose: Dictionary, seconds: float) -> void:
 	_moving_attack.visible=false
 	_combo_attack.visible=false
 	_moving_attack.offset=Vector2.ZERO
-	if not pose.alive: return
+	if hurt_active or not pose.alive: return
 	var gait:=int(fposmod(_gait_time*sprite_frames.get_animation_speed(&"run"),sprite_frames.get_frame_count(&"run")))
 	if animation==&"run": frame=gait
 	if combo_motion==null and animation==&"attack" and int(pose.get("combo_step",0))==2:
