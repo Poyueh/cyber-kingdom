@@ -1,21 +1,25 @@
 extends RefCounted
+## Intent is chosen by the drag direction, not which half of the screen was touched.
 var fingers: Dictionary={}
 var axis:=0.0
 var move_finger:=-1
 var offer_finger:=-1
-func begin(id: int, at: Vector2, movement: bool) -> void:
- if (movement and move_finger>=0) or (not movement and offer_finger>=0):return
- fingers[id]={"origin":at,"point":at,"movement":movement,"offered":false}
- if movement:move_finger=id
- else:offer_finger=id
+func begin(id: int, at: Vector2) -> void:
+ if fingers.has(id):return
+ fingers[id]={"origin":at,"point":at,"movement":false,"offered":false}
 func drag(id: int, at: Vector2) -> bool:
  if not fingers.has(id):return false
  var finger: Dictionary=fingers[id];finger.point=at
+ if finger.offered:return false
  var delta: Vector2=at-finger.origin
- if finger.movement:
+ if delta.y>=28 and delta.y>absf(delta.x)*1.25 and offer_finger<0:
+  if move_finger==id:move_finger=-1;axis=0
+  finger.movement=false;finger.offered=true;offer_finger=id
+  return true
+ if move_finger==id:
   axis=0.0 if absf(delta.x)<14 else clampf(delta.x/48,-1,1)
- elif not finger.offered and delta.y>=42 and delta.y>absf(delta.x)*1.25:
-  finger.offered=true;return true
+ elif move_finger<0 and absf(delta.x)>=14 and absf(delta.x)>absf(delta.y)*1.25:
+  move_finger=id;finger.movement=true;axis=clampf(delta.x/48,-1,1)
  return false
 func finish(id: int) -> void:
  fingers.erase(id)

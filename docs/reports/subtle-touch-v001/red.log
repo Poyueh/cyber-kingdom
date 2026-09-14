@@ -1,0 +1,18 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: new journey begins in wilderness away from campfire
+PASS: movement buttons replaced with drag surface
+PASS: left thumb drags right to move
+PASS: right downward drag invests one crystal near camp
+PASS: payment finger preserves movement finger
+PASS: downward drag without target throws a crystal
+PASS: focus loss cancels every gesture
+PASS: new finger works without old release after background
+PASS: attack button works while dragging and roots first cut
+PASS: combat button stays within safe area
+PASS: combat button stays within safe area
+PASS: combat button stays within safe area
+FAIL: quick down swipe survives release before physics tick
+FAIL: left-side down swipe pays next crystal without an empty physics tick
+PASS: vertical swipe never leaves movement stuck
+Mobile scene assertions: 15; failures: 2
