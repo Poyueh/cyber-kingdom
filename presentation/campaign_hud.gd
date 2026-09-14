@@ -83,7 +83,9 @@ func _ready() -> void:
 	drag_controls=preload("res://presentation/drag_controls.gd").new()
 	add_child(drag_controls)
 	drag_controls.offering_started.connect(func():
-		if _gesture_can_invest:interact_held=true
+		if _gesture_can_invest:
+			interact_held=true
+			interact_requested.emit()
 		else:throw_requested.emit())
 	drag_controls.offering_ended.connect(func():interact_held=false)
 	guide_view=GuideView.new()

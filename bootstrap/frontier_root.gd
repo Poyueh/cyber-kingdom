@@ -140,6 +140,8 @@ func _physics_process(seconds: float) -> void:
 	audio.observe(seconds,sim,knight.position.x,paused)
 
 func _apply_interaction(command: Dictionary, seconds: float) -> void:
+	# Keep a completed swipe until physics consumes it; each new swipe releases the previous order.
+	if _requested_interaction:investment.step(seconds,false,true,sim,knight.position.x)
 	var held: bool=command.interaction_held or hud.interact_held or _requested_interaction
 	investment.step(seconds,held,knight.is_on_floor() and not (command.jump or command.jump_held) and sim.is_running(),sim,knight.position.x)
 	_sync_investment_focus()

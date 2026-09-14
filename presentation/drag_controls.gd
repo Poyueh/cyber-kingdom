@@ -14,7 +14,7 @@ func _unhandled_input(event: InputEvent) -> void:
    if not safe.has_point(event.position) or exclusions.any(func(r):return r.has_point(event.position)):return
    # Reserve the upper HUD; world gestures begin below it.
    if event.position.y<safe.position.y+110:return
-   state.begin(event.index,event.position,event.position.x<safe.get_center().x)
+   state.begin(event.index,event.position)
   else:
    if event.index==state.offer_finger:offering_ended.emit()
    state.finish(event.index)
@@ -23,13 +23,14 @@ func _unhandled_input(event: InputEvent) -> void:
  queue_redraw()
 func _draw() -> void:
  if not enabled:return
+ # Tiny translucent chevron at the fingertip; no joystick base or thumb disc.
  for finger in state.fingers.values():
-  var at: Vector2=finger.origin
-  if finger.movement:
-   draw_circle(at,48,Color(0.2,0.6,0.62,0.10))
-   draw_arc(at,48,0,TAU,32,Color(0.55,0.9,0.82,0.45),2)
-   draw_circle(at+Vector2(state.axis*36,0),14,Color(0.65,0.94,0.82,0.6))
-  else:
-   draw_line(at,at+Vector2(0,42),Color(0.65,0.94,0.82,0.6),2)
-   draw_line(at+Vector2(-6,34),at+Vector2(0,42),Color(0.65,0.94,0.82,0.6),2)
-   draw_line(at+Vector2(6,34),at+Vector2(0,42),Color(0.65,0.94,0.82,0.6),2)
+  var at: Vector2=finger.point
+  var color:=Color(0.65,0.94,0.82,0.22)
+  if finger.movement and state.axis!=0:
+   var direction:=signf(state.axis)
+   draw_line(at+Vector2(direction*10,-4),at+Vector2(direction*14,0),color,1)
+   draw_line(at+Vector2(direction*14,0),at+Vector2(direction*10,4),color,1)
+  elif finger.offered:
+   draw_line(at+Vector2(-4,10),at+Vector2(0,14),color,1)
+   draw_line(at+Vector2(0,14),at+Vector2(4,10),color,1)

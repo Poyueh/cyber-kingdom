@@ -43,5 +43,21 @@ func run_scene() -> void:
  for key in ["attack","jump","dash"]:
   var button=hud.get_node(key)
   check(hud.safe_rect().encloses(Rect2(button.position,Vector2(64,64))),"combat button stays within safe area")
+ scene.restart();scene.knight.position.x=30
+ scene._physics_process(1.0/60)
+ var crystals: int=scene.sim.pouch.amount
+ touch(10,Vector2(650,220),true);drag(10,Vector2(650,265));touch(10,Vector2(650,265),false)
+ scene._physics_process(1.0/60)
+ check(scene.sim.pouch.amount==crystals-1,"quick down swipe survives release before physics tick")
+ touch(11,Vector2(200,220),true);drag(11,Vector2(200,265));touch(11,Vector2(200,265),false)
+ scene._physics_process(1.0/60)
+ check(scene.sim.pouch.amount==crystals-2,"left-side down swipe pays next crystal without an empty physics tick")
+ check(hud.movement_axis()==0,"vertical swipe never leaves movement stuck")
+ scene.knight.position.x=-600;scene._physics_process(1.0/60)
+ var drops: int=scene.sim.pouch.ground_total()
+ touch(12,Vector2(200,220),true);drag(12,Vector2(200,255));touch(12,Vector2(200,255),false)
+ scene._notification(Node.NOTIFICATION_APPLICATION_FOCUS_OUT)
+ scene._physics_process(1.0/60);scene.paused=false;scene._physics_process(1.0/60)
+ check(scene.sim.pouch.ground_total()==drops,"background cancels queued quick swipe before resume")
  scene.queue_free();await process_frame
  print("Mobile scene assertions: %d; failures: %d"%[assertions,failures]);quit(0 if failures==0 else 1)
