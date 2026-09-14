@@ -1,0 +1,20 @@
+{
+  "run": 34832670799,
+  "verified_files": [
+    "index.apple-touch-icon.png",
+    "index.wasm",
+    "index.icon.png",
+    "guide-reader.css",
+    "FONT-LICENSE.txt",
+    "index.html",
+    "guide.html",
+    "index.png",
+    "index.audio.worklet.js",
+    "index.js",
+    "index.audio.position.worklet.js",
+    "README.txt",
+    "index.pck",
+    "guide-reader.js"
+  ],
+  "result": "all SHA256 match"
+}
