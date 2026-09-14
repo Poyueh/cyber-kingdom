@@ -5,12 +5,14 @@ signal volume_changed(music: float,effects: float)
 signal save_checkpoint_requested
 signal load_checkpoint_requested
 signal title_requested
+const LanguageSelector=preload("res://presentation/language_selector.gd")
 var music: HSlider
 var effects: HSlider
 var save_button: Button
 var load_button: Button
 var _numbers: Array[Label]=[]
 func _ready() -> void:
+	theme=Theme.new();theme.default_font=preload("res://art/fonts/noto-sans-tc/NotoSansTC-Regular.otf")
 	mouse_filter=Control.MOUSE_FILTER_STOP
 	var style:=StyleBoxFlat.new()
 	style.bg_color=Color(0.025,0.065,0.085,0.96)
@@ -18,18 +20,19 @@ func _ready() -> void:
 	style.set_content_margin_all(18)
 	add_theme_stylebox_override("panel",style)
 	var box:=VBoxContainer.new();box.add_theme_constant_override("separation",10);add_child(box)
+	var selector=LanguageSelector.new();box.add_child(selector);selector.owner=self;selector.unique_name_in_owner=true
 	music=_volume_row(box,"music")
 	effects=_volume_row(box,"sound")
 	var row:=HBoxContainer.new();row.alignment=BoxContainer.ALIGNMENT_CENTER;row.add_theme_constant_override("separation",10);box.add_child(row)
 	save_button=_button(row,"save");load_button=_button(row,"restore")
 	save_button.pressed.connect(func():save_checkpoint_requested.emit())
 	load_button.pressed.connect(func():load_checkpoint_requested.emit())
-	var home=_button(row,"camp");home.tooltip_text="保存並回起始頁"
+	var home=_button(row,"camp");home.tooltip_text=tr("保存並回起始頁")
 	home.pressed.connect(func():title_requested.emit())
 	if OS.has_feature("web"):
 		var guide_button:=_button(row,"book")
 		guide_button.name="PlayerGuide"
-		guide_button.tooltip_text="玩家圖文指南"
+		guide_button.tooltip_text=tr("玩家圖文指南")
 		guide_button.pressed.connect(preload("res://presentation/web_player_guide.gd").open)
 	music.value_changed.connect(_volume_changed)
 	effects.value_changed.connect(_volume_changed)

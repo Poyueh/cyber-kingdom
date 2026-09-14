@@ -12,6 +12,9 @@ SOURCE = ROOT / 'docs/player-guide'
 def build(output: Path) -> Path:
     html = (SOURCE / 'index.html').read_text(encoding="utf-8")
     css = (SOURCE / 'style.css').read_text(encoding="utf-8")
+    translations = (SOURCE / "translations.json").read_text(encoding="utf-8")
+    i18n = (SOURCE / "guide-i18n.js").read_text(encoding="utf-8").replace("__CATALOG__", translations)
+    html = html.replace('<script src="guide-i18n.js" defer></script>', '<script>\n' + i18n + '\n</script>')
     script = (SOURCE / 'guide.js').read_text(encoding="utf-8")
     html = html.replace('<link rel="stylesheet" href="style.css">', '<style>\n' + css + '\n</style>')
     html = html.replace('<script src="guide.js" defer></script>', '<script>\n' + script + '\n</script>')

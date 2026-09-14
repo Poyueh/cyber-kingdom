@@ -23,6 +23,7 @@ run_check() {
 python3 "$ROOT/tools/test_build_desktop.py"
 python3 "$ROOT/tools/test_build_ios.py"
 python3 "$ROOT/tools/test_build_web.py"
+python3 "$ROOT/tools/test_localization.py"
 python3 "$ROOT/tools/check_architecture.py"
 run_check import --editor --import
 run_check behavior --script res://tests/run_tests.gd
@@ -35,6 +36,7 @@ run_check growth --script res://tests/test_growth_scene.gd
 run_check ecology --script res://tests/test_ecology_scene.gd
 run_check expansion --script res://tests/test_expansion_scene.gd
 run_check stamina --script res://tests/test_stamina_scene.gd
+run_check languages --script res://tests/test_language_scene.gd
 run_check start_menu --script res://tests/test_start_menu_scene.gd
 run_check cycle_menu --script res://tests/test_cycle_menu_scene.gd
 run_check campaign_save --script res://tests/test_campaign_save_scene.gd

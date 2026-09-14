@@ -25,9 +25,9 @@ func _draw() -> void:
 			# Unexplored ground stays readable; only details are obscured by pale mist.
 			for band in range(8):
 				draw_rect(Rect2(region.x,92+band*42,region.width,42),Color(0.40,0.62,0.64,0.05+band*0.012))
-			_text("未探索的邊境",region.x+region.width*0.5,145,Color("729299"),16)
+			_text(tr("未探索的邊境"),region.x+region.width*0.5,145,Color("729299"),16)
 		else:
-			var name: String = {"forest":"龍晶林 · 標記居民伐木","quarry":"晶脈 · 標記居民採礦","ruins":"舊王朝遺跡 · 回收廢料"}[region.kind]
+			var name: String = {"forest":tr("龍晶林 · 標記居民伐木"),"quarry":tr("晶脈 · 標記居民採礦"),"ruins":tr("舊王朝遺跡 · 回收廢料")}[region.kind]
 			_text(name,region.x+region.width*0.5,143,Color("d6d6b5"),16)
 	for resource in map.nodes:
 		if map.regions[resource.region].discovered: _resource(resource)
@@ -44,8 +44,8 @@ func _draw() -> void:
 		if region.outpost_pending:
 			draw_line(at+Vector2(-47,0),at+Vector2(-47,-94),Color("c3a171"),3)
 			draw_line(at+Vector2(47,0),at+Vector2(47,-94),Color("c3a171"),3)
-			_text("施工 %d%%" % int(100*region.outpost_progress/map.outpost_seconds),at.x,315,Color("edd19d"),13)
-		else: _text("拓荒站" if region.outpost_built else "已清理 · 可拓建",at.x,312,Color("b6dfd0"),13)
+			_text(tr("施工 %d%%") % int(100*region.outpost_progress/map.outpost_seconds),at.x,315,Color("edd19d"),13)
+		else: _text(tr("拓荒站") if region.outpost_built else tr("已清理 · 可拓建"),at.x,312,Color("b6dfd0"),13)
 	super._draw()
 
 func _background_rect() -> Rect2:
@@ -58,17 +58,17 @@ func _draw_structures() -> void:
 	var world = _sim.world
 	var map = _sim.frontier
 	_prop("hall-%d" % map.city_level,Vector2(world.sites.hall,430))
-	_text("王城" if map.city_level==3 else "聚落 %d/3" % map.city_level,world.sites.hall,230 if map.city_level==3 else 279,Color("ead5aa"),16)
+	_text(tr("王城") if map.city_level==3 else tr("聚落 %d/3") % map.city_level,world.sites.hall,230 if map.city_level==3 else 279,Color("ead5aa"),16)
 	for site in ["workshop","armory"]:
 		var x: float = world.sites[site]
 		_prop(site,Vector2(x,430))
-		_text("工坊 / 工程器具" if site=="workshop" else "武器坊 / 守備器具",x,284)
+		_text(tr("工坊 / 工程器具") if site=="workshop" else tr("武器坊 / 守備器具"),x,284)
 		var kind := "hammer" if site=="workshop" else "blade"
 		for index in range(world.tools[kind]): _tool(Vector2(x-26+index*25,402),kind)
 	_prop("forge",Vector2(world.sites.forge,430))
-	_text("義肢爐",world.sites.forge,293)
+	_text(tr("義肢爐"),world.sites.forge,293)
 	_prop("beacon",Vector2(world.sites.beacon,430),1.0,Color.WHITE if world.barrier>0 else Color(0.7,0.8,0.85))
-	_text("護民塔 ×%d" % world.barrier,world.sites.beacon,268)
+	_text(tr("護民塔 ×%d") % world.barrier,world.sites.beacon,268)
 	var wall_x: float = world.sites.wall
 	if world.wall.level>0:
 		var height: float = 76+world.wall.level*19
@@ -76,20 +76,20 @@ func _draw_structures() -> void:
 		draw_rect(Rect2(wall_x-30,418-height,60,4),Color("23313a"))
 		draw_rect(Rect2(wall_x-30,418-height,60.0*world.wall.hp/(world.wall.level*40),4),Color("8cd5c6"))
 	else: _prop("wall",Vector2(wall_x,430),1.0,Color(1,1,1,0.35))
-	_text("防線 %d/2" % world.wall.level,wall_x,282)
-	if world.wall.pending: _text("工匠施工中",wall_x,306,Color("ead5aa"),13)
+	_text(tr("防線 %d/2") % world.wall.level,wall_x,282)
+	if world.wall.pending: _text(tr("工匠施工中"),wall_x,306,Color("ead5aa"),13)
 	var horn: float = world.sites.horn
 	draw_line(Vector2(horn,350),Vector2(horn,430),Color("958771"),4)
 	draw_circle(Vector2(horn,363),12,Color("c7a46a"))
-	_text("警鐘",horn,332)
+	_text(tr("警鐘"),horn,332)
 	for kind in ["hoe","bow"]:
 		var x: float = world.tool_location(kind)
 		_prop("workshop" if kind=="hoe" else "armory",Vector2(x,430),0.7)
-		_text("農具架" if kind=="hoe" else "獵具架",x,324)
+		_text(tr("農具架") if kind=="hoe" else tr("獵具架"),x,324)
 		for index in range(world.tools[kind]): _tool(Vector2(x-22+index*22,405),kind)
 	var farm: float = world.sites.farm
 	_prop("crops",Vector2(farm,430),1.0,Color.WHITE if map.farm_active else Color(0.55,0.65,0.55,0.5))
-	_text("農田 / 自動留種" if map.farm_active else "可開墾農地",farm,345)
+	_text(tr("農田 / 自動留種") if map.farm_active else tr("可開墾農地"),farm,345)
 	if map.farm_active:
 		draw_rect(Rect2(farm-44,351,88,3),Color("34443e"))
 		draw_rect(Rect2(farm-44,351,88*map.farm_progress/map.farm_cycle,3),Color("d6dba2"))
@@ -97,7 +97,7 @@ func _draw_structures() -> void:
 	draw_line(Vector2(drill,430),Vector2(drill,370),Color("ad9472"),5)
 	draw_line(Vector2(drill-18,389),Vector2(drill+18,389),Color("a68f72"),5)
 	draw_circle(Vector2(drill,373),9,Color("ccb78b"))
-	_text("訓練 %d/%d" % [map.drill_level,map.training_limit],drill,343)
+	_text(tr("訓練 %d/%d") % [map.drill_level,map.training_limit],drill,343)
 
 func _resource(resource) -> void:
 	var at := Vector2(resource.x,resource.y)
@@ -147,9 +147,9 @@ func _person(person: Dictionary, protected: bool) -> void:
 	draw_texture_rect_region(texture,Rect2(-32,-62,64,64),source,Color(1,0.65,0.65) if person.hurt>0 else Color.WHITE)
 	draw_set_transform(Vector2.ZERO)
 	if protected and person.role!="wanderer": draw_arc(at+Vector2(0,-24),29,PI,TAU,16,Color("81ddda"),1)
-	var label: String={"wanderer":"流浪者","citizen":"居民","engineer":"工匠","farmer":"農夫","hunter":"獵人","guard":"守備兵"}[person.role]
-	if state=="haul": label="搬運中"
-	elif state=="work": label="作業中"
+	var label: String={"wanderer":tr("流浪者"),"citizen":tr("居民"),"engineer":tr("工匠"),"farmer":tr("農夫"),"hunter":tr("獵人"),"guard":tr("守備兵")}[person.role]
+	if state=="haul": label=tr("搬運中")
+	elif state=="work": label=tr("作業中")
 	_text(label,at.x,at.y-55,Color("d6e2d6"),12)
 
 func _draw_atmosphere(_left: float) -> void:

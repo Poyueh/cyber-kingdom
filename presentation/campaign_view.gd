@@ -108,7 +108,7 @@ func _draw_structures() -> void:
 	if art.props.has("relay"):
 		_prop("relay",Vector2(hall-115,430),0.8)
 		if map.city_level>0: _prop("relay",Vector2(_sim.world.sites.workshop-100,430),0.8)
-	_text("營火 · 王國由此開始" if map.city_level==0 else "聚落 %d/3 · 收貨點" % map.city_level,hall,282,Color("f3d299"),15)
+	_text(tr("營火 · 王國由此開始") if map.city_level==0 else tr("聚落 %d/3 · 收貨點") % map.city_level,hall,282,Color("f3d299"),15)
 	_draw_mission()
 	_draw_recruitment_camps()
 	# Before the first investment there is only a campfire and nearby wanderers.
@@ -129,7 +129,7 @@ func _draw_structures() -> void:
 		if _sim.TOOL_KINDS.has(site):
 			var kind: String = _sim.TOOL_KINDS[site]
 			for index in range(world.tools[kind]): _tool(at+Vector2(-20+index*20,-22),kind)
-		elif site=="beacon" and world.barrier>0: _text("防護 ×%d" % world.barrier,at.x,310,Color("8ce2dc"),13)
+		elif site=="beacon" and world.barrier>0: _text(tr("防護 ×%d") % world.barrier,at.x,310,Color("8ce2dc"),13)
 	for id in world.walls:
 		if not _sim.defenses.visible(id):continue
 		var wall_x: float=world.sites[id]

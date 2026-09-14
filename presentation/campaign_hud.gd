@@ -134,8 +134,8 @@ func _layout() -> void:
 	dashboard.queue_redraw()
 	fullscreen_button.visible=not uses_touch_controls()
 	if is_instance_valid(options_menu):
-		options_menu.size=Vector2(minf(370,_last_safe_rect.size.x-24),192)
-		options_menu.position=Vector2(_last_safe_rect.get_center().x-options_menu.size.x/2,layout.buttons.new_map.end.y+8)
+		options_menu.size=Vector2(minf(370,_last_safe_rect.size.x-24),244)
+		options_menu.position=Vector2(_last_safe_rect.get_center().x-options_menu.size.x/2,minf(layout.buttons.new_map.end.y+8,_last_safe_rect.end.y-options_menu.size.y-12))
 
 func present_world(sim, is_paused: bool, at: float, grounded: bool) -> void:
 	if _pause_icon_state!=is_paused:
