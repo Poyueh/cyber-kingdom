@@ -1,0 +1,21 @@
+{
+  "source_tree": "2624289751c7c6e69743940779d7c4d00ad91255",
+  "entry": "index.html",
+  "threads": false,
+  "persistence": "browser IndexedDB; separate per origin/profile",
+  "sha256": "c4526a3905efebb85aef8f3abb5bb16f2140c8f102d475824599801ba4f59964",
+  "files": {
+    "index.apple-touch-icon.png": 1322,
+    "index.wasm": 39514754,
+    "index.icon.png": 2744,
+    "index.html": 5450,
+    "guide.html": 2412830,
+    "index.png": 21443,
+    "index.audio.worklet.js": 7298,
+    "index.js": 279815,
+    "index.audio.position.worklet.js": 2973,
+    "README.txt": 779,
+    "index.pck": 17510288
+  },
+  "browser_playtest": "record separately; successful export is not a playtest"
+}

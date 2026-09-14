@@ -1,0 +1,126 @@
+{
+  "built": {
+    "version": 2,
+    "city": 1,
+    "wallet": 10,
+    "body": {
+      "vx": 0,
+      "vy": 0,
+      "x": 30,
+      "y": 430
+    },
+    "remaining": 177.899999999998,
+    "hero": {
+      "_combo_grace_remaining": 0,
+      "_swing_duration": 0,
+      "attack_facing": 1,
+      "attack_remaining": 0,
+      "combo_step": 0,
+      "cooldown_remaining": 0,
+      "dash_remaining": 0,
+      "facing": 1,
+      "hp": 100,
+      "invulnerability_remaining": 0,
+      "shield": 0,
+      "shield_absorbed": 0,
+      "stamina": 100
+    }
+  },
+  "moved": {
+    "version": 2,
+    "city": 1,
+    "wallet": 9,
+    "body": {
+      "vx": 0,
+      "vy": 0,
+      "x": 143.999984741211,
+      "y": 429.925262451172
+    },
+    "remaining": 176.633333333331,
+    "hero": {
+      "_combo_grace_remaining": 0,
+      "_swing_duration": 0,
+      "attack_facing": 1,
+      "attack_remaining": 0,
+      "combo_step": 0,
+      "cooldown_remaining": 0,
+      "dash_remaining": 0,
+      "facing": 1,
+      "hp": 100,
+      "invulnerability_remaining": 0,
+      "shield": 0,
+      "shield_absorbed": 0,
+      "stamina": 100
+    }
+  },
+  "restored": {
+    "version": 2,
+    "city": 1,
+    "wallet": 10,
+    "body": {
+      "vx": 0,
+      "vy": 0,
+      "x": 30,
+      "y": 430
+    },
+    "remaining": 177.516666666664,
+    "hero": {
+      "_combo_grace_remaining": 0,
+      "_swing_duration": 0,
+      "attack_facing": 1,
+      "attack_remaining": 0,
+      "combo_step": 0,
+      "cooldown_remaining": 0,
+      "dash_remaining": 0,
+      "facing": 1,
+      "hp": 100,
+      "invulnerability_remaining": 0,
+      "shield": 0,
+      "shield_absorbed": 0,
+      "stamina": 100
+    }
+  },
+  "reopened": {
+    "version": 2,
+    "city": 1,
+    "wallet": 10,
+    "body": {
+      "vx": 0,
+      "vy": 0,
+      "x": 30,
+      "y": 430
+    },
+    "remaining": 177.516666666664,
+    "hero": {
+      "_combo_grace_remaining": 0,
+      "_swing_duration": 0,
+      "attack_facing": 1,
+      "attack_remaining": 0,
+      "combo_step": 0,
+      "cooldown_remaining": 0,
+      "dash_remaining": 0,
+      "facing": 1,
+      "hp": 100,
+      "invulnerability_remaining": 0,
+      "shield": 0,
+      "shield_absorbed": 0,
+      "stamina": 100
+    }
+  },
+  "jump_y": 336.591979980469,
+  "dash_x": 147.000045776367,
+  "checks": [
+    "WebGL2 startup",
+    "held camp payment",
+    "keyboard movement",
+    "crystal throw",
+    "manual checkpoint and restore",
+    "IndexedDB reload",
+    "reload remains paused",
+    "jump",
+    "attack screenshot",
+    "dash",
+    "mobile viewport startup"
+  ],
+  "errors": []
+}

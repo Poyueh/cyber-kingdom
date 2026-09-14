@@ -763,3 +763,13 @@ feature/player-guide-html 依 Gitflow 驗證後整合本地 develop，未推送�
 首次匯入重現新指南動畫 WebP 不被 Godot 圖片匯入器支援；新增指南 .gdignore 後，同一匯入與完整 tools/check.sh 通過。Mac 原生 release 啟動成功；兩平台實際 PCK 新功能各 17 assertions 通過，Mac 套件既有回歸通過。ZIP 完整性、Mac 簽章與二進位架構檢查通過；Windows PCK 在 Mac 測試不等於 Windows 實機驗收。
 
 已保留原有 130 檔雜湊。發行分支回合本地 develop，未推送或上傳外部站台；此為預覽交付，不是 App Store 正式版。證據見 docs/reports/desktop-20260914，附第四十五課，學習程度未視為已掌握。下一步等待 Windows 實機與玩家試玩回饋，iOS 仍待連接手機。
+
+## 2026-09-14：可玩的 HTML／WebAssembly 版本
+
+新增 Web Demo 單執行緒匯出與 tools/build_web.py，從已提交來源隔離建置，拒絕覆寫輸出、缺少資源或無效 WASM；附離線玩家指南。交付來源 8b48a98，builds/web-20260914-r3/Cyber-Kingdom-Web.zip 約 28 MiB。本機試玩 http://127.0.0.1:8783/；未上傳公開網站，不能把此網址當朋友可訪問的公開連結。
+
+真實瀏覽器驗證發現並修正兩個平台問題：桌面視窗放大／置中使 Web 指標與畫面偏移，改為由瀏覽器管理畫布；Web 不帶原生 mobile 特徵，改用觸控能力自動顯示手機 HUD，保留明確的控制模式設定。
+
+完整 tools/check.sh 通過，新增 2 個 Python 匯出測試。Chrome 鍵盤建設、移動、丟晶、跳躍、出刀與衝刺，以及滑鼠手動存讀檔、IndexedDB 重載均通過；模擬手機的真正 touch 事件可長按建營地、移動與暫停保存。ZIP CRC／SHA-256 通過。未宣稱實體 iPhone Safari、音質或長時間效能已驗收。
+
+規格 docs/design/web-preview.md，證據 docs/reports/web-preview-v001，附第四十六課，學習狀態未視為已掌握。feature/web-playable-export 按 Gitflow 整合本地 develop，不推送。既有個人設定未納入匯出；先前 Win/Mac 產物仍保留，這次沒有重建。下一步可由玩家在此 Mac 瀏覽器試玩，再決定公開託管與手機實機驗收。
