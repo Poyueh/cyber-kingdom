@@ -10,6 +10,8 @@ var is_paused:=false
 var pause_overlay:=true
 var dead:=false
 var victory:=false
+var outcome_age:=0.0
+var _previous_outcome:=""
 var _font:=ThemeDB.fallback_font
 var _panel_cache: StyleBoxFlat
 func icon(key: String, at: Vector2, size: float=24, color:=Color.WHITE) -> void:
@@ -54,14 +56,53 @@ func _draw() -> void:
 		icon("sword",rect.position+Vector2(30,17),18,Color("ffbe89"))
 		number(str(count),rect.position+Vector2(44,23),Color("ffd5a0"))
 	_draw_mission()
-	if (is_paused and pause_overlay) or dead or victory:
-		at=panels.overlay.get_center()
+	if values.has("dragon_hp"):
+		var bar:=Rect2(panels.day.position+Vector2(-30,43),Vector2(260,34))
+		draw_style_box(_panel(),bar)
+		icon("dragon",bar.position+Vector2(18,17),26,Color("f0bdaf"))
+		draw_rect(Rect2(bar.position+Vector2(40,12),Vector2(202,9)),Color("392a43"))
+		draw_rect(Rect2(bar.position+Vector2(40,12),Vector2(202*float(values.dragon_hp)/values.dragon_max_hp,9)),Color("dd8c9c"))
+	elif values.has("dragon_day") and not victory and not dead:
+		var dragon_at: Vector2=panels.day.position+Vector2(24,54)
+		icon("dragon",dragon_at,22,Color("c995b9"))
+		number(str(values.dragon_day)+"+",dragon_at+Vector2(18,5),Color("decbb8"),13)
+	if (dead or victory) and not is_paused:
+		_draw_outcome()
+	elif is_paused and pause_overlay:
 		draw_style_box(_panel(),panels.overlay)
-		icon("skull" if dead else ("crown" if victory else "pause"),at-Vector2(0,9) if dead or victory else at,44)
-		if dead:icon("camp" if values.get("defeat_reason","")=="core" else "heart",at+Vector2(0,27),22,Color("efb1a0"))
-		elif victory:
-			icon("rift",at+Vector2(-13,27),20,Color("a4e5be"))
-			number("2/2",at+Vector2(2,32),Color("a4e5be"),13)
+		icon("pause",panels.overlay.get_center(),44)
+func _process(seconds: float) -> void:
+	var outcome: String="victory" if victory else "defeat" if dead else ""
+	if outcome!=_previous_outcome:
+		outcome_age=0;_previous_outcome=outcome
+	if not outcome.is_empty() and not is_paused:
+		outcome_age=minf(4,outcome_age+seconds)
+		queue_redraw()
+func _draw_outcome() -> void:
+	var viewport:=get_viewport_rect()
+	var center: Vector2=panels.overlay.get_center()+Vector2(0,18)
+	var reveal:=smoothstep(0.15,0.95,outcome_age)
+	var ink:=Color("bdebbc") if victory else Color("f6aa9b")
+	# Keep the last blow visible, then establish an unmistakable persistent result.
+	draw_rect(viewport,Color(0.015,0.035,0.06,0.20*reveal))
+	var card:=Rect2(center-Vector2(172,110),Vector2(344,220))
+	var style:=StyleBoxFlat.new();style.bg_color=Color(0.025,0.055,0.075,0.9*reveal)
+	style.border_color=Color(ink,0.8*reveal);style.set_border_width_all(2);style.set_corner_radius_all(10)
+	draw_style_box(style,card)
+	ink.a=reveal
+	var emblem:=center+Vector2(0,-24)
+	for i in range(12):
+		var angle:=i*TAU/12.0
+		var direction:=Vector2(cos(angle),sin(angle))
+		draw_line(emblem+direction*57,emblem+direction*(65+6*sin(outcome_age*2+i)),Color(ink,0.55*reveal),3)
+	icon("crown" if victory else "skull",emblem,94,ink)
+	var reason: String="dragon" if victory else "camp" if values.get("defeat_reason","")=="core" else "heart"
+	icon(reason,center+Vector2(-38,63),34,ink)
+	icon("check" if victory else "skull",center+Vector2(0,63),28,ink)
+	icon("survived",center+Vector2(49,63),25,ink)
+	number(str(values.get("survived",0)),center+Vector2(67,70),ink,22)
+	# Action controls stay at their existing safe-area positions above this panel.
+
 func _draw_mission() -> void:
 	if not values.has("core_hp"):return
 	var at: Vector2=panels.core.position

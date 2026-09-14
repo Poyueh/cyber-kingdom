@@ -76,7 +76,7 @@ static func valid(data: Dictionary, base: Dictionary) -> bool:
 		"session":["loot","wave","time_to_raid","_spawn_remaining","_spawn_timer","_hero_x","_night_spawn_index","_player_y","investments","built"],
 		"world":["people","supplies","tools","walls","scrap","crystals","barrier"],
 		"frontier":["regions","animals","wood","food","stone","herbs","city_level","farm_active","farm_progress","drill_level"],
-		"clock":["day","survived","is_night","remaining"],"mission":["core_hp","outcome","defeat_reason","rifts"],
+		"clock":["day","survived","is_night","remaining"],"mission":["core_hp","outcome","defeat_reason","rifts","dragon_summoned","dragon_defeated","dragon_day"],
 		"growth":["capacitor_level"],"ecology":["last_dawn"],"pouch":["amount","drops","_next_id"],"workforce":["elapsed"]}
 	for section in mutable:
 		for key in base[section]:
@@ -148,6 +148,9 @@ static func valid(data: Dictionary, base: Dictionary) -> bool:
 	var mission: Dictionary=data.mission
 	if mission.outcome not in ["active","victory","defeat"] or mission.defeat_reason not in ["","core","knight"]:return false
 	if mission.core_max_hp<1 or not in_range(mission.core_hp,0,mission.core_max_hp) or mission.seal_seconds<=0:return false
+	if mission.dragon_day<0 or (mission.dragon_summoned and mission.dragon_day<1):return false
+	if mission.dragon_defeated and not mission.dragon_summoned:return false
+	if mission.outcome=="victory" and not mission.dragon_defeated:return false
 	if mission.rifts.size()!=2:return false
 	for i in range(2):
 		var rift=mission.rifts[i]
@@ -183,6 +186,10 @@ static func valid(data: Dictionary, base: Dictionary) -> bool:
 			if state.target.kind not in ["hero","core","wall","person","leave"]:return false
 			if state.target.kind=="person" and (not index_valid(state.target.get("index"),people.size()) or state.target.index<0):return false
 			if state.target.kind=="wall" and not world.walls.has(state.target.get("wall_id","wall")):return false
+	var dragons=data.raiders.filter(func(e):return e.state.get("kind","")=="dragon")
+	if dragons.size()>1:return false
+	if mission.dragon_summoned and not mission.dragon_defeated and dragons.size()!=1:return false
+	if not mission.dragon_summoned and not dragons.is_empty():return false
 	if not data.opened is Dictionary:return false
 	for value in data.opened.values():
 		if not in_range(value,0,data.workforce.elapsed):return false

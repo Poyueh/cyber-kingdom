@@ -76,7 +76,10 @@ func run_scene() -> void:
 		check(scene.hud.guide_view.hint.kind=="seal","cleared wardens switch guide to live seal progress")
 		await step(scene,125)
 		check(rift.sealed,"scene finishes engineer sealing work "+str(index))
-	check(scene.hud.dashboard.victory and not scene.hud.dashboard.dead,"two seals and no enemies display victory")
+	check(not scene.hud.dashboard.victory and sim.mission.dragon_summoned,"two seals summon final dragon")
+	for remaining_enemy in sim.raiders:remaining_enemy.fighter.hp=0
+	await step(scene,3)
+	check(scene.hud.dashboard.victory and not scene.hud.dashboard.dead,"dragon defeat displays victory")
 	check(not scene.hud.guide_view.visible,"victory removes expedition advice")
 	check(scene.hud.get_node("restart").visible and scene.hud.new_map_button.visible,"victory offers replay and new map")
 	var time: float=sim.clock.remaining

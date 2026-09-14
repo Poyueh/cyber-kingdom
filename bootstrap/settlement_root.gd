@@ -36,6 +36,7 @@ func _notification(what: int) -> void:
 
 func _physics_process(seconds: float) -> void:
 	var command: Dictionary = controls.read_frame()
+	if hud.has_method("movement_axis") and command.direction==0:command.direction=hud.movement_axis()
 	if command.restart:
 		restart()
 	if command.pause:
@@ -53,7 +54,7 @@ func _physics_process(seconds: float) -> void:
 			_apply_interaction(command,seconds)
 			knight.advance_motion(command.direction,command.jump,seconds)
 			sim.strike_from(knight.position.x,knight.position.y)
-		knight.refresh_visual(seconds if sim.is_running() else 0.0)
+		knight.refresh_visual(seconds)
 	_requested_interaction = false
 	view.present(sim,knight.position.x)
 	hud.present_world(sim,paused,knight.position.x,knight.is_on_floor())

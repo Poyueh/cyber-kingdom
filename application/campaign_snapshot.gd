@@ -2,7 +2,7 @@ extends RefCounted
 ## Closed, versioned state graph. No script paths or object construction come from a save.
 const Campaign=preload("res://application/campaign_session.gd")
 const Rules=preload("res://application/campaign_checkpoint_rules.gd")
-const VERSION:=3
+const VERSION:=4
 const SESSION_SKIP=["raiders","effects","opened_chests"]
 const FIGHTER_SKIP=["_hit_targets","_queued_attack_seconds","_pending_attack_travel"]
 var last_error:=""
@@ -112,8 +112,9 @@ func restore(raw) -> Dictionary:
 	var keys=["version","config","body","session","world","frontier","nodes","clock","mission","growth","ecology","pouch","workforce","hero","raiders","hero_hits","opened"]
 	if data.size()!=keys.size() or not keys.all(func(k):return data.has(k)):return _invalid()
 	var legacy_economy: bool=data.version in [1,2]
-	if data.version==2:data.version=VERSION
+	if data.version==2:data.version=3
 	if data.version==1 and not _upgrade_v1(data):return _invalid()
+	if data.version==3 and not _upgrade_v3(data):return _invalid()
 	if data.version!=VERSION or not data.config is Dictionary or not data.body is Dictionary:return _invalid()
 	if not Rules.config_valid(data.config):return _invalid()
 	for key in ["x","y","vx","vy"]:
@@ -167,5 +168,17 @@ func _upgrade_v1(data: Dictionary) -> bool:
 		fighter.stats["jump_cost"]=0.0
 	data.hero.stats.attack_cost=data.config.get("attack_stamina",12.0)
 	data.hero.stats.jump_cost=data.config.get("jump_stamina",18.0)
+	data.version=3
+	return true
+
+func _upgrade_v3(data: Dictionary) -> bool:
+	if not data.mission is Dictionary or not data.config is Dictionary or not Rules.config_valid(data.config):return false
+	var additions={"dragon_summoned":false,"dragon_defeated":false,"dragon_day":0,"dragon_rules":preload("res://domain/dragon_rules.gd").tuning(data.config)}
+	for key in additions:
+		if data.mission.has(key):return false
+	data.mission.merge(additions)
+	# A previously completed run keeps its earned victory. Active runs face the dragon.
+	if data.mission.get("outcome","")=="victory":
+		data.mission.dragon_summoned=true;data.mission.dragon_defeated=true;data.mission.dragon_day=int(data.clock.get("day",1))
 	data.version=VERSION
 	return true

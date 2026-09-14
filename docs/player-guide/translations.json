@@ -1,0 +1,934 @@
+{
+  "Cyber Kingdom 玩家圖文指南：從營火建立避難所，招募居民、分配龍晶、強化騎士，封印兩端裂隙。": {
+    "en": "Cyber Kingdom player guide: build a refuge from a campfire, recruit residents, allocate dragon crystals, upgrade your knight and seal both rifts.",
+    "zh_CN": "Cyber Kingdom 玩家图文指南：从营火建立避难所，招募居民、分配龙晶、强化骑士，封印两端裂隙。"
+  },
+  "Cyber Kingdom｜騎士野外手冊": {
+    "en": "Cyber Kingdom | The Knight's Field Guide",
+    "zh_CN": "Cyber Kingdom｜骑士野外手册"
+  },
+  "跳到指南內容": {
+    "en": "Skip to guide",
+    "zh_CN": "跳到指南内容"
+  },
+  "玩家指南": {
+    "en": "Player Guide",
+    "zh_CN": "玩家指南"
+  },
+  "章節導覽": {
+    "en": "Chapter navigation",
+    "zh_CN": "章节导览"
+  },
+  "開始旅程": {
+    "en": "Getting Started",
+    "zh_CN": "开始旅程"
+  },
+  "操作": {
+    "en": "Controls",
+    "zh_CN": "操作"
+  },
+  "建國": {
+    "en": "Kingdom",
+    "zh_CN": "建国"
+  },
+  "戰鬥": {
+    "en": "Combat",
+    "zh_CN": "战斗"
+  },
+  "目標": {
+    "en": "Objectives",
+    "zh_CN": "目标"
+  },
+  "暮色中的像素避難所：龍晶照亮機械工坊，居民圍坐營火，遠方巨龍盤旋。": {
+    "en": "A pixel refuge at dusk: dragon crystals light mechanical workshops, residents gather by the fire, and a dragon circles in the distance.",
+    "zh_CN": "暮色中的像素避难所：龙晶照亮机械工坊，居民围坐营火，远方巨龙盘旋。"
+  },
+  "最後的火種，": {
+    "en": "The last ember.",
+    "zh_CN": "最后的火种，"
+  },
+  "由你守住。": {
+    "en": "In your hands.",
+    "zh_CN": "由你守住。"
+  },
+  "一把劍，一副龍晶義肢，一座尚未誕生的王國。": {
+    "en": "One sword. Crystal-powered prostheses. A kingdom yet to be born.",
+    "zh_CN": "一把剑，一副龙晶义肢，一座尚未诞生的王国。"
+  },
+  "走入荒野，帶人回家，讓營火熬過下一個夜晚。": {
+    "en": "Enter the wild, bring people home, and keep the fire alive through another night.",
+    "zh_CN": "走入荒野，带人回家，让营火熬过下一个夜晚。"
+  },
+  "從第一天開始 ": {
+    "en": "Start with day one ",
+    "zh_CN": "从第一天开始 "
+  },
+  "先看怎麼操作 ": {
+    "en": "Learn the controls ",
+    "zh_CN": "先看怎么操作 "
+  },
+  "探索 · 建設 · 動作戰鬥": {
+    "en": "Explore · Build · Fight",
+    "zh_CN": "探索 · 建设 · 动作战斗"
+  },
+  "封面為世界觀概念圖": {
+    "en": "Cover: world concept art",
+    "zh_CN": "封面为世界观概念图"
+  },
+  "在魔法與巨龍統治的世界，人類靠": {
+    "en": "In a world ruled by magic and dragons, humanity survives through ",
+    "zh_CN": "在魔法与巨龙统治的世界，人类靠"
+  },
+  "龍晶驅動的機械義肢": {
+    "en": "crystal-powered mechanical prostheses",
+    "zh_CN": "龙晶驱动的机械义肢"
+  },
+  "生存。你是一名改造騎士；每一顆龍晶，都能讓你的劍更強，也能讓更多居民平安回家。": {
+    "en": ". As an augmented knight, every crystal can strengthen your blade or help more residents return home safely.",
+    "zh_CN": "生存。你是一名改造骑士；每一颗龙晶，都能让你的剑更强，也能让更多居民平安回家。"
+  },
+  "你決定方向。": {
+    "en": "You choose the direction.",
+    "zh_CN": "你决定方向。"
+  },
+  "居民完成建設。": {
+    "en": "Residents do the building.",
+    "zh_CN": "居民完成建设。"
+  },
+  "一起活過黑夜。": {
+    "en": "Survive the night together.",
+    "zh_CN": "一起活过黑夜。"
+  },
+  "YOUR JOURNEYS / 旅程起始頁": {
+    "en": "YOUR JOURNEYS / START MENU",
+    "zh_CN": "YOUR JOURNEYS / 旅程起始页"
+  },
+  "新遊戲，或回到你的王國。": {
+    "en": "Start anew, or return to your kingdom.",
+    "zh_CN": "新游戏，或回到你的王国。"
+  },
+  "開啟遊戲先進入起始頁。點「新遊戲」會產生新地圖並建立獨立紀錄，不覆蓋先前旅程；點「選擇紀錄」可查看各局的天數、聚落等級與保存時間。": {
+    "en": "The game opens on the title screen. New Game creates a fresh map and a separate save, preserving earlier journeys. Load Journey shows each run's day, settlement level and save time.",
+    "zh_CN": "开启游戏先进入起始页。点「新游戏」会产生新地图并建立独立纪录，不覆盖先前旅程；点「选择纪录」可查看各局的天数、聚落等级与保存时间。"
+  },
+  "自動紀錄會回到最近進度；從手動檢查點開始，會另存一段旅程，保留原本較新的進度。暫停選單的營火圖示可保存並回起始頁。無法讀取的紀錄會保留原檔，不會被新遊戲蓋掉。": {
+    "en": "Autosaves resume your latest progress. Starting from a manual checkpoint creates a separate journey, preserving newer progress. The campfire icon in the pause menu saves and returns to the title screen. Unreadable saves are preserved and never replaced by a new game.",
+    "zh_CN": "自动纪录会回到最近进度；从手动检查点开始，会另存一段旅程，保留原本较新的进度。暂停选单的营火图示可保存并回起始页。无法读取的纪录会保留原档，不会被新游戏盖掉。"
+  },
+  "第一天，先讓營火成為家。": {
+    "en": "Day one: make the fire a home.",
+    "zh_CN": "第一天，先让营火成为家。"
+  },
+  "不必急著走到地圖盡頭。龍晶殘影會漂浮在你身旁，指向下一個建國目標；你可以先去探索，它會繼續跟著。建議不會替你付款，也不會限制行動。": {
+    "en": "No need to rush to the map's edge. A crystal spirit floats beside you and points toward your next kingdom objective. Explore freely; it will follow. Guidance never pays for you or restricts your actions.",
+    "zh_CN": "不必急着走到地图尽头。龙晶残影会漂浮在你身旁，指向下一个建国目标；你可以先去探索，它会继续跟着。建议不会替你付款，也不会限制行动。"
+  },
+  "點亮營火": {
+    "en": "Light the campfire",
+    "zh_CN": "点亮营火"
+  },
+  "靠近營火，投入 ": {
+    "en": "Approach the fire and invest ",
+    "zh_CN": "靠近营火，投入 "
+  },
+  "2 顆龍晶": {
+    "en": "2 crystals",
+    "zh_CN": "2 颗龙晶"
+  },
+  "建立營地。這裡也是你必須保護的核心。": {
+    "en": " to establish your camp. This is also the core you must protect.",
+    "zh_CN": "建立营地。这里也是你必须保护的核心。"
+  },
+  "帶人回家": {
+    "en": "Bring people home",
+    "zh_CN": "带人回家"
+  },
+  "探索附近的流浪者。投入或拋給他 ": {
+    "en": "Find nearby wanderers. Invest or toss them ",
+    "zh_CN": "探索附近的流浪者。投入或抛给他 "
+  },
+  "1 顆龍晶": {
+    "en": "1 crystal",
+    "zh_CN": "1 颗龙晶"
+  },
+  "，招攬成為居民。": {
+    "en": " to recruit them as residents.",
+    "zh_CN": "，招揽成为居民。"
+  },
+  "備好器具": {
+    "en": "Prepare tools",
+    "zh_CN": "备好器具"
+  },
+  "先提供工程器具，再逐步補充戰鬥與生產器具。居民會自行來領取、開始工作。": {
+    "en": "Stock engineering tools first, then add combat and production equipment. Residents collect available tools and start working on their own.",
+    "zh_CN": "先提供工程器具，再逐步补充战斗与生产器具。居民会自行来领取、开始工作。"
+  },
+  "守住兩側": {
+    "en": "Defend both sides",
+    "zh_CN": "守住两侧"
+  },
+  "把收入投入城牆與守軍。留意天色與入侵方向，日落前回防，別只顧一邊。": {
+    "en": "Invest your earnings in walls and defenders. Watch the daylight and invasion directions, and return before sunset. Protect both flanks.",
+    "zh_CN": "把收入投入城墙与守军。留意天色与入侵方向，日落前回防，别只顾一边。"
+  },
+  "實際遊戲開局：騎士站在營火旁，附近有流浪者；介面顯示第一天與 12 顆龍晶。": {
+    "en": "Actual opening gameplay: the knight stands beside the campfire with nearby wanderers; the HUD shows day one and 12 crystals.",
+    "zh_CN": "实际游戏开局：骑士站在营火旁，附近有流浪者；介面显示第一天与 12 颗龙晶。"
+  },
+  "實際遊戲畫面": {
+    "en": "Actual gameplay",
+    "zh_CN": "实际游戏画面"
+  },
+  " 先前版本截圖；新版已移除其他材料欄位。一切從營火開始。缺龍晶時，往附近探索寶箱與資源。": {
+    "en": " Earlier build: the current game has removed other material counters. Everything starts at the fire. Explore nearby for chests and resources when crystals run low.",
+    "zh_CN": " 先前版本截图；新版已移除其他材料栏位。一切从营火开始。缺龙晶时，往附近探索宝箱与资源。"
+  },
+  "走近、投入，然後拔劍。": {
+    "en": "Approach. Invest. Draw your blade.",
+    "zh_CN": "走近、投入，然后拔剑。"
+  },
+  "操作平台": {
+    "en": "Control platform",
+    "zh_CN": "操作平台"
+  },
+  "電腦": {
+    "en": "Desktop",
+    "zh_CN": "电脑"
+  },
+  "手機／平板": {
+    "en": "Phone / tablet",
+    "zh_CN": "手机／平板"
+  },
+  "使用鍵盤操作；靠近物件後，看它上方的圖示與龍晶格。": {
+    "en": "Use the keyboard. Approach an object and check its overhead icon and crystal slots.",
+    "zh_CN": "使用键盘操作；靠近物件后，看它上方的图示与龙晶格。"
+  },
+  "移動": {
+    "en": "Move",
+    "zh_CN": "移动"
+  },
+  "向左右探索；不用逐一指揮居民。": {
+    "en": "Explore left and right. Residents act without individual orders.",
+    "zh_CN": "向左右探索；不用逐一指挥居民。"
+  },
+  "左右方向圖示": {
+    "en": "Left / right arrows",
+    "zh_CN": "左右方向图示"
+  },
+  "劈砍／連斬": {
+    "en": "Slash / combo",
+    "zh_CN": "劈砍／连斩"
+  },
+  "連按接三段攻擊。按住不會自動連打。": {
+    "en": "Press repeatedly for a three-hit combo. Holding does not auto-attack.",
+    "zh_CN": "连按接三段攻击。按住不会自动连打。"
+  },
+  "劍圖示": {
+    "en": "Sword icon",
+    "zh_CN": "剑图示"
+  },
+  "跳躍": {
+    "en": "Jump",
+    "zh_CN": "跳跃"
+  },
+  "越過障礙；空中重按不會再跳一次。": {
+    "en": "Clear obstacles. Pressing again in midair does not grant another jump.",
+    "zh_CN": "越过障碍；空中重按不会再跳一次。"
+  },
+  "向上箭頭": {
+    "en": "Up arrow",
+    "zh_CN": "向上箭头"
+  },
+  "衝刺": {
+    "en": "Dash",
+    "zh_CN": "冲刺"
+  },
+  "快速位移，也會消耗體力。": {
+    "en": "Move quickly at a stamina cost.",
+    "zh_CN": "快速位移，也会消耗体力。"
+  },
+  "雙箭頭圖示": {
+    "en": "Double-arrow icon",
+    "zh_CN": "双箭头图示"
+  },
+  "現場互動": {
+    "en": "Interact on site",
+    "zh_CN": "现场互动"
+  },
+  "招募、填格、委託工作或直接開箱。": {
+    "en": "Recruit, fill slots, assign work or open a chest directly.",
+    "zh_CN": "招募、填格、委托工作或直接开箱。"
+  },
+  "手掌／龍晶／寶箱圖示": {
+    "en": "Hand / crystal / chest",
+    "zh_CN": "手掌／龙晶／宝箱图示"
+  },
+  "拋出龍晶": {
+    "en": "Toss a crystal",
+    "zh_CN": "抛出龙晶"
+  },
+  "朝面向丟一顆，可用來招攬流浪者。": {
+    "en": "Throw one crystal ahead of you to recruit wanderers.",
+    "zh_CN": "朝面向丢一颗，可用来招揽流浪者。"
+  },
+  "龍晶向下圖示": {
+    "en": "Crystal drop icon",
+    "zh_CN": "龙晶向下图示"
+  },
+  "暫停／選單": {
+    "en": "Pause / menu",
+    "zh_CN": "暂停／选单"
+  },
+  "調整音樂、音效與手動存讀檔。": {
+    "en": "Adjust music and sound, or save and load checkpoints.",
+    "zh_CN": "调整音乐、音效与手动存读档。"
+  },
+  "右上暫停圖示": {
+    "en": "Top-right pause icon",
+    "zh_CN": "右上暂停图示"
+  },
+  " 手機可一指移動、另一指跳躍或出刀；出刀時，騎士仍會停住水平移動。": {
+    "en": " On mobile, use one finger to move and another to jump or attack. Horizontal movement still stops during a slash.",
+    "zh_CN": " 手机可一指移动、另一指跳跃或出刀；出刀时，骑士仍会停住水平移动。"
+  },
+  "每一格，都是你的決定。": {
+    "en": "Every slot is a choice.",
+    "zh_CN": "每一格，都是你的决定。"
+  },
+  "場景就是你的建設選單。走近目標，看懂圖示，逐顆填入龍晶。": {
+    "en": "The world is your building menu. Approach a target, read its icon and invest one crystal at a time.",
+    "zh_CN": "场景就是你的建设选单。走近目标，看懂图示，逐颗填入龙晶。"
+  },
+  "實際遊戲中的建設互動：物件上方顯示建築圖示和三個龍晶格。": {
+    "en": "Actual building interaction: a structure icon and three crystal slots appear above the target.",
+    "zh_CN": "实际游戏中的建设互动：物件上方显示建筑图示和三个龙晶格。"
+  },
+  "實際畫面裁切 · 頭頂的空格代表本次需要的龍晶。": {
+    "en": "Gameplay crop · Empty overhead slots show the crystals required for this transaction.",
+    "zh_CN": "实际画面裁切 · 头顶的空格代表本次需要的龙晶。"
+  },
+  "短按一顆，長按連續投入。": {
+    "en": "Tap for one. Hold to keep investing.",
+    "zh_CN": "短按一颗，长按连续投入。"
+  },
+  " 每次長按只完成一筆交易；完成後放開，再按下一次。": {
+    "en": " Each hold completes only one transaction. Release and press again for another.",
+    "zh_CN": " 每次长按只完成一笔交易；完成后放开，再按下一次。"
+  },
+  "已填的格子會保留。": {
+    "en": "Filled slots stay filled.",
+    "zh_CN": "已填的格子会保留。"
+  },
+  " 離開後還能回來接續；缺少龍晶或前置條件時，不能繼續付款。": {
+    "en": " Leave and return to continue. Missing crystals or prerequisites prevent further payment.",
+    "zh_CN": " 离开后还能回来接续；缺少龙晶或前置条件时，不能继续付款。"
+  },
+  "寶箱可以直接開。": {
+    "en": "Open chests directly.",
+    "zh_CN": "宝箱可以直接开。"
+  },
+  " 騎士不必先付錢；龍晶會湧出、落地，靠近後自動吸入背包。": {
+    "en": " No payment required. Crystals burst out, land, then fly into your pouch when you approach.",
+    "zh_CN": " 骑士不必先付钱；龙晶会涌出、落地，靠近后自动吸入背包。"
+  },
+  "試著投入一顆": {
+    "en": "Try investing a crystal",
+    "zh_CN": "试着投入一颗"
+  },
+  "龍晶": {
+    "en": "Dragon crystals",
+    "zh_CN": "龙晶"
+  },
+  "選擇互動示例": {
+    "en": "Choose an interaction example",
+    "zh_CN": "选择互动示例"
+  },
+  "營火": {
+    "en": "Campfire",
+    "zh_CN": "营火"
+  },
+  "守備器具": {
+    "en": "Guard equipment",
+    "zh_CN": "守备器具"
+  },
+  "裂隙": {
+    "en": "Rift",
+    "zh_CN": "裂隙"
+  },
+  "建立營地": {
+    "en": "Establish camp",
+    "zh_CN": "建立营地"
+  },
+  "龍晶填格": {
+    "en": "Crystal investment slots",
+    "zh_CN": "龙晶填格"
+  },
+  "0 / 2 顆 · 還差 2 顆龍晶": {
+    "en": "0 / 2 crystals · 2 more needed",
+    "zh_CN": "0 / 2 颗 · 还差 2 颗龙晶"
+  },
+  "投入一顆龍晶 ": {
+    "en": "Invest one crystal ",
+    "zh_CN": "投入一颗龙晶 "
+  },
+  "重新體驗示意": {
+    "en": "Reset this example",
+    "zh_CN": "重新体验示意"
+  },
+  "這是指南互動示意，不會改變遊戲存檔。裂隙等目標在遊戲中還需滿足前置條件。": {
+    "en": "This is an interactive guide example; it does not change your game saves. In-game targets such as rifts also have prerequisites.",
+    "zh_CN": "这是指南互动示意，不会改变游戏存档。裂隙等目标在游戏中还需满足前置条件。"
+  },
+  "背包有上限，地上的龍晶也是資源。": {
+    "en": "Your pouch has limits. Crystals on the ground still matter.",
+    "zh_CN": "背包有上限，地上的龙晶也是资源。"
+  },
+  "預設最多攜帶 12 顆。裝不下的會留在場景中；有空位且靠近時才會吸入。你也能隨時拋出龍晶，剛拋出的晶體不會立刻被自己吸回。": {
+    "en": "The default capacity is 12. Excess crystals stay in the world and are collected when you approach with room in your pouch. You can toss crystals anytime; freshly tossed crystals have a short pickup delay.",
+    "zh_CN": "预设最多携带 12 颗。装不下的会留在场景中；有空位且靠近时才会吸入。你也能随时抛出龙晶，刚抛出的晶体不会立刻被自己吸回。"
+  },
+  "你不必砍樹。": {
+    "en": "You do not need to chop trees.",
+    "zh_CN": "你不必砍树。"
+  },
+  "你需要能砍樹的人。": {
+    "en": "You need people who can.",
+    "zh_CN": "你需要能砍树的人。"
+  },
+  "用龍晶招攬流浪者，再準備器具。居民依可取得的器具自行就職、尋找工作。": {
+    "en": "Recruit wanderers with crystals, then provide tools. Residents take available equipment and find work themselves.",
+    "zh_CN": "用龙晶招揽流浪者，再准备器具。居民依可取得的器具自行就职、寻找工作。"
+  },
+  "採集與施工": {
+    "en": "Gather and build",
+    "zh_CN": "采集与施工"
+  },
+  "工匠遊戲角色": {
+    "en": "Engineer game character",
+    "zh_CN": "工匠游戏角色"
+  },
+  "工匠": {
+    "en": "Engineer",
+    "zh_CN": "工匠"
+  },
+  "工程器具": {
+    "en": "Engineering tools",
+    "zh_CN": "工程器具"
+  },
+  "處理你標記的樹木、礦脈與採集點；搬運、建設、維修，也負責裂隙封印。": {
+    "en": "Handles marked trees, veins and gathering sites. Hauls, builds, repairs and seals rifts.",
+    "zh_CN": "处理你标记的树木、矿脉与采集点；搬运、建设、维修，也负责裂隙封印。"
+  },
+  "守住防線": {
+    "en": "Hold the line",
+    "zh_CN": "守住防线"
+  },
+  "守備兵遊戲角色": {
+    "en": "Guard game character",
+    "zh_CN": "守备兵游戏角色"
+  },
+  "守備兵": {
+    "en": "Guard",
+    "zh_CN": "守备兵"
+  },
+  "自行前往防守位置、攻擊敵人，讓你有機會到外圍探索。": {
+    "en": "Takes a defensive position and attacks enemies, giving you room to explore beyond the camp.",
+    "zh_CN": "自行前往防守位置、攻击敌人，让你有机会到外围探索。"
+  },
+  "讓龍晶持續生長": {
+    "en": "Keep crystals growing",
+    "zh_CN": "让龙晶持续生长"
+  },
+  "農夫遊戲角色": {
+    "en": "Farmer game character",
+    "zh_CN": "农夫游戏角色"
+  },
+  "農夫": {
+    "en": "Farmer",
+    "zh_CN": "农夫"
+  },
+  "農耕器具": {
+    "en": "Farming tools",
+    "zh_CN": "农耕器具"
+  },
+  "前往晶蕾農田耕作，每季產出龍晶留在農田旁，騎士靠近收取。": {
+    "en": "Works crystal-bud fields. Each harvest leaves crystals beside the field for the knight to collect.",
+    "zh_CN": "前往晶蕾农田耕作，每季产出龙晶留在农田旁，骑士靠近收取。"
+  },
+  "白天覓食，夜晚防守": {
+    "en": "Hunt by day, defend by night",
+    "zh_CN": "白天觅食，夜晚防守"
+  },
+  "獵人遊戲角色": {
+    "en": "Hunter game character",
+    "zh_CN": "猎人游戏角色"
+  },
+  "獵人": {
+    "en": "Hunter",
+    "zh_CN": "猎人"
+  },
+  "狩獵器具": {
+    "en": "Hunting tools",
+    "zh_CN": "狩猎器具"
+  },
+  "在已探索的區域狩獵，從晶化獵物取得龍晶；入夜後轉為防守，補足遠距火力。": {
+    "en": "Hunts crystallized prey in explored regions for crystals. Switches to ranged defense at night.",
+    "zh_CN": "在已探索的区域狩猎，从晶化猎物取得龙晶；入夜后转为防守，补足远距火力。"
+  },
+  " 居民被敵人實際擊中、且沒有被防護擋住時，才會退回流浪者。保護居民，就是保護你的生產與防線。": {
+    "en": " Residents only become wanderers after an actual enemy hit that protection fails to block. Protecting residents protects your production and defenses.",
+    "zh_CN": " 居民被敌人实际击中、且没有被防护挡住时，才会退回流浪者。保护居民，就是保护你的生产与防线。"
+  },
+  "森林之外，還有下一段路。": {
+    "en": "Beyond the forest, another path.",
+    "zh_CN": "森林之外，还有下一段路。"
+  },
+  "每張地圖以種子生成。探索兩側的森林、晶脈與遺跡，找人、找物資，也找出敵人的來源。": {
+    "en": "Each map is generated from a seed. Explore forests, veins and ruins on both sides to find people, supplies and the source of the attacks.",
+    "zh_CN": "每张地图以种子生成。探索两侧的森林、晶脉与遗迹，找人、找物资，也找出敌人的来源。"
+  },
+  "實際遊戲森林：帶有青綠龍晶核心的樹木，遠方有城堡與山林。": {
+    "en": "Actual forest gameplay: trees with cyan crystal cores, with castles and wooded hills in the distance.",
+    "zh_CN": "实际游戏森林：带有青绿龙晶核心的树木，远方有城堡与山林。"
+  },
+  "實際畫面裁切 · 未探索區保留地景輪廓，靠近後才揭露資源與人物。": {
+    "en": "Gameplay crop · Unexplored areas retain landscape silhouettes; approaching reveals resources and people.",
+    "zh_CN": "实际画面裁切 · 未探索区保留地景轮廓，靠近后才揭露资源与人物。"
+  },
+  "先委託，再開墾": {
+    "en": "Assign before you expand",
+    "zh_CN": "先委托，再开垦"
+  },
+  "標記樹木與礦產，由工匠處理。當地障礙清除後，才會出現可擴建的空地；標記不等於已清完。": {
+    "en": "Mark trees and minerals for engineers. Buildable clearings appear after local obstacles are removed. Marking is not the same as clearing.",
+    "zh_CN": "标记树木与矿产，由工匠处理。当地障碍清除后，才会出现可扩建的空地；标记不等于已清完。"
+  },
+  "前哨縮短回程": {
+    "en": "Shorten the trip home",
+    "zh_CN": "前哨缩短回程"
+  },
+  "在符合條件的地點建拓荒站，讓附近採收就近入庫，再逐步把城牆與防守範圍推向外側。": {
+    "en": "Build outposts at eligible sites to receive nearby harvests. Gradually push your walls and defensive reach outward.",
+    "zh_CN": "在符合条件的地点建拓荒站，让附近采收就近入库，再逐步把城墙与防守范围推向外侧。"
+  },
+  "別把森林清光": {
+    "en": "Do not clear every tree",
+    "zh_CN": "别把森林清光"
+  },
+  "森林也養活招募營地與獵物。砍光當地樹木，會失去後續招募與狩獵再生的來源。": {
+    "en": "Forests sustain recruitment camps and prey. Removing all local trees cuts off future recruitment and hunting regeneration.",
+    "zh_CN": "森林也养活招募营地与猎物。砍光当地树木，会失去后续招募与狩猎再生的来源。"
+  },
+  "ONE RESOURCE / 龍晶經濟": {
+    "en": "ONE RESOURCE / DRAGON CRYSTALS",
+    "zh_CN": "ONE RESOURCE / 龙晶经济"
+  },
+  "不同的荒野，同一種力量。": {
+    "en": "Different wilderness. The same power.",
+    "zh_CN": "不同的荒野，同一种力量。"
+  },
+  "採集、建造、治療和強化都以龍晶為主。沒有木材、食物、石材、藥草或廢料庫存要另外管理。": {
+    "en": "Gathering, building, healing and upgrades all use crystals. There are no separate wood, food, stone, herb or scrap stockpiles to manage.",
+    "zh_CN": "采集、建造、治疗和强化都以龙晶为主。没有木材、食物、石材、药草或废料库存要另外管理。"
+  },
+  "晶化樹木": {
+    "en": "Crystallized trees",
+    "zh_CN": "晶化树木"
+  },
+  "工匠處理並送回收貨點，每棵 4 龍晶。保留森林也能維持招募與獵物。": {
+    "en": "Engineers process and deliver 4 crystals per tree. Preserving forests sustains recruitment and prey.",
+    "zh_CN": "工匠处理并送回收货点，每棵 4 龙晶。保留森林也能维持招募与猎物。"
+  },
+  "礦脈": {
+    "en": "Crystal veins",
+    "zh_CN": "矿脉"
+  },
+  "委託工匠開採，每處 6 龍晶；清理後能逐步擴張領土。": {
+    "en": "Assign engineers to mine 6 crystals per site. Clearing resources opens room to expand.",
+    "zh_CN": "委托工匠开采，每处 6 龙晶；清理后能逐步扩张领土。"
+  },
+  "寶箱": {
+    "en": "Chests",
+    "zh_CN": "宝箱"
+  },
+  "騎士直接開啟，不需付款；一次湧出 6 龍晶。": {
+    "en": "The knight opens them directly for free. Each chest releases 6 crystals.",
+    "zh_CN": "骑士直接开启，不需付款；一次涌出 6 龙晶。"
+  },
+  "晶蕾農田": {
+    "en": "Crystal-bud fields",
+    "zh_CN": "晶蕾农田"
+  },
+  "花 3 晶開墾，農夫每季產出 2 晶，留在農田旁等你收取。": {
+    "en": "Invest 3 crystals to prepare a field. Farmers leave 2 crystals per harvest for you to collect.",
+    "zh_CN": "花 3 晶开垦，农夫每季产出 2 晶，留在农田旁等你收取。"
+  },
+  "晶化獵物": {
+    "en": "Crystallized prey",
+    "zh_CN": "晶化猎物"
+  },
+  "獵人每次狩獵留下 2 龍晶。白天生產，夜晚回防。": {
+    "en": "Hunters leave 2 crystals per hunt. They produce by day and defend by night.",
+    "zh_CN": "猎人每次狩猎留下 2 龙晶。白天生产，夜晚回防。"
+  },
+  "再生植物": {
+    "en": "Regrowing plants",
+    "zh_CN": "再生植物"
+  },
+  "工匠採集送回 3 龍晶；已交貨的植株在日出後再生，需重新委託。": {
+    "en": "Engineers gather and deliver 3 crystals. Delivered plants regrow after sunrise and need a new work order.",
+    "zh_CN": "工匠采集送回 3 龙晶；已交货的植株在日出后再生，需重新委托。"
+  },
+  "劍要夠快，決定要夠穩。": {
+    "en": "A quick blade. A steady decision.",
+    "zh_CN": "剑要够快，决定要够稳。"
+  },
+  "你可以親自迎敵，也必須替居民留下資源。強化自己與壯大聚落，使用的是同一批龍晶。": {
+    "en": "Fight enemies yourself, but leave resources for your people. Your upgrades and the settlement draw from the same crystals.",
+    "zh_CN": "你可以亲自迎敌，也必须替居民留下资源。强化自己与壮大聚落，使用的是同一批龙晶。"
+  },
+  "騎士三段連斬的近距離遊戲畫面": {
+    "en": "Close-up gameplay of the knight's three-hit combo",
+    "zh_CN": "骑士三段连斩的近距离游戏画面"
+  },
+  "▶ 播放連斬示範": {
+    "en": "▶ Play combo example",
+    "zh_CN": "▶ 播放连斩示范"
+  },
+  "實際動作近拍 · 示範劍路與踏進，不代表每次都能無傷擊敗敵人。": {
+    "en": "Actual animation close-up · Shows sword paths and forward steps, not a guarantee of a flawless fight.",
+    "zh_CN": "实际动作近拍 · 示范剑路与踏进，不代表每次都能无伤击败敌人。"
+  },
+  "站定出刀，連斬踏進。": {
+    "en": "Plant your feet. Step into the combo.",
+    "zh_CN": "站定出刀，连斩踏进。"
+  },
+  "連續按下攻擊，可接上三段連斬。第一刀原地出手，第二、第三刀向前踏進；攻擊期間，方向輸入不會讓你邊走邊砍。": {
+    "en": "Press attack repeatedly to chain three strikes. The first starts in place; the second and third step forward. Directional input does not let you walk while slashing.",
+    "zh_CN": "连续按下攻击，可接上三段连斩。第一刀原地出手，第二、第三刀向前踏进；攻击期间，方向输入不会让你边走边砍。"
+  },
+  "留意綠色體力條": {
+    "en": "Watch the green stamina bar",
+    "zh_CN": "留意绿色体力条"
+  },
+  "每刀": {
+    "en": "Per strike",
+    "zh_CN": "每刀"
+  },
+  "體力會逐漸恢復；不足時，動作不會發動。真正受傷會短促閃光、後仰再回穩；護盾擋下攻擊則是較輕的青色抵擋。居民和敵人也有命中反應。別在敵人接近前把體力全部用完。": {
+    "en": "Stamina recovers over time. Without enough, the action will not start. Health damage triggers a brief flash, recoil and recovery; shield hits show a lighter cyan brace. Residents and enemies react to hits too. Keep stamina in reserve as enemies approach.",
+    "zh_CN": "体力会逐渐恢复；不足时，动作不会发动。真正受伤会短促闪光、后仰再回稳；护盾挡下攻击则是较轻的青色抵挡。居民和敌人也有命中反应。别在敌人接近前把体力全部用完。"
+  },
+  "強化劍術，或增加防護。": {
+    "en": "Strengthen your blade or your protection.",
+    "zh_CN": "强化剑术，或增加防护。"
+  },
+  "劍術": {
+    "en": "Sword training",
+    "zh_CN": "剑术"
+  },
+  "提高傷害；": {
+    "en": " increases damage; ",
+    "zh_CN": "提高伤害；"
+  },
+  "義肢電容": {
+    "en": "prosthesis capacitors",
+    "zh_CN": "义肢电容"
+  },
+  "提供護盾容量。兩者只需龍晶，依階級預設花費 2／3／4 顆。兩者各最多三階，較高階需要較高的聚落等級。": {
+    "en": " add shield capacity. Both use crystals only, costing 2 / 3 / 4 by tier. Each has three tiers, with higher tiers requiring a higher settlement level.",
+    "zh_CN": "提供护盾容量。两者只需龙晶，依阶级预设花费 2／3／4 颗。两者各最多三阶，较高阶需要较高的聚落等级。"
+  },
+  "護盾不會無限累加。受損後，回義肢爐充能；每一筆升級，都要想想城牆與居民是否也需要這些龍晶。": {
+    "en": "Shields do not stack forever. Return to the forge to recharge after damage. Before upgrading, consider whether the walls or residents need those crystals.",
+    "zh_CN": "护盾不会无限累加。受损后，回义肢炉充能；每一笔升级，都要想想城墙与居民是否也需要这些龙晶。"
+  },
+  "騎士從未升級到三級的裝備配色變化對照": {
+    "en": "Equipment color comparison from the unupgraded knight to tier three",
+    "zh_CN": "骑士从未升级到三级的装备配色变化对照"
+  },
+  "目前裝備階級會改變劍刃、鎧甲與光路配色。": {
+    "en": "Equipment tiers currently change the colors of the blade, armor and energy paths.",
+    "zh_CN": "目前装备阶级会改变剑刃、铠甲与光路配色。"
+  },
+  "活過黑夜，只是開始。": {
+    "en": "Surviving the night is only the beginning.",
+    "zh_CN": "活过黑夜，只是开始。"
+  },
+  "怪物從地圖兩端的地獄之門入侵，日子越久，攻勢越強。最終，你要帶著工匠走向敵源。": {
+    "en": "Monsters invade through gates at both map edges, growing stronger as days pass. Eventually you must escort engineers to the source.",
+    "zh_CN": "怪物从地图两端的地狱之门入侵，日子越久，攻势越强。最终，你要带着工匠走向敌源。"
+  },
+  "實際遊戲畫面：騎士與敵人在地圖外側的裂隙附近交戰。": {
+    "en": "Actual gameplay: the knight battles enemies near an outer rift.",
+    "zh_CN": "实际游戏画面：骑士与敌人在地图外侧的裂隙附近交战。"
+  },
+  " 封住一側，便能阻止那一側後續的敵人出現。": {
+    "en": " Sealing one side prevents future enemy spawns from that side.",
+    "zh_CN": " 封住一侧，便能阻止那一侧后续的敌人出现。"
+  },
+  "準備": {
+    "en": "Prepare",
+    "zh_CN": "准备"
+  },
+  "二級聚落": {
+    "en": "Level 2 settlement",
+    "zh_CN": "二级聚落"
+  },
+  "熬過至少一晚，並有工匠。": {
+    "en": "Survive at least one night and have an engineer.",
+    "zh_CN": "熬过至少一晚，并有工匠。"
+  },
+  "出征": {
+    "en": "Depart",
+    "zh_CN": "出征"
+  },
+  "投入 4 顆": {
+    "en": "Invest 4 crystals",
+    "zh_CN": "投入 4 颗"
+  },
+  "到裂隙委託封印，護送工匠。": {
+    "en": "Commission a seal at the rift and escort an engineer.",
+    "zh_CN": "到裂隙委托封印，护送工匠。"
+  },
+  "護衛": {
+    "en": "Protect",
+    "zh_CN": "护卫"
+  },
+  "清出安全區": {
+    "en": "Clear a safe area",
+    "zh_CN": "清出安全区"
+  },
+  "處理守門者，在旁保護施工。": {
+    "en": "Defeat the gatekeeper and protect the work site.",
+    "zh_CN": "处理守门者，在旁保护施工。"
+  },
+  "勝利": {
+    "en": "Win",
+    "zh_CN": "胜利"
+  },
+  "封印雙側": {
+    "en": "Seal both sides",
+    "zh_CN": "封印双侧"
+  },
+  "兩端都封住，再清除場上殘敵。": {
+    "en": "Close both rifts, then defeat all remaining enemies.",
+    "zh_CN": "两端都封住，再清除场上残敌。"
+  },
+  "這一局的勝利": {
+    "en": "Victory for this journey",
+    "zh_CN": "这一局的胜利"
+  },
+  "兩側裂隙完成封印，而且所有殘敵清空。完成建城里程碑，還不等於已經通關。": {
+    "en": "Both rifts must be sealed and all remaining enemies defeated. Reaching the kingdom-building milestone alone is not victory.",
+    "zh_CN": "两侧裂隙完成封印，而且所有残敌清空。完成建城里程碑，还不等于已经通关。"
+  },
+  "別讓火光熄滅": {
+    "en": "Keep the fire alive",
+    "zh_CN": "别让火光熄灭"
+  },
+  "騎士倒下，或營火核心生命歸零，這一局就會結束。你可以重新挑戰或換一張地圖。": {
+    "en": "The run ends if the knight falls or the campfire core reaches zero health. Retry or start on a new map.",
+    "zh_CN": "骑士倒下，或营火核心生命归零，这一局就会结束。你可以重新挑战或换一张地图。"
+  },
+  "REST / 明天再出發": {
+    "en": "REST / TOMORROW'S JOURNEY",
+    "zh_CN": "REST / 明天再出发"
+  },
+  "休息之前，留下進度。": {
+    "en": "Save before you rest.",
+    "zh_CN": "休息之前，留下进度。"
+  },
+  "遊戲會定期自動存檔，暫停或切到背景時也會保存。重新開啟後，在起始頁選擇紀錄，再按播放繼續。": {
+    "en": "The game autosaves regularly, when paused and when sent to the background. On reopening, choose a journey from the title screen, then press play to resume.",
+    "zh_CN": "游戏会定期自动存档，暂停或切到背景时也会保存。重新开启后，在起始页选择纪录，再按播放继续。"
+  },
+  "想保留一個自己選定的時間點，可在暫停選單建立": {
+    "en": "To keep a specific moment, create a ",
+    "zh_CN": "想保留一个自己选定的时间点，可在暂停选单建立"
+  },
+  "手動檢查點": {
+    "en": "manual checkpoint",
+    "zh_CN": "手动检查点"
+  },
+  "。它與自動存檔分開；在本局選單讀取可回到手動保存的當下。若從起始頁選這個檢查點，會另存成新旅程。": {
+    "en": " in the pause menu. It is separate from the autosave. Loading it in the current run returns to that moment; selecting it on the title screen creates a new journey.",
+    "zh_CN": "。它与自动存档分开；在本局选单读取可回到手动保存的当下。若从起始页选这个检查点，会另存成新旅程。"
+  },
+  "手動儲存": {
+    "en": "Save checkpoint",
+    "zh_CN": "手动储存"
+  },
+  "讀取檢查點": {
+    "en": "Load checkpoint",
+    "zh_CN": "读取检查点"
+  },
+  "音量設定": {
+    "en": "Volume settings",
+    "zh_CN": "音量设定"
+  },
+  "實際暫停選單：音樂與音效滑桿，下方為手動儲存及讀取按鈕。": {
+    "en": "Actual pause menu: music and effects sliders above save and load buttons.",
+    "zh_CN": "实际暂停选单：音乐与音效滑杆，下方为手动储存及读取按钮。"
+  },
+  "先前版選單裁切 · 現版另有回起始頁與 H5 圖文指南入口。": {
+    "en": "Earlier menu crop · The current version also includes title-screen and H5 guide shortcuts.",
+    "zh_CN": "先前版选单裁切 · 现版另有回起始页与 H5 图文指南入口。"
+  },
+  "FIELD NOTES / 出發前的小提醒": {
+    "en": "FIELD NOTES / BEFORE YOU DEPART",
+    "zh_CN": "FIELD NOTES / 出发前的小提醒"
+  },
+  "卡住時，先看看這裡。": {
+    "en": "Stuck? Start here.",
+    "zh_CN": "卡住时，先看看这里。"
+  },
+  "為什麼靠近物件，卻不能投入龍晶？": {
+    "en": "Why can I not invest crystals near an object?",
+    "zh_CN": "为什么靠近物件，却不能投入龙晶？"
+  },
+  "先確認站在地面、距離足夠，而且沒有暫停。再看物件的龍晶格與解鎖圖示；缺晶或聚落等級不足，都會讓互動暫時無法完成。已有的部分投入不會因此消失。": {
+    "en": "Make sure you are grounded, close enough and not paused. Check the crystal slots and unlock icons. Missing crystals or settlement levels can block interaction; partial payments stay intact.",
+    "zh_CN": "先确认站在地面、距离足够，而且没有暂停。再看物件的龙晶格与解锁图示；缺晶或聚落等级不足，都会让互动暂时无法完成。已有的部分投入不会因此消失。"
+  },
+  "明明有居民，為什麼沒有人砍樹？": {
+    "en": "I have residents. Why is nobody chopping trees?",
+    "zh_CN": "明明有居民，为什么没有人砍树？"
+  },
+  "居民要先取得工程器具成為工匠，你也需要到資源點委託工作。工匠可能正在施工、搬貨或回防；騎士自己揮劍不會代替工匠採集。": {
+    "en": "A resident must collect engineering tools first, and you must assign the resource site. Engineers may already be building, hauling or returning to defend. The knight's sword does not gather resources.",
+    "zh_CN": "居民要先取得工程器具成为工匠，你也需要到资源点委托工作。工匠可能正在施工、搬货或回防；骑士自己挥剑不会代替工匠采集。"
+  },
+  "龍晶掉滿地，是不是不見了？": {
+    "en": "Are crystals on the ground lost?",
+    "zh_CN": "龙晶掉满地，是不是不见了？"
+  },
+  "先看背包是否已滿。地上的龍晶需要靠近且背包有空位才會被吸入；自己剛拋出的龍晶還有短暫等待時間。": {
+    "en": "Check whether your pouch is full. Approach with free space to collect them. Crystals you just tossed have a short pickup delay.",
+    "zh_CN": "先看背包是否已满。地上的龙晶需要靠近且背包有空位才会被吸入；自己刚抛出的龙晶还有短暂等待时间。"
+  },
+  "為什麼按攻擊、跳躍或衝刺沒反應？": {
+    "en": "Why will attack, jump or dash not activate?",
+    "zh_CN": "为什么按攻击、跳跃或冲刺没反应？"
+  },
+  "先看綠色體力條。每刀、跳躍、衝刺都需要體力；空中不能重複起跳。連斬要再次按下攻擊，按住不會一直出刀。": {
+    "en": "Check the green stamina bar. Every slash, jump and dash costs stamina, and there is no midair double jump. Press again to chain attacks; holding does not auto-attack.",
+    "zh_CN": "先看绿色体力条。每刀、跳跃、冲刺都需要体力；空中不能重复起跳。连斩要再次按下攻击，按住不会一直出刀。"
+  },
+  "森林該不該全部砍掉？": {
+    "en": "Should I clear the whole forest?",
+    "zh_CN": "森林该不该全部砍掉？"
+  },
+  "清地能換取龍晶與擴建位置，但保留森林能維持招募營地和獵物再生。先選定你想推進的方向，不必把每片森林都清光。": {
+    "en": "Clearing gives crystals and building space, but forests sustain recruitment and prey regeneration. Choose an expansion direction; you do not need to clear every forest.",
+    "zh_CN": "清地能换取龙晶与扩建位置，但保留森林能维持招募营地和猎物再生。先选定你想推进的方向，不必把每片森林都清光。"
+  },
+  "這份指南適用哪個版本？": {
+    "en": "Which version does this guide cover?",
+    "zh_CN": "这份指南适用哪个版本？"
+  },
+  "適用目前開發版的單一龍晶經濟與旅程起始頁。舊版紀錄中的材料會 1:1 轉為營火旁的龍晶，背包裝不下的會留在地上；只在首次遷移時轉換。圖文中有概念封面與遊戲截圖，已分別標示；所列數值為標準預設值，當局設定與遊戲內提示優先。這是玩家指南，不是遊戲本體。": {
+    "en": "The current development build with a single crystal economy and journey title screen. Old-save materials convert 1:1 to crystals beside the campfire on first migration only; excess stays on the ground. Concept art and gameplay images are labeled. Values are standard defaults; the current run's settings and in-game prompts take precedence. This is a guide, not the game itself.",
+    "zh_CN": "适用目前开发版的单一龙晶经济与旅程起始页。旧版纪录中的材料会 1:1 转为营火旁的龙晶，背包装不下的会留在地上；只在首次迁移时转换。图文中有概念封面与游戏截图，已分别标示；所列数值为标准预设值，当局设定与游戏内提示优先。这是玩家指南，不是游戏本体。"
+  },
+  "帶著希望出征，帶著大家回家。": {
+    "en": "Carry hope out. Bring everyone home.",
+    "zh_CN": "带着希望出征，带着大家回家。"
+  },
+  "回到頂端 ↑": {
+    "en": "Back to top ↑",
+    "zh_CN": "回到顶端 ↑"
+  },
+  "玩家指南 · 營火戰役 Demo · 2026.09 ｜ 圖像與素材來自本專案": {
+    "en": "Player Guide · Campfire Campaign Demo · 2026.09 | Images and assets from this project",
+    "zh_CN": "玩家指南 · 营火战役 Demo · 2026.09 ｜ 图像与素材来自本专案"
+  },
+  "使用畫面上的觸控圖示；互動按鈕會依目標切換成手掌、龍晶或寶箱。": {
+    "en": "Use the on-screen controls. The interaction icon changes to a hand, crystal or chest for the current target.",
+    "zh_CN": "使用画面上的触控图示；互动按钮会依目标切换成手掌、龙晶或宝箱。"
+  },
+  "提供守備器具": {
+    "en": "Stock guard equipment",
+    "zh_CN": "提供守备器具"
+  },
+  "委託裂隙封印": {
+    "en": "Commission a rift seal",
+    "zh_CN": "委托裂隙封印"
+  },
+  "營火已成為營地。接著招攬居民、準備器具。": {
+    "en": "Camp established. Recruit residents and prepare tools next.",
+    "zh_CN": "营火已成为营地。接着招揽居民、准备器具。"
+  },
+  "器具準備好了，無職居民會自行前來領取。": {
+    "en": "Equipment is ready. Unassigned residents will collect it themselves.",
+    "zh_CN": "器具准备好了，无职居民会自行前来领取。"
+  },
+  "委託完成。接著護送工匠，清除附近的敵人。": {
+    "en": "Seal commissioned. Escort the engineer and clear nearby enemies.",
+    "zh_CN": "委托完成。接着护送工匠，清除附近的敌人。"
+  },
+  "已投入 {paid} 顆，共需 {cost} 顆龍晶": {
+    "en": "{paid} of {cost} crystals invested",
+    "zh_CN": "已投入 {paid} 颗，共需 {cost} 颗龙晶"
+  },
+  "{paid} / {cost} 顆 · 還差 {remaining} 顆龍晶": {
+    "en": "{paid} / {cost} crystals · {remaining} more needed",
+    "zh_CN": "{paid} / {cost} 颗 · 还差 {remaining} 颗龙晶"
+  },
+  "這筆投入已完成 ✓": {
+    "en": "Investment complete ✓",
+    "zh_CN": "这笔投入已完成 ✓"
+  },
+  "投入一顆龍晶 ＋": {
+    "en": "Invest one crystal ＋",
+    "zh_CN": "投入一颗龙晶 ＋"
+  },
+  "■ 停止示範": {
+    "en": "■ Stop example",
+    "zh_CN": "■ 停止示范"
+  },
+  "你從荒地抵達，先跟著會招手的龍晶殘影走向營火。它會帶路並指向建國目標；你仍可自由探索，不必照做。": {
+    "zh_CN": "你从荒地抵达，先跟着会招手的龙晶残影走向营火。它会带路并指向建国目标；你仍可自由探索，不必照做。",
+    "en": "You arrive in the wilderness. Follow the beckoning crystal spirit toward the campfire. It leads the way and points to kingdom objectives, but you are free to explore elsewhere."
+  },
+  "封住雙門會召喚巨龍；擊敗它，再清除殘敵。": {
+    "zh_CN": "封住双门会召唤巨龙；击败它，再清除残敌。",
+    "en": "Seal both gates to summon the dragon. Defeat it and clear remaining enemies."
+  },
+  "雙門封印後的巨龍被擊敗，而且所有殘敵清空，才是這一局的勝利。封門或建城本身不代表通關。": {
+    "zh_CN": "双门封印后的巨龙被击败，而且所有残敌清空，才是这一局的胜利。封门或建城本身不代表通关。",
+    "en": "Victory requires defeating the dragon summoned by both seals and clearing all remaining enemies. Sealing the gates or building the kingdom alone is not enough."
+  },
+  " 電腦長按 E；手機下拖後按住。每次只完成一筆交易，放開再開始下一筆。": {
+    "zh_CN": " 电脑长按 E；手机下拖后按住。每次只完成一笔交易，放开再开始下一笔。",
+    "en": " Hold E on desktop, or drag down and keep holding on touchscreens. Each hold completes one transaction; release before starting another."
+  },
+  "巨龍以第 6 天為基準：提前封門不會降低它的基礎強度；第 7 天起，每延後一天，生命增加 240、傷害增加 4。強度在召喚時決定。先招募守衛與獵人、準備防線，再選擇封門時機；噴息蓄力時離開地面的橙色預警區。": {
+    "zh_CN": "巨龙以第 6 天为基准：提前封门不会降低它的基础强度；第 7 天起，每延后一天，生命增加 240、伤害增加 4。强度在召唤时决定。先招募守卫与猎人、准备防线，再选择封门时机；喷息蓄力时离开地面的橙色预警区。",
+    "en": "The dragon has a day-six strength floor. Early seals cannot reduce its base power. From day seven, each day of delay adds 240 health and 4 damage; strength locks when summoned. Recruit guards and hunters, prepare your defenses, then choose when to seal. Leave the orange ground warning during its breath windup."
+  },
+  "閒置工匠會巡遊，守衛白天會巡邏；獵人自行尋找已探索區域的獵物，沒有獵物時巡獵，天色轉暗就回防。農夫會在田間走動工作。未知邊境由流動薄霧覆蓋，走近會逐漸散開。": {
+    "zh_CN": "闲置工匠会巡游，守卫白天会巡逻；猎人自行寻找已探索区域的猎物，没有猎物时巡猎，天色转暗就回防。农夫会在田间走动工作。未知边境由流动薄雾覆盖，走近会逐渐散开。",
+    "en": "Idle engineers stroll, guards patrol by day, and hunters seek prey in explored regions. Hunters scout when prey is scarce and return before night. Farmers move through their fields. Drifting mist veils unknown frontiers and fades as you approach."
+  },
+  "空白處左右滑動": {
+    "zh_CN": "空白处左右滑动",
+    "en": "Swipe left / right on open space"
+  },
+  "靠近目標，任一側空白處下滑": {
+    "zh_CN": "靠近目标，任一侧空白处下滑",
+    "en": "Near a target, swipe down on either side"
+  },
+  "沒有目標時，任一側空白處下滑": {
+    "zh_CN": "没有目标时，任一侧空白处下滑",
+    "en": "Away from targets, swipe down on either side"
+  },
+  "左右空白處都能橫滑移動、下滑給晶。快滑放手給一顆；靠近目標下滑按住會繼續填格。攻擊、跳躍、衝刺保留按鍵。": {
+    "zh_CN": "左右空白处都能横滑移动、下滑给晶。快滑放手给一颗；靠近目标下滑按住会继续填格。攻击、跳跃、冲刺保留按键。",
+    "en": "Swipe horizontally to move or down to offer on either side. A quick swipe gives one crystal; swipe down and hold near a target to fill its slots. Attack, jump and dash keep their buttons."
+  },
+  "劍術與義肢電容都升到最高階後，自動騎上龍晶機械戰馬；移動更快，第一刀仍需站定。讀取既有滿級紀錄也會恢復騎乘。": {
+    "zh_CN": "剑术与义肢电容都升到最高阶后，自动骑上龙晶机械战马；移动更快，第一刀仍需站定。读取既有满级记录也会恢复骑乘。",
+    "en": "Max out both sword training and the prosthetic capacitor to automatically ride a dragon-crystal warhorse. Travel is faster, but the first slash still stops movement. Loading an existing fully upgraded journey restores the mount."
+  }
+}

@@ -317,10 +317,15 @@ func advance(seconds: float, hero_x: float, hero_y: float = 430.0) -> void:
 	if not is_running():return
 	_hero_x=hero_x
 	mission.reveal(hero_x)
+	for animal in frontier.animals:
+		if not animal.alive:continue
+		animal["home_x"]=animal.get("home_x",animal.x)
+		animal.x=animal.home_x+sin(workforce.elapsed*0.36+animal.region*1.7)*28
 	super.advance(seconds,hero_x,hero_y)
 	mission.resolve(hero.is_alive(),raiders.is_empty())
 	if not is_running(): return
 	_advance_expeditions(seconds,hero_x,hero_y)
+	_summon_dragon(hero_x)
 	mission.resolve(hero.is_alive(),raiders.is_empty())
 	if not is_running():return
 	# Offered currency can recruit; ordinary treasure and delivered pay cannot.
@@ -375,7 +380,10 @@ func _override_resident_target(index: int, seconds: float) -> float:
 	if person.role=="guard":
 		_shoot_nearest_raider(person,190.0,20,0.85)
 		person["direction"]=1.0 if person.defense_post=="wall" else -1.0
-		return _defense_position(index,65.0)
+		var post:=_defense_position(index,65.0)
+		if not clock.is_night and raiders.is_empty():
+			return Roaming.destination(person,index,post,38,seconds,post-38,post+38)
+		return post
 	if person.role not in ["citizen","engineer","farmer","hunter"]: return NAN
 	var home: float = defenses.shelter(person.x,world.sites.hall + (index%5-2)*22.0)
 	if person.role=="hunter" and world.walls[defenses.active_post(1 if person.defense_post=="wall" else -1)].hp>0:
@@ -547,3 +555,62 @@ func convert_legacy_resources() -> void:
 		# Yield belongs to the node, including plants already awaiting dawn renewal.
 		node.crystals+=node.wood+node.food+node.stone+node.herbs+node.scrap
 		node.wood=0;node.food=0;node.stone=0;node.herbs=0;node.scrap=0
+
+func _summon_dragon(hero_x: float) -> void:
+	if not is_running() or mission.dragon_summoned or not mission.rifts.all(func(r):return r.sealed):return
+	mission.dragon_summoned=true;mission.dragon_day=clock.day
+	var power=preload("res://domain/dragon_rules.gd").strength(clock.day,mission.dragon_rules)
+	var dragon=_spawn_raider()
+	var side:int=-1 if hero_x<world.sites.hall else 1
+	dragon.kind="dragon";dragon.side=side;dragon.direction=-float(side)
+	dragon.x=clampf(hero_x+side*480,frontier.left_boundary+80,frontier.right_boundary-80)
+	dragon.fighter.stats.max_hp=power.health;dragon.fighter.hp=power.health
+	dragon.fighter.stats.damage=power.damage;dragon.fighter.stats.hurt_invulnerability=0.0
+	dragon.wall_damage=12+maxi(0,clock.day-int(mission.dragon_rules.baseline_day))*2
+	dragon.cooldown=5.0
+	raiders.append(dragon)
+	effects.append({"kind":"dragon_arrival","x":dragon.x,"to":hero_x,"life":5.0})
+
+func _advance_raider(enemy: Dictionary, seconds: float, hero_x: float, hero_y: float) -> void:
+	if enemy.get("kind","")=="dragon":
+		preload("res://application/dragon_assault.gd").advance(self,enemy,seconds,hero_x,hero_y)
+	else:super._advance_raider(enemy,seconds,hero_x,hero_y)
+
+func strike_from(x: float, y: float) -> void:
+	# The dragon is massive: a finisher damages it but cannot cancel its breath forever.
+	var stable: Array=[]
+	for enemy in raiders:
+		if enemy.get("kind","")=="dragon":stable.append([enemy,enemy.x,enemy.windup])
+	super.strike_from(x,y)
+	for entry in stable:
+		entry[0].x=entry[1];entry[0].windup=entry[2];entry[0].stagger=0.0
+
+func _engineer_target(index: int, seconds: float) -> float:
+	var target:=super._engineer_target(index,seconds)
+	var person: Dictionary=world.people[index]
+	if person.get("work_state","")=="idle" and is_equal_approx(target,world.sites.workshop):
+		return Roaming.destination(person,index,world.sites.workshop,120,seconds,frontier.left_boundary,frontier.right_boundary)
+	return target
+
+func _hunter_prey(person: Dictionary) -> Dictionary:
+	var prey: Dictionary={};var nearest:=INF
+	for animal in frontier.animals:
+		if not animal.alive or not frontier.regions[animal.region].discovered:continue
+		var travel: float=(absf(person.x-animal.x)+absf(animal.x-world.sites.hall))/_person_speed
+		if clock.is_night or travel+return_margin+3>clock.remaining:continue
+		var distance: float=absf(animal.x-person.x)
+		if distance<nearest:nearest=distance;prey=animal
+	return prey
+
+func _idle_hunter_target(person: Dictionary, seconds: float) -> float:
+	var index: int=world.people.find(person)
+	var center: float=world.sites.hunt_tools
+	var forests=frontier.regions.filter(func(r):return r.discovered and r.kind=="forest")
+	if not forests.is_empty():
+		var region: Dictionary=forests[index%forests.size()]
+		var scout: float=region.x+region.width*0.5
+		if (absf(person.x-scout)+absf(scout-world.sites.hall))/_person_speed+return_margin<clock.remaining:center=scout
+	return Roaming.destination(person,index,center,110,seconds,frontier.left_boundary,frontier.right_boundary)
+
+func _farm_target(person: Dictionary) -> float:
+	return world.sites.farm+sin(workforce.elapsed*0.9+world.people.find(person)*2.1)*16

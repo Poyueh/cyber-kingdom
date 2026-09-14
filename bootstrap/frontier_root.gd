@@ -74,10 +74,10 @@ func _ready() -> void:
 	hud.options_menu.save_checkpoint_requested.connect(save_manual_campaign)
 	hud.options_menu.load_checkpoint_requested.connect(load_manual_campaign)
 	hud.options_menu.title_requested.connect(return_to_title)
-	view.interactions_visible=not paused
+	view.interactions_visible=not paused and sim.is_running()
 	view.keyboard_hint=not hud.uses_touch_controls()
 	_present_save()
-	knight.visual.set_equipment(sim.frontier.drill_level,sim.growth.capacitor_level)
+	_sync_knight_equipment()
 	audio.observe(0,sim,knight.position.x,true)
 
 func restart() -> void:
@@ -97,7 +97,7 @@ func restart() -> void:
 	_campaign_config=config
 	sim = FrontierSession.new(config,Mapper.knight_stats(knight_tuning,combo_tuning))
 	knight.configure(sim.hero,knight_tuning)
-	knight.position = Vector2(30,430)
+	knight.position = Vector2(sim.world.sites.hall-tuning.arrival_walk_distance,430)
 	investment=InvestmentHold.new(tuning.investment_hold_delay,tuning.investment_interval)
 	investment.cancel()
 	hud.interact_held=false
@@ -109,7 +109,7 @@ func restart() -> void:
 	hud.cancel_touch_gestures()
 	_build_terrain()
 	if progress!=null:save_campaign()
-	if is_instance_valid(knight.visual):knight.visual.set_equipment(sim.frontier.drill_level,sim.growth.capacitor_level)
+	if is_instance_valid(knight.visual):_sync_knight_equipment()
 	if is_instance_valid(audio):audio.observe(0,sim,knight.position.x,true)
 
 func _physics_process(seconds: float) -> void:
@@ -134,15 +134,21 @@ func _physics_process(seconds: float) -> void:
 	if (paused and not was_paused) or (was_running and not sim.is_running()) or _save_elapsed>=autosave_seconds:
 		save_campaign()
 	_present_save()
-	view.interactions_visible=not paused
+	if not paused and not sim.is_running():
+		view.hit_feedback.advance_terminal(seconds)
+		view.queue_redraw()
+	view.interactions_visible=not paused and sim.is_running()
 	view.keyboard_hint=not hud.uses_touch_controls()
-	knight.visual.set_equipment(sim.frontier.drill_level,sim.growth.capacitor_level)
+	_sync_knight_equipment()
 	audio.observe(seconds,sim,knight.position.x,paused)
 
 func _apply_interaction(command: Dictionary, seconds: float) -> void:
+	# Keep a completed swipe until physics consumes it; each new swipe releases the previous order.
+	if _requested_interaction:investment.step(seconds,false,true,sim,knight.position.x)
 	var held: bool=command.interaction_held or hud.interact_held or _requested_interaction
 	investment.step(seconds,held,knight.is_on_floor() and not (command.jump or command.jump_held) and sim.is_running(),sim,knight.position.x)
 	_sync_investment_focus()
+	_sync_knight_equipment()
 
 func _sync_investment_focus() -> void:
 	view.focus_key=investment.target_key
@@ -176,7 +182,7 @@ func _apply_restored(restored: Dictionary) -> void:
 	knight.configure(sim.hero,knight_tuning)
 	knight.position=Vector2(restored.body.x,restored.body.y)
 	knight.velocity=Vector2(restored.body.vx,restored.body.vy)
-	knight.visual.set_equipment(sim.frontier.drill_level,sim.growth.capacitor_level)
+	_sync_knight_equipment()
 	investment.cancel()
 	controls.release_all()
 	hud.cancel_touch_gestures()
@@ -229,8 +235,8 @@ func _build_terrain() -> void:
 	$Floor.position.x = (map.left_boundary+map.right_boundary)*0.5
 	$LeftWall.position.x = map.left_boundary-10
 	$RightWall.position.x = map.right_boundary+10
-	$Knight/Camera2D.limit_left = int(map.left_boundary)
-	$Knight/Camera2D.limit_right = int(map.right_boundary)
+	$Knight/Camera2D.limit_left = int(map.left_boundary)-160
+	$Knight/Camera2D.limit_right = int(map.right_boundary)+160
 	$Knight/Camera2D.reset_smoothing()
 	if is_instance_valid(_terrain):
 		remove_child(_terrain)
@@ -245,3 +251,7 @@ func _build_terrain() -> void:
 		platform.width = 140
 		platform.z_index = 1
 		_terrain.add_child(platform)
+
+func _sync_knight_equipment() -> void:
+	knight.visual.set_equipment(sim.frontier.drill_level,sim.growth.capacitor_level)
+	knight.set_mounted(sim.growth.can_ride(sim.frontier.drill_level,sim.frontier.training_limit))

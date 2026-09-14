@@ -47,10 +47,20 @@
   });
 
   window.CyberKingdomGuide = Object.freeze({
-    open() {
+    open(locale = 'en') {
+      const code = ['zh_TW','zh_CN','en'].includes(locale) ? locale : 'en';
+      const copy = {
+        zh_TW:['騎士野外手冊','關閉指南，回到遊戲選單','正在開啟手冊…'],
+        zh_CN:['骑士野外手册','关闭指南，返回游戏菜单','正在打开手册…'],
+        en:["The Knight's Field Guide",'Close guide and return to menu','Opening guide…']
+      }[code];
+      dialog.querySelector('#player-guide-title').textContent = copy[0];
+      closeButton.setAttribute('aria-label',copy[1]); closeButton.title=copy[1]+' (Esc)';
+      loading.textContent=copy[2]; frame.title=copy[0];
+      const source = 'guide.html?lang='+code;
+      if(frame.getAttribute('src')!==source) { loading.hidden=false; frame.src=source; }
       if (dialog.open) return;
       dialog.showModal();
-      if (!frame.hasAttribute('src')) frame.src = 'guide.html';
       closeButton.focus({ preventScroll: true });
     }
   });

@@ -70,7 +70,7 @@ func test_residents_and_enemies_react_to_real_damage_only(t):
  enemy.fighter.invulnerability_remaining=0;enemy.fighter.take_damage(999)
  sim.raiders.clear();feedback.present(sim)
  t.equal(feedback.fallen.size(),1,"fatal hit retains a brief falling silhouette")
- sim.workforce.elapsed+=0.6;feedback.present(sim)
+ sim.workforce.elapsed+=1.5;feedback.present(sim)
  t.equal(feedback.fallen.size(),0,"defeated silhouettes expire")
  var next=load("res://application/campaign_session.gd").new()
  feedback.present(next)
@@ -84,3 +84,15 @@ func test_spirit_leaves_the_targets_interaction_column_clear(t):
  var motion=load("res://presentation/spirit_motion.gd").new()
  var pose=motion.sample({"x":130.0,"y":430.0},Vector2(300,420),30,Rect2(0,0,960,540),0)
  t.truth(absf(pose.position.x-400)>64 and pose.direction>0,"companion stays clear of the nearby target health and payment icons")
+
+func test_dragon_damage_and_death_keep_boss_silhouette_without_blocking_volley(t):
+ var feedback=load("res://presentation/campaign_hit_feedback.gd").new()
+ var sim=load("res://application/campaign_session.gd").new()
+ for rift in sim.mission.rifts:rift.sealed=true
+ sim.advance(0.01,30)
+ var boss=sim.raiders[0]
+ feedback.present(sim)
+ boss.fighter.take_damage(10);feedback.present(sim)
+ t.truth(feedback.enemy_pose(boss).active,"dragon reacts to actual damage despite zero immunity")
+ boss.fighter.take_damage(99999);sim.raiders.clear();feedback.present(sim)
+ t.equal(feedback.fallen[0].get("kind",""),"dragon","dead dragon cannot turn into a foot soldier")

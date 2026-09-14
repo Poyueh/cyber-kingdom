@@ -6,6 +6,10 @@ const MotionFrames=preload("res://data/knight_motion_frames.tres")
 @export var combo_motion: Resource
 const EquipmentShader=preload("res://presentation/knight_equipment.gdshader")
 var equipment_material: ShaderMaterial
+const MountedSheet=preload("res://art/characters/mounted-v001/mounted.png")
+var mounted:=false
+var _mount: Sprite2D
+var _mount_frame:=AtlasTexture.new()
 var weapon_tier:=0
 var armor_tier:=0
 var _gait_time:=0.0
@@ -17,6 +21,11 @@ var _motion_time:=0.0
 var _was_grounded:=true
 var _landing:=0.0
 func _init() -> void:
+	_mount=Sprite2D.new()
+	_mount.name="MountedKnight"
+	_mount.visible=false
+	_mount.offset=Vector2(0,-26)
+	add_child(_mount)
 	_moving_attack=Sprite2D.new()
 	_moving_attack.name="MovingAttack"
 	_moving_attack.visible=false
@@ -74,6 +83,10 @@ func present(pose: Dictionary, seconds: float) -> void:
 	_moving_attack.visible=false
 	_combo_attack.visible=false
 	_moving_attack.offset=Vector2.ZERO
+	if mounted and pose.alive:
+		_present_mount(pose,seconds)
+		return
+	_mount.visible=false
 	if hurt_active or not pose.alive: return
 	var gait:=int(fposmod(_gait_time*sprite_frames.get_animation_speed(&"run"),sprite_frames.get_frame_count(&"run")))
 	if animation==&"run": frame=gait
@@ -143,3 +156,25 @@ func set_equipment(weapon: int, armor: int) -> void:
 		_moving_attack.material=equipment_material
 	equipment_material.set_shader_parameter("weapon_tier",float(weapon_tier))
 	equipment_material.set_shader_parameter("armor_tier",float(armor_tier))
+
+func set_mounted(value: bool) -> void:
+	mounted=value
+	_mount.visible=value
+	if not value:self_modulate=Color.WHITE
+
+func _present_mount(pose: Dictionary, seconds: float) -> void:
+	if seconds>0:_motion_time+=seconds
+	_mount.visible=pose.alive
+	self_modulate=Color(1,1,1,0)
+	_moving_attack.visible=false;_combo_attack.visible=false
+	_mount.flip_h=pose.facing<0
+	var progress: float=pose.get("attack_progress",1.0)
+	var index:=0
+	if progress<1:index=3 if progress<0.3 else 4 if progress<0.65 else 5
+	elif not pose.get("grounded",true):index=2
+	elif pose.get("moving",false) or pose.get("dashing",false):index=1+int(_motion_time*7)%2
+	if hurt_active:index=0
+	_mount_frame.atlas=MountedSheet
+	_mount_frame.region=Rect2(index*160,0,160,128)
+	_mount.texture=_mount_frame
+	_mount.position=Vector2(0,-absf(sin(_motion_time*7))*1.5 if index in [1,2] else sin(_motion_time*2)*0.5)

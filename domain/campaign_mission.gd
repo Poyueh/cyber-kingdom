@@ -6,8 +6,13 @@ var core_recharge: int
 var outcome := "active"
 var defeat_reason := ""
 var rifts: Array[Dictionary] = []
+var dragon_summoned:=false
+var dragon_defeated:=false
+var dragon_day:=0
+var dragon_rules: Dictionary
 var seal_seconds: float
 func _init(config: Dictionary = {}) -> void:
+	dragon_rules=preload("res://domain/dragon_rules.gd").tuning(config)
 	seal_seconds=maxf(0.1,float(config.get("rift_seal_seconds",8.0)))
 	core_max_hp=maxi(1,int(config.get("core_max_hp",180)))
 	core_hp=core_max_hp
@@ -23,7 +28,7 @@ func resolve(knight_alive: bool, enemies_cleared: bool) -> void:
 	if not knight_alive or core_hp<=0:
 		outcome="defeat"
 		defeat_reason="knight" if not knight_alive else "core"
-	elif rifts.size()==2 and rifts.all(func(r):return r.sealed) and enemies_cleared:
+	elif rifts.size()==2 and rifts.all(func(r):return r.sealed) and dragon_defeated and enemies_cleared:
 		outcome="victory"
 
 func add_rift(side: int, x: float) -> void:
