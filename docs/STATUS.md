@@ -889,3 +889,5 @@ H5 本機包 builds/world-polish-20260914，来源56abfb7，ZIP CRC／SHA256 通
 森林、礦區和廢墟以高層地標、中層群組、低矮植被構圖，使用不同尺度、地面深度和色調，保留空隙。沿用原創素材、獨立固定亂數與探索淡入，不改資源／建設規則或存檔格式。
 
 完整 tools/check.sh 通過：1302 行為 assertions、11 項新增勝敗場景 assertions，以及全部既有場景／建置／翻譯／架構檢查；零 SCRIPT ERROR。實際畫面與過場序列在 docs/reports/clear-feedback-v001，第55課示範 Remote Inspector 調整鬼魂提示大小。尚未完成 iPhone 真機或整局平衡驗收。本機 H5 包完成後補記。
+
+H5 本機包 builds/clear-feedback-20260914，來源99516c7，ZIP CRC／SHA256 驗證通過；同網址 http://127.0.0.1:8797/ 已更新。瀏覽器載入原本旅程、11/12 背包、恢復後大型鬼魂圖示和再暫停通過，警告／錯誤為空。功能依 Gitflow 整合本機 develop，未更新公開 Pages、Release 或 Win/Mac 包。

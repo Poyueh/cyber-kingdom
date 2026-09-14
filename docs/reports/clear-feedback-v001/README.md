@@ -11,3 +11,5 @@ TDD：修正前新增行為案例在真正缺失處失敗（失去身分提示�
 完整檢查、本機包與瀏覽器結果待完成後追加。未驗證 iPhone 硬體效能或整局手感。
 
 完整 tools/check.sh：1302 行為 assertions、11 項新增場景 assertions 及全部既有場景／建置／翻譯／架構檢查通過，零 SCRIPT ERROR。結果見 check.log。
+
+H5 clean export 來源99516c7；ZIP CRC 通過，SHA256 `e94504a1a10dbeb1e91f9cb83ba8c43431b076014aacaf4bed063eddc7f8afa4`。本機包 builds/clear-feedback-20260914，原網址 http://127.0.0.1:8797/ 。瀏覽器實測兩筆舊旅程仍存在、最新存檔11/12背包可恢復，放大的鬼魂提示正常，回到暫停後警告／錯誤為空。胜败画面使用原生場景驗證；未聲稱 H5 完整通關或真機驗收。
