@@ -38,6 +38,7 @@ def export_project(ref: str, output: Path, godot: str) -> Path:
         run_logged(engine + ['--export-release', 'Web Demo', str(web / 'index.html')], output / 'export.log')
         run_logged([sys.executable, str(stage / 'tools/build_player_guide.py'), '--output', str(web / 'guide.html')], output / 'guide.log')
         install_guide_reader(stage, web)
+        shutil.copyfile(stage / 'art/fonts/noto-sans-tc/OFL.txt', web / 'FONT-LICENSE.txt')
     validate_export(web)
     (web / 'README.txt').write_text(
         'Cyber Kingdom — 瀏覽器預覽版\n\n'
