@@ -1,0 +1,47 @@
+{
+  "site": "https://poyueh.github.io/cyber-kingdom/",
+  "run": {
+    "id": 34802636219,
+    "html_url": "https://github.com/Poyueh/cyber-kingdom/actions/runs/34802636219",
+    "head_sha": "e691666b007122fd0aee2415c514d7d36f25cb08",
+    "conclusion": "success",
+    "event": "workflow_dispatch"
+  },
+  "files": [
+    {
+      "name": "index.html",
+      "status": 200,
+      "content_type": "text/html; charset=utf-8",
+      "bytes": 5450,
+      "sha256": "ed21e178f7cf58d637641cf68949c29f530df14de28fd93e1285d061b43c68e6"
+    },
+    {
+      "name": "index.js",
+      "status": 200,
+      "content_type": "application/javascript; charset=utf-8",
+      "bytes": 279815,
+      "sha256": "33c94cb3175f3333b82e2a3be5e8e86f77986f0aa2042b1631f6367a4e5bb6ba"
+    },
+    {
+      "name": "index.pck",
+      "status": 200,
+      "content_type": "application/octet-stream",
+      "bytes": 17510288,
+      "sha256": "ce7afcd775f051a07d493323dd0330a574e7832c9a57f166bd20faf1f180635e"
+    },
+    {
+      "name": "index.wasm",
+      "status": 200,
+      "content_type": "application/wasm",
+      "bytes": 39514754,
+      "sha256": "fc74679e3b97f76878947fcd4fbe1268cbfa6188182a2e33bbc3f5dc9bfa57d0"
+    },
+    {
+      "name": "guide.html",
+      "status": 200,
+      "content_type": "text/html; charset=utf-8",
+      "bytes": 2412830,
+      "sha256": "01969b3bb3f0cec0301f3de7aaeb8361fd60edf3e8f411802788bcf52741f886"
+    }
+  ]
+}

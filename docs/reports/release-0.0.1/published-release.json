@@ -1,0 +1,31 @@
+{
+  "id": 388128879,
+  "url": "https://github.com/Poyueh/cyber-kingdom/releases/tag/v0.0.1",
+  "published_at": "2026-09-14T03:20:42Z",
+  "assets": [
+    {
+      "name": "Cyber-Kingdom-macOS-0.0.1.zip",
+      "bytes": 79301224,
+      "sha256": "e2d8a5e493a1ebc8758d56a9ca54d1b9e51998735e06fe53a4bf7b63d515a412",
+      "url": "https://github.com/Poyueh/cyber-kingdom/releases/download/v0.0.1/Cyber-Kingdom-macOS-0.0.1.zip"
+    },
+    {
+      "name": "Cyber-Kingdom-Web-0.0.1.zip",
+      "bytes": 29060027,
+      "sha256": "a17ea9d48f4862b921094aa08568c379336f6d08166ad445acba30acc3ef1d52",
+      "url": "https://github.com/Poyueh/cyber-kingdom/releases/download/v0.0.1/Cyber-Kingdom-Web-0.0.1.zip"
+    },
+    {
+      "name": "Cyber-Kingdom-Windows-0.0.1.zip",
+      "bytes": 56879175,
+      "sha256": "42b9f4fa16253684365245ab50ea478a8a5b5bf25c469f315029e21e91cf2d13",
+      "url": "https://github.com/Poyueh/cyber-kingdom/releases/download/v0.0.1/Cyber-Kingdom-Windows-0.0.1.zip"
+    },
+    {
+      "name": "SHA256SUMS.txt",
+      "bytes": 288,
+      "sha256": "5d9fb5ace072be83e40572d3af0c029dbb1ebba9fcecb33bf0666445c4659c8c",
+      "url": "https://github.com/Poyueh/cyber-kingdom/releases/download/v0.0.1/SHA256SUMS.txt"
+    }
+  ]
+}
