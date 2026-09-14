@@ -48,7 +48,7 @@ func _away(person: Dictionary, enemies: Array) -> float:
 func _fall(state: Dictionary) -> void:
  if state.fallen:return
  state.fallen=true
- fallen.append({"x":state.enemy.x,"direction":state.enemy.get("direction",-1.0),"age":0.0})
+ fallen.append({"x":state.enemy.x,"direction":state.enemy.get("direction",-1.0),"age":0.0,"kind":state.enemy.get("kind","")})
 func enemy_pose(enemy: Dictionary) -> Dictionary:
  var state: Dictionary=_enemies.get(enemy.fighter.get_instance_id(),{})
  return state.reaction.pose() if not state.is_empty() else Reaction.new().pose()

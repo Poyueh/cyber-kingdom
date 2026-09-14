@@ -358,6 +358,9 @@ func _draw_fallen() -> void:
 	var texture: Texture2D=EnemyFrames.get_frame_texture("idle",0)
 	for body in hit_feedback.fallen:
 		var progress: float=clampf(body.age/0.42,0,1)
+		if body.get("kind","")=="dragon":
+			preload("res://presentation/dragon_visual.gd").draw_fallen(self,body,progress)
+			continue
 		draw_set_transform(Vector2(body.x-body.direction*progress*12,430),-body.direction*progress*0.85,Vector2(body.direction,1-progress*0.5))
 		draw_texture(texture,Vector2(-texture.get_width()*0.5,-texture.get_height()*0.5-32),Color(1.3,0.9,0.85,1-progress))
 		draw_set_transform(Vector2.ZERO)

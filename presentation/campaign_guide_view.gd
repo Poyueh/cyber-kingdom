@@ -88,5 +88,8 @@ func _draw() -> void:
  if hint.has("seal_progress"):
   draw_rect(Rect2(at+Vector2(-18,26),Vector2(36,3)),Color("294650"))
   draw_rect(Rect2(at+Vector2(-18,26),Vector2(36*clampf(hint.seal_progress,0,1),3)),Color("9cdfca"))
- if false and can_invest and touch_hint:
-  draw_arc(active_button.get_center(),36,-PI/2,TAU-PI/2,32,Color(0.50,0.94,0.82,0.35+0.25*sin(pulse*PI)),2)
+ if can_invest and touch_hint:
+  var from:=at+Vector2(25,-30+sin(phase*4)*3)
+  draw_line(from,from+Vector2(0,10),Color("abe6d3"),2)
+  draw_line(from+Vector2(-4,6),from+Vector2(0,10),Color("abe6d3"),2)
+  draw_line(from+Vector2(4,6),from+Vector2(0,10),Color("abe6d3"),2)
