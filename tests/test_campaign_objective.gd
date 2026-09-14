@@ -176,7 +176,10 @@ func test_both_seals_and_cleared_enemies_finish_run_once(t):
 		sim.advance(0.02,rift.x)
 		clear_wardens_with_sword(sim,rift.x)
 		for i in range(65):sim.advance(1.0/60,rift.x)
-	t.equal(sim.mission.outcome,"victory","both sealed sources and defeated wardens win the run")
+	t.equal(sim.mission.outcome,"active","both seals begin dragon battle")
+	for enemy in sim.raiders:enemy.fighter.hp=0
+	sim.advance(0.02,30)
+	t.equal(sim.mission.outcome,"victory","defeated dragon wins the run")
 	var time: float=sim.clock.remaining
 	var wallet: int=sim.pouch.amount
 	sim.advance(300,30)

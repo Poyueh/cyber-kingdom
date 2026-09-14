@@ -97,7 +97,7 @@ func restart() -> void:
 	_campaign_config=config
 	sim = FrontierSession.new(config,Mapper.knight_stats(knight_tuning,combo_tuning))
 	knight.configure(sim.hero,knight_tuning)
-	knight.position = Vector2(30,430)
+	knight.position = Vector2(sim.world.sites.hall-tuning.arrival_walk_distance,430)
 	investment=InvestmentHold.new(tuning.investment_hold_delay,tuning.investment_interval)
 	investment.cancel()
 	hud.interact_held=false

@@ -24,6 +24,8 @@ var interact_held := false
 var focus_key := ""
 var dashboard: Node2D
 var fullscreen_button: Button
+var drag_controls: Node2D
+var _gesture_can_invest:=false
 
 func _ready() -> void:
 	super._ready()
@@ -78,6 +80,12 @@ func _ready() -> void:
 	options_menu.hide()
 	get_viewport().size_changed.connect(_layout)
 	_layout()
+	drag_controls=preload("res://presentation/drag_controls.gd").new()
+	add_child(drag_controls)
+	drag_controls.offering_started.connect(func():
+		if _gesture_can_invest:interact_held=true
+		else:throw_requested.emit())
+	drag_controls.offering_ended.connect(func():interact_held=false)
 	guide_view=GuideView.new()
 	add_child(guide_view)
 
@@ -148,9 +156,19 @@ func present_world(sim, is_paused: bool, at: float, grounded: bool) -> void:
 	interact_button.icon=Icons.get_icon("chest" if choice.id=="chest" else "crystal" if choice.cost>0 else "hand")
 	var touch:=uses_touch_controls()
 	for action in ["move_left","move_right","jump","dash","attack"]:
-		get_node(action).visible=touch and not is_paused and sim.is_running()
-	interact_button.visible=touch and not is_paused and sim.is_running()
-	drop_button.visible=touch and not is_paused and sim.is_running()
+		get_node(action).visible=touch and action not in ["move_left","move_right"] and not is_paused and sim.is_running()
+	interact_button.visible=false
+	drop_button.visible=false
+	_gesture_can_invest=not interact_button.disabled
+	var gestures_enabled: bool=touch and not is_paused and sim.is_running()
+	if drag_controls.enabled and not gestures_enabled:drag_controls.cancel()
+	drag_controls.enabled=gestures_enabled
+	drag_controls.safe=_last_safe_rect
+	drag_controls.exclusions.clear()
+	for key in ["attack","jump","dash","pause"]:
+		var button=get_node(key)
+		if button.visible:drag_controls.exclusions.append(Rect2(button.position,Vector2(64,64)))
+	drag_controls.queue_redraw()
 	for pair in [["attack",sim.hero.stats.attack_cost],["jump",sim.hero.stats.jump_cost],["dash",sim.hero.stats.dash_cost]]:
 		get_node(pair[0]).modulate=Color(1,1,1,0.88 if sim.hero.stamina>=pair[1] else 0.3)
 	options_menu.visible=is_paused
@@ -168,6 +186,11 @@ func present_world(sim, is_paused: bool, at: float, grounded: bool) -> void:
 	dashboard.values["core_max_hp"]=sim.mission.core_max_hp
 	dashboard.values["defeat_reason"]=sim.mission.defeat_reason
 	dashboard.values["rifts"]=sim.mission.rifts
+	dashboard.values["dragon_day"]=sim.mission.dragon_rules.baseline_day
+	for enemy in sim.raiders:
+		if enemy.get("kind","")=="dragon":
+			dashboard.values["dragon_hp"]=enemy.fighter.hp
+			dashboard.values["dragon_max_hp"]=enemy.fighter.stats.max_hp
 	dashboard.values["raid_left"]=pressure.left
 	dashboard.values["raid_right"]=pressure.right
 	dashboard.values["stamina"]=sim.hero.stamina
@@ -199,6 +222,7 @@ func present_save(status: String, is_paused: bool) -> void:
 
 func cancel_touch_gestures() -> void:
 	# Release both action buttons' finger ownership and GUI buttons' press capture.
+	if is_instance_valid(drag_controls):drag_controls.cancel()
 	var buttons: Array=[interact_button,drop_button,new_map_button,$Refuge,fullscreen_button,save_button,audio_button]
 	for key in ["move_left","move_right","dash","jump","attack","pause","restart"]:
 		buttons.append(get_node(key))
@@ -215,3 +239,6 @@ func uses_touch_controls() -> bool:
 	var mode:=control_mode if control_mode!=0 else int(ProjectSettings.get_setting("campaign/control_preview",0))
 	if mode!=0:return mode==1
 	return OS.has_feature("mobile") or (OS.has_feature("web") and DisplayServer.is_touchscreen_available())
+
+func movement_axis() -> float:
+	return drag_controls.state.axis if is_instance_valid(drag_controls) and drag_controls.enabled else 0.0

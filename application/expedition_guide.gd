@@ -13,6 +13,8 @@ static func next(sim,x: float,y: float=430.0) -> Dictionary:
   if not assigned.is_empty():pending=assigned
   pending.sort_custom(func(a,b):return absf(sim.mission.rifts[a].x-x)<absf(sim.mission.rifts[b].x-x))
   return _ordered(sim,pending[0],x,y)
+ if sim.mission.dragon_summoned and not sim.mission.dragon_defeated:
+  return _hint("dragon",sim.world.sites.hall,"","move","shield")
  if sim.mission.rifts.all(func(r):return r.sealed):
   var live=sim.raiders.filter(func(r):return r.fighter.is_alive())
   if live.is_empty():return {}

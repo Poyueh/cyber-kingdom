@@ -42,6 +42,7 @@ func test_v2_materials_convert_once_without_changing_original(t):
  var codec=Codec.new()
  var packet: Dictionary=codec.capture(sim,{"seed":42},{"x":30.0,"y":430.0,"vx":0.0,"vy":0.0})
  packet.version=2
+ for key in ["dragon_summoned","dragon_defeated","dragon_day","dragon_rules"]:packet.mission.erase(key)
  packet.frontier.wood=8;packet.frontier.food=3;packet.frontier.stone=2;packet.frontier.herbs=1
  packet.world.scrap=4
  packet.nodes[0].wood=4

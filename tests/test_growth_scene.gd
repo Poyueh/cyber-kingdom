@@ -12,6 +12,8 @@ func run_scene() -> void:
 	var scene=load("res://scenes/frontier.tscn").instantiate()
 	root.add_child(scene)
 	await frames(8)
+	scene.knight.position.x=30
+	await frames(2)
 	scene.set_physics_process(false)
 	scene.paused=false
 	pay(scene);pay(scene)

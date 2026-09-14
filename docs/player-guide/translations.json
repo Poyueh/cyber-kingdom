@@ -886,5 +886,45 @@
   "■ 停止示範": {
     "en": "■ Stop example",
     "zh_CN": "■ 停止示范"
+  },
+  "左側左右拖曳": {
+    "zh_CN": "左侧左右拖曳",
+    "en": "Drag left/right on the left side"
+  },
+  "靠近目標，右側空白處下拖": {
+    "zh_CN": "靠近目标，右侧空白处下拖",
+    "en": "Near a target, drag down on the empty right side"
+  },
+  "沒有目標時，右側空白處下拖": {
+    "zh_CN": "没有目标时，右侧空白处下拖",
+    "en": "Away from targets, drag down on the empty right side"
+  },
+  "你從荒地抵達，先跟著會招手的龍晶殘影走向營火。它會帶路並指向建國目標；你仍可自由探索，不必照做。": {
+    "zh_CN": "你从荒地抵达，先跟着会招手的龙晶残影走向营火。它会带路并指向建国目标；你仍可自由探索，不必照做。",
+    "en": "You arrive in the wilderness. Follow the beckoning crystal spirit toward the campfire. It leads the way and points to kingdom objectives, but you are free to explore elsewhere."
+  },
+  "封住雙門會召喚巨龍；擊敗它，再清除殘敵。": {
+    "zh_CN": "封住双门会召唤巨龙；击败它，再清除残敌。",
+    "en": "Seal both gates to summon the dragon. Defeat it and clear remaining enemies."
+  },
+  "雙門封印後的巨龍被擊敗，而且所有殘敵清空，才是這一局的勝利。封門或建城本身不代表通關。": {
+    "zh_CN": "双门封印后的巨龙被击败，而且所有残敌清空，才是这一局的胜利。封门或建城本身不代表通关。",
+    "en": "Victory requires defeating the dragon summoned by both seals and clearing all remaining enemies. Sealing the gates or building the kingdom alone is not enough."
+  },
+  "左側左右拖曳移動；右側空白處下拖投入或丟晶。攻擊、跳躍、衝刺保留按鍵。": {
+    "zh_CN": "左侧左右拖曳移动；右侧空白处下拖投入或丢晶。攻击、跳跃、冲刺保留按键。",
+    "en": "Drag left or right on the left side to move. Drag down on the empty right side to invest or toss a crystal. Attack, jump and dash use buttons."
+  },
+  " 電腦長按 E；手機下拖後按住。每次只完成一筆交易，放開再開始下一筆。": {
+    "zh_CN": " 电脑长按 E；手机下拖后按住。每次只完成一笔交易，放开再开始下一笔。",
+    "en": " Hold E on desktop, or drag down and keep holding on touchscreens. Each hold completes one transaction; release before starting another."
+  },
+  "巨龍以第 6 天為基準：提前封門不會降低它的基礎強度；第 7 天起，每延後一天，生命增加 240、傷害增加 4。強度在召喚時決定。先招募守衛與獵人、準備防線，再選擇封門時機；噴息蓄力時離開地面的橙色預警區。": {
+    "zh_CN": "巨龙以第 6 天为基准：提前封门不会降低它的基础强度；第 7 天起，每延后一天，生命增加 240、伤害增加 4。强度在召唤时决定。先招募守卫与猎人、准备防线，再选择封门时机；喷息蓄力时离开地面的橙色预警区。",
+    "en": "The dragon has a day-six strength floor. Early seals cannot reduce its base power. From day seven, each day of delay adds 240 health and 4 damage; strength locks when summoned. Recruit guards and hunters, prepare your defenses, then choose when to seal. Leave the orange ground warning during its breath windup."
+  },
+  "閒置工匠會巡遊，守衛白天會巡邏；獵人自行尋找已探索區域的獵物，沒有獵物時巡獵，天色轉暗就回防。農夫會在田間走動工作。未知邊境由流動薄霧覆蓋，走近會逐漸散開。": {
+    "zh_CN": "闲置工匠会巡游，守卫白天会巡逻；猎人自行寻找已探索区域的猎物，没有猎物时巡猎，天色转暗就回防。农夫会在田间走动工作。未知边境由流动薄雾覆盖，走近会逐渐散开。",
+    "en": "Idle engineers stroll, guards patrol by day, and hunters seek prey in explored regions. Hunters scout when prey is scarce and return before night. Farmers move through their fields. Drifting mist veils unknown frontiers and fades as you approach."
   }
 }

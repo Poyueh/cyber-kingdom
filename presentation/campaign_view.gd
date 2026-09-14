@@ -1,6 +1,7 @@
 extends "res://presentation/frontier_view.gd"
 const HitFeedback=preload("res://presentation/campaign_hit_feedback.gd")
 var hit_feedback:=HitFeedback.new()
+var _mist=preload("res://presentation/exploration_mist.gd").new()
 const Details=preload("res://presentation/frontier_details.gd")
 var _details: Array[Dictionary]=[]
 const RiftVisual=preload("res://presentation/rift_visual.gd")
@@ -26,6 +27,7 @@ const EXTRA_ART := {"campfire":preload("res://art/campaign/v001/campfire.png"),"
 func present(sim, player_x: float) -> void:
 	if not is_same(_sim,sim):
 		_resident_motion.clear()
+		_mist=preload("res://presentation/exploration_mist.gd").new()
 		_details=Details.layout(sim.map_seed,sim.frontier.regions)
 	_sim=sim
 	hit_feedback.present(sim)
@@ -210,6 +212,12 @@ func _draw_activity() -> void:
 			Ambient.crystal(self,visible,crystal_radius,_sim.workforce.elapsed)
 		if pile.amount>1: _number(str(pile.amount),Vector2(pile.x+12,pile.y-29))
 	for effect in _sim.effects:
+		if effect.kind=="dragon_fire":
+			for i in range(28):
+				var progress: float=i/27.0
+				var point:=Vector2(lerpf(effect.x,effect.to,progress),lerpf(325,416,progress)+sin(i*2.3+effect.life*22)*18)
+				draw_rect(Rect2(point.round(),Vector2(12,7)),Color(1,0.5+progress*0.25,0.27,effect.life/0.7))
+			continue
 		if effect.kind=="portal_spawn":
 			var radius: float=28*(1-effect.life/0.6)
 			draw_arc(Vector2(effect.x,400),radius,0,TAU,16,Color(0.77,0.43,0.93,effect.life/0.6),3)
@@ -331,6 +339,9 @@ func _resource(resource) -> void:
 	super._resource(resource)
 
 func _raider(enemy: Dictionary) -> void:
+	if enemy.get("kind","")=="dragon":
+		preload("res://presentation/dragon_visual.gd").draw(self,enemy,_sim.workforce.elapsed)
+		return
 	if not enemy.fighter.is_alive():return
 	var hit:=hit_feedback.enemy_pose(enemy)
 	var clip: String="idle" if hit.active else "windup" if enemy.windup>0 else "run"
@@ -347,6 +358,14 @@ func _draw_fallen() -> void:
 	var texture: Texture2D=EnemyFrames.get_frame_texture("idle",0)
 	for body in hit_feedback.fallen:
 		var progress: float=clampf(body.age/0.42,0,1)
+		if body.get("kind","")=="dragon":
+			preload("res://presentation/dragon_visual.gd").draw_fallen(self,body,progress)
+			continue
 		draw_set_transform(Vector2(body.x-body.direction*progress*12,430),-body.direction*progress*0.85,Vector2(body.direction,1-progress*0.5))
 		draw_texture(texture,Vector2(-texture.get_width()*0.5,-texture.get_height()*0.5-32),Color(1.3,0.9,0.85,1-progress))
 		draw_set_transform(Vector2.ZERO)
+
+func _draw() -> void:
+	super._draw()
+	if _sim==null:return
+	_mist.draw(self,_sim.frontier.regions,_sim.workforce.elapsed,_view_player_x,_background_rect())
