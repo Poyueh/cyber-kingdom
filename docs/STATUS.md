@@ -895,3 +895,11 @@ H5 本機包 builds/clear-feedback-20260914，來源99516c7，ZIP CRC／SHA256 �
 ## 2026-09-14：H5 v0.0.4 發行準備
 
 使用者已授權推送與更新線上試玩站。沿用完整驗證的99516c7 H5 包，release/0.0.4 依 Gitflow 整合 main、tag v0.0.4 並回合 develop。版本說明見 docs/releases/0.0.4.md；公開發布與部署結果完成後另記。Windows／Mac 維持 v0.0.1。
+
+## H5 v0.0.4 已公開（2026-09-14）
+
+Release https://github.com/Poyueh/cyber-kingdom/releases/tag/v0.0.4 已發布，tag 指向6be0b36。main／develop／release/0.0.4 與標籤已推送；公開試玩 https://poyueh.github.io/cyber-kingdom/ 已更新。
+
+GitHub Actions 發行觸發34832664197、Pages 部署34832670799 均成功。附件 digest 相符，網站14個檔案 SHA256 逐一與實測包一致。公開瀏覽器實測起始頁、既有旅程列表、12/12背包讀檔、恢復後新版鬼魂提示與再次暫停通過，警告／錯誤為空。Windows／Mac 保持v0.0.1；130個本機個人調整／產生檔核對一致。
+
+發行附件保存 builds/release-0.0.4。Godot 教學續用第55課；本輪僅发布已驗證內容，沒有新增玩法。
