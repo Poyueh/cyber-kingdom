@@ -1,0 +1,28 @@
+{
+  "runtime_commit": "634acd1",
+  "review_commit": "89e60b1",
+  "engine": "Godot 4.7.2",
+  "automated": "full tools/check.sh passed; 1178 rule assertions and all scene suites; localization scene 18 assertions; Python localization tests 2",
+  "browser": {
+    "url": "http://127.0.0.1:8795/",
+    "passed": [
+      "Traditional, Simplified, English title menus",
+      "Simplified font no missing glyph in selector",
+      "Simplified preference survives browser reload",
+      "English new journey and pause selector",
+      "pause switch to Traditional then save and return to matching title",
+      "Simplified guide iframe follows locale",
+      "English illustrated guide and investment counter updates",
+      "844x390 title and pause layout; override reset",
+      "no warning/error logs"
+    ]
+  },
+  "artifact": "builds/languages-20260914",
+  "steam": "selection hook only; no Steam SDK/App ID integration or Steam client test",
+  "publication": "local only; public v0.0.3 and existing Win/Mac assets unchanged",
+  "limitations": [
+    "browser viewport test is not physical iPhone validation",
+    "English/Simplified text needs future native-player feedback",
+    "older illustrative screenshots retain original embedded text"
+  ]
+}

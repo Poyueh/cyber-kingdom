@@ -94,7 +94,7 @@ func run_test() -> void:
 	scene.panel.depart_button.pressed.emit()
 	scene.panel.depart_button.pressed.emit()
 	await frames(3)
-	check(scene.battle_view.hud.status.text.ends_with("SCRAP 0"), "new expedition HUD shows this run's salvage only")
+	check(scene.battle_view.hud.status.text.ends_with(" 0"), "new expedition HUD shows this run's salvage only")
 	scene.queue_free()
 	await process_frame
 	print("Refuge scene assertions: %d; failures: %d" % [assertions, failures])
