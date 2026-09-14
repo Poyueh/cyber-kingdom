@@ -32,7 +32,8 @@ func _ready() -> void:
 	hud.throw_requested.connect(func(): _requested_throw = true)
 	controls.throw_requested.connect(func(): _requested_throw = true)
 	$Knight/Camera2D.zoom=Vector2.ONE*tuning.camera_zoom
-	if tuning.larger_desktop_window and DisplayServer.get_name()!= "headless" and not OS.has_feature("mobile"):
+	# Browser canvas dimensions and pointer coordinates must remain browser-owned.
+	if tuning.larger_desktop_window and DisplayServer.get_name()!= "headless" and not OS.has_feature("mobile") and not OS.has_feature("web"):
 		var window:=get_window()
 		var usable:=DisplayServer.screen_get_usable_rect()
 		window.size=Vector2i(mini(1440,usable.size.x-60),mini(810,usable.size.y-60))

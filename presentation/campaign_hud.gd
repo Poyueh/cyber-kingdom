@@ -211,4 +211,5 @@ func set_audio_enabled(value: bool) -> void:
 
 func uses_touch_controls() -> bool:
 	var mode:=control_mode if control_mode!=0 else int(ProjectSettings.get_setting("campaign/control_preview",0))
-	return OS.has_feature("mobile") if mode==0 else mode==1
+	if mode!=0:return mode==1
+	return OS.has_feature("mobile") or (OS.has_feature("web") and DisplayServer.is_touchscreen_available())

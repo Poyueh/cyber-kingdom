@@ -1,0 +1,13 @@
+{
+  "state": {
+    "city": 1,
+    "wallet": 10,
+    "x": 150.33332824707
+  },
+  "errors": [],
+  "checks": [
+    "actual touch hold invests two crystals",
+    "touch move changes player position",
+    "touch pause saves to IndexedDB"
+  ]
+}
