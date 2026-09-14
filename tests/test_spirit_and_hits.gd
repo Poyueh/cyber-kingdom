@@ -78,4 +78,9 @@ func test_residents_and_enemies_react_to_real_damage_only(t):
 func test_spirit_points_back_at_a_reached_target(t):
  var motion=load("res://presentation/spirit_motion.gd").new()
  var pose=motion.sample({"x":30.0,"y":430.0},Vector2(300,420),30,Rect2(0,0,960,540),0)
- t.truth(pose.position.x>300 and pose.direction<0,"at camp the hovering spirit points back to camp, not beyond it")
+ t.truth((pose.position.x-300)*pose.direction<0,"at camp the hovering spirit points toward camp, not away from it")
+
+func test_spirit_leaves_the_targets_interaction_column_clear(t):
+ var motion=load("res://presentation/spirit_motion.gd").new()
+ var pose=motion.sample({"x":130.0,"y":430.0},Vector2(300,420),30,Rect2(0,0,960,540),0)
+ t.truth(absf(pose.position.x-400)>64 and pose.direction>0,"companion stays clear of the nearby target health and payment icons")
