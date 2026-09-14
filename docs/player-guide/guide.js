@@ -7,7 +7,7 @@
     document.querySelectorAll('.key').forEach(key => key.textContent = key.dataset[mode]);
     document.getElementById('control-grid').classList.toggle('mobile', mode === 'mobile');
     document.getElementById('control-note').textContent = mode === 'mobile'
-      ? t('左右空白處都能橫滑移動、下滑給晶。快滑放手給一顆；靠近目標下滑按住會繼續填格。攻擊、跳躍、衝刺保留按鍵。')
+      ? t('左右空白處短拖慢走、長拖快跑、下滑給晶。快滑放手給一顆；靠近目標下滑按住會繼續填格。攻擊使用劍按鍵。')
       : t('使用鍵盤操作；靠近物件後，看它上方的圖示與龍晶格。');
   }
   modeButtons.forEach(button => button.addEventListener('click', () => setMode(button.dataset.mode)));
@@ -15,7 +15,7 @@
 
   const projects = {
     camp: {title:t('建立營地'), cost:2, done:t('營火已成為營地。接著招攬居民、準備器具。')},
-    tools: {title:t('提供守備器具'), cost:3, done:t('器具準備好了，無職居民會自行前來領取。')},
+    tools: {title:t('升級兵營'), cost:3, done:t('兵營升級完成，全體弓兵火力提高。')},
     rift: {title:t('委託裂隙封印'), cost:4, done:t('委託完成。接著護送工匠，清除附近的敵人。')}
   };
   const projectButtons = [...document.querySelectorAll('[data-project]')];

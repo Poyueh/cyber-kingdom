@@ -31,7 +31,7 @@ func test_dragon_save_resume_and_army_damage(t):
  var sim=summoned(7)
  if sim.raiders.is_empty():t.truth(false,"dragon available");return
  var dragon=sim.raiders[0];dragon.x=500;dragon.cooldown=10
- sim.world.people.append({"x":450.0,"role":"guard","hurt":0.0,"cooldown":0.0,"region":-1})
+ sim.world.people.append({"x":450.0,"role":"hunter","hurt":0.0,"cooldown":0.0,"region":-1})
  var hp=dragon.fighter.hp
  sim.advance(0.01,30)
  t.truth(dragon.fighter.hp<hp,"resident weapons damage actual dragon")
@@ -52,18 +52,20 @@ func test_concurrent_resident_volley_is_not_discarded(t):
  var sim=summoned(6)
  if sim.raiders.is_empty():t.truth(false,"dragon available for volley");return
  var dragon=sim.raiders[0];dragon.x=500;dragon.cooldown=10
- for i in range(3):sim.world.people.append({"x":450.0,"role":"guard","hurt":0.0,"cooldown":0.0,"region":-1})
+ for i in range(3):sim.world.people.append({"x":450.0,"role":"hunter","hurt":0.0,"cooldown":0.0,"region":-1})
  var before: int=dragon.fighter.hp
  sim.advance(0.01,30)
- t.equal(before-dragon.fighter.hp,60,"three simultaneous guard arrows all contribute damage")
+ t.equal(before-dragon.fighter.hp,36,"three simultaneous archer arrows all contribute damage")
 
 func test_v3_completed_run_remains_completed_and_active_run_gets_boss(t):
  var codec=Codec.new()
  for won in [false,true]:
-  var sim=Campaign.new({"seed":7})
+  var sim=Campaign.new({"seed":7,"flat_frontier":0,"fortifications":0})
   for r in sim.mission.rifts:r.sealed=true
   sim.mission.outcome="victory" if won else "active"
   var packet=codec.capture(sim,{"seed":7},{"x":30.0,"y":430.0,"vx":0.0,"vy":0.0})
+  packet.session.erase("barracks_level")
+  for field in ["buildings","build_seconds","tower_damage","tower_range"]:packet.session.erase(field)
   packet.version=3
   for field in ["dragon_summoned","dragon_defeated","dragon_day","dragon_rules"]:packet.mission.erase(field)
   var original=packet.duplicate(true)

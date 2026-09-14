@@ -20,7 +20,7 @@ static func layout(seed: int,regions: Array) -> Array[Dictionary]:
 				var kind: String=palette[layer][rng.randi_range(0,palette[layer].size()-1)]
 				var height: float=rng.randf_range(225,315) if layer==0 else rng.randf_range(85,150) if layer==1 else rng.randf_range(18,43)
 				var x: float=anchor if layer==0 else anchor+105+i*83 if layer==1 else anchor-110+i*62+rng.randf_range(-16,16)
-				result.append({"region":index,"x":clampf(x,region.x+24,region.x+region.width-24),"kind":kind,"scale":height/TEXTURES[kind].get_height(),"flip":rng.randf()<0.5,"layer":layer,"y":408 if layer==0 else 422 if layer==1 else 435})
+				result.append({"region":index,"x":clampf(x,region.x+24,region.x+region.width-24),"kind":kind,"scale":height/TEXTURES[kind].get_height(),"flip":rng.randf()<0.5,"layer":layer,"y":430})
 	result.sort_custom(func(a,b):return a.layer<b.layer)
 
 	return result
@@ -35,6 +35,6 @@ static func draw_background(view: Node2D,details: Array,regions: Array) -> void:
 		var size: Vector2=texture.get_size()*detail.scale
 		var tint: Color=[Color("718995"),Color("a3b2bc"),Color("c0c7b7")][detail.layer]
 		tint.a=view._region_reveal(detail.region)
-		view.draw_set_transform(Vector2(detail.x,detail.y),0,Vector2(-1 if detail.flip else 1,1))
+		view.draw_set_transform(preload("res://presentation/grounded_art.gd").anchor(texture,Vector2(detail.x,430),detail.scale),0,Vector2(-1 if detail.flip else 1,1))
 		view.draw_texture_rect(texture,Rect2(Vector2(-size.x/2,-size.y),size),false,tint)
 	view.draw_set_transform(Vector2.ZERO)

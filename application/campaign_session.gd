@@ -32,16 +32,29 @@ var warden_health: int
 var warden_damage: int
 var enemy_health_growth: int
 var enemy_damage_growth: int
-const TOOL_KINDS := {"workshop":"hammer","armory":"blade","farm_tools":"hoe","hunt_tools":"bow"}
-const NAMES := {"hall":"營火","workshop":"工匠器具","armory":"守備器具","farm_tools":"農具","hunt_tools":"獵弓","forge":"義肢爐","beacon":"護民塔","wall":"右防線","wall_left":"左防線","farm":"農田","drill":"劍術訓練","heal":"龍晶治療"}
+var barracks_level:=0
+var buildings: Dictionary={}
+var build_seconds:=3.0
+var tower_damage:=12
+var tower_range:=460.0
+const BuildingSites=preload("res://domain/building_sites.gd")
+const Construction=preload("res://application/fortification_work.gd")
+var travel=preload("res://application/campaign_travel.gd").new()
+const TOOL_KINDS := {"workshop":"hammer","farm_tools":"hoe","hunt_tools":"bow"}
+const NAMES := {"hall":"營火","workshop":"工匠器具","armory":"兵營","farm_tools":"農具","hunt_tools":"獵弓","forge":"義肢爐","beacon":"守護塔","wall":"右防線","wall_left":"左防線","farm":"農田","drill":"劍術訓練","heal":"龍晶治療"}
 
 func _init(config: Dictionary = {}, hero_stats: Stats = null) -> void:
 	var resolved:=config.duplicate(true)
 	var economy: Dictionary=config.get("economy",{}).duplicate(true)
 	var left_post:=minf(-950.0,float(config.get("left_defense_x",-1100.0)))
 	economy["settlement_left"]=left_post-200.0
+	economy["flat_ground"]=int(config.get("flat_frontier",1))
 	resolved["economy"]=economy
 	super(resolved,hero_stats)
+	if config.get("flat_frontier",1):
+		world.tool_roles.blade="hunter";world.tool_sites.blade="hunt_tools"
+	travel.fast_multiplier=clampf(config.get("fast_run_multiplier",1.65),1.1,2.0)
+	travel.drain_per_second=clampf(config.get("fast_run_drain",18.0),5,40)
 	hero.stats.attack_cost=maxf(0,float(config.get("attack_stamina",12.0)))
 	hero.stats.jump_cost=maxf(0,float(config.get("jump_stamina",18.0)))
 	hero.stats.dash_cost=maxf(0,float(config.get("dash_stamina",30.0)))
@@ -100,6 +113,12 @@ func _init(config: Dictionary = {}, hero_stats: Stats = null) -> void:
 
 	ecology=Ecology.new(frontier,config)
 	defenses=Defenses.new(world,frontier,config)
+	if config.get("fortifications",1):
+		buildings=BuildingSites.generate(frontier,map_seed,world.sites.beacon)
+		_register_building_walls()
+	build_seconds=clampf(config.get("building_seconds",3.0),1,30)
+	tower_damage=clampi(config.get("tower_damage",12),1,100)
+	tower_range=clampf(config.get("tower_range",460.0),200,800)
 	time_to_raid = clock.remaining
 
 func _add_person(x: float, region: int) -> void:
@@ -166,6 +185,9 @@ func _interaction_candidates(x: float) -> Array[Dictionary]:
 		choice["region_index"] = index
 		choice.key = "outpost:%d" % index
 		candidates.append(choice)
+	for id in buildings:
+		if id=="beacon" or buildings[id].kind=="wall":continue
+		if absf(buildings[id].x-x)<73 and absf(_player_y-430)<=42 and building_visible(id):candidates.append(building_context(id))
 	for index in range(mission.rifts.size()):
 		var rift: Dictionary=mission.rifts[index]
 		if not rift.discovered or absf(rift.x-x)>=73 or absf(_player_y-430)>42:continue
@@ -188,6 +210,7 @@ func _interaction_candidates(x: float) -> Array[Dictionary]:
 func _campaign_site(site: String) -> Dictionary:
 	var at: float = world.sites[site]
 	var choice := _choice(site,at,NAMES.get(site,"邊境防線"),int(prices.get(site,0)))
+	if site=="beacon" and buildings.has(site):return building_context(site)
 	if site=="hall":
 		if frontier.city_level>0 and mission.core_hp<mission.core_max_hp:
 			return _choice("core_charge",at,"核心充能",prices.core_charge)
@@ -203,6 +226,15 @@ func _campaign_site(site: String) -> Dictionary:
 		choice.enabled=false
 		choice.reason="先回營火投入 2 顆龍晶建立營地"
 		return choice
+	if site=="armory":
+		choice.key="armory:%d"%barracks_level
+		choice.cost=mini(12,prices.armory+barracks_level*2)
+		choice.enabled=barracks_level<3 and frontier.city_level>barracks_level
+		choice.reason="需要更高級聚落，或兵營已滿級"
+		choice["upgrade"]={"icon":"bow","level":barracks_level,"limit":3,"value":archer_damage(),"next":hunter_damage+mini(3,barracks_level+1)*6}
+		choice["prerequisites"]=[]
+		if barracks_level<3 and frontier.city_level<=barracks_level:choice.prerequisites.append({"icon":"camp","value":barracks_level+1})
+		return choice
 	if TOOL_KINDS.has(site):
 		var kind: String = TOOL_KINDS[site]
 		choice.text += " · 庫存 %d/3" % world.tools[kind]
@@ -212,12 +244,15 @@ func _campaign_site(site: String) -> Dictionary:
 		var defense: Dictionary=world.walls[site]
 		choice["wall_id"]=site
 		if defenses.plots.has(site):choice.id="wall"
-		var repair: bool = defense.level>0 and defense.hp<defense.level*40
-		choice.cost = prices.repair if repair else (prices.wall if defense.level==0 else prices.wall_upgrade)
-		choice.text = "修復防線" if repair else ("建立木防線" if defense.level==0 else "升級石防線")
+		var repair: bool = defense.level>0 and defense.hp<world.wall_max_hp(defense.level)
+		choice.cost = prices.repair if repair else (prices.wall if defense.level==0 else mini(12,prices.wall_upgrade+(3 if defense.level==2 else 0)))
+		choice.text = "修復防線" if repair else ("建立木防線" if defense.level==0 else ("升級石防線" if defense.level==1 else "升級堡壘"))
 		choice.key = "%s:%d:%s" % [site,defense.level,repair]
-		choice.enabled = not defense.pending and (repair or defense.level<2)
+		choice.enabled = not defense.pending and (repair or defense.level<3)
 		choice["prerequisites"]=defenses.prerequisites(site)
+		if not repair and defense.level==2 and frontier.city_level<3:choice.prerequisites.append({"icon":"camp","value":3})
+		choice["upgrade"]={"icon":"wall","level":defense.level,"limit":3,"value":defense.hp,"next":world.wall_max_hp(defense.level if repair else mini(3,defense.level+1))}
+		if defense.level==3 and not repair:choice.cost=0
 		choice.enabled=choice.enabled and choice.prerequisites.is_empty()
 		choice.reason = "需要聚落、前哨、內側防線與清地；或施工中／已達上限"
 	elif site=="forge":
@@ -279,6 +314,7 @@ func interact(x: float, target_key: String = "") -> bool:
 
 func _execute(choice: Dictionary) -> void:
 	match choice.id:
+		"tower","field": buildings[choice.building_id].pending=true
 		"rift": mission.order(choice.rift_index)
 		"core_charge": mission.recharge_core()
 		"recruit": world.people[choice.person_index].role="citizen"
@@ -291,12 +327,14 @@ func _execute(choice: Dictionary) -> void:
 			effects.append({"kind":"chest_burst","x":node.x,"y":node.y,"life":0.7})
 		"mark": frontier.mark(frontier.nodes[choice.node_index])
 		"hall": frontier.city_level+=1
-		"workshop","armory","farm_tools","hunt_tools":
+		"armory":
+			barracks_level+=1;built.armory=true
+		"workshop","farm_tools","hunt_tools":
 			world.tools[TOOL_KINDS[choice.id]]+=1
 			built[choice.id]=true
 		"wall","wall_left":
 			var defense: Dictionary=world.walls[choice.get("wall_id",choice.id)]
-			var repair: bool=defense.level>0 and defense.hp<defense.level*40
+			var repair: bool=defense.level>0 and defense.hp<world.wall_max_hp(defense.level)
 			defense.merge({"pending":true,"repair":repair,"progress":0.0},true)
 		"outpost": frontier.regions[choice.region_index].outpost_pending=true
 		"farm": frontier.farm_active=true
@@ -354,9 +392,11 @@ func _receive_delivery(delivery: Dictionary) -> void:
 func _advance_people(seconds: float) -> void:
 	expedition.prepare()
 	_assign_defense_posts()
+	_advance_towers(seconds)
 	var previous: Array=[]
 	for person in world.people: previous.append(float(person.x))
 	super._advance_people(seconds)
+	BuildingSites.separate_outposts(frontier,buildings,world.sites,investments)
 	for index in range(world.people.size()):
 		var person: Dictionary=world.people[index]
 		# Supplies, tools and occupations have already chosen their real destinations.
@@ -377,17 +417,15 @@ func _override_resident_target(index: int, seconds: float) -> float:
 	var person: Dictionary = world.people[index]
 	var expedition_target:=expedition.target(index,seconds)
 	if is_finite(expedition_target):return expedition_target
-	if person.role=="guard":
-		_shoot_nearest_raider(person,190.0,20,0.85)
-		person["direction"]=1.0 if person.defense_post=="wall" else -1.0
-		var post:=_defense_position(index,65.0)
-		if not clock.is_night and raiders.is_empty():
-			return Roaming.destination(person,index,post,38,seconds,post-38,post+38)
-		return post
+	if person.role=="engineer" and (clock.is_night or clock.remaining<=return_margin):
+		var construction:=Construction.target(self,index,seconds,true)
+		if is_finite(construction):return construction
 	if person.role not in ["citizen","engineer","farmer","hunter"]: return NAN
 	var home: float = defenses.shelter(person.x,world.sites.hall + (index%5-2)*22.0)
 	if person.role=="hunter" and world.walls[defenses.active_post(1 if person.defense_post=="wall" else -1)].hp>0:
 		home = _defense_position(index,90.0)
+	if person.role=="hunter":
+		_shoot_nearest_raider(person,hunter_range,archer_damage(),hunter_interval)
 	if not Schedule.should_return(clock.is_night,clock.remaining,person.x,home,_person_speed,return_margin):
 		return NAN
 	person["sheltering"] = true
@@ -401,13 +439,33 @@ func _override_resident_target(index: int, seconds: float) -> float:
 			person["y"] = move_toward(person.get("y",430.0),430.0,70.0*seconds)
 			person.work_state = "climb"
 			return person.x
-	if person.role=="hunter":
-		_shoot_nearest_raider(person,hunter_range,hunter_damage,hunter_interval)
+	if person.role!="hunter":
+		var left: float=world.sites[defenses.active_post(-1)]+120
+		var right: float=world.sites[defenses.active_post(1)]-120
+		if world.walls[defenses.active_post(-1)].hp<=0:left=maxf(left,world.sites.hall-260)
+		if world.walls[defenses.active_post(1)].hp<=0:right=minf(right,world.sites.hall+260)
+		# Separate lanes and pauses distribute residents; emergency boundaries clamp instantly.
+		var count:=0
+		var rank:=0
+		for i in range(world.people.size()):
+			if world.people[i].role in ["citizen","engineer","farmer"]:
+				if i<index:rank+=1
+				count+=1
+		var width: float=maxf(0,right-left)/maxi(1,count)
+		var center: float=left+(rank+0.5)*width
+		var radius: float=minf(110,width*0.35)
+		return Roaming.destination(person,index,center,radius,seconds,center-radius,center+radius)
 	return home
+
+func travel_axis(request: float, seconds: float) -> float:
+	return travel.axis(hero,request,seconds)
+
+func archer_damage() -> int:return hunter_damage+barracks_level*6
 
 func _assign_defense_posts() -> void:
 	var counts: Dictionary={"wall":0,"wall_left":0}
 	for person in world.people:
+		if person.role=="guard":person.role="hunter"
 		if person.role not in ["guard","hunter"]:
 			person.erase("defense_post")
 		elif person.has("defense_post"):
@@ -544,6 +602,14 @@ func _advance_farm(seconds: float, farmers: int) -> void:
 	var produced: int=frontier.food-before
 	frontier.food=before
 	pouch.drop(produced,world.sites.farm)
+	if clock.is_night:return
+	for site in buildings.values():
+		if site.kind!="farm" or site.level==0:continue
+		var workers:=world.people.filter(func(p):return p.role=="farmer" and not p.get("sheltering",false) and absf(p.x-site.x)<24).size()
+		if workers==0:continue
+		site.harvest+=seconds*workers
+		while site.harvest>=frontier.farm_cycle:
+			site.harvest-=frontier.farm_cycle;pouch.drop(frontier.farm_yield,site.x)
 
 func convert_legacy_resources() -> void:
 	# Called only after validating an old checkpoint, before its first v3 save.
@@ -586,6 +652,8 @@ func strike_from(x: float, y: float) -> void:
 		entry[0].x=entry[1];entry[0].windup=entry[2];entry[0].stagger=0.0
 
 func _engineer_target(index: int, seconds: float) -> float:
+	var construction:=Construction.target(self,index,seconds,false)
+	if is_finite(construction):return construction
 	var target:=super._engineer_target(index,seconds)
 	var person: Dictionary=world.people[index]
 	if person.get("work_state","")=="idle" and is_equal_approx(target,world.sites.workshop):
@@ -613,4 +681,55 @@ func _idle_hunter_target(person: Dictionary, seconds: float) -> float:
 	return Roaming.destination(person,index,center,110,seconds,frontier.left_boundary,frontier.right_boundary)
 
 func _farm_target(person: Dictionary) -> float:
-	return world.sites.farm+sin(workforce.elapsed*0.9+world.people.find(person)*2.1)*16
+	var fields: Array[float]=[]
+	if frontier.farm_active:fields.append(float(world.sites.farm))
+	for site in buildings.values():
+		if site.kind=="farm" and site.level>0:fields.append(site.x)
+	if fields.is_empty():fields.append(world.sites.farm)
+	var farmers=world.people.filter(func(p):return p.role=="farmer")
+	var index: int=farmers.find(person)
+	return fields[maxi(0,index)%fields.size()]+sin(workforce.elapsed*0.9+index*2.1)*16
+
+func _register_building_walls() -> void:
+	for id in buildings:
+		var site: Dictionary=buildings[id]
+		if site.kind!="wall":continue
+		world.add_wall(id,site.x)
+		defenses.plots[id]={"region":site.region,"side":1 if site.x>world.sites.hall else -1,"previous":"wall" if site.x>world.sites.hall else "wall_left","cleared_node":site.node}
+
+func building_visible(id: String) -> bool:
+	var site: Dictionary=buildings[id]
+	return frontier.city_level>0 and (site.level>0 or site.pending or BuildingSites.cleared(frontier,site))
+
+func building_context(id: String) -> Dictionary:
+	var site: Dictionary=buildings[id]
+	var tower: bool=site.kind=="tower"
+	var limit:=3 if tower else 1
+	var choice:=_choice("tower" if tower else "field",site.x,"升級守護塔" if tower else "開墾晶蕾農田",[3,5,8][mini(2,site.level)] if tower else prices.farm)
+	choice["building_id"]=id
+	choice.key="building:%s:%d"%[id,site.level]
+	choice.enabled=building_visible(id) and not site.pending and site.level<limit and frontier.city_level>site.level
+	choice.reason="等待工匠施工，或先升級聚落"
+	choice["prerequisites"]=[]
+	if site.level<limit and frontier.city_level<=site.level:choice.prerequisites.append({"icon":"camp","value":site.level+1})
+	if site.pending or site.level>=limit:choice.cost=0
+	if tower:
+		var before=BuildingSites.tower_power(site.level,{"tower_damage":tower_damage})
+		var after=BuildingSites.tower_power(mini(3,site.level+1),{"tower_damage":tower_damage})
+		choice["upgrade"]={"icon":"bow" if site.level<2 else "gear","level":site.level,"limit":3,"value":roundi(before.damage/before.interval),"next":roundi(after.damage/after.interval),"suffix":"/s"}
+	return choice
+
+func _advance_towers(seconds: float) -> void:
+	for site in buildings.values():
+		if site.kind!="tower" or site.level<=0:continue
+		site.cooldown=maxf(0,site.cooldown-seconds)
+		if site.cooldown>0:continue
+		var power=BuildingSites.tower_power(site.level,{"tower_damage":tower_damage,"tower_range":tower_range})
+		var nearest: Dictionary={};var distance: float=power.range
+		for enemy in raiders:
+			if enemy.fighter.is_alive() and absf(enemy.x-site.x)<distance:
+				nearest=enemy;distance=absf(enemy.x-site.x)
+		if nearest.is_empty():continue
+		nearest.fighter.take_damage(power.damage)
+		site.cooldown=power.interval
+		effects.append({"kind":"tower_laser" if site.level==3 else "tower_arrow","x":site.x,"to":nearest.x,"life":0.28,"tier":site.level})

@@ -301,3 +301,6 @@ footer{border-top:1px solid var(--line);padding:40px 0;background:#06101a}
 .hero-art{filter:brightness(.55)}
 footer{background:#fff;color:#132733}
 }
+
+.fortification-cards .tier-art,.fortification-cards article>p{grid-column:2}
+.fortification-cards .tier-art{display:flex;align-items:flex-end;gap:12px;margin:12px 0}

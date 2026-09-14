@@ -1,6 +1,7 @@
 extends "res://presentation/fighter_visual.gd"
 ## New locomotion drawings are isolated from the editable combat animation resource.
 const MotionFrames=preload("res://data/knight_motion_frames.tres")
+@export var running_atlas: Texture2D=preload("res://art/characters/combo-v005/run.png")
 @export var texture_overrides: Dictionary = {}
 @export var moving_attack_atlas: Texture2D
 @export var combo_motion: Resource
@@ -49,7 +50,10 @@ func _bind_motion() -> void:
 		sprite_frames.add_animation(clip)
 		sprite_frames.set_animation_speed(clip,MotionFrames.get_animation_speed(clip))
 		for index in range(MotionFrames.get_frame_count(clip)):
-			sprite_frames.add_frame(clip,MotionFrames.get_frame_texture(clip,index))
+			var drawing=MotionFrames.get_frame_texture(clip,index)
+			if clip==&"run" and drawing is AtlasTexture and running_atlas!=null:
+				drawing=drawing.duplicate();drawing.atlas=running_atlas
+			sprite_frames.add_frame(clip,drawing,MotionFrames.get_frame_duration(clip,index))
 func _apply_art_overrides() -> void:
 	# Swap atlas pixels only; preserve user-edited frame duration, region and speed.
 	for clip in sprite_frames.get_animation_names():
@@ -170,7 +174,10 @@ func _present_mount(pose: Dictionary, seconds: float) -> void:
 	_mount.flip_h=pose.facing<0
 	var progress: float=pose.get("attack_progress",1.0)
 	var index:=0
-	if progress<1:index=3 if progress<0.3 else 4 if progress<0.65 else 5
+	if progress<1:
+		var step: int=pose.get("combo_step",1)
+		index=3 if progress<0.3 else 4 if progress<0.58 else 5
+		if step==2:index=5 if progress<0.3 else 4 if progress<0.58 else 3
 	elif not pose.get("grounded",true):index=2
 	elif pose.get("moving",false) or pose.get("dashing",false):index=1+int(_motion_time*7)%2
 	if hurt_active:index=0
@@ -178,3 +185,9 @@ func _present_mount(pose: Dictionary, seconds: float) -> void:
 	_mount_frame.region=Rect2(index*160,0,160,128)
 	_mount.texture=_mount_frame
 	_mount.position=Vector2(0,-absf(sin(_motion_time*7))*1.5 if index in [1,2] else sin(_motion_time*2)*0.5)
+
+	# Brace the horse through the cut, then ease back to a balanced stance.
+	if progress<1 and not hurt_active:
+		var thrust:=sin(clampf((progress-0.2)/0.65,0,1)*PI)
+		var weight:=1.5 if int(pose.get("combo_step",1))==3 else 1.0
+		_mount.position+=Vector2(pose.facing*thrust*3.5*weight,thrust*1.5)

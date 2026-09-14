@@ -13,5 +13,7 @@ func read_frame() -> Dictionary:
 	var frame := super.read_frame()
 	frame["interaction_held"]=Input.is_physical_key_pressed(KEY_E)
 	# Held state is available even when just_pressed belongs to the next physics tick.
-	frame["jump_held"]=Input.is_action_pressed("jump")
+	frame["jump_held"]=false
+	frame.jump=false;frame.dash=false
+	frame.direction=signf(frame.direction)*(1.0 if Input.is_physical_key_pressed(KEY_SHIFT) else 0.65)
 	return frame

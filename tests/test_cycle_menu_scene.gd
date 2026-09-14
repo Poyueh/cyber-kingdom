@@ -37,7 +37,7 @@ func run_scene() -> void:
 	check(not game.hud.get_node("attack").visible and not game.hud.get_node("jump").visible,"desktop hides touch action buttons")
 	game.hud.control_mode=1
 	game.hud.present_world(game.sim,false,0,true)
-	check(game.hud.get_node("attack").visible and game.hud.get_node("jump").visible,"mobile exposes touch action buttons")
+	check(game.hud.get_node("attack").visible and not game.hud.get_node("jump").visible and not game.hud.get_node("dash").visible,"mobile exposes only the sword action")
 	game.sim.frontier.drill_level=2;game.sim.growth.capacitor_level=1
 	game._physics_process(0)
 	check(game.knight.visual.weapon_tier==2 and game.knight.visual.armor_tier==1,"equipment visuals follow actual upgrade state")

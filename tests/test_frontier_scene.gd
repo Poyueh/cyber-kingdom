@@ -123,8 +123,9 @@ func run_test() -> void:
 		scene.sim.advance(0.1,resource.x)
 		if scene.sim.frontier.expansion_cleared(resource.region):break
 	check(scene.sim.frontier.expansion_cleared(resource.region),"resident finishes all marked trees before expansion appears")
-	scene.knight.position=Vector2(resource.x,430)
+	scene.knight.position=Vector2(scene.sim.frontier.regions[resource.region].outpost_x,430)
 	await frames(4)
+	check(scene.sim.context(scene.knight.position.x).id=="outpost","depot has its own reachable investment location")
 	for slot in range(3): await click(scene.hud.interact_button)
 	for tick in range(2000):
 		scene.sim.advance(0.1,resource.x)
@@ -136,7 +137,7 @@ func run_test() -> void:
 	check(not scene.hud.dashboard.values.has("wood") and not scene.hud.dashboard.values.has("food"),"icon HUD removes obsolete material counters")
 	var cache
 	for node in scene.sim.frontier.nodes:
-		if node.y == 366:
+		if node.kind=="cache":
 			cache = node
 			break
 	scene.knight.position = Vector2(cache.x,430)
@@ -146,9 +147,9 @@ func run_test() -> void:
 	await frames(2)
 	key(KEY_SPACE,false)
 	await frames(60)
-	check(absf(scene.knight.position.y-366)<2 and scene.knight.is_on_floor(),"basic jump reaches generated ruin resource ledge")
+	check(absf(scene.knight.position.y-430)<2 and scene.knight.is_on_floor(),"removed jump keeps the knight on flat ruin ground")
 	await click(scene.hud.interact_button)
-	check(cache.delivered,"knight directly opens elevated treasure using the actual button")
+	check(cache.delivered,"knight directly opens ground-level treasure using the actual button")
 	scene.knight.position = Vector2(scene.sim.frontier.left_boundary+30,430)
 	await frames(6)
 	check(scene.knight.is_on_floor(),"far left generated route has actual collision")

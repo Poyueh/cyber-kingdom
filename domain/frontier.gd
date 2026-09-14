@@ -51,7 +51,7 @@ func _init(map_seed: int, rules: Dictionary = {}) -> void:
 		regions.append({"kind":types[index],"x":x,"width":width,"discovered":false,"outpost_x":0.0,"outpost_ready":false,"outpost_pending":false,"outpost_built":false,"outpost_progress":0.0})
 		_populate(index,types[index],x,width,rng)
 	# Keep the original six regions and random sequence intact for legacy saves.
-	var extra:=clampi(int(rules.get("outer_regions_per_side",0)),0,6)
+	var extra:=clampi(int(rules.get("outer_regions_per_side",0)),0,8)
 	for side in [-1,1]:
 		var outer_types: Array=["forest","quarry","ruins"]
 		for i in range(2,0,-1):
@@ -70,6 +70,9 @@ func _init(map_seed: int, rules: Dictionary = {}) -> void:
 			var index:=regions.size()
 			regions.append({"kind":kind,"x":x,"width":width,"discovered":false,"outpost_x":0.0,"outpost_ready":false,"outpost_pending":false,"outpost_built":false,"outpost_progress":0.0})
 			_populate(index,kind,x,width,rng)
+
+	if rules.get("flat_ground",0):
+		for node in nodes:node.y=430.0;node.pickup_y=430.0
 
 func _populate(index: int, kind: String, x: float, width: float, rng: RandomNumberGenerator) -> void:
 	match kind:

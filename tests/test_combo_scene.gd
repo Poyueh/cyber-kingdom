@@ -181,5 +181,5 @@ func verify_step_motion(scene) -> void:
 	await physics_frame
 	scene._physics_process(1.0/60)
 	key(KEY_L,false)
-	check(scene.sim.hero.attack_remaining==0 and scene.knight.position.x>origin,"dash escapes attack lock with real physical movement")
+	check(scene.sim.hero.attack_remaining>0 and is_equal_approx(scene.knight.position.x,origin),"removed dash cannot cancel the planted attack")
 	scene.restart()
