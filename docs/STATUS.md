@@ -773,3 +773,9 @@ feature/player-guide-html 依 Gitflow 驗證後整合本地 develop，未推送�
 完整 tools/check.sh 通過，新增 2 個 Python 匯出測試。Chrome 鍵盤建設、移動、丟晶、跳躍、出刀與衝刺，以及滑鼠手動存讀檔、IndexedDB 重載均通過；模擬手機的真正 touch 事件可長按建營地、移動與暫停保存。ZIP CRC／SHA-256 通過。未宣稱實體 iPhone Safari、音質或長時間效能已驗收。
 
 規格 docs/design/web-preview.md，證據 docs/reports/web-preview-v001，附第四十六課，學習狀態未視為已掌握。feature/web-playable-export 按 Gitflow 整合本地 develop，不推送。既有個人設定未納入匯出；先前 Win/Mac 產物仍保留，這次沒有重建。下一步可由玩家在此 Mac 瀏覽器試玩，再決定公開託管與手機實機驗收。
+
+## 2026-09-14：0.0.1 首次 GitHub 發行準備
+
+使用者授權發布第一版 0.0.1 到 Poyueh/cyber-kingdom 並使用既有 Pages。統一各平台版本號，來源 b882769 重新建置 Windows x64／macOS universal／Web，附件位於 builds/release-0.0.1，內附指南與 SHA256SUMS。完整檢查、Mac 實際啟動、17 項包內回歸、簽章與 ZIP 完整性皆通過。
+
+新增 Release 驅動的 Pages workflow；原 main 根目錄發布改為 GitHub Actions。部署腳本已驗證正常附件與拒絕錯誤雜湊／逃逸路徑。此時已具備發布條件，接續上傳及公開網址驗收後再記錄實際結果。參考 docs/reports/release-0.0.1 與第四十七課；未把教材視為已掌握。
