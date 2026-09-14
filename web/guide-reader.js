@@ -1,4 +1,4 @@
-/* Web-only reader. Godot opens it from the already-paused campaign menu. */
+/* Web-only reader. Godot opens it from the start menu or already-paused campaign menu. */
 (() => {
   const dialog = document.createElement('dialog');
   dialog.id = 'player-guide';
@@ -6,7 +6,7 @@
   dialog.innerHTML = `
     <header class="guide-toolbar">
       <span id="player-guide-title">騎士野外手冊</span>
-      <button type="button" class="guide-close" aria-label="關閉指南，回到暫停選單" title="關閉指南（Esc）" autofocus>
+      <button type="button" class="guide-close" aria-label="關閉指南，回到遊戲選單" title="關閉指南（Esc）" autofocus>
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg>
       </button>
     </header>
