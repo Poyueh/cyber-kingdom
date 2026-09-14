@@ -924,3 +924,7 @@ GitHub Actions 發行觸發34832664197、Pages 部署34832670799 均成功。附
 - 本機 H5 沿用 http://127.0.0.1:8797/，新版包在 builds/fortifications-20260914-final；功能依 Gitflow 整合本地 develop，尚未推送公開站。
 - Godot 第 57 課：Inspector 的 Fortifications 可調施工時間、塔基礎傷害及射程。
 - 詳見 docs/reports/living-fortifications-v001/README.md；下一步依實際試玩調整塔成本、夜間施工風險與新農地收益，手機實機與後期大量建築仍待驗證。
+
+## H5 v0.0.5 發行準備（2026-09-14）
+
+使用者授權僅發布 H5。沿用已驗證 74976ec 包，release/0.0.5 依 Gitflow 整合 main、tag v0.0.5 並回合 develop；附件在 builds/release-0.0.5。Windows／Mac 保持 v0.0.1。公開部署結果完成後補記。
