@@ -930,5 +930,57 @@
   "劍術與義肢電容都升到最高階後，自動騎上龍晶機械戰馬；移動更快，第一刀仍需站定。讀取既有滿級紀錄也會恢復騎乘。": {
     "zh_CN": "剑术与义肢电容都升到最高阶后，自动骑上龙晶机械战马；移动更快，第一刀仍需站定。读取既有满级记录也会恢复骑乘。",
     "en": "Max out both sword training and the prosthetic capacitor to automatically ride a dragon-crystal warhorse. Travel is faster, but the first slash still stops movement. Loading an existing fully upgraded journey restores the mount."
+  },
+  "獵人白天巡獵、夜間守兩側防線；其他居民夜間在防線內分散走動，天亮回去工作。新地圖兩侧更長，資源與寶箱都在平地；未知邊境由流動薄霧逐漸揭露。": {
+    "en": "Hunters patrol by day and defend both fronts at night. Other residents stroll within the defenses and resume work at dawn. New maps extend farther in both directions, with all resources and treasure at ground level. Moving mist gradually reveals the frontier.",
+    "zh_CN": "猎人白天巡猎、夜间守两侧防线；其他居民夜间在防线内分散走动，天亮回去工作。新地图两侧更长，资源与宝箱都在平地；未知边境由流动薄雾逐渐揭露。"
+  },
+  "左右空白處短拖慢走、長拖快跑、下滑給晶。快滑放手給一顆；靠近目標下滑按住會繼續填格。攻擊使用劍按鍵。": {
+    "en": "Short horizontal drags walk; longer drags run. Swipe down to offer one crystal, or hold near a target to fill its slots. Use the sword button to attack.",
+    "zh_CN": "左右空白处短拖慢走、长拖快跑、下滑给晶。快滑放手给一颗；靠近目标下滑按住会继续填格。攻击使用剑按键。"
+  },
+  "先看綠色體力條。每刀需要 12 體力，快跑每秒淨消耗 18；不足時會回到慢速。連斬要再次按下攻擊，按住不會一直出刀。此版已移除跳躍與衝刺。": {
+    "en": "Check the green stamina bar. Each cut costs 12 stamina; fast running drains 18 per second. Low stamina returns you to a walk. Press attack again to chain cuts. Jumping and dash are removed in this version.",
+    "zh_CN": "先看绿色体力条。每刀需要 12 体力，快跑每秒净消耗 18；不足时会回到慢速。连斩要再次按下攻击，按住不会一直出刀。此版已移除跳跃与冲刺。"
+  },
+  "白天狩獵產晶，遇敵還擊；夜晚回到兩側防線。兵營最多升三級，每級加 6 傷害，現有與新弓兵都受益。": {
+    "en": "Hunt for crystals by day and fight nearby enemies. Defend both walls at night. Each of three barracks levels adds 6 damage to all current and future archers.",
+    "zh_CN": "白天狩猎产晶，遇敌还击；夜晚回到两侧防线。兵营最多升三级，每级加 6 伤害，现有与新弓兵都受益。"
+  },
+  " 手機一指移動、另一指出刀；首刀站定，第二、第三刀踏進。": {
+    "en": " Move with one thumb and attack with the other. The first cut roots you; follow-ups step forward.",
+    "zh_CN": " 手机一指移动、另一指出刀；首刀站定，第二、第三刀踏进。"
+  },
+  "兵營升級完成，全體弓兵火力提高。": {
+    "en": "Barracks upgraded. All archers now deal more damage.",
+    "zh_CN": "兵营升级完成，全体弓兵火力提高。"
+  },
+  "為什麼不能出刀或快跑？": {
+    "en": "Why can I not attack or run fast?",
+    "zh_CN": "为什么不能出刀或快跑？"
+  },
+  "長拖曳進入快跑，縮短拖曳回到慢速；體力不足會降速。": {
+    "en": "Drag farther to run; shorten the drag to slow down. Low stamina returns you to a walk.",
+    "zh_CN": "长拖曳进入快跑，缩短拖曳回到慢速；体力不足会降速。"
+  },
+  "升級兵營": {
+    "en": "Upgrade barracks",
+    "zh_CN": "升级兵营"
+  },
+  "左右拖曳更長距離": {
+    "en": "Longer horizontal drag",
+    "zh_CN": "左右拖曳更长距离"
+  },
+  "兵營升級": {
+    "en": "Barracks upgrade",
+    "zh_CN": "兵营升级"
+  },
+  "快跑": {
+    "en": "Fast run",
+    "zh_CN": "快跑"
+  },
+  "巨龍以第 6 天為基準：提前封門不會降低它的基礎強度；第 7 天起，每延後一天，生命增加 240、傷害增加 4。強度在召喚時決定。先招募獵人並升級兵營、準備防線，再選擇封門時機；噴息蓄力時離開地面的橙色預警區。": {
+    "en": "The dragon has a day-six strength floor. Early seals cannot reduce its base power. From day seven, each day of delay adds 240 health and 4 damage; strength locks when summoned. Recruit hunters and upgrade the barracks, prepare your defenses, then choose when to seal. Leave the orange ground warning during its breath windup.",
+    "zh_CN": "巨龙以第 6 天为基准：提前封门不会降低它的基础强度；第 7 天起，每延后一天，生命增加 240、伤害增加 4。强度在召唤时决定。先招募猎人并升级兵营、准备防线，再选择封门时机；喷息蓄力时离开地面的橙色预警区。"
   }
 }
