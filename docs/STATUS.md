@@ -859,3 +859,5 @@ Steam GetCurrentGameLanguage 接點已預留，尚未接 SDK 或 App ID；目前
 完整 tools/check.sh 通過：1212 規則 assertions、全部場景及建置／翻譯／分層檢查，零 SCRIPT ERROR。多指場景 12 assertions，涵蓋移動加付款、丟晶、切背景、移動中原地攻擊與安全範圍。固定首領測試中，無守衛核心失守、8 名集中守衛能獲勝；不代表完整旅程最終平衡。教學第 52 課與設計見 docs/design/dragon-frontier.md；證據見 docs/reports/dragon-frontier-v001。
 
 本輪本機交付；未發布 Pages、Release 或 Win/Mac 包。尚需真人從荒地玩至巨龍，以及 iPhone 17e／16 Pro Max 真機手勢與效能驗證。
+
+本機 H5 包 `builds/dragon-frontier-20260914`，來源 `4e1034a`，預覽 http://127.0.0.1:8797/ 。乾淨匯出、ZIP CRC／SHA256、瀏覽器開場／暫停／內嵌指南及 844×390 版面通過，瀏覽器錯誤與警告為空；手機硬體仍待驗證。
