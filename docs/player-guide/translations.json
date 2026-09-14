@@ -982,5 +982,37 @@
   "巨龍以第 6 天為基準：提前封門不會降低它的基礎強度；第 7 天起，每延後一天，生命增加 240、傷害增加 4。強度在召喚時決定。先招募獵人並升級兵營、準備防線，再選擇封門時機；噴息蓄力時離開地面的橙色預警區。": {
     "en": "The dragon has a day-six strength floor. Early seals cannot reduce its base power. From day seven, each day of delay adds 240 health and 4 damage; strength locks when summoned. Recruit hunters and upgrade the barracks, prepare your defenses, then choose when to seal. Leave the orange ground warning during its breath windup.",
     "zh_CN": "巨龙以第 6 天为基准：提前封门不会降低它的基础强度；第 7 天起，每延后一天，生命增加 240、伤害增加 4。强度在召唤时决定。先招募猎人并升级兵营、准备防线，再选择封门时机；喷息蓄力时离开地面的橙色预警区。"
+  },
+  "獵人白天巡獵、夜間守兩側防線；工匠夜間繼續城內施工，其他居民分散走動。若城牆失守或施工路上出現敵人，工匠先退回安全處。": {
+    "en": "Hunters patrol by day and guard both fronts at night. Engineers keep building inside the defenses while other residents wander. If a wall falls or enemies block the work route, engineers retreat to safety.",
+    "zh_CN": "猎人白天巡猎、夜间守两侧防线；工匠夜间继续城内施工，其他居民分散走动。若城墙失守或施工路上出现敌人，工匠先退回安全处。"
+  },
+  "讓防線一起成長": {
+    "en": "Let your defenses grow",
+    "zh_CN": "让防线一起成长"
+  },
+  "箭塔 → 連弩塔 → 雷射塔": {
+    "en": "Arrow tower → rapid crossbow → laser tower",
+    "zh_CN": "箭塔 → 连弩塔 → 激光塔"
+  },
+  "每階花費 3／5／8 龍晶，需相應聚落等級。第一階自動射箭，第二階加快射速，第三階發射高傷雷射；付滿後由工匠施工。": {
+    "en": "Each tier costs 3 / 5 / 8 crystals and requires the matching settlement level. Tier one fires arrows, tier two fires faster, and tier three fires powerful lasers. Engineers construct each funded upgrade.",
+    "zh_CN": "每阶花费 3／5／8 龙晶，需相应聚落等级。第一阶自动射箭，第二阶加快射速，第三阶发射高伤激光；付满后由工匠施工。"
+  },
+  "木牆 → 石牆 → 堡壘": {
+    "en": "Wood → stone → fortress",
+    "zh_CN": "木墙 → 石墙 → 堡垒"
+  },
+  "建造與升階花費 3／4／7 龍晶，耐久為 40／80／160。受損時先修復；堡壘需要三級聚落。": {
+    "en": "Construction and upgrades cost 3 / 4 / 7 crystals, with 40 / 80 / 160 durability. Repair damaged walls first. Fortresses require a level-three settlement.",
+    "zh_CN": "建造与升阶花费 3／4／7 龙晶，耐久为 40／80／160。受损时先修复；堡垒需要三级聚落。"
+  },
+  "開墾後，發現新的用途": {
+    "en": "Discover new uses for cleared ground",
+    "zh_CN": "开垦后，发现新的用途"
+  },
+  "工匠清掉一片樹木或礦產後，可出現城牆、守護塔或農地圖示。用途隨地圖種子決定，讀檔不會重抽；走近投入龍晶，再由工匠建造。農地需要農夫，白天產出龍晶。": {
+    "en": "Cleared trees and mineral sites can reveal a wall, tower or farm plot. Its purpose is fixed by the map seed and does not reroll on loading. Fund it nearby and let an engineer build it. Farms need farmers and produce crystals during the day.",
+    "zh_CN": "工匠清掉一片树木或矿产后，可出现城墙、守护塔或农地图标。用途随地图种子决定，读档不会重抽；走近投入龙晶，再由工匠建造。农地需要农夫，白天产出龙晶。"
   }
 }

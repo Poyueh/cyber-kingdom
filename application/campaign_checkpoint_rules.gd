@@ -73,7 +73,7 @@ static func valid(data: Dictionary, base: Dictionary) -> bool:
 				if typeof(actual)!=typeof(expected):return false
 			elif not shape(actual,expected):return false
 	var mutable={
-		"session":["loot","wave","time_to_raid","_spawn_remaining","_spawn_timer","_hero_x","_night_spawn_index","_player_y","investments","built","barracks_level"],
+		"session":["loot","wave","time_to_raid","_spawn_remaining","_spawn_timer","_hero_x","_night_spawn_index","_player_y","investments","built","barracks_level","buildings"],
 		"world":["people","supplies","tools","walls","scrap","crystals","barrier"],
 		"frontier":["regions","animals","wood","food","stone","herbs","city_level","farm_active","farm_progress","drill_level"],
 		"clock":["day","survived","is_night","remaining"],"mission":["core_hp","outcome","defeat_reason","rifts","dragon_summoned","dragon_defeated","dragon_day"],
@@ -82,6 +82,15 @@ static func valid(data: Dictionary, base: Dictionary) -> bool:
 		for key in base[section]:
 			if key not in mutable[section] and not same(data[section][key],base[section][key]):return false
 	if not in_range(data.session.get("barracks_level",0),0,3):return false
+	if data.session.has("buildings"):
+		if not shape(data.session.buildings,base.session.buildings):return false
+		for id in data.session.buildings:
+			var site: Dictionary=data.session.buildings[id]
+			for field in ["kind","x","region","node"]:
+				if not same(site[field],base.session.buildings[id][field]):return false
+			if not in_range(site.level,0,3 if site.kind=="tower" else 1):return false
+			if not in_range(site.progress,0,data.session.build_seconds) or not in_range(site.cooldown,0,2) or not in_range(site.harvest,0,data.frontier.farm_cycle):return false
+			if site.pending and site.level>=(3 if site.kind=="tower" else 1):return false
 	var world: Dictionary=data.world
 	var map: Dictionary=data.frontier
 	var people: Array=world.people
@@ -95,7 +104,7 @@ static func valid(data: Dictionary, base: Dictionary) -> bool:
 	for key in ["scrap","crystals","barrier"]:
 		if world[key]<0:return false
 	for wall in world.walls.values():
-		if not in_range(wall.level,0,2) or not in_range(wall.hp,0,wall.level*40) or wall.progress<0:return false
+		if not in_range(wall.level,0,3) or not in_range(wall.hp,0,preload("res://domain/building_sites.gd").wall_health(wall.level)) or wall.progress<0:return false
 	for supply in world.supplies:
 		if not shape(supply,{"x":0.0,"taken":false,"age":0.0}) or supply.age<0:return false
 	var left: float=base.frontier.left_boundary

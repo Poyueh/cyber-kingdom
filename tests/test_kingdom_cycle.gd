@@ -29,4 +29,5 @@ func test_expansion_is_hidden_until_the_region_is_cleared(t) -> void:
 	for n in sim.frontier.nodes:
 		if n.region==region:n.collected=true
 	t.truth(sim.defenses.visible(id),"actual resident clearing exposes the ground footprint")
+	sim.advance(0.01,30) # Settle the newly cleared plot and its separate depot location.
 	t.truth(sim.context(sim.frontier.regions[region].outpost_x).id=="outpost","cleared region exposes payable outpost")

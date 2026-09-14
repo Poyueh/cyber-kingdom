@@ -19,12 +19,15 @@ func _init(settlement, map, config: Dictionary={}) -> void:
 		previous[side]=id
 
 func visible(id: String) -> bool:
+	if plots.has(id) and plots[id].has("cleared_node"):
+		return world.walls[id].level>0 or world.walls[id].pending or preload("res://domain/building_sites.gd").cleared(frontier,{"node":plots[id].cleared_node,"region":plots[id].region,"x":world.sites[id]})
 	return not plots.has(id) or world.walls[id].level>0 or world.walls[id].pending or frontier.expansion_cleared(plots[id].region)
 
 func prerequisites(id: String) -> Array[Dictionary]:
 	var result: Array[Dictionary]=[]
 	if not plots.has(id) or world.walls[id].level>0:return result
 	var plot: Dictionary=plots[id]
+	if plot.has("cleared_node"):return result
 	if frontier.city_level<2:result.append({"icon":"camp","value":2})
 	if not frontier.regions[plot.region].outpost_built:result.append({"icon":"outpost","value":1})
 	if world.walls[plot.previous].hp<=0:result.append({"icon":"wall","value":1})
@@ -53,3 +56,7 @@ func shelter(from_x: float, fallback: float) -> float:
 		if world.walls[post].hp<=0 or side*at>side*world.sites[post]-120:continue
 		if absf(at-from_x)<absf(home-from_x):home=at
 	return home
+
+func work_bounds() -> Vector2:
+	var left: String=active_post(-1);var right: String=active_post(1)
+	return Vector2(world.sites[left] if world.walls[left].hp>0 else world.sites.hall-220,world.sites[right] if world.walls[right].hp>0 else world.sites.hall+220)
