@@ -1,6 +1,7 @@
 extends "res://presentation/frontier_view.gd"
 const HitFeedback=preload("res://presentation/campaign_hit_feedback.gd")
 var hit_feedback:=HitFeedback.new()
+var _reveal=preload("res://presentation/exploration_reveal.gd").new()
 var _mist=preload("res://presentation/exploration_mist.gd").new()
 const Details=preload("res://presentation/frontier_details.gd")
 var _details: Array[Dictionary]=[]
@@ -27,9 +28,11 @@ const EXTRA_ART := {"campfire":preload("res://art/campaign/v001/campfire.png"),"
 func present(sim, player_x: float) -> void:
 	if not is_same(_sim,sim):
 		_resident_motion.clear()
+		_reveal=preload("res://presentation/exploration_reveal.gd").new()
 		_mist=preload("res://presentation/exploration_mist.gd").new()
 		_details=Details.layout(sim.map_seed,sim.frontier.regions)
 	_sim=sim
+	_reveal.observe(sim.frontier.regions+sim.mission.rifts,sim.workforce.elapsed)
 	hit_feedback.present(sim)
 	_view_player_x=player_x
 	_context=sim.context(player_x) if focus_key.is_empty() else sim.context_for_key(player_x,focus_key)
@@ -38,6 +41,9 @@ func present(sim, player_x: float) -> void:
 		_slot_key=_context.key
 		_slot_paid=_context.paid
 	queue_redraw()
+
+func _region_reveal(index: int) -> float:
+	return _reveal.amount(index)
 
 func _outpost_visible(region: Dictionary) -> bool:
 	return region.outpost_built or region.outpost_pending or (_sim.frontier.expansion_cleared(_sim.frontier.regions.find(region)) and absf(_view_player_x-region.outpost_x)<180)
@@ -49,6 +55,7 @@ func _work_marker(resource, at: Vector2) -> void:
 		draw_rect(Rect2(at+Vector2(-16,3),Vector2(32*clampf(1-resource.remaining_work/75.0,0,1),2)),Color("a8d5b3"))
 
 func _prop(name: String, at: Vector2, scale: float = 1.0, tint := Color.WHITE) -> void:
+	tint.a*=_world_alpha
 	if name=="outpost":
 		var regions=_sim.frontier.regions.filter(func(r):return is_equal_approx(r.outpost_x,at.x))
 		if not regions.is_empty() and not regions[0].outpost_built:name="plot"
@@ -154,6 +161,7 @@ func _draw_structures() -> void:
 func _draw_recruitment_camps() -> void:
 	for i in range(_sim.frontier.regions.size()):
 		if not _sim.frontier.regions[i].discovered:continue
+		_world_alpha=_region_reveal(i)
 		var x: float=_sim.ecology.camp_x(i)
 		var active: bool=_sim.ecology.habitat(i)
 		_prop("campfire" if active else "stone",Vector2(x,430),0.35,Color.WHITE if active else Color("5b6876"))
@@ -165,7 +173,9 @@ func _draw_recruitment_camps() -> void:
 		_number("%d/%d" % [_sim.world.people.size() if full else count,_sim.ecology.population_limit if full else _sim.ecology.waiting_limit],Vector2(x-15,348))
 		_icon("lock" if full else "sun",Vector2(x+31,343),17,Color("dd9c91") if full else Color("d9d7ac"))
 		if not active:
-			draw_line(Vector2(x-38,354),Vector2(x+38,330),Color("c99187"),2)
+			draw_line(Vector2(x-38,354),Vector2(x+38,330),Color(Color("c99187"),_world_alpha),2)
+
+	_world_alpha=1.0
 
 func _draw_mission() -> void:
 	var mission=_sim.mission
@@ -175,11 +185,13 @@ func _draw_mission() -> void:
 	_icon("camp",Vector2(x-42,y),18,Color("9edbd3"))
 	draw_rect(Rect2(x-28,y-3,56,5),Color("25373e"))
 	draw_rect(Rect2(x-28,y-3,56*ratio,5),Color("eea097") if ratio<0.35 else Color("9edbd3"))
-	for rift in mission.rifts:
-		if rift.discovered:RiftVisual.draw_gate(self,rift,_sim.workforce.elapsed,mission.seal_seconds)
+	for index in range(mission.rifts.size()):
+		var rift: Dictionary=mission.rifts[index]
+		if rift.discovered:RiftVisual.draw_gate(self,rift,_sim.workforce.elapsed,mission.seal_seconds,_reveal.amount(_sim.frontier.regions.size()+index))
 
 func _person(person: Dictionary, protected: bool) -> void:
 	if not _sim.person_visible(person): return
+	_world_alpha=_region_reveal(person.get("region",-1)) if person.role=="wanderer" else 1.0
 	var state: String=person.get("work_state","idle")
 	var hit:=hit_feedback.resident_pose(_sim.world.people.find(person))
 	if person.role=="engineer" and state in ["work","haul","climb"] and not hit.active:
@@ -193,12 +205,18 @@ func _person(person: Dictionary, protected: bool) -> void:
 		if hit.active:pose.frame=0
 		var at:=Vector2(person.x,person.get("y",430))
 		draw_set_transform(at+hit.offset,hit.rotation,hit.scale*Vector2(person.get("direction",1.0),1))
-		draw_texture_rect_region(resident_atlas,Rect2(-32,-62,64,64),Rect2(pose.frame*64,row*64,64,64),Color(1.8,1.15,1.1).lerp(Color.WHITE,1-hit.flash) if hit.active else Color.WHITE)
+		_draw_person_texture(resident_atlas,Rect2(pose.frame*64,row*64,64,64),Color(1.8,1.15,1.1).lerp(Color.WHITE,1-hit.flash) if hit.active else Color.WHITE)
 		draw_set_transform(Vector2.ZERO)
 		if protected and person.role!="wanderer": draw_arc(at+Vector2(0,-24),29,PI,TAU,16,Color("81ddda"),1)
 
 	var key: String={"wanderer":"person","citizen":"person","engineer":"hammer","farmer":"hoe","hunter":"bow","guard":"sword"}[person.role]
-	_icon(key,Vector2(person.x,person.get("y",430)-66),17,Color("b4e7df") if person.role!="wanderer" else Color("d4c3a7"))
+	_icon(key,Vector2(person.x,person.get("y",430)-50),17,Color("b4e7df") if person.role!="wanderer" else Color("d4c3a7"))
+
+	_world_alpha=1.0
+
+func _draw_person_texture(texture: Texture2D, source: Rect2, tint: Color) -> void:
+	tint.a*=_world_alpha
+	preload("res://presentation/compact_people.gd").draw(self,texture,source,tint)
 
 func _draw_activity() -> void:
 	# Render rewards after actors so the collection journey stays legible.
@@ -209,7 +227,7 @@ func _draw_activity() -> void:
 			var visible: Dictionary=pile.duplicate()
 			visible.x+=index*11-(mini(3,pile.amount)-1)*5.5
 			visible.id+=index
-			Ambient.crystal(self,visible,crystal_radius,_sim.workforce.elapsed)
+			Ambient.crystal(self,visible,crystal_radius*1.35,_sim.workforce.elapsed)
 		if pile.amount>1: _number(str(pile.amount),Vector2(pile.x+12,pile.y-29))
 	for effect in _sim.effects:
 		if effect.kind=="dragon_fire":
@@ -231,7 +249,7 @@ func _draw_activity() -> void:
 			var point:=at+Vector2(cos(angle),sin(angle))*(8+progress*28)
 			draw_rect(Rect2(point.round(),Vector2.ONE*2),Color(0.65,1,0.83,1-progress))
 
-func _crystal(at: Vector2, filled: bool, radius: float = 6.0) -> void:
+func _crystal(at: Vector2, filled: bool, radius: float = 8.0) -> void:
 	var points := PackedVector2Array([at+Vector2(0,-radius),at+Vector2(radius*0.7,0),at+Vector2(0,radius),at+Vector2(-radius*0.7,0)])
 	draw_colored_polygon(points,Color("9ef1dd") if filled else Color("16313b"))
 	points.append(points[0])
@@ -244,7 +262,7 @@ func _draw_interaction() -> void:
 	var prerequisites: Array=_context.get("prerequisites",[])
 	var upgrade: Dictionary=_context.get("upgrade",{})
 	var consequences: Array=_context.get("consequences",[])
-	var width:=maxf(96,_context.cost*18+48)
+	var width:=maxf(96,_context.cost*23+48)
 	width=maxf(width,maxi(requirements.size(),prerequisites.size())*52+28)
 	if not upgrade.is_empty():width=maxf(width,136)
 	var inverse:=get_viewport().get_canvas_transform().affine_inverse()
@@ -264,16 +282,16 @@ func _draw_interaction() -> void:
 	if _context.id=="mark":
 		key={"tree":"tree","crystal":"pickaxe","berries":"food","stone":"stone","herbs":"herbs"}.get(_sim.frontier.nodes[_context.node_index].kind,"hammer")
 	_icon(key,Vector2(x,y),28)
-	if keyboard_hint:_number("E",Vector2(x+22,y+5))
+	if keyboard_hint:_number("E",Vector2(x+28,y+5))
 	if not _context.enabled and not (_context.id=="rift" and _sim.mission.rifts[_context.rift_index].ordered): _icon("lock",Vector2(x+width*0.5-15,y-3),17,Color("d4a994"))
 	for index in range(_context.cost):
-		var slot:=Vector2(x+(index-(_context.cost-1)*0.5)*18,y+27)
+		var slot:=Vector2(x+(index-(_context.cost-1)*0.5)*23,y+34)
 		if index==_context.paid-1:
 			var age: float=clampf((_sim.workforce.elapsed-_slot_changed)/0.18,0,1)
 			slot.y-=14*(1-age)*(1-age)
 		_crystal(slot,index<_context.paid)
 		if index==_context.paid and investment_progress>0:
-			draw_arc(slot,8,-PI*0.5,-PI*0.5+TAU*investment_progress,24,Color("e6f6b4"),2)
+			draw_arc(slot,11,-PI*0.5,-PI*0.5+TAU*investment_progress,24,Color("e6f6b4"),2)
 	if _context.cost==0:
 		var status: String="hand" if _context.enabled else "check"
 		if _context.id=="rift" and not _sim.mission.rifts[_context.rift_index].sealed:status="hammer"
@@ -311,17 +329,19 @@ func _draw_interaction() -> void:
 
 func _bubble_style() -> StyleBoxFlat:
 	var style:=StyleBoxFlat.new()
-	style.bg_color=Color(0.035,0.09,0.13,0.88)
-	style.border_color=Color("668f88")
+	style.bg_color=Color(0.035,0.09,0.13,0.88*_world_alpha)
+	style.border_color=Color(Color("668f88"),_world_alpha)
 	style.set_border_width_all(1)
 	style.set_corner_radius_all(8)
 	return style
 
 func _icon(key: String, at: Vector2, size: float=24, tint:=Color.WHITE) -> void:
+	size*=1.3
+	tint.a*=_world_alpha
 	draw_texture_rect(Icons.get_icon(key),Rect2(at-Vector2.ONE*size*0.5,Vector2.ONE*size),false,tint)
 
 func _number(value: String, at: Vector2) -> void:
-	draw_string(_font,at,value,HORIZONTAL_ALIGNMENT_LEFT,-1,12,Color("e1e4d0"))
+	draw_string(_font,at,value,HORIZONTAL_ALIGNMENT_LEFT,-1,12,Color(Color("e1e4d0"),_world_alpha))
 
 func _text(value: String, x: float, y: float, _color:=Color.WHITE, _size: int=15) -> void:
 	# The campaign's world language is symbols; legacy scenes retain their labels.
@@ -334,7 +354,7 @@ func _resource(resource) -> void:
 		var texture: Texture2D=art.props.get("chest-open",chest_open)
 		var size:=texture.get_size()
 		size.y*=lerpf(0.72,1.0,clampf(elapsed/0.18,0,1))
-		draw_texture_rect(texture,Rect2(Vector2(resource.x-size.x*0.5,resource.y-size.y),size),false,Color(0.8,0.9,0.9))
+		draw_texture_rect(texture,Rect2(Vector2(resource.x-size.x*0.5,resource.y-size.y),size),false,Color(0.8,0.9,0.9,_world_alpha))
 		return
 	super._resource(resource)
 
@@ -349,11 +369,11 @@ func _raider(enemy: Dictionary) -> void:
 	var texture: Texture2D=EnemyFrames.get_frame_texture(clip,frame)
 	var at:=Vector2(enemy.x,430)
 	draw_set_transform(at+hit.offset,hit.rotation,hit.scale*Vector2(enemy.get("direction",-1.0),1))
-	draw_texture(texture,Vector2(-texture.get_width()*0.5,-texture.get_height()*0.5-32),Color(1.8,1.1,1.05).lerp(Color.WHITE,1-hit.flash))
+	preload("res://presentation/compact_people.gd").draw(self,texture,Rect2(Vector2.ZERO,texture.get_size()),Color(1.8,1.1,1.05).lerp(Color.WHITE,1-hit.flash),41,80)
 	draw_set_transform(Vector2.ZERO)
-	draw_rect(Rect2(enemy.x-22,360,44,4),Color("482a3a"))
-	draw_rect(Rect2(enemy.x-22,360,44.0*enemy.fighter.hp/enemy.fighter.stats.max_hp,4),Color("df8491"))
-	if enemy.windup>0:_icon("sword",Vector2(enemy.x,348),20,Color("ffd087"))
+	draw_rect(Rect2(enemy.x-22,380,44,4),Color("482a3a"))
+	draw_rect(Rect2(enemy.x-22,380,44.0*enemy.fighter.hp/enemy.fighter.stats.max_hp,4),Color("df8491"))
+	if enemy.windup>0:_icon("sword",Vector2(enemy.x,368),20,Color("ffd087"))
 func _draw_fallen() -> void:
 	var texture: Texture2D=EnemyFrames.get_frame_texture("idle",0)
 	for body in hit_feedback.fallen:
@@ -362,7 +382,7 @@ func _draw_fallen() -> void:
 			preload("res://presentation/dragon_visual.gd").draw_fallen(self,body,progress)
 			continue
 		draw_set_transform(Vector2(body.x-body.direction*progress*12,430),-body.direction*progress*0.85,Vector2(body.direction,1-progress*0.5))
-		draw_texture(texture,Vector2(-texture.get_width()*0.5,-texture.get_height()*0.5-32),Color(1.3,0.9,0.85,1-progress))
+		preload("res://presentation/compact_people.gd").draw(self,texture,Rect2(Vector2.ZERO,texture.get_size()),Color(1.3,0.9,0.85,1-progress),41,80)
 		draw_set_transform(Vector2.ZERO)
 
 func _draw() -> void:

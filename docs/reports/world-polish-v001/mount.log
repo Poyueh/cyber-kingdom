@@ -1,0 +1,13 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS: new knight begins on foot
+PASS: camera keeps whole mounted silhouette inside both map ends
+PASS: maximum sword without armor stays on foot
+PASS: both top equipment tiers mount knight
+PASS: mount increases actual travel speed
+PASS: mounted first slash still roots movement
+PASS: mounted attack retains horse and rider
+PASS: upgraded run still round-trips through existing checkpoint schema
+PASS: loading upgraded run restores riding from equipment
+PASS: new journey clears prior mount
+Mount scene assertions: 10; failures: 0

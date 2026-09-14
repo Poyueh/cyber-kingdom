@@ -30,3 +30,6 @@ func capacitor_scrap() -> int:
 	return 2+capacitor_level*scrap_step
 func lesson_food(base: int, level: int) -> int:
 	return base*(level+1)
+
+func can_ride(weapon_level: int, weapon_limit: int=3) -> bool:
+	return weapon_level>=weapon_limit and capacitor_level>=capacitor_limit
