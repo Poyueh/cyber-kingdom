@@ -38,8 +38,8 @@ func test_campfire_investments_persist_and_never_double_charge(t) -> void:
 	t.truth(sim.interact(30),"second crystal establishes camp")
 	t.equal(sim.frontier.city_level,1,"filled campfire becomes a settlement")
 	t.equal(sim.pouch.amount,before-2,"construction charges exactly the displayed amount")
-	t.truth(not sim.interact(30),"missing upgrade materials cannot consume another crystal")
-	t.equal(sim.pouch.amount,before-2,"invalid repeat leaves backpack unchanged")
+	t.truth(sim.interact(30),"next upgrade accepts a new independent crystal payment")
+	t.equal(sim.pouch.amount,before-3,"new upgrade charges only its first displayed slot")
 
 func test_knight_opens_chest_once_and_full_bag_spills(t) -> void:
 	var sim = campaign(t,{"capacity":2,"starting_crystals":2})
@@ -51,7 +51,7 @@ func test_knight_opens_chest_once_and_full_bag_spills(t) -> void:
 	t.equal(sim.context(chest.x).id,"chest","treasure is a direct knight interaction")
 	var before: int = sim.world.scrap
 	t.truth(sim.interact(chest.x),"knight opens treasure without a worker")
-	t.truth(chest.delivered and sim.world.scrap>before,"treasure contents arrive once")
+	t.truth(chest.delivered and sim.pouch.ground_total()==chest.crystals,"treasure contents arrive once")
 	t.equal(sim.pouch.amount,2,"chest cannot overfill backpack")
 	t.equal(sim.pouch.ground_total(),chest.crystals,"excess chest crystals remain at chest height")
 	sim.interact(chest.x)
@@ -123,34 +123,8 @@ func test_resident_delivery_leaves_crystals_at_depot_and_banks_stone(t) -> void:
 	for tick in range(2500):
 		sim.advance(0.1,node.x)
 		if node.delivered: break
-	t.equal(sim.frontier.stone,6,"stone is physically collected and banked by worker")
-
-func test_resources_have_distinct_uses_and_renewable_crystal_trade(t) -> void:
-	var sim = campaign(t)
-	if sim == null: return
-	sim.interact(30); sim.interact(30)
-	sim.frontier.herbs=2
-	sim.hero.hp=40
-	t.truth(sim.interact(-850),"herbs treat an injured knight")
-	t.equal(sim.hero.hp,70,"herbal treatment restores actual health")
-	t.equal(sim.frontier.herbs,0,"herbs are consumed")
-	sim.frontier.wood=2; sim.frontier.food=1
-	for slot in range(3): sim.interact(-350)
-	sim.world.people[0].role="farmer"
-	sim.world.people[0].x=-350
-	sim.advance(24,-350)
-	t.equal(sim.frontier.food,4,"farmer produces two net harvests while retaining seed")
-	var before: int=sim.pouch.amount
-	t.truth(sim.interact(-700),"surplus harvest trades into crystals")
-	t.equal(sim.frontier.food,0,"trade consumes food exactly once")
-	t.equal(sim.pouch.amount,before+2,"renewable farming replenishes investment currency")
-	t.truth(not sim.interact(-700),"empty trade cannot generate free crystals")
-	var shield: int=sim.hero.shield
-	t.truth(not sim.interact(350),"forge also requires recovered scrap")
-	sim.world.scrap=2
-	sim.interact(350); sim.interact(350)
-	t.equal(sim.world.scrap,0,"forging consumes salvaged scrap")
-	t.equal(sim.hero.shield,shield+sim.world.shield_value,"scrap and crystals power an actual knight shield")
+	t.equal(sim.frontier.stone,0,"mining no longer creates a separate stone currency")
+	t.equal(sim.pouch.ground_total(),node.crystals,"mined rock becomes physical crystals at the depot")
 
 func test_later_night_damage_reaches_knight_and_wall(t) -> void:
 	var sim = campaign(t)

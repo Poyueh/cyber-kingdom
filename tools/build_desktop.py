@@ -34,7 +34,7 @@ def prepare_tree(ref, destination):
         archive.extractall(destination)
     project = destination / "project.godot"
     original = project.read_text()
-    content, count = re.subn(r'^run/main_scene=.*$', 'run/main_scene="res://scenes/frontier.tscn"', original, flags=re.M)
+    content, count = re.subn(r'^run/main_scene=.*$', 'run/main_scene="res://scenes/start_menu.tscn"', original, flags=re.M)
     if count != 1:
         raise ValueError("Expected exactly one main scene in project.godot")
     content, count = re.subn(r'^config/name=.*$', 'config/name="Cyber Kingdom Demo"', content, flags=re.M)
@@ -80,7 +80,7 @@ def main():
         checksums = {p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in output.glob("*.zip")}
         version = subprocess.check_output([args.godot, "--version"], text=True).strip()
         (output / "manifest.json").write_text(json.dumps({
-            "source_tree": tree, "engine": version, "entry": "res://scenes/frontier.tscn",
+            "source_tree": tree, "engine": version, "entry": "res://scenes/start_menu.tscn",
             "configuration": "committed settings, release export, prototype content",
             "macOS_signing": "ad-hoc; not notarized", "Windows_signing": "unsigned",
             "checksums_sha256": checksums,

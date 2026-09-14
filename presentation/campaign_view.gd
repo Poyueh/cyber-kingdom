@@ -139,7 +139,7 @@ func _draw_structures() -> void:
 		if defense.pending:
 			_icon("hammer",Vector2(wall_x,307),18)
 			draw_rect(Rect2(wall_x-28,326,56.0*minf(1.0,defense.progress/3.0),3),Color("f4d49d"))
-	for site in ["farm","drill","trade","heal"]:
+	for site in ["farm","drill","heal"]:
 		var at := Vector2(world.sites[site],430)
 		_prop("crops" if site=="farm" and map.farm_active else ("herbs" if site=="heal" else "plot"),at)
 		_text(_sim.NAMES[site],at.x,345,Color("d0d9b8"),13)

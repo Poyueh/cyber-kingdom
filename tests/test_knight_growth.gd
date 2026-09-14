@@ -5,8 +5,6 @@ func camp(config: Dictionary={}):
 	var sim=Campaign.new(config)
 	sim.world.people.clear()
 	sim.frontier.city_level=1
-	sim.world.scrap=30
-	sim.frontier.food=30
 	return sim
 func buy(sim,x: float) -> void:
 	var choice: Dictionary=sim.context(x)
@@ -25,7 +23,7 @@ func test_full_shield_cannot_stack_before_city_upgrade(t):
 	t.equal(sim.hero.shield,60,"third capacitor reaches a bounded sixty shield")
 	t.truth(not sim.context(350).enabled,"maximum capacitor disables further stacking")
 	t.equal(sim.context(350).cost,0,"full capacitor shows completion rather than another price")
-	t.equal(sim.world.scrap,21,"three tiers cost two, three and four scrap")
+	t.equal(sim.world.scrap,0,"capacitor tiers use crystals without scrap")
 	t.equal(sim.pouch.amount,3,"three tiers compete for nine crystals")
 
 func test_damage_offers_bounded_refill_instead_of_another_upgrade(t):
@@ -38,7 +36,7 @@ func test_damage_offers_bounded_refill_instead_of_another_upgrade(t):
 	t.equal(choice.cost,1,"one crystal recharges a capacitor")
 	buy(sim,350)
 	t.equal(sim.hero.shield,20,"refill clamps to installed capacity")
-	t.equal(sim.world.scrap,27,"recharging uses one scrap in addition to initial two")
+	t.equal(sim.world.scrap,0,"recharge needs no secondary material")
 	t.truth(not sim.context(350).enabled,"refill cannot raise capacitor tier")
 
 func test_training_tiers_cost_more_and_require_city_progress(t):
@@ -48,12 +46,12 @@ func test_training_tiers_cost_more_and_require_city_progress(t):
 	t.truth(not sim.context(1230).enabled,"second lesson waits for tier-two settlement")
 	sim.frontier.city_level=2
 	t.equal(sim.context(1230).cost,3,"second lesson spends three crystals")
-	t.equal(sim.context(1230).requirements.food,4,"second lesson competes with food trading")
+	t.truth(sim.context(1230).get("requirements",{}).is_empty(),"training only spends displayed crystal slots")
 	buy(sim,1230)
 	sim.frontier.city_level=3
 	buy(sim,1230)
 	t.equal(sim.hero.stats.damage,40,"third lesson reaches bounded sword strength")
-	t.equal(sim.frontier.food,18,"three lessons consume two, four, six food")
+	t.equal(sim.frontier.food,0,"training requires no food reserve")
 	t.equal(sim.pouch.amount,3,"sword route spends nine crystals")
 	t.truth(not sim.interact(1230),"maximum training does not charge or add damage")
 	t.equal(sim.context(1230).cost,0,"full training shows completion rather than another price")
@@ -88,4 +86,4 @@ func test_growth_configuration_changes_actual_cap_and_training(t):
 	t.equal(sim.context(350).cost,2,"configured refill cost is used")
 	buy(sim,350)
 	t.equal(sim.hero.shield,30,"configured refill is bounded")
-	t.equal(sim.world.scrap,21,"configured upgrade and refill scrap are conserved")
+	t.equal(sim.world.scrap,0,"obsolete scrap settings cannot reintroduce a material cost")

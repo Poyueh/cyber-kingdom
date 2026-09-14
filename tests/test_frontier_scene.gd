@@ -99,11 +99,12 @@ func run_test() -> void:
 	key(KEY_J,false)
 	await frames(24)
 	check(resource.remaining_work==75,"knight sword leaves resource intact")
+	var crystal_total: int=scene.sim.pouch.amount+scene.sim.pouch.ground_total()
 	for tick in range(2000):
 		scene.sim.advance(0.1,resource.x)
 		if resource.delivered: break
 	await frames(3)
-	check(resource.delivered and scene.sim.frontier.wood>=3,"resident harvest and physical delivery bank the resource")
+	check(resource.delivered and scene.sim.frontier.wood==0 and scene.sim.pouch.amount+scene.sim.pouch.ground_total()>=crystal_total+resource.crystals,"resident delivers harvested crystals to the collection point")
 	check(scene.sim.context(resource.x).id!="outpost","one harvested tree does not expose expansion in an uncleared forest")
 	for node in scene.sim.frontier.nodes:
 		if node.region==resource.region and node.kind=="tree" and not node.collected:
@@ -124,7 +125,7 @@ func run_test() -> void:
 	check(scene.sim.frontier.regions[resource.region].outpost_built,"cleared-site button orders a resident-built frontier depot")
 	check(scene.sim.frontier.discovered_count()>0,"walking outside reveals a region")
 	check(scene.hud.dashboard.values.survived==0,"icon HUD displays survival calendar")
-	check(scene.hud.dashboard.values.has("wood") and scene.hud.dashboard.values.has("food"),"icon HUD displays resource amounts")
+	check(not scene.hud.dashboard.values.has("wood") and not scene.hud.dashboard.values.has("food"),"icon HUD removes obsolete material counters")
 	var cache
 	for node in scene.sim.frontier.nodes:
 		if node.y == 366:

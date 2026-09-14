@@ -1,0 +1,32 @@
+extends RefCounted
+const Campaign=preload("res://application/campaign_session.gd")
+const Codec=preload("res://application/campaign_snapshot.gd")
+const Store=preload("res://infrastructure/json_campaign_store.gd")
+func test_new_journeys_keep_old_records_and_list_corruption_safely(t):
+ var path="res://infrastructure/campaign_catalog.gd"
+ t.truth(ResourceLoader.exists(path),"journey catalog supports independent records")
+ if not ResourceLoader.exists(path):return
+ var folder="user://test_catalog_%d"%Time.get_ticks_usec()
+ var catalog=load(path).new(folder,folder+"/legacy.json")
+ var first: String=catalog.allocate()
+ var second: String=catalog.allocate()
+ t.truth(not first.is_empty() and first!=second,"each new game receives its own unused path")
+ var sim=Campaign.new({"seed":17})
+ var packet=Codec.new().capture(sim,{"seed":17},{"x":30.0,"y":430.0,"vx":0.0,"vy":0.0})
+ var store=Store.new(first);store.read();t.truth(store.write(packet),"first journey persists")
+ var original=FileAccess.get_file_as_string(first)
+ store=Store.new(second);store.read();packet.clock.day=3;packet.clock.survived=2
+ t.truth(store.write(packet),"second journey persists separately")
+ var rows: Array=catalog.entries()
+ t.equal(rows.size(),2,"both records are discoverable")
+ var record=load("res://application/campaign_record.gd")
+ t.equal(record.describe(Store.new(first)).day,1,"first record retains its day")
+ t.equal(record.describe(Store.new(second)).day,3,"second record displays its own day")
+ t.equal(FileAccess.get_file_as_string(first),original,"creating another journey never overwrites the first")
+ var file=FileAccess.open(second,FileAccess.WRITE);file.store_string("broken");file.close()
+ t.equal(record.describe(Store.new(second)).status,"protected","broken record is listed but cannot launch")
+ t.equal(FileAccess.get_file_as_string(second),"broken","listing leaves damaged bytes intact")
+ store=Store.new(folder+"/legacy.json");store.read();t.truth(store.write(packet),"legacy record fixture")
+ t.equal(catalog.entries().size(),3,"existing single-save journey stays selectable")
+ for file_path in [first,second,folder+"/legacy.json"]:DirAccess.remove_absolute(file_path)
+ DirAccess.remove_absolute(folder)

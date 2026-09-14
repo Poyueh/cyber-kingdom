@@ -129,6 +129,7 @@ func _layout() -> void:
 	for key in buttons:
 		buttons[key].position=layout.buttons[key].position
 		buttons[key].size=layout.buttons[key].size
+	layout.panels.damage=Rect2(_last_safe_rect.position+Vector2(16,86),Vector2(72,38))
 	dashboard.panels=layout.panels
 	dashboard.queue_redraw()
 	fullscreen_button.visible=not uses_touch_controls()
@@ -159,7 +160,7 @@ func present_world(sim, is_paused: bool, at: float, grounded: bool) -> void:
 	audio_button.visible=is_paused
 	drop_button.disabled=is_paused or not sim.is_running() or sim.pouch.amount<=0
 	var map=sim.frontier
-	dashboard.values={"hp":sim.hero.hp,"shield":sim.hero.shield,"crystal":"%d/%d" % [sim.pouch.amount,sim.pouch.capacity],"wood":map.wood,"food":map.food,"stone":map.stone,"herbs":map.herbs,"scrap":sim.world.scrap,"day":sim.clock.day,"survived":sim.clock.survived,"full":sim.pouch.amount>=sim.pouch.capacity}
+	dashboard.values={"hp":sim.hero.hp,"shield":sim.hero.shield,"crystal":"%d/%d" % [sim.pouch.amount,sim.pouch.capacity],"day":sim.clock.day,"survived":sim.clock.survived,"full":sim.pouch.amount>=sim.pouch.capacity}
 	var pressure: Dictionary=sim.raid_pressure()
 	dashboard.values["damage"]=sim.hero.stats.damage
 	dashboard.values["shield_capacity"]=sim.growth.capacity()

@@ -3,7 +3,7 @@ config_version=5
 
 [application]
 config/name="Cyber Kingdom"
-run/main_scene="res://scenes/training.tscn"
+run/main_scene="res://scenes/start_menu.tscn"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 
 [display]
