@@ -829,3 +829,11 @@ H5 1280×720 與 844×390 檢查起始頁／列表；真實瀏覽器建立兩段
 - 包含龍晶單一資源、獨立旅程起始頁、隨行殘影指引、我敵双方受擊動畫與更新圖文指南。
 - 完整檢查與視覺證據見 `docs/reports/spirit-hit-v001/`；ZIP 完整性與 SHA256 已再次核對。
 - Windows／Mac 維持 v0.0.1 下載包。公開 Release 與 Pages 部署結果待發布後補記。
+
+## H5 v0.0.3 已公開（2026-09-14）
+
+- [Release v0.0.3](https://github.com/Poyueh/cyber-kingdom/releases/tag/v0.0.3) 已發布；tag 指向 `f8e91af`，發行分支與 main／develop 均已推送。
+- [線上試玩](https://poyueh.github.io/cyber-kingdom/) 已部署；GitHub Actions `34810874087` 與 `34810878206` 均成功。公開 14 個檔案 SHA256 與實測包逐一相符，附件 digest 相符。
+- 公開網站實測：中文起始頁、選擇既有旅程、載入先前紀錄、恢復後殘影指引、保存返回起始頁；本次載入未見瀏覽器警告或錯誤。
+- 130 個本機個人調整／產生檔保留；未替換 Windows／Mac 附件。教學續見第 50 課。
+- 下一步：使用者試玩引導節奏與受擊手感，並在實體 iPhone 驗證操作與效能。
