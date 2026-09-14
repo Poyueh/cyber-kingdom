@@ -16,6 +16,7 @@ func run_scene() -> void:
  await frames(3)
  check(menu.view.new_button.text=="新遊戲","Traditional title text")
  var selector=menu.view.get_node("%LanguageSelector")
+ check(selector.get_theme_font("font").has_char("简".unicode_at(0)),"language selector includes Simplified Chinese glyphs without system fonts")
  selector.item_selected.emit(3)
  await frames(3)
  check(menu.view.new_button.text=="New Game","selector immediately updates title")

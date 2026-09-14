@@ -19,7 +19,7 @@ var _heading: Label
 func _ready() -> void:
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	theme=Theme.new()
-	theme.default_font=preload("res://art/fonts/noto-sans-tc/NotoSansTC-Regular.otf")
+	theme.default_font=preload("res://presentation/localized_font.gd").current()
 	texture_filter=CanvasItem.TEXTURE_FILTER_NEAREST
 	var backdrop:=TextureRect.new()
 	backdrop.texture=preload("res://art/refuge/v001/skyline.png")

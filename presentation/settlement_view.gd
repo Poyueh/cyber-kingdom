@@ -8,7 +8,7 @@ var _font: Font
 
 func _ready() -> void:
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-	_font=preload("res://art/fonts/noto-sans-tc/NotoSansTC-Regular.otf")
+	_font=preload("res://presentation/localized_font.gd").current()
 
 func present(sim, player_x: float) -> void:
 	_sim = sim

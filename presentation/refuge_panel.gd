@@ -17,7 +17,7 @@ var _caption: Label
 var _choice_count := -1
 
 func _ready() -> void:
-	var font=preload("res://art/fonts/noto-sans-tc/NotoSansTC-Regular.otf")
+	var font=preload("res://presentation/localized_font.gd").current()
 	theme = Theme.new()
 	theme.default_font = font
 	theme.default_font_size = 18

@@ -10,9 +10,10 @@ var music: HSlider
 var effects: HSlider
 var save_button: Button
 var load_button: Button
+var _tooltips: Dictionary={}
 var _numbers: Array[Label]=[]
 func _ready() -> void:
-	theme=Theme.new();theme.default_font=preload("res://art/fonts/noto-sans-tc/NotoSansTC-Regular.otf")
+	theme=Theme.new();theme.default_font=preload("res://presentation/localized_font.gd").current()
 	mouse_filter=Control.MOUSE_FILTER_STOP
 	var style:=StyleBoxFlat.new()
 	style.bg_color=Color(0.025,0.065,0.085,0.96)
@@ -27,16 +28,18 @@ func _ready() -> void:
 	save_button=_button(row,"save");load_button=_button(row,"restore")
 	save_button.pressed.connect(func():save_checkpoint_requested.emit())
 	load_button.pressed.connect(func():load_checkpoint_requested.emit())
-	var home=_button(row,"camp");home.tooltip_text=tr("保存並回起始頁")
+	var home=_button(row,"camp");_tooltips[home]="保存並回起始頁"
 	home.pressed.connect(func():title_requested.emit())
 	if OS.has_feature("web"):
 		var guide_button:=_button(row,"book")
 		guide_button.name="PlayerGuide"
-		guide_button.tooltip_text=tr("玩家圖文指南")
+		_tooltips[guide_button]="玩家圖文指南"
 		guide_button.pressed.connect(preload("res://presentation/web_player_guide.gd").open)
 	music.value_changed.connect(_volume_changed)
 	effects.value_changed.connect(_volume_changed)
 	set_levels(0.4,0.8)
+	get_node("/root/GameLanguage").changed.connect(_refresh_language)
+	_refresh_language()
 func _volume_row(box: VBoxContainer, key: String) -> HSlider:
 	var row:=HBoxContainer.new();row.add_theme_constant_override("separation",12);box.add_child(row)
 	var icon:=TextureRect.new();icon.texture=Icons.get_icon(key);icon.expand_mode=TextureRect.EXPAND_IGNORE_SIZE;icon.stretch_mode=TextureRect.STRETCH_KEEP_ASPECT_CENTERED;icon.custom_minimum_size=Vector2(34,48);row.add_child(icon)
@@ -56,3 +59,6 @@ func record_status(available: bool,saved: bool,failed: bool=false) -> void:
 	load_button.disabled=not available
 	save_button.icon=Icons.get_icon("save_retry" if failed else "check" if saved else "save")
 	save_button.modulate=Color("efb28f") if failed else Color("b6e2cd")
+
+func _refresh_language() -> void:
+	for control in _tooltips:control.tooltip_text=tr(_tooltips[control])

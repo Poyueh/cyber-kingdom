@@ -20,7 +20,7 @@ func present(snapshot: Dictionary) -> void:
 		message.text += "\n" + tr(str(snapshot.warning))
 
 func _ready() -> void:
-	var text_theme=Theme.new();text_theme.default_font=preload("res://art/fonts/noto-sans-tc/NotoSansTC-Regular.otf")
+	var text_theme=Theme.new();text_theme.default_font=preload("res://presentation/localized_font.gd").current()
 	for child in get_children():
 		if child is Control:child.theme=text_theme
 	$Refuge.pressed.connect(func(): refuge_requested.emit())

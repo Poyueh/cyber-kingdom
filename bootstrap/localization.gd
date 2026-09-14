@@ -26,4 +26,5 @@ func set_steam_language(value: String) -> void:
 func _apply() -> void:
  locale=Choice.resolve(preference,OS.get_locale(),steam_language)
  TranslationServer.set_locale(locale)
+ preload("res://presentation/localized_font.gd").current()
  changed.emit()
