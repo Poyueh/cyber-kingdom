@@ -80,15 +80,7 @@ func _draw_activity() -> void:
 	for person in world.people:
 		_person(person,world.barrier>0)
 	for raider in _sim.raiders:
-		var clip := "windup" if raider.windup>0 else "run"
-		var frame := 0 if clip == "windup" else posmod(int(raider.x/12),2)
-		var texture: Texture2D = EnemyFrames.get_frame_texture(clip,frame)
-		draw_set_transform(Vector2(raider.x,398),0,Vector2(raider.get("direction",-1.0),1))
-		draw_texture(texture,-texture.get_size()*0.5,Color(1.5,1.6,1.6) if raider.fighter.invulnerability_remaining>0 else Color.WHITE)
-		draw_set_transform(Vector2.ZERO)
-		draw_rect(Rect2(raider.x-22,360,44,4),Color("482a3a"))
-		draw_rect(Rect2(raider.x-22,360,44.0*raider.fighter.hp/raider.fighter.stats.max_hp,4),Color("df8491"))
-		if raider.windup>0: _text("!",raider.x,348,Color("ffd087"),22)
+		_raider(raider)
 	for effect in _sim.effects:
 		match effect.kind:
 			"bolt": draw_line(Vector2(effect.x,396),Vector2(effect.to,396),Color("91ece3"),2)
@@ -105,6 +97,17 @@ func _draw_activity() -> void:
 						draw_line(at.round(),(at+direction*(6*(1-progress))).round(),Color(0.8,1.0,0.9,1-progress),2)
 					draw_arc(Vector2(effect.x,394),8+progress*22,-PI*0.5,PI*0.5,8,Color(0.55,0.95,0.9,(1-progress)*0.7),2)
 	_draw_interaction()
+
+func _raider(raider: Dictionary) -> void:
+	var clip := "windup" if raider.windup>0 else "run"
+	var frame := 0 if clip == "windup" else posmod(int(raider.x/12),2)
+	var texture: Texture2D = EnemyFrames.get_frame_texture(clip,frame)
+	draw_set_transform(Vector2(raider.x,398),0,Vector2(raider.get("direction",-1.0),1))
+	draw_texture(texture,-texture.get_size()*0.5,Color(1.5,1.6,1.6) if raider.fighter.invulnerability_remaining>0 else Color.WHITE)
+	draw_set_transform(Vector2.ZERO)
+	draw_rect(Rect2(raider.x-22,360,44,4),Color("482a3a"))
+	draw_rect(Rect2(raider.x-22,360,44.0*raider.fighter.hp/raider.fighter.stats.max_hp,4),Color("df8491"))
+	if raider.windup>0: _text("!",raider.x,348,Color("ffd087"),22)
 
 func _draw_interaction() -> void:
 	if not _context.id.is_empty():

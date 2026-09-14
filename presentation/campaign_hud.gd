@@ -184,6 +184,7 @@ func present_world(sim, is_paused: bool, at: float, grounded: bool) -> void:
 	var ready: bool=not advice.is_empty() and advice.action in ["invest","open"] and advice.key==choice.key and not interact_button.disabled
 	guide_view.touch_hint=touch
 	guide_view.present(advice,_last_safe_rect,at,Rect2(interact_button.position,interact_button.size),ready)
+	guide_view.track(get_viewport().get_canvas_transform()*Vector2(at,sim._player_y),sim.workforce.elapsed)
 
 func _toggle_fullscreen() -> void:
 	var window:=get_window()

@@ -1,4 +1,6 @@
 extends "res://presentation/frontier_view.gd"
+const HitFeedback=preload("res://presentation/campaign_hit_feedback.gd")
+var hit_feedback:=HitFeedback.new()
 const Details=preload("res://presentation/frontier_details.gd")
 var _details: Array[Dictionary]=[]
 const RiftVisual=preload("res://presentation/rift_visual.gd")
@@ -26,6 +28,7 @@ func present(sim, player_x: float) -> void:
 		_resident_motion.clear()
 		_details=Details.layout(sim.map_seed,sim.frontier.regions)
 	_sim=sim
+	hit_feedback.present(sim)
 	_view_player_x=player_x
 	_context=sim.context(player_x) if focus_key.is_empty() else sim.context_for_key(player_x,focus_key)
 	if _context.key!=_slot_key or _context.paid!=_slot_paid:
@@ -176,17 +179,19 @@ func _draw_mission() -> void:
 func _person(person: Dictionary, protected: bool) -> void:
 	if not _sim.person_visible(person): return
 	var state: String=person.get("work_state","idle")
-	if person.role=="engineer" and state in ["work","haul","climb"]:
+	var hit:=hit_feedback.resident_pose(_sim.world.people.find(person))
+	if person.role=="engineer" and state in ["work","haul","climb"] and not hit.active:
 		# Preserve authored hammer, cargo and ladder silhouettes for real work.
 		super._person(person,protected)
 	else:
 		var index: int=_sim.world.people.find(person)
 		var pose:=_resident_motion.sample(person,index,_sim.workforce.elapsed)
-		var role: int={"wanderer":0,"citizen":1,"farmer":2,"hunter":3,"guard":4,"engineer":5}[person.role]
-		var row:=role*2+(1 if pose.mode=="idle" else 0)
+		var role: int={"wanderer":0,"citizen":1,"farmer":2,"hunter":3,"guard":4,"engineer":5}[hit.role if hit.active else person.role]
+		var row:=role*2+(1 if pose.mode=="idle" or hit.active else 0)
+		if hit.active:pose.frame=0
 		var at:=Vector2(person.x,person.get("y",430))
-		draw_set_transform(at,0,Vector2(person.get("direction",1.0),1))
-		draw_texture_rect_region(resident_atlas,Rect2(-32,-62,64,64),Rect2(pose.frame*64,row*64,64,64),Color(1,0.65,0.65) if person.hurt>0 else Color.WHITE)
+		draw_set_transform(at+hit.offset,hit.rotation,hit.scale*Vector2(person.get("direction",1.0),1))
+		draw_texture_rect_region(resident_atlas,Rect2(-32,-62,64,64),Rect2(pose.frame*64,row*64,64,64),Color(1.8,1.15,1.1).lerp(Color.WHITE,1-hit.flash) if hit.active else Color.WHITE)
 		draw_set_transform(Vector2.ZERO)
 		if protected and person.role!="wanderer": draw_arc(at+Vector2(0,-24),29,PI,TAU,16,Color("81ddda"),1)
 
@@ -196,6 +201,7 @@ func _person(person: Dictionary, protected: bool) -> void:
 func _draw_activity() -> void:
 	# Render rewards after actors so the collection journey stays legible.
 	super._draw_activity()
+	_draw_fallen()
 	for pile in _sim.pouch.drops:
 		for index in range(mini(3,pile.amount)):
 			var visible: Dictionary=pile.duplicate()
@@ -323,3 +329,24 @@ func _resource(resource) -> void:
 		draw_texture_rect(texture,Rect2(Vector2(resource.x-size.x*0.5,resource.y-size.y),size),false,Color(0.8,0.9,0.9))
 		return
 	super._resource(resource)
+
+func _raider(enemy: Dictionary) -> void:
+	if not enemy.fighter.is_alive():return
+	var hit:=hit_feedback.enemy_pose(enemy)
+	var clip: String="idle" if hit.active else "windup" if enemy.windup>0 else "run"
+	var frame: int=posmod(int(enemy.x/12),2) if clip=="run" else 0
+	var texture: Texture2D=EnemyFrames.get_frame_texture(clip,frame)
+	var at:=Vector2(enemy.x,430)
+	draw_set_transform(at+hit.offset,hit.rotation,hit.scale*Vector2(enemy.get("direction",-1.0),1))
+	draw_texture(texture,Vector2(-texture.get_width()*0.5,-texture.get_height()*0.5-32),Color(1.8,1.1,1.05).lerp(Color.WHITE,1-hit.flash))
+	draw_set_transform(Vector2.ZERO)
+	draw_rect(Rect2(enemy.x-22,360,44,4),Color("482a3a"))
+	draw_rect(Rect2(enemy.x-22,360,44.0*enemy.fighter.hp/enemy.fighter.stats.max_hp,4),Color("df8491"))
+	if enemy.windup>0:_icon("sword",Vector2(enemy.x,348),20,Color("ffd087"))
+func _draw_fallen() -> void:
+	var texture: Texture2D=EnemyFrames.get_frame_texture("idle",0)
+	for body in hit_feedback.fallen:
+		var progress: float=clampf(body.age/0.42,0,1)
+		draw_set_transform(Vector2(body.x-body.direction*progress*12,430),-body.direction*progress*0.85,Vector2(body.direction,1-progress*0.5))
+		draw_texture(texture,Vector2(-texture.get_width()*0.5,-texture.get_height()*0.5-32),Color(1.3,0.9,0.85,1-progress))
+		draw_set_transform(Vector2.ZERO)
