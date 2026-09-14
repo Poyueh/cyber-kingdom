@@ -1,6 +1,6 @@
 extends Node2D
 const Icons=preload("res://presentation/ui_icons.gd")
-const SYMBOLS={"upgrade":"camp","core":"camp","delivery":"hammer","escort":"hammer","join":"rift","fight":"rift","seal":"rift","clear_enemies":"sword","rift":"rift","camp":"camp","recruit":"person","tool":"hammer","harvest":"tree","hunter":"bow","guard":"sword","wall":"wall","defend":"shield","chest":"chest","trade":"trade","collect":"crystal","explore":"map"}
+const SYMBOLS={"dragon":"dragon","upgrade":"camp","core":"camp","delivery":"hammer","escort":"hammer","join":"rift","fight":"rift","seal":"rift","clear_enemies":"sword","rift":"rift","camp":"camp","recruit":"person","tool":"hammer","harvest":"tree","hunter":"bow","guard":"sword","wall":"wall","defend":"shield","chest":"chest","trade":"trade","collect":"crystal","explore":"map"}
 var hint: Dictionary={}
 var safe:=Rect2()
 var player_x:=0.0
@@ -67,11 +67,15 @@ func _draw() -> void:
    if PALETTE.has(ink):
     var color: Color=PALETTE[ink];color.a=0.90 if y<15 else 0.76
     draw_rect(Rect2(Vector2(x*2-17+sway,y*2-29),Vector2(2,2)),color)
- # Shoulder, extended forearm, open pointing hand.
- draw_rect(Rect2(9,-7,6,5),Color("5ab5b3"))
- draw_rect(Rect2(14,-9,11,4),Color("9cdfca"))
- draw_rect(Rect2(24,-11,6,4),Color("d9fff0"))
- draw_rect(Rect2(29,-12,5,2),Color("d9fff0"))
+ # Alternate beckoning and pointing; the free hand and halo answer the motion.
+ var beckon:=sin(phase*3.4)
+ var elbow:=Vector2(18,-10-beckon*4)
+ var hand:=Vector2(28,-12-maxf(0,beckon)*13)
+ draw_line(Vector2(9,-5),elbow,Color("5ab5b3"),5)
+ draw_line(elbow,hand,Color("9cdfca"),4)
+ draw_rect(Rect2(hand.round()-Vector2(2,2),Vector2(7,4)),Color("d9fff0"))
+ draw_line(Vector2(-10,-5),Vector2(-18,-2+sin(phase*3.4+1)*6),Color("9cdfca"),4)
+ draw_arc(Vector2(0,-35),19+sin(phase*2)*2,0.2,PI-0.2,12,Color(0.8,0.91,0.74,0.55),2)
  if not spirit_pose.near:
   for i in range(2):
    var x:=39+i*9
@@ -84,5 +88,5 @@ func _draw() -> void:
  if hint.has("seal_progress"):
   draw_rect(Rect2(at+Vector2(-18,26),Vector2(36,3)),Color("294650"))
   draw_rect(Rect2(at+Vector2(-18,26),Vector2(36*clampf(hint.seal_progress,0,1),3)),Color("9cdfca"))
- if can_invest and touch_hint:
+ if false and can_invest and touch_hint:
   draw_arc(active_button.get_center(),36,-PI/2,TAU-PI/2,32,Color(0.50,0.94,0.82,0.35+0.25*sin(pulse*PI)),2)

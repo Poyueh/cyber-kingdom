@@ -36,6 +36,7 @@ func _notification(what: int) -> void:
 
 func _physics_process(seconds: float) -> void:
 	var command: Dictionary = controls.read_frame()
+	if hud.has_method("movement_axis") and command.direction==0:command.direction=hud.movement_axis()
 	if command.restart:
 		restart()
 	if command.pause:

@@ -1,6 +1,13 @@
 extends "res://data/frontier_tuning.gd"
 @export_group("Exploration")
-@export_range(0,6,1) var outer_regions_per_side: int = 3
+@export_range(0,6,1) var outer_regions_per_side: int = 5
+@export_range(300,1250,50) var arrival_walk_distance: float=1050.0
+@export_group("Final dragon")
+@export_range(2,20,1) var dragon_baseline_day: int=6
+@export_range(100,6000,100) var dragon_health: int=1800
+@export_range(10,100,1) var dragon_damage: int=36
+@export_range(0,1000,20) var dragon_daily_health: int=240
+@export_range(0,20,1) var dragon_daily_damage: int=4
 @export_group("Presentation")
 @export_range(1.0,1.4,0.05) var camera_zoom: float = 1.15
 @export var larger_desktop_window: bool = true
@@ -58,7 +65,7 @@ var shield_charge_scrap: int = 1
 @export_group("Crystal slots per interaction")
 @export var crystal_prices: Dictionary = {"camp":2,"hall":5,"workshop":2,"armory":3,"farm_tools":2,"hunt_tools":3,"forge":2,"beacon":1,"wall":3,"wall_upgrade":4,"repair":2,"farm":3,"drill":2,"outpost":3,"mark":1,"recruit":1,"core_charge":2,"rift":4,"heal":2}
 func campaign_rules() -> Dictionary:
-	return {"tree_crystals":tree_crystals,"mineral_crystals":mineral_crystals,"chest_crystals":chest_crystals,"plant_crystals":plant_crystals,"attack_stamina":attack_stamina,"jump_stamina":jump_stamina,"dash_stamina":dash_stamina,"wall_clearance":wall_clearance,"tree_timber":tree_timber,"population_limit":population_limit,"camp_waiting_limit":camp_waiting_limit,"capacitor_limit":capacitor_limit,"growth_crystal_step":growth_crystal_step,"growth_scrap_step":growth_scrap_step,"shield_charge_cost":shield_charge_cost,"shield_charge_scrap":shield_charge_scrap,"warden_health":warden_health,"warden_damage":warden_damage,"rift_seal_seconds":rift_seal_seconds,"core_max_hp":core_max_hp,"core_recharge":core_recharge,"left_defense_x":left_defense_x,"return_margin":return_margin,"hunter_damage":hunter_damage,"hunter_range":hunter_range,"hunter_interval":hunter_interval,"stroll_speed":stroll_speed,"magnet_radius":magnet_radius,"magnet_speed":magnet_speed,"throw_grace":throw_grace,"capacity":backpack_capacity,"starting_crystals":initial_crystals,"day_seconds":day_seconds,"night_seconds":night_seconds,"enemy_health_growth":enemy_health_growth,"enemy_damage_growth":enemy_damage_growth,"prices":crystal_prices}
+	return {"dragon_baseline_day":dragon_baseline_day,"dragon_health":dragon_health,"dragon_damage":dragon_damage,"dragon_daily_health":dragon_daily_health,"dragon_daily_damage":dragon_daily_damage,"tree_crystals":tree_crystals,"mineral_crystals":mineral_crystals,"chest_crystals":chest_crystals,"plant_crystals":plant_crystals,"attack_stamina":attack_stamina,"jump_stamina":jump_stamina,"dash_stamina":dash_stamina,"wall_clearance":wall_clearance,"tree_timber":tree_timber,"population_limit":population_limit,"camp_waiting_limit":camp_waiting_limit,"capacitor_limit":capacitor_limit,"growth_crystal_step":growth_crystal_step,"growth_scrap_step":growth_scrap_step,"shield_charge_cost":shield_charge_cost,"shield_charge_scrap":shield_charge_scrap,"warden_health":warden_health,"warden_damage":warden_damage,"rift_seal_seconds":rift_seal_seconds,"core_max_hp":core_max_hp,"core_recharge":core_recharge,"left_defense_x":left_defense_x,"return_margin":return_margin,"hunter_damage":hunter_damage,"hunter_range":hunter_range,"hunter_interval":hunter_interval,"stroll_speed":stroll_speed,"magnet_radius":magnet_radius,"magnet_speed":magnet_speed,"throw_grace":throw_grace,"capacity":backpack_capacity,"starting_crystals":initial_crystals,"day_seconds":day_seconds,"night_seconds":night_seconds,"enemy_health_growth":enemy_health_growth,"enemy_damage_growth":enemy_damage_growth,"prices":crystal_prices}
 
 func economy_rules() -> Dictionary:
 	var rules:=super.economy_rules()

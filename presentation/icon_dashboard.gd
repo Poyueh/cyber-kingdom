@@ -54,14 +54,24 @@ func _draw() -> void:
 		icon("sword",rect.position+Vector2(30,17),18,Color("ffbe89"))
 		number(str(count),rect.position+Vector2(44,23),Color("ffd5a0"))
 	_draw_mission()
+	if values.has("dragon_hp"):
+		var bar:=Rect2(panels.day.position+Vector2(-30,43),Vector2(260,34))
+		draw_style_box(_panel(),bar)
+		icon("dragon",bar.position+Vector2(18,17),26,Color("f0bdaf"))
+		draw_rect(Rect2(bar.position+Vector2(40,12),Vector2(202,9)),Color("392a43"))
+		draw_rect(Rect2(bar.position+Vector2(40,12),Vector2(202*float(values.dragon_hp)/values.dragon_max_hp,9)),Color("dd8c9c"))
+	elif values.has("dragon_day") and not victory and not dead:
+		var dragon_at: Vector2=panels.day.position+Vector2(24,54)
+		icon("dragon",dragon_at,22,Color("c995b9"))
+		number(str(values.dragon_day)+"+",dragon_at+Vector2(18,5),Color("decbb8"),13)
 	if (is_paused and pause_overlay) or dead or victory:
 		at=panels.overlay.get_center()
 		draw_style_box(_panel(),panels.overlay)
 		icon("skull" if dead else ("crown" if victory else "pause"),at-Vector2(0,9) if dead or victory else at,44)
 		if dead:icon("camp" if values.get("defeat_reason","")=="core" else "heart",at+Vector2(0,27),22,Color("efb1a0"))
 		elif victory:
-			icon("rift",at+Vector2(-13,27),20,Color("a4e5be"))
-			number("2/2",at+Vector2(2,32),Color("a4e5be"),13)
+			icon("dragon",at+Vector2(-13,27),20,Color("a4e5be"))
+			icon("check",at+Vector2(13,27),20,Color("a4e5be"))
 func _draw_mission() -> void:
 	if not values.has("core_hp"):return
 	var at: Vector2=panels.core.position

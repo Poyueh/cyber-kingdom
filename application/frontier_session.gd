@@ -129,20 +129,15 @@ func _advance_people(seconds: float) -> void:
 		if person.get("sheltering",false): continue
 		var before: float = person.x
 		if person.role == "farmer":
-			person.x = move_toward(person.x,world.sites.farm,_person_speed*seconds)
+			person.x = move_toward(person.x,_farm_target(person),_person_speed*seconds)
 			if absf(person.x-world.sites.farm)<20: farmers += 1
 		elif person.role == "hunter":
-			var prey: Dictionary = {}
-			var distance := INF
-			for animal in frontier.animals:
-				if animal.alive and frontier.regions[animal.region].discovered and absf(animal.x-person.x)<distance:
-					distance = absf(animal.x-person.x)
-					prey = animal
+			var prey: Dictionary = _hunter_prey(person)
 			if prey.is_empty():
-				person.x = move_toward(person.x,world.sites.hunt_tools,_person_speed*seconds)
+				person.x = move_toward(person.x,_idle_hunter_target(person,seconds),_person_speed*seconds)
 			else:
 				person.x = move_toward(person.x,prey.x,_person_speed*seconds)
-				if absf(person.x-prey.x)<45 and person.cooldown<=0:
+				if absf(person.x-prey.x)<100 and person.cooldown<=0:
 					prey.alive = false
 					person.cooldown = 3.0
 					_receive_hunt(prey.x)
@@ -169,3 +164,13 @@ func _receive_hunt(_at: float) -> void:
 
 func _advance_farm(seconds: float, farmers: int) -> void:
 	frontier.advance_farm(seconds,farmers)
+
+func _hunter_prey(person: Dictionary) -> Dictionary:
+	var prey: Dictionary={}
+	var distance:=INF
+	for animal in frontier.animals:
+		if animal.alive and frontier.regions[animal.region].discovered and absf(animal.x-person.x)<distance:
+			distance=absf(animal.x-person.x);prey=animal
+	return prey
+func _idle_hunter_target(_person: Dictionary, _seconds: float) -> float:return world.sites.hunt_tools
+func _farm_target(_person: Dictionary) -> float:return world.sites.farm

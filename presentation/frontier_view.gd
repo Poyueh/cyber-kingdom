@@ -22,10 +22,7 @@ func _draw() -> void:
 	_draw_atmosphere(left)
 	for region in map.regions:
 		if not region.discovered:
-			# Unexplored ground stays readable; only details are obscured by pale mist.
-			for band in range(8):
-				draw_rect(Rect2(region.x,92+band*42,region.width,42),Color(0.40,0.62,0.64,0.05+band*0.012))
-			_text(tr("未探索的邊境"),region.x+region.width*0.5,145,Color("729299"),16)
+			_draw_unexplored(region)
 		else:
 			var name: String = {"forest":tr("龍晶林 · 標記居民伐木"),"quarry":tr("晶脈 · 標記居民採礦"),"ruins":tr("舊王朝遺跡 · 回收廢料")}[region.kind]
 			_text(name,region.x+region.width*0.5,143,Color("d6d6b5"),16)
@@ -153,4 +150,7 @@ func _person(person: Dictionary, protected: bool) -> void:
 	_text(label,at.x,at.y-55,Color("d6e2d6"),12)
 
 func _draw_atmosphere(_left: float) -> void:
+	pass
+
+func _draw_unexplored(_region: Dictionary) -> void:
 	pass

@@ -3,6 +3,8 @@ func run_scene() -> void:
  var scene=load("res://scenes/frontier.tscn").instantiate()
  root.add_child(scene)
  await frames(8)
+ scene.knight.position.x=30
+ await frames(2)
  scene.set_physics_process(false)
  scene.paused=false
  scene._physics_process(1.0/60)
@@ -12,9 +14,9 @@ func run_scene() -> void:
  rack.cue_requested.connect(func(kind):heard.append(kind))
  check(rack.voices.size()==6,"at most six sound voices can overlap")
  for finger in range(2):
-  touch(finger,center(scene.hud.interact_button),true)
+  preload("res://tests/touch_gesture.gd").start(root,finger)
   scene._physics_process(1.0/60)
-  touch(finger,center(scene.hud.interact_button),false)
+  preload("res://tests/touch_gesture.gd").finish(root,finger)
   for i in range(6):scene._physics_process(1.0/60)
  check(heard.count("pay")==2 and heard.count("build")==1,"two real touch payments sound twice, camp completion once")
  var before=heard.size()

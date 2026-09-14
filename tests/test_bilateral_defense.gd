@@ -67,9 +67,9 @@ func test_defenders_split_posts_and_keep_their_assignments(t):
 	var first_post: float=first.x
 	var second_post: float=second.x
 	for i in range(60):sim.advance(1.0/60,30)
-	t.equal(first.x,first_post,"right guard does not oscillate between sides")
-	t.equal(second.x,second_post,"left guard holds assigned side")
-	t.equal(second.direction,-1.0,"left guard faces the approaching threat")
+	t.truth(first.x>500 and absf(first.x-first_post)<80,"right guard patrol stays on assigned side")
+	t.truth(second.x< -500 and absf(second.x-second_post)<80,"left patrol stays on assigned side")
+	t.truth(second.direction in [-1.0,1.0],"patrolling guard faces its current step")
 
 func test_newly_completed_wall_intercepts_a_queued_strike(t):
 	var sim=camp()

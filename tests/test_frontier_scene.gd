@@ -20,6 +20,12 @@ func key(code: int, down: bool) -> void:
 	Input.parse_input_event(event)
 	Input.flush_buffered_events()
 func click(button: Button) -> void:
+	if not button.visible:
+		preload("res://tests/touch_gesture.gd").start(root)
+		await frames(2)
+		preload("res://tests/touch_gesture.gd").finish(root)
+		await frames(2)
+		return
 	var at := root.get_final_transform()*button.get_global_rect().get_center()
 	for down in [true,false]:
 		var event := InputEventMouseButton.new()
@@ -64,6 +70,8 @@ func run_test() -> void:
 	await frames(2)
 	key(KEY_N,false)
 	check(scene.sim.map_seed != seed_before,"N is another route to a new map")
+	scene.knight.position.x=30
+	await frames(3)
 	scene.sim.clock.remaining = 10000
 	check(scene.sim.frontier.city_level==0,"playable campaign starts at the campfire")
 	await click(scene.hud.interact_button)

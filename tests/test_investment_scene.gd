@@ -4,6 +4,8 @@ func run_test() -> void:
 	var scene=load("res://scenes/frontier.tscn").instantiate()
 	root.add_child(scene)
 	await frames(6)
+	scene.knight.position.x=30
+	await frames(3)
 	key(KEY_E,true)
 	await frames(8)
 	check(scene.sim.context(30).paid==1,"E immediately fills the first campfire slot")
@@ -24,19 +26,14 @@ func run_test() -> void:
 	key(KEY_E,false)
 	key(KEY_SPACE,false)
 	await frames(70)
-	var button: Button=scene.hud.interact_button
-	var at:=root.get_final_transform()*button.get_global_rect().get_center()
-	var event:=InputEventMouseButton.new()
-	event.position=at;event.global_position=at;event.button_index=MOUSE_BUTTON_LEFT;event.pressed=true
-	Input.parse_input_event(event);Input.flush_buffered_events()
+	preload("res://tests/touch_gesture.gd").start(root)
 	await frames(8)
-	check(scene.sim.context(scene.knight.position.x).paid==1,"holding icon invests immediately before mouse release")
+	check(scene.sim.context(scene.knight.position.x).paid==1,"holding downward gesture invests immediately before mouse release")
 	await frames(70)
-	check(scene.sim.world.tools.hammer==1 and scene.sim.pouch.amount==8,"held icon buys exactly one tool")
-	event=event.duplicate();event.pressed=false
-	Input.parse_input_event(event);Input.flush_buffered_events()
+	check(scene.sim.world.tools.hammer==1 and scene.sim.pouch.amount==8,"held downward gesture buys exactly one tool")
+	preload("res://tests/touch_gesture.gd").finish(root)
 	await frames(3)
-	check(not scene.hud.interact_held,"releasing icon clears held input")
+	check(not scene.hud.interact_held,"releasing gesture clears held input")
 
 	scene.knight.position=Vector2(scene.sim.world.sites.wall,430)
 	await frames(4)

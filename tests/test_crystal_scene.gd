@@ -20,6 +20,12 @@ func key(code: int, down: bool) -> void:
 	Input.parse_input_event(event)
 	Input.flush_buffered_events()
 func click(button: Button) -> void:
+	if not button.visible:
+		preload("res://tests/touch_gesture.gd").start(root)
+		await frames(2)
+		preload("res://tests/touch_gesture.gd").finish(root)
+		await frames(2)
+		return
 	var at:=root.get_final_transform()*button.get_global_rect().get_center()
 	for down in [true,false]:
 		var event:=InputEventMouseButton.new()
@@ -43,7 +49,7 @@ func run_test() -> void:
 	await frames(8)
 	check(scene.sim.pouch.amount==before-1,"nearby freshly thrown currency is not immediately absorbed")
 	await click(scene.hud.drop_button)
-	check(scene.sim.pouch.amount==before-2,"icon button throws one more crystal")
+	check(scene.sim.pouch.amount==before-2,"downward drag throws one more crystal")
 	scene.knight.position=Vector2(-100,320)
 	scene.knight.velocity=Vector2.ZERO
 	await frames(2)
