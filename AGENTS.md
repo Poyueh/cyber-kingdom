@@ -44,6 +44,7 @@
 ## 專案知識入口
 
 - 開始功能設計、實作、除錯或審查時，先讀 `CONTEXT.md`、`docs/agents/mattpocock-adoption.md` 與相關 ADR；同一工作單元已讀且未變更時不必重讀。
+- 撰寫或審查程式前讀 `docs/agents/gdscript-standards.md`（分層、型別、tick、亂數、內容資料、modifier、存檔、測試的底線，以及各條規則的現況落差與落地階段）。
 - 本地 Matt Pocock 技能包作為按需參考；適配與來源版本以 adoption 文件為準。保留現有 Godot、Clean Architecture、TDD、Gitflow 及使用者授權。
 - 遊戲術語集中在 `CONTEXT.md`，進度集中在 `docs/STATUS.md`。
 - 教學前讀 `docs/lessons/learning-records/`，以使用者實際回饋更新掌握程度。
