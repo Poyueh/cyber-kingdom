@@ -7,7 +7,7 @@ func _initialize() -> void:
 	call_deferred("_run")
 
 func _run() -> void:
-	var suites := ["res://tests/test_fortifications.gd", "res://tests/test_flat_campaign.gd", "res://tests/test_clear_feedback.gd", "res://tests/test_world_polish.gd", "res://tests/test_drag_controls.gd", "res://tests/test_dragon_frontier.gd", "res://tests/test_spirit_and_hits.gd", "res://tests/test_campaign_catalog.gd", "res://tests/test_drop_simulation.gd", "res://tests/test_crystal_economy.gd", "res://tests/test_frontier_details.gd", "res://tests/test_audio_preferences.gd", "res://tests/test_action_stamina.gd", "res://tests/test_kingdom_cycle.gd", "res://tests/test_resident_motion.gd", "res://tests/test_frontier_depth.gd", "res://tests/test_campaign_audio.gd", "res://tests/test_expedition_guide.gd", "res://tests/test_campaign_guide.gd", "res://tests/test_hud_layout.gd", "res://tests/test_campaign_store.gd", "res://tests/test_campaign_snapshot.gd", "res://tests/test_defense_expansion.gd", "res://tests/test_frontier_ecology.gd", "res://tests/test_knight_growth.gd", "res://tests/test_combat.gd", "res://tests/test_campaign_objective.gd", "res://tests/test_bilateral_defense.gd", "res://tests/test_resident_schedule.gd", "res://tests/test_session.gd", "res://tests/test_file_store.gd", "res://tests/test_knight_visual.gd", "res://tests/test_impact_view.gd", "res://tests/test_refuge.gd", "res://tests/test_settlement.gd", "res://tests/test_frontier.gd", "res://tests/test_frontier_workforce.gd", "res://tests/test_campaign.gd", "res://tests/test_icon_presentation.gd", "res://tests/test_crystal_flow.gd", "res://tests/test_context_investment.gd"]
+	var suites := _discover()
 	for suite_path in suites:
 		var script = load(suite_path)
 		if script == null or not script.can_instantiate():
@@ -27,6 +27,29 @@ func _run() -> void:
 			printerr(failure)
 	print("Assertions: %d; failures: %d" % [assertions, failures.size()])
 	quit(0 if failures.is_empty() else 1)
+
+## Suites are discovered so a new file cannot be forgotten. Scene-driven scripts
+## extend SceneTree and are launched separately by tools/check.sh.
+func _discover() -> Array[String]:
+	var found: Array[String]=[]
+	var directory := DirAccess.open("res://tests")
+	if directory == null:
+		failures.append("Cannot open res://tests")
+		return found
+	for name in directory.get_files():
+		var file := str(name).trim_suffix(".remap")
+		if not file.begins_with("test_") or not file.ends_with(".gd"):
+			continue
+		var path := "res://tests/" + file
+		var script = load(path)
+		if script == null or not script.can_instantiate():
+			failures.append("Cannot load test suite: " + path)
+			continue
+		if script.get_instance_base_type() != &"RefCounted":
+			continue
+		found.append(path)
+	found.sort()
+	return found
 
 func equal(actual: Variant, expected: Variant, message: String) -> void:
 	assertions += 1
