@@ -6,6 +6,8 @@ const VERSION:=6
 const SESSION_SKIP=["raiders","effects","opened_chests"]
 const FIGHTER_SKIP=["_hit_targets","_queued_attack_seconds","_pending_attack_travel"]
 var last_error:=""
+var _baseline: Dictionary={}
+var _baseline_config: Dictionary={}
 
 func _plain(value, depth: int=0) -> bool:
 	if depth>20:return false
@@ -123,7 +125,7 @@ func restore(raw) -> Dictionary:
 		if not data.body.has(key) or not (data.body[key] is int or data.body[key] is float):return _invalid()
 	if data.body.size()!=4:return _invalid()
 	var sim=Campaign.new(data.config)
-	if not Rules.valid(data,capture(sim,data.config,data.body)):return _invalid()
+	if not Rules.valid(data,_baseline_for(sim,data.config,data.body)):return _invalid()
 	for part in [
 		[sim,data.session,SESSION_SKIP],[sim.world,data.world,["wall"]],
 		[sim.frontier,data.frontier,["nodes"]],[sim.clock,data.clock,[]],[sim.mission,data.mission,[]],
@@ -155,6 +157,17 @@ func restore(raw) -> Dictionary:
 	sim.world.wall=sim.world.walls.wall
 	if legacy_economy:sim.convert_legacy_resources()
 	return {"session":sim,"config":data.config,"body":data.body}
+
+## The admission baseline is a pure function of the run configuration, so one
+## session reuses it instead of snapshotting a fresh world on every checkpoint.
+## Rules.valid reads the saved body, never the baseline's, but keeping it current
+## avoids a stale value if that ever changes.
+func _baseline_for(fresh, config: Dictionary, body: Dictionary) -> Dictionary:
+	if _baseline.is_empty() or not Rules.same(_baseline_config,config):
+		_baseline_config=config.duplicate(true)
+		_baseline=capture(fresh,config,body)
+	_baseline.body=body.duplicate(true)
+	return _baseline
 
 func _upgrade_v1(data: Dictionary) -> bool:
 	# Upgrade only the known old stat shape; unknown fields still fail normal validation.

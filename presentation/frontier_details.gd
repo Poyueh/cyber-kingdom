@@ -29,12 +29,18 @@ static func harvest_texture(kind: String,x: float,seed: int) -> Texture2D:
 	if kind in ["tree","tree-plain"]:return TEXTURES[["fir","oak","dead_tree","cedar"][pick]]
 	if kind=="crystal":return TEXTURES["basalt" if pick<2 else "quartz"]
 	return null
+## The tallest focal props are wide once scaled, so they cull with extra reach.
+const DETAIL_MARGIN := 320.0
+
 static func draw_background(view: Node2D,details: Array,regions: Array) -> void:
 	for detail in details:
+		if not view._on_screen(detail.x,DETAIL_MARGIN):continue
 		var texture: Texture2D=TEXTURES[detail.kind]
 		var size: Vector2=texture.get_size()*detail.scale
 		var tint: Color=[Color("718995"),Color("a3b2bc"),Color("c0c7b7")][detail.layer]
 		tint.a=view._region_reveal(detail.region)
+		# A fully hidden region still costs a draw call, so skip it outright.
+		if tint.a<=0.0:continue
 		view.draw_set_transform(preload("res://presentation/grounded_art.gd").anchor(texture,Vector2(detail.x,430),detail.scale),0,Vector2(-1 if detail.flip else 1,1))
 		view.draw_texture_rect(texture,Rect2(Vector2(-size.x/2,-size.y),size),false,tint)
 	view.draw_set_transform(Vector2.ZERO)

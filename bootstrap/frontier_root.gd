@@ -9,7 +9,7 @@ const CampaignStore=preload("res://infrastructure/json_campaign_store.gd")
 var preferences: RefCounted
 var manual_progress: RefCounted
 var _manual_available:=false
-@export_range(1.0,60.0,1.0) var autosave_seconds: float=5.0
+@export_range(1.0,60.0,1.0) var autosave_seconds: float=20.0
 @onready var audio=$CampaignAudio
 var progress: RefCounted
 var _campaign_config: Dictionary={}

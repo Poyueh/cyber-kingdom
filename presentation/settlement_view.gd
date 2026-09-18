@@ -2,9 +2,20 @@ extends Node2D
 ## World-space buildings, stock, people and feedback; simulation stays in application/domain.
 const PeopleArt = preload("res://presentation/refuge_residents.gd")
 const EnemyFrames = preload("res://data/sentinel_animation_frames.tres")
+## Art is anchored off centre, so a margin keeps it from popping at the edge.
+const CULL_MARGIN := 160.0
 var _sim
 var _context: Dictionary = {}
 var _font: Font
+var _span := Vector2(-100000.0,100000.0)
+
+## World-space horizontal range on screen; refreshed once per redraw.
+func _refresh_span() -> void:
+	var inverse := get_viewport().get_canvas_transform().affine_inverse()
+	_span=Vector2((inverse*Vector2.ZERO).x,(inverse*get_viewport_rect().size).x)
+
+func _on_screen(x: float, margin: float = CULL_MARGIN) -> bool:
+	return x>=_span.x-margin and x<=_span.y+margin
 
 func _ready() -> void:
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
@@ -22,6 +33,7 @@ func _text(text: String, x: float, y: float, color := Color("dbdac5"), size: int
 func _draw() -> void:
 	if _sim == null or _font == null:
 		return
+	_refresh_span()
 	_draw_structures()
 	_draw_activity()
 
@@ -70,16 +82,16 @@ func _draw_structures() -> void:
 func _draw_activity() -> void:
 	var world = _sim.world
 	for supply in world.supplies:
-		if not supply.taken:
+		if not supply.taken and _on_screen(supply.x):
 			var y := 423.0 - maxf(0,1.0-supply.age/0.4)*24
 			draw_rect(Rect2(supply.x-5,y-5,10,8),Color("e9bc67"))
 	for drop in _sim.loot:
-		if not drop.taken:
+		if not drop.taken and _on_screen(drop.x):
 			draw_rect(Rect2(drop.x-5,417,10,10),Color("c7b28d"))
 	for person in world.people:
-		_person(person,world.barrier>0)
+		if _on_screen(person.x):_person(person,world.barrier>0)
 	for raider in _sim.raiders:
-		_raider(raider)
+		if _on_screen(raider.x):_raider(raider)
 	for effect in _sim.effects:
 		match effect.kind:
 			"bolt": draw_line(Vector2(effect.x,396),Vector2(effect.to,396),Color("91ece3"),2)
