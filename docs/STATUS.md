@@ -986,3 +986,18 @@ Esc 暫停並自動存檔、重新載入頁面後「選擇紀錄」列出該筆�
 瀏覽器 console 無錯誤。
 
 尚未推送，尚未建立 GitHub Release，Pages 尚未更新。iPhone 實機與長局實測仍待進行。
+
+## H5 v0.0.6 已公開（2026-09-18）
+
+Release https://github.com/Poyueh/cyber-kingdom/releases/tag/v0.0.6 已發布，tag 指向 a967e0c。
+main／develop／release/0.0.6 與標籤已推送。公開試玩 https://poyueh.github.io/cyber-kingdom/ 已更新，
+Windows／Mac 維持 v0.0.1。
+
+Release 觸發 35313731415 與 Pages 部署 35313736833 均成功。H5 ZIP 與校驗附件 digest 相符；
+公開站 14 個檔案逐一 SHA256 與實測包完全一致。瀏覽器實測：起始頁、新旅程開局、加速跑動時相機捲動
+（裁剪後新場景正確進入畫面，無彈出或缺漏）、暫停自動存檔、重新載入後旅程列表與 12/12 背包讀檔、
+恢復後再次暫停皆通過，console 警告／錯誤為空。詳見 docs/reports/release-0.0.6/verification.json。
+
+11 個個人修改檔仍保留未提交；其中 `project.godot` 被編輯器重存時掉的
+`window/handheld/orientation` 與 `textures/default_filters/use_nearest_mipmap_filter` 已補回工作區
+（已提交版本一直都有這兩行，發行包不受影響）。
