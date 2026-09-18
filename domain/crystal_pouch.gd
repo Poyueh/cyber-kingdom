@@ -1,5 +1,6 @@
 extends RefCounted
 ## Conserved wallet + physical rewards. Coordinates are feet positions, like actors.
+const GROUND_Y := 430.0
 var capacity: int
 var amount: int
 var drops: Array[Dictionary] = []
@@ -56,19 +57,30 @@ func toss(x: float, y: float, facing: int) -> bool:
 func advance(seconds: float, hero_x: float, hero_y: float) -> void:
 	if seconds<=0 or not is_finite(seconds): return
 	# Substeps keep landing and attraction stable at different frame rates.
+	var target := Vector2(hero_x,hero_y)
+	var reach := magnet_radius*magnet_radius
 	var remaining := seconds
 	while remaining>0.000001:
 		var step := minf(remaining,1.0/60.0)
-		for gem in drops: _advance_drop(gem,step,Vector2(hero_x,hero_y))
-		drops=drops.filter(func(gem): return gem.amount>0)
+		var emptied := false
+		for gem in drops:
+			if _advance_drop(gem,step,target,reach): emptied=true
+		# Rebuilding the list only matters once a pile has actually been emptied.
+		if emptied: drops=drops.filter(func(gem): return gem.amount>0)
 		remaining-=step
 
-func _advance_drop(gem: Dictionary, seconds: float, target: Vector2) -> void:
+## A pile already at rest inside the world cannot move, so its fall is skipped.
+func _settled(gem: Dictionary) -> bool:
+	return platforms.is_empty() and gem.vx==0.0 and gem.vy==0.0 and gem.y==GROUND_Y \
+		and gem.x>=left_boundary+8 and gem.x<=right_boundary-8
+
+## Reports whether this pile was emptied by the knight.
+func _advance_drop(gem: Dictionary, seconds: float, target: Vector2, reach: float) -> bool:
 	gem.age+=seconds
 	gem.grace=maxf(0,gem.grace-seconds)
 	var at := Vector2(gem.x,gem.y)
-	var distance := at.distance_to(target)
-	gem.attracted=amount<capacity and gem.grace<=0 and distance<=magnet_radius and absf(at.y-target.y)<48
+	# Squared reach keeps a square root out of the per-pile loop.
+	gem.attracted=amount<capacity and gem.grace<=0 and at.distance_squared_to(target)<=reach and absf(at.y-target.y)<48
 	if gem.attracted:
 		var direction := at.direction_to(target)
 		gem["trail_x"]=direction.x
@@ -83,12 +95,13 @@ func _advance_drop(gem: Dictionary, seconds: float, target: Vector2) -> void:
 			amount+=stored
 			gem.amount-=stored
 			pickups.append({"x":target.x,"y":target.y,"amount":stored})
-		return
+		return gem.amount<=0
+	if _settled(gem): return false
 	var next_x := clampf(gem.x+gem.vx*seconds,left_boundary+8,right_boundary-8)
 	if next_x==left_boundary+8 or next_x==right_boundary-8: gem.vx=0.0
 	gem.vy+=540.0*seconds
 	var next_y: float=gem.y+gem.vy*seconds
-	var floor_y := 430.0
+	var floor_y := GROUND_Y
 	for surface in platforms:
 		if next_x>=surface.left and next_x<=surface.right and gem.y<=surface.y+0.1:
 			floor_y=minf(floor_y,surface.y)
@@ -98,6 +111,7 @@ func _advance_drop(gem: Dictionary, seconds: float, target: Vector2) -> void:
 		gem.vy=0.0
 		gem.vx=move_toward(gem.vx,0,560.0*seconds)
 	else: gem.y=next_y
+	return false
 
 func consume_offering(x: float, y: float) -> bool:
 	for gem in drops:
