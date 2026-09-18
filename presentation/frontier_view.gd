@@ -1,5 +1,7 @@
 extends "res://presentation/settlement_view.gd"
 const Scenery = preload("res://presentation/refuge_scenery.gd")
+## Region names and outpost plots are centred labels, so they need a wider reach.
+const LABEL_MARGIN := 260.0
 @export var art: Resource = preload("res://data/frontier_art.tres")
 
 func _prop(name: String, at: Vector2, scale: float = 1.0, tint := Color.WHITE) -> void:
@@ -10,7 +12,8 @@ func _prop(name: String, at: Vector2, scale: float = 1.0, tint := Color.WHITE) -
 func _draw() -> void:
 	if _sim == null or _font == null: return
 	var map = _sim.frontier
-	var left: float = (get_viewport().get_canvas_transform().affine_inverse()*Vector2.ZERO).x
+	_refresh_span()
+	var left: float = _span.x
 	# Frame the complete skyline above the real floor, independently of camera zoom.
 	draw_texture_rect(art.woodland,_background_rect(),false)
 	Scenery.forest(self,art.forest_layer,_background_rect(),art.forest_scroll)
@@ -20,18 +23,21 @@ func _draw() -> void:
 	for region in map.regions:
 		if not region.discovered:
 			_draw_unexplored(region)
-		else:
+		elif _on_screen(region.x+region.width*0.5,LABEL_MARGIN):
 			var name: String = {"forest":tr("龍晶林 · 標記居民伐木"),"quarry":tr("晶脈 · 標記居民採礦"),"ruins":tr("舊王朝遺跡 · 回收廢料")}[region.kind]
 			_text(name,region.x+region.width*0.5,143,Color("d6d6b5"),16)
 	for resource in map.nodes:
+		if not _on_screen(resource.x):continue
 		_world_alpha=_region_reveal(resource.region)
 		if _world_alpha>0:_resource(resource)
 	for animal in map.animals:
+		if not _on_screen(animal.x):continue
 		_world_alpha=_region_reveal(animal.region)
 		if animal.alive and _world_alpha>0:_prop("deer",Vector2(animal.x,430),0.75)
 	_world_alpha=1.0
 	for region in map.regions:
 		if not region.outpost_ready: continue
+		if not _on_screen(region.outpost_x,LABEL_MARGIN):continue
 		if not _outpost_visible(region):continue
 		var at := Vector2(region.outpost_x,430)
 		_prop("outpost",at,0.8,Color(1,1,1,1.0 if region.outpost_built else 0.35))
