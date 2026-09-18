@@ -936,3 +936,39 @@ Release https://github.com/Poyueh/cyber-kingdom/releases/tag/v0.0.5 已發布，
 GitHub Actions 發行觸發34850331851與 Pages 部署34850341179均成功。H5 ZIP與校驗附件 digest 相符，公開站14個檔案逐一 SHA256 與實測包一致；瀏覽器起始頁、既有旅程列表、12/12 背包讀檔、恢復與再次暫停通過，警告／錯誤為空。130個個人修改檔仍保留。詳見 docs/reports/release-0.0.5/verification.json。
 
 本輪僅發布已驗證包，沒有改動玩法；Godot 數值教學續用第57課。
+
+## 本輪：效能修復與核心基礎模組
+
+玩久了掉幀的原因先以 headless 探針量測，再逐項修：
+
+| 量測 | 修改前 | 修改後 |
+| --- | --- | --- |
+| 單次存檔（t=600s，198 堆龍晶、20 居民） | 11570 us | 10882 us，且頻率由 5 秒改為 20 秒 |
+| `sim.advance` 每幀（同上情境） | 558 us | 496 us |
+| Draw call：開局未探索 | 349 | 246 |
+| Draw call：全區域探索 | 400 | 257 |
+| Draw call：+40 顆地上龍晶 | 680 | 306 |
+| Draw call：後期營地 | 716 | 342 |
+
+- 靜止且在世界範圍內的地上龍晶不再每幀跑完整物理積分；吸附改比較平方距離，掉落物陣列只在真的被撿空時重建。
+- 存檔的自我驗證保留，但比對基線只依賴該局設定，改為一局算一次重複使用，不再每次存檔重建整個世界再快照一次。
+- 視圖新增每次重繪一次的可見範圍，場景裝飾、採集點、動物、居民、掠奪者、區域名稱與地上龍晶都會裁掉畫面外的部分。地上龍晶是成長最快的來源：一堆約七個繪製指令，而堆數沒有上限。
+- 新增 `domain/time/tick_clock.gd`、`domain/rng/rng_streams.gd`、`domain/stats/`（modifier 系統）與 `data/defs/`（建築、採集點、敵人與目錄）。這些模組尚未接進 session，玩法不變。
+- `tests/run_tests.gd` 改為掃描 `tests/` 目錄，新增測試檔不會被漏掉。
+
+## 驗證記錄（本輪）
+
+`bash tools/check.sh` 全綠：640 項通過、零失敗、無 Godot `SCRIPT ERROR`。
+繪圖裁剪另以 `tools/capture_view_parity.gd` 在每個區域、世界左右邊界與 120 顆密集散佈的龍晶下各截圖一次，裁剪前後 27 張畫面位元組完全相同。
+掉落物的行為由 `tests/test_drop_simulation.gd` 的七項特徵測試釘住。
+
+量測工具：`tools/bench_sim.gd`（模擬與存檔成本）、`tools/bench_draw.gd`（draw call）、
+`tools/capture_view_parity.gd`（畫面比對）。三者都不在 `tools/check.sh` 內，需要時手動執行。
+
+## 下一步
+
+- 架構重構階段二（拆 `campaign_session` 的三層繼承鏈）尚未開始。每個接縫都會牽出互動層，
+  需要逐個子系統設計並在人看著的情況下驗證，不適合一次做完。
+- 階段三（tick 化與騎士座標移入核心）會改變手感，必須實機驗證後才能收。
+- 地上龍晶仍然沒有數量上限或存活時間。加上限會改變玩法，等使用者決定。
+- 每幀兩次 `sim.context()` 已量測為每幀約 80 us（不到畫面預算的百分之一），暫不處理。
