@@ -972,3 +972,17 @@ GitHub Actions 發行觸發34850331851與 Pages 部署34850341179均成功。H5 
 - 階段三（tick 化與騎士座標移入核心）會改變手感，必須實機驗證後才能收。
 - 地上龍晶仍然沒有數量上限或存活時間。加上限會改變玩法，等使用者決定。
 - 每幀兩次 `sim.context()` 已量測為每幀約 80 us（不到畫面預算的百分之一），暫不處理。
+
+## H5 v0.0.6 打包（2026-09-18）
+
+`release/0.0.6` 由 `develop` 開出，包內容為 tree `7e7728f`。
+產物在 `builds/release-0.0.6/`，`Cyber-Kingdom-Web-v0.0.6.zip`
+SHA256 `af00543fabee3403176da2ac78504ab20b190a33934db98a3cd59d2d32b772f1`，與 manifest 一致。
+匯出 log 無錯誤或警告，`index.wasm` 39.5 MB、`index.pck` 36.9 MB。
+
+本機瀏覽器實測（`python3 -m http.server` 於 `builds/release-0.0.6/web`）：
+起始頁載入、新旅程開局、左右移動與加速跑動、相機捲動時新場景正確進入畫面沒有彈出或缺漏、
+Esc 暫停並自動存檔、重新載入頁面後「選擇紀錄」列出該筆自動紀錄、載入後回到暫停前的位置與 12/12 背包。
+瀏覽器 console 無錯誤。
+
+尚未推送，尚未建立 GitHub Release，Pages 尚未更新。iPhone 實機與長局實測仍待進行。
