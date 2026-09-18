@@ -18,6 +18,8 @@ var _slot_key:=""
 var _slot_paid:=0
 var _slot_changed:=0.0
 var crystal_radius: float = 9.0
+## A pile is a small sprite plus its count label.
+const CRYSTAL_MARGIN := 64.0
 var focus_key := ""
 var _view_player_x := 0.0
 var investment_progress := 0.0
@@ -265,6 +267,7 @@ func _draw_activity() -> void:
 	super._draw_activity()
 	_draw_fallen()
 	for pile in _sim.pouch.drops:
+		if not _on_screen(pile.x,CRYSTAL_MARGIN):continue
 		for index in range(mini(3,pile.amount)):
 			var visible: Dictionary=pile.duplicate()
 			visible.x+=index*11-(mini(3,pile.amount)-1)*5.5
