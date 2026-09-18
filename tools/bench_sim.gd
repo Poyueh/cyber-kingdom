@@ -22,11 +22,13 @@ func _initialize() -> void:
 func _run() -> void:
 	var config: Dictionary={"seed":SEED}
 	var sim=Campaign.new(config)
+	# One progress object for the whole run, exactly as the campaign scene keeps it.
+	var progress=Progress.new(NullStore.new())
 	var next: int=0
 	print("%6s %4s %8s %8s %9s %8s %7s %7s %7s" % ["t","day","adv_us","ctx_us","guide_us","save_us","people","raiders","drops"])
 	for frame in range(MARKS[MARKS.size()-1]+1):
 		if next<MARKS.size() and frame==MARKS[next]:
-			_sample(sim,config,frame)
+			_sample(sim,progress,config,frame)
 			next+=1
 		_drive(sim,frame)
 	quit()
@@ -46,13 +48,14 @@ func _drive(sim, frame: int) -> void:
 		sim.interact(hero_x)
 	if frame%240==0:sim.pouch.drop(1,hero_x,430.0)
 
-func _sample(sim, config: Dictionary, frame: int) -> void:
+func _sample(sim, progress, config: Dictionary, frame: int) -> void:
 	var hero_x: float=sim._hero_x
 	var body: Dictionary={"x":hero_x,"y":430.0,"vx":0.0,"vy":0.0}
 	var context_us: int=_time(func():sim.context(hero_x))
 	var guide_us: int=_time(func():Guide.next(sim,hero_x))
 	var advance_us: int=_time(func():sim.advance(0.0001,hero_x,430.0))
-	var progress=Progress.new(NullStore.new())
+	# Warm the codec the way a running campaign does, then measure a steady save.
+	progress.save(sim,config,body)
 	var start: int=Time.get_ticks_usec()
 	progress.save(sim,config,body)
 	var save_us: int=Time.get_ticks_usec()-start
